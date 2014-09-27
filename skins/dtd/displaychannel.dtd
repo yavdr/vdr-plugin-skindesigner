@@ -1,0 +1,86 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY % functions SYSTEM "functions.dtd">
+
+<!ELEMENT displaychannel (background | channelinfo | epginfo | progressbar | progressbarback |  
+                          statusinfo | screenresolution | channelgroup | 
+                          signalquality | signalqualityback | scrapercontent |  
+                          datetime | message)* >
+<!ATTLIST displaychannel
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT background (area)*>
+<!ATTLIST background
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT channelinfo (area|areascroll)*>
+<!ATTLIST channelinfo
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT epginfo (area|areascroll)*>
+<!ATTLIST epginfo
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT progressbar (area|areascroll)*>
+<!ATTLIST progressbar
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT progressbarback (area)*>
+<!ATTLIST progressbarback
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT statusinfo (area|areascroll)*>
+<!ATTLIST statusinfo
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT screenresolution (area|areascroll)*>
+<!ATTLIST screenresolution
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT channelgroup (area|areascroll)*>
+<!ATTLIST channelgroup
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT signalquality (area|areascroll)*>
+<!ATTLIST signalquality
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT signalqualityback (area|areascroll)*>
+<!ATTLIST signalqualityback
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT scrapercontent (area|areascroll)*>
+<!ATTLIST scrapercontent
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT datetime (area|areascroll)*>
+<!ATTLIST datetime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT message (area|areascroll)*>
+<!ATTLIST message
+  debug CDATA #IMPLIED
+>
+
+%functions;

@@ -1,0 +1,36 @@
+ <menudefault x="0" y="0" width="100%" height="100%" fadetime="0">
+    <!-- IMPORTANT: menuitemwidth and determinatefont have to be defined here. menuitemwidth defines the total width of the 
+    default menu items, determinatefont the function which sets the actual font to use. With that it is possible to determinate
+    the correct column widths -->
+    <menuitems x="0" y="0" orientation="vertical" width="100%" height="100%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="16">
+        <!-- Available Variables default menu listelement:
+        {column1}                   text of column1
+        {column2}                   text of column2
+        {column3}                   text of column3
+        {column4}                   text of column4
+        {column5}                   text of column5
+        {column6}                   text of column6
+        {column2set}                true if column2 is used
+        {column3set}                true if column3 is used
+        {column4set}                true if column4 is used
+        {column5set}                true if column5 is used
+        {column6set}                true if column6 is used
+        {column2x}                  proposed x value of column2
+        {column3x}                  proposed x value of column3
+        {column4x}                  proposed x value of column4
+        {column5x}                  proposed x value of column5
+        {column6x}                  proposed x value of column6
+        {column1width}              proposed width of column1
+        {column2width}              proposed width of column2
+        {column3width}              proposed width of column3
+        {column4width}              proposed width of column4
+        {column5width}              proposed width of column5
+        {column6width}              proposed width of column6
+        {current}                   true if column is currently selected 
+        {separator}                 true if column is a list separator 
+        -->
+        <listelement>
+        </listelement>
+        
+    </menuitems>
+</menudefault>

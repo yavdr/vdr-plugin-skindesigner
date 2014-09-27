@@ -1,0 +1,117 @@
+<menuchannels x="0" y="0" width="100%" height="100%" fadetime="0">
+    <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
+        <!-- Available Variables channels menu listelement:
+        {number}                  number of the displayed channel
+        {name}                    name of the displayed channel
+        {channelid}               ChannelID as path to display channel logo
+        {transponder}             Transponder of channel
+        {frequency}               Frequency of channel
+        {source}                  Source of channel (S, C, T)
+        {sourcedescription}       Descriptin of source from sources.conf
+        {position}                orbital position of the satellite in case this is a DVB-S source
+        {isAtsc}                  true if channel is a ATSC channel
+        {isCable}                 true if channel is cable channel
+        {isSat}                   true if channel is a satellite channel
+        {isTerr}                  true if channel is terrestrical
+        {presenteventtitle}       title of present event on this channel
+        {presenteventstart}       present event start time in hh::mm
+        {presenteventstop}        present event event stop time in hh::mm
+        {current}                 true if item is currently selected 
+        {separator}               true if item is a list separator 
+        -->
+        <listelement>
+            <!-- Background -->
+            <area x="1%" width="58%" layer="2">
+                <fill condition="not{current}" color="{clrTransparent}" />
+                <fill condition="{current}" color="{clrTransBlueLight}" />
+                <fill condition="{separator}" color="{clrSemiTransBlack}" />
+            </area>
+            <area condition="not{separator}" x="1%" width="6%" layer="3">
+                <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="10" height="100%" valign="center" />
+            </area>
+            <areascroll condition="not{separator}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="7%" width="52%" layer="3">
+                <drawtext name="menutext" x="20" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{number} {name} - {sourcedescription}, Transp. {transponder}" />
+            </areascroll>
+            <area condition="{separator}" x="7%" width="52%" layer="3">
+                <drawtext x="20" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{name}" />
+            </area>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables channels menu currentelement:
+        {number}                        number of the displayed channel
+        {name}                          name of the displayed channel
+        {channelid}                     ChannelID as path to display channel logo
+        {transponder}                   Transponder of channel
+        {frequency}                     Frequency of channel
+        {source}                        Source of channel (S, C, T)
+        {sourcedescription}             Descriptin of source from sources.conf
+        {position}                      orbital position of the satellite in case this is a DVB-S source
+        {isAtsc}                        true if channel is a ATSC channel
+        {isCable}                       true if channel is cable channel
+        {isSat}                         true if channel is a satellite channel
+        {isTerr}                        true if channel is terrestrical
+        {presenteventtitle}             title of present event on this channel
+        {presenteventstart}             present event start time in hh::mm
+        {presenteventstop}              present event stop time in hh::mm
+        {presenteventshorttext}         present event short text
+        {presenteventdescription}       present event description
+        {presenteventday}               present event name of day
+        {presenteventdate}              present event date in dd:mm:yy
+        {presenteventelapsed}           present event elapsed time
+        {presenteventduration}          present event duration
+        {hasposter}                     true if a scraped poster is available for this elements present evemt
+        {posterwidth}                   width of scraped poster
+        {posterheight}                  height of scraped poster
+        {posterpath}                    absolute path of scraped poster
+        {nexteventtitle}                title of next event on this channel
+        {nexteventstart}                next event start time in hh::mm
+        {nexteventstop}                 next event event stop time in hh::mm
+        {nexteventshorttext}            next event short text
+        {nexteventdescription}          next event description
+        {nexteventday}                  next event name of day
+        {nexteventdate}                 next event date in dd:mm:yy
+        {nexteventdate}                 next event duration
+        {schedule[]}                    array with following 10 schedules
+        {schedule[title]}               title of event
+        {schedule[shorttext]}           shorttext of event
+        {schedule[start]}               start time of event in hh:mm
+        {schedule[stop]}                stop time of event in hh:mm        
+        -->
+        <currentelement delay="500" fadetime="0">
+            <area x="63%" y="0" width="36%" height="85%" layer="2">
+                <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="10" y="0" width="30%" />
+                <drawtext name="channame" align="right" y="{height(logo)}/2 - {height(channame)}/2" width="65%" font="{semibold}" fontsize="10%" color="{clrWhite}" text="{name}" />
+                <!-- now -->
+                <drawtext name="now" x="2%" y="{height(logo)}" width="96%" font="{semibold}" fontsize="8%" color="{clrWhite}" text="Now: {presenteventtitle}" />
+                <!--progressbar for now -->
+                <drawtext name="start" x="{areawidth}/4 - {width(start)}" y="{height(logo)} + {height(now)}" font="{light}" fontsize="7%" color="{clrWhite}" text="{presenteventstart}" />
+                <drawtext name="stop" x="{areawidth}*3/4" y="{height(logo)} + {height(now)}" font="{light}" fontsize="7%" color="{clrWhite}" text="{presenteventstop}" />
+                <drawrectangle x="{areawidth}/4+10" y="{height(logo)} + {height(now)} + {height(start)} / 2" width="{areawidth}/2 - 20" height="1" color="{clrWhite}" />
+                <drawrectangle x="{areawidth}/4+10" y="{height(logo)} + {height(now)} + {height(start)} / 2 - 2" width="{areawidth}/2 * {presenteventelapsed} / {presenteventduration} - 20 * {presenteventelapsed} / {presenteventduration}" height="5" color="{clrWhite}" />
+                <!-- shorttext and description -->
+                <drawtextbox name="nowshort" x="2%" y="{posy(start)} + {height(start)} + 10" width="96%" font="{light}" fontsize="6%" color="{clrWhite}" text="{presenteventshorttext}" />
+                <drawtextbox name="nowdesc" x="2%" y="{posy(nowshort)} + {height(nowshort)}" width="96%" height="36%" font="{light}" fontsize="6%" color="{clrWhite}" text="{presenteventdescription}" />
+                <!-- next -->
+                <drawtext name="next" x="2%" y="{posy(nowdesc)} + {height(nowdesc)}" width="96%" font="{semibold}" fontsize="7%" color="{clrWhite}" text="Next: {nexteventtitle}" />
+                <drawtext name="nexttime" x="2%" y="{posy(next)} + {height(next)}" width="96%" font="{light}" fontsize="6%" color="{clrWhite}" text="{nexteventstart} - {nexteventstop} ({presenteventduration} min)" />
+            </area>
+            <areascroll mode="forthandback" orientation="vertical" delay="1000" scrollspeed="medium" x="63%" y="85%" width="36%" height="15%" layer="2">
+                <drawtext x="10" y="0" font="{semibold}" fontsize="30%" color="{clrWhite}" text="Following Schedules:" />
+                <loop name="schedule" x="0" y="{areaheight}/4 + 5" orientation="vertical">
+                    <drawtext x="10" font="{light}" width="{areawidth}-20" fontsize="30%" color="{clrWhite}" text="{schedule[start]} {schedule[title]}" />
+                </loop>
+            </areascroll>
+        </currentelement>
+    </menuitems>
+    <!-- Available Variables colorbuttons:
+    {height}                  height in one-tenth of a percent of total height
+    {offset}                  offset from top in one-tenth of a percent of total height
+    -->
+    <scrollbar>
+        <area x="60%" y="10%" width="2%" height="82%" layer="3">
+            <fill color="{clrWhite}" />
+            <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
+            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
+        </area>
+    </scrollbar>
+</menuchannels>

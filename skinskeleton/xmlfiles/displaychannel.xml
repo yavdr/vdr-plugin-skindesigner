@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE displaychannel SYSTEM "../../dtd/displaychannel.dtd">
+
+<displaychannel x="0" y="0" width="100%" height="100%" fadetime="0">
+
+    <background>
+    </background>
+
+    <!-- Available Variables channelinfo:
+    {channelnumber}                 Number of Channel, with "-" in case of channel switching
+    {channelname}                   Name of current Channel
+    {channellogoexists}             true if a channel logo exists 
+    {channelid}                     ChannelID as path to display channel logo
+    {switching}                     true if a number is pressed on the remote to switch to a dedicated channel
+    -->
+    <channelinfo>
+    </channelinfo>
+
+    <!-- Available Variables epginfo:
+    {currenttitle}                     Title of the current Schedule
+    {currentsubtitle}                  Subtitle of the current Schedule
+    {currentstart}                     Start of current Schedule in hh:mm
+    {currentstop}                      End of current Schedule in hh:mm 
+    {currentduration}                  Duration of current Schedule in min
+    {currentelapsed}                   Elapsed time of current Schedule in min
+    {currentremaining}                 Remaining time of current Schedule in min
+    {currentrecording}                 true if current Schedule is recorded
+    {nexttitle}                        Title of next Schedule
+    {nextsubtitle}                     Subtitle of next Schedule
+    {nextstart}                        Start of next Schedule in hh:mm
+    {nextstop}                         Stop of next Schedule in hh:mm
+    {nextduration}                     Duration of next Schedule in min
+    {nextrecording}                    true if next Schedule will be recorded
+    -->
+    <epginfo>
+    </epginfo>
+
+    <!-- Available Variables progressbar:
+    {start}                            Start of current Schedule in hh:mm
+    {stop}                             End of current Schedule in hh:mm 
+    {duration}                         Total Duration of current Schedule in seconds
+    {elapsed}                          Elapsed time of current Schedule in seconds
+    {remaining}                        Remaining time of current Schedule in seconds
+    -->
+    <progressbar>
+    </progressbar>
+
+    <!-- Available Variables statusinfo:
+    {isRadio}                          true if channel is a radio channel
+    {hasVT}                            true if channel has video text   
+    {isStereo}                         true if a stereo audio trac is available
+    {isDolby}                          true if a dolby audio track is available
+    {isEncrypted}                      true if channel is encrypted
+    {isRecording}                      true if currently a recording is running on this channel
+    -->
+    <statusinfo>
+    </statusinfo>
+
+    <!-- Available Variables screenresolution:
+    {screenwidth}                      width of currently displayed channel in px
+    {screenheight}                     height of currently displayed channel in px
+    {resolution}                       resolution: hd1080i, hd720p, sd576i
+    {aspect}                           screen aspect, each 4:3, 16:9 or 21:9
+    {isHD}                             true for hd1080i and hd720p
+    {isWideScreen}                     true if aspect is 16:9 or 21:9
+    -->
+    <screenresolution>
+    </screenresolution>
+
+    <!-- Available Variables dvbdeviceinfo:
+    {prevAvailable}                     true if previous Channel Group is avaialble
+    {nextAvailable}                     true if next Channel Group is avaialble
+    {group}                             Name of current Channel Group
+    {nextgroup}                         Name of next Channel Group
+    {prevgroup}                         Name of prev Channel Group
+    {sepexists}                         true if a channel separator logo exists
+    {seppath}                           path for separator logo to use in imagetype "seplogo"
+    -->
+    <channelgroup>
+    </channelgroup>
+
+    <!-- Available Variables signalquality:
+    {signalstrength}                    STR value of currently displayed channel
+    {signalquality}                     SNR value of currently displayed channel
+    -->
+    <signalquality>
+    </signalquality>
+
+    <!-- background of signalmeter, will only be drawn if signalquality was deleted -->
+    <signalqualityback>
+    </signalqualityback>
+
+    <!-- Available Variables scrapercontent:
+    {mediapath}                         Full Path of Poster or Banner to use in image path attribute
+    {mediawidth}                        width of image in pixel
+    {mediaheight}                       height of image in pixel
+    {isbanner}                          true if image is a banner, false if it is a poster
+    -->
+    <scrapercontent>
+    </scrapercontent>
+
+    <!-- Available Variables datetime:
+    {time}                              time in hh:mm
+    {day}                               day in digits
+    {dayleadingzero}                    day in digits with leading 0
+    {dayname}                           Full name of the day
+    {daynameshort}                      Short 3 char name of the day
+    {month}                             month in digits with leading 0
+    {monthname}                         Full name of the month
+    {monthnameshort}                    3 letter abbrivation of month name
+    {year}                              year in yyyy
+    -->
+    <datetime>
+    </datetime>
+
+    <!-- Available Variables message:
+    {text}                     message text
+    {status}                   true if message is a status message
+    {info}                     true if message is a info message
+    {warning}                  true if message is a warn message
+    {error}                    true if message is a error message
+    -->
+    <message>
+    </message>
+
+</displaychannel>

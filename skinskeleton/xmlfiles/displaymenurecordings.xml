@@ -1,0 +1,49 @@
+<menurecordings x="0" y="0" width="100%" height="100%" fadetime="0">
+    <menuitems x="0" y="0" orientation="vertical" width="100%" height="100%" align="center" numlistelements="16">
+        <!-- Available Variables recordings menu listelement:
+        {name}                  Name of recording
+        {date}                  Date of recording
+        {time}                  Time of recording
+        {duration}              real duration of recording in minutes
+        {durationevent}         duration of corresponding event in minutes
+        {current}               true if item is currently selected
+        {new}                   true if recording is new
+        {cutted}                true if recording is cutted
+        {folder}                true if item is a folder
+        {numrecordingsfolder}   if item is a folder, number of recordings in this folder
+        {newrecordingsfolder}   if item is a folder, number of new recordings in this folder
+        {hasposterthumbnail}    true if a scraped poster thumbnail is available for recording
+        {thumbnailbwidth}       width of scraped poster thumbnail
+        {thumbnailheight}       height of scraped poster thumbnail
+        {thumbnailpath}         absolute path of scraped poster thumbnail
+        -->
+        <listelement>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables channels menu currentelement:
+        {menuitemx}             x position of according menu item
+        {menuitemy}             y position of according menu item
+        {menuitemwidth}         width of according menu item
+        {menuitemheight}        height of according menu item
+        {name}                  Name of recording
+        {shorttext}             Short Text of recording
+        {description}           Descrption of recording        
+        {date}                  Date of recording
+        {time}                  Time of recording
+        {duration}              real duration of recording in minutes
+        {durationevent}         duration of corresponding event in minutes
+        {new}                   true if recording is new
+        {cutted}                true if recording is cutted
+        {folder}                true if item is a folder
+        {numrecordingsfolder}   if item is a folder, number of recordings in this folder
+        {newrecordingsfolder}   if item is a folder, number of new recordings in this folder
+        {hasposter}             true if a scraped poster is available for recording
+        {posterwidth}           width of scraped poster
+        {posterheight}          height of scraped poster
+        {posterpath}            absolute path of scraped poster
+        -->
+        <currentelement delay="500" fadetime="0">
+        </currentelement>
+    </menuitems>
+
+</menurecordings>

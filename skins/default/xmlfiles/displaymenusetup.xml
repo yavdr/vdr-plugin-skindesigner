@@ -1,0 +1,107 @@
+<menusetup x="0" y="0" width="100%" height="100%" fadetime="0">
+    <!-- 
+    static content of main menu, is only drawn once at main menu startup
+    -->
+    <background>
+        <area x="0" y="0" width="100%" height="100%" layer="1">
+            <fill color="{clrTransBlack}" />
+        </area>
+        <area x="84%" y="0" width="16%" height="7%" layer="2">
+            <drawrectangle x="0" y="0" width="52%" height="100%" color="{clrTransBlueLight}" />
+        </area>
+    </background>
+    <!-- Available Variables header:
+    {title}                   title of current menu
+    {vdrversion}              running VDR Version
+    -->
+    <header>
+        <area x="0" y="0" width="70%" height="7%" layer="2">
+            <drawtext x="10" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
+        </area>
+    </header>
+    <!-- Available Variables datetime:
+    {time}                              time in hh:mm
+    {day}                               day in digits
+    {dayleadingzero}                    day in digits with leading 0
+    {dayname}                           Full name of the day
+    {daynameshort}                      Short 3 char name of the day
+    {month}                             month in digits with leading 0
+    {monthname}                         Full name of the month
+    {year}                              year in yyyy
+    -->
+    <datetime>
+        <area x="84%" y="0" width="8%" height="7%" layer="3">
+            <drawtext align="right" y="0%" font="{light}" fontsize="55%" color="{clrWhite}" text="{dayname}" />
+            <drawtext align="right" y="45%" font="{light}" fontsize="55%" color="{clrWhite}" text="{day}. {monthname}" />
+        </area>
+        <area x="92%" y="0" width="8%" height="7%" layer="3">
+            <drawtext align="center" valign="center" font="{light}" fontsize="100%" color="{clrWhite}" text="{time}" />
+        </area>
+    </datetime>
+
+    <!-- Available Variables colorbuttons:
+    {red}                     label of red button
+    {green}                   label of green button
+    {yellow}                  label of yellow button
+    {blue}                    label of blue button 
+    -->
+    <colorbuttons>
+        <area x="0" y="93%" width="25%" height="7%" layer="2">
+            <drawtext x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle x="0" y="0" width="10" height="100%" color="{clrRed}" />
+        </area>
+        <area x="25%" y="93%" width="25%" height="7%" layer="2">
+            <drawtext x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+        </area>
+        <area x="50%" y="93%" width="25%" height="7%" layer="2">
+            <drawtext x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+        </area>
+        <area x="75%" y="93%" width="25%" height="7%" layer="2">
+            <drawtext x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+    </colorbuttons>
+
+    <menuitems x="0" y="7%" orientation="vertical" width="98%" height="86%" align="center" numlistelements="10">
+        <!-- Available Variables setup menu listelement:
+        {label}                   label of menu item
+        {number}                  number of menu item (or empty string if not set)
+        {icon}                    path of appropriate icon
+        {current}                 true if item is currently selected 
+        {separator}               true if item is a list separator 
+        -->
+        <listelement>
+            <area x="0" width="60%" layer="2">
+                <fill condition="not{current}" color="{clrTransparent}" />
+                <fill condition="{current}" color="{clrTransBlueLight}" />
+            </area>
+            <areascroll scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="0" width="60%" layer="3">
+                <drawtext name="menutext" x="20" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{number} {label}" />
+            </areascroll>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables main menu currentelement:
+        {label}                   label of menu item
+        {number}                  number of menu item (or empty string if not set)
+        {icon}                    path of appropriate icon
+        -->
+        <currentelement delay="50" fadetime="0">
+            <area x="61%" y="30%" width="37%" height="36%" layer="2">
+                <fill color="{clrTransBlueLight}" />
+            </area>
+            <area x="61%" y="30%" width="37%" height="36%" layer="3">
+                <drawimage imagetype="menuicon" path="{icon}" align="center" valign="center" width="{areaheight} - 10" height="{areaheight} - 10"/>
+            </area>
+        </currentelement>
+    </menuitems>
+    
+    <scrollbar>
+        <area x="98%" y="7%" width="2%" height="86%" layer="2">
+            <fill color="{clrWhite}" />
+            <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
+            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
+        </area>
+    </scrollbar>
+</menusetup>

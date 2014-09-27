@@ -1,0 +1,74 @@
+<menuchannels x="0" y="0" width="100%" height="100%" fadetime="0">
+    <menuitems x="0" y="0" orientation="vertical" width="100%" height="100%" align="center" numlistelements="16">
+        <!-- Available Variables channels menu listelement:
+        {number}                  number of the displayed channel
+        {name}                    name of the displayed channel
+        {channelid}               ChannelID as path to display channel logo
+        {transponder}             Transponder of channel
+        {frequency}               Frequency of channel
+        {source}                  Source of channel (S, C, T)
+        {sourcedescription}       Descriptin of source from sources.conf
+        {position}                orbital position of the satellite in case this is a DVB-S source
+        {isAtsc}                  true if channel is a ATSC channel
+        {isCable}                 true if channel is cable channel
+        {isSat}                   true if channel is a satellite channel
+        {isTerr}                  true if channel is terrestrical
+        {presenteventtitle}       title of present event on this channel
+        {presenteventstart}       present event start time in hh::mm
+        {presenteventstop}        present event event stop time in hh::mm
+        {current}                 true if item is currently selected 
+        {separator}               true if item is a list separator 
+        -->
+        <listelement>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables channels menu currentelement:
+        {menuitemx}                     x position of according menu item
+        {menuitemy}                     y position of according menu item
+        {menuitemwidth}                 width of according menu item
+        {menuitemheight}                height of according menu item
+        {number}                        number of the displayed channel
+        {name}                          name of the displayed channel
+        {channelid}                     ChannelID as path to display channel logo
+        {transponder}                   Transponder of channel
+        {frequency}                     Frequency of channel
+        {source}                        Source of channel (S, C, T)
+        {sourcedescription}             Descriptin of source from sources.conf
+        {position}                      orbital position of the satellite in case this is a DVB-S source
+        {isAtsc}                        true if channel is a ATSC channel
+        {isCable}                       true if channel is cable channel
+        {isSat}                         true if channel is a satellite channel
+        {isTerr}                        true if channel is terrestrical
+        {presenteventtitle}             title of present event on this channel
+        {presenteventstart}             present event start time in hh::mm
+        {presenteventstop}              present event stop time in hh::mm
+        {presenteventshorttext}         present event short text
+        {presenteventdescription}       present event description
+        {presenteventday}               present event name of day
+        {presenteventdate}              present event date in dd:mm:yy
+        {presenteventelapsed}           present event elapsed time
+        {presenteventduration}          present event duration
+        {hasposter}                     true if a scraped poster is available for this elements present evemt
+        {posterwidth}                   width of scraped poster
+        {posterheight}                  height of scraped poster
+        {posterpath}                    absolute path of scraped poster
+        {nexteventtitle}                title of next event on this channel
+        {nexteventstart}                next event start time in hh::mm
+        {nexteventstop}                 next event event stop time in hh::mm
+        {nexteventshorttext}            next event short text
+        {nexteventdescription}          next event description
+        {nexteventday}                  next event name of day
+        {nexteventdate}                 next event date in dd:mm:yy
+        {nexteventdate}                 next event duration
+        {schedule[]}                    array with following 10 schedules
+        {schedule[title]}               title of event
+        {schedule[shorttext]}           shorttext of event
+        {schedule[start]}               start time of event in hh:mm
+        {schedule[stop]}                stop time of event in hh:mm        
+        -->
+        <currentelement delay="500" fadetime="0">
+        </currentelement>
+
+    </menuitems>
+
+</menuchannels>

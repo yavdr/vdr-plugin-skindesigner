@@ -1,0 +1,179 @@
+<menuschedules x="0" y="0" width="100%" height="100%" fadetime="0">
+    <!-- Available Variables header:
+    {title}                         title of current menu
+    {vdrversion}                    running VDR Version
+    {channelnumber}                 Number of Channel of current event
+    {channelname}                   Name of current Channel of current event
+    {channellogoexists}             true if a channel logo exists 
+    {channelid}                     ChannelID as path to display channel logo
+    {whatson}                       true if menu "What's on" is displayed
+    {whatsonnow}                    true if menu "What's on now" is displayed
+    {whatsonnext}                   true if menu "What's on next" is displayed
+    -->
+    <header>
+        <area x="0" y="0" width="38%" height="10%" layer="2">
+            <drawtext condition="{whatsonnow}||{whatsonnext}" x="5" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
+            <drawimage name="logo" condition="{whatson}" imagetype="channellogo" path="{channelid}" x="0" height="100%" align="left" valign="center" />
+            <drawtext condition="{whatson}" x="{width(logo)}+20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{channelnumber} - {channelname}" />
+        </area>
+    </header>
+
+    <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
+        <!-- Available Variables schedules menu listelement:
+        {title}                   title of event
+        {shorttext}               shorttext of event
+        {start}                   event start time in hh::mm
+        {stop}                    event stop time
+        {day}                     day of current event
+        {date}                    date of current event in dd.mm.yy
+        {running}                 true if event is currently running
+        {elapsed}                 elapsed time of event, if not running 0
+        {duration}                duration of event
+        {current}                 true if item is currently selected 
+        {separator}               true if item is a list separator 
+        {channelid}               ChannelID as path to display channel logo
+        {whatson}                 true if menu "What's on" is displayed
+        {whatsonnow}              true if menu "What's on now" is displayed
+        {whatsonnext}             true if menu "What's on next" is displayed
+        {timerpartitial}          true if partitial timer is set for the event
+        {timerfull}               true if full timer is set for the event
+        -->
+        <listelement>
+            <!-- Background -->
+            <area x="1%" width="58%" layer="2">
+                <fill condition="not{current}" color="{clrTransparent}" />
+                <fill condition="{current}" color="{clrTransBlueLight}" />
+                <fill condition="{separator}" color="{clrSemiTransBlack}" />
+            </area>
+            <!-- WHATSON -->
+            <areascroll condition="not{separator}++{whatson}++not{running}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="58%" layer="3">
+                <drawtext name="menutext" x="20" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{start} {title}" />
+            </areascroll>
+            <areascroll condition="not{separator}++{whatson}++{running}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="48%" layer="3">
+                <drawtext name="menutext" x="20" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{start} {title}" />
+            </areascroll>
+            <area condition="not{separator}++{whatson}" x="1%" width="58%" layer="3">
+                <drawimage condition="{timerfull}" imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.9*{areaheight} - 10" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+                <drawimage condition="{timerpartitial}" imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.5*{areaheight} - 10" width="0.5*{areaheight}" height="0.5*{areaheight}" valign="center" />
+                <drawrectangle condition="{running}" x="{areawidth}*0.85 - 10" y="{areaheight}/3" width="{areawidth}*0.15" height="{areaheight}/3" color="{clrWhite}" />
+                <drawrectangle condition="{running}" x="{areawidth}*0.85 - 8" y="{areaheight}/3 + 2" width="{areawidth}*0.15 - 4" height="{areaheight}/3 - 4" color="{clrTransparent}" />
+                <drawrectangle condition="{running}" x="{areawidth}*0.85 - 6" y="{areaheight}/3 + 4" width="{areawidth}*0.15 * {elapsed} / {duration} - 8" height="{areaheight}/3 - 8" color="{clrWhite}" />
+            </area>
+            <!-- WHATSONNOW -->
+            <area condition="not{separator}++{whatsonnow}" x="1%" width="6%" layer="3">
+                <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="10" height="100%" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonnow}++{running}" x="8%" width="7%" layer="3">
+                <drawrectangle condition="{current}" x="0" y="{areaheight}/3" width="{areawidth}" height="{areaheight}/3" color="{clrWhite}" />
+                <drawrectangle condition="not{current}" x="0" y="{areaheight}/3" width="{areawidth}" height="{areaheight}/3" color="{clrTransBlueLight}" />
+                <drawrectangle x="2" y="{areaheight}/3 + 2" width="{areawidth} - 4" height="{areaheight}/3 - 4" color="{clrTransparent}" />
+                <drawrectangle x="4" y="{areaheight}/3 + 4" width="{areawidth} * {elapsed} / {duration} - 8" height="{areaheight}/3 - 8" color="{clrWhite}" />
+            </area>
+            <area condition="not{separator}++{whatsonnow}++{timerfull}" x="53%" width="6%" layer="4">
+                <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.9*{areaheight} - 10" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonnow}++{timerpartitial}" x="53%" width="6%" layer="5">
+                <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.5*{areaheight} - 10" width="0.5*{areaheight}" height="0.5*{areaheight}" valign="center" />
+            </area>
+            <areascroll condition="not{separator}++{whatsonnow}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="15%" width="44%" layer="4">
+                <drawtext name="menutext" x="10" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{start} {title}" />
+            </areascroll>
+            <!-- WHATSONNEXT -->
+            <area condition="not{separator}++{whatsonnext}" x="1%" width="6%" layer="3">
+                <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="10" height="100%" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonnext}++{timerfull}" x="53%" width="6%" layer="4">
+                <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.9*{areaheight} - 10" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonnext}++{timerpartitial}" x="53%" width="6%" layer="5">
+                <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.5*{areaheight} - 10" width="0.5*{areaheight}" height="0.5*{areaheight}" valign="center" />
+            </area>
+            <areascroll condition="not{separator}++{whatsonnext}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="7%" width="52%" layer="4">
+                <drawtext name="menutext" x="10" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{start} {title}" />
+            </areascroll>
+            <!-- Separator -->
+            <area condition="{separator}" x="0" width="68%" layer="3">
+                <drawtext x="20" valign="center" font="{light}" fontsize="95%" color="{clrBlueLight}" text="{title}" />
+            </area>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables schedules menu currentelement:
+        {title}                   title of event
+        {shorttext}               shorttext of event
+        {description}             detailed description of event
+        {start}                   event start time in hh::mm
+        {stop}                    event stop time
+        {day}                     day of current event
+        {date}                    date of current event in dd.mm.yy
+        {running}                 true if event is currently running
+        {elapsed}                 elapsed time of event, if not running 0
+        {duration}                duration of event
+        {channelid}               ChannelID as path to display channel logo
+        {hasposter}               true if a scraped poster is available for this element
+        {posterwidth}             width of scraped poster
+        {posterheight}            height of scraped poster
+        {posterpath}              absolute path of scraped poster
+        {timerpartitial}          true if partitial timer is set for the event
+        {timerfull}               true if full timer is set for the event
+        {whatson}                 true if menu "What's on" is displayed
+        {whatsonnow}              true if menu "What's on now" is displayed
+        {whatsonnext}             true if menu "What's on next" is displayed
+        {schedule[]}              array with next 10 schedules, only for whatsonnow and whatsonnext
+        {schedule[title]}         title of event
+        {schedule[shorttext]}     shorttext of event
+        {schedule[start]}         start time of event in hh:mm
+        {schedule[stop]}          stop time of event in hh:mm
+        -->
+        <currentelement delay="500" fadetime="0">
+            <area condition="{whatson}" x="63%" y="0" width="36%" height="100%" layer="2">
+                <!-- title -->
+                <drawtext align="center" y="0" font="{semibold}" width="{areawidth}-20" fontsize="8%" color="{clrWhite}" text="{title}" />
+                <!-- progress bar if event is running -->
+                <drawtext condition="{running}" name="start" x="{areawidth}/4 - {width(start)}" y="{areaheight}/16 + 20" font="{light}" fontsize="{areaheight}/18" color="{clrWhite}" text="{start}" />
+                <drawtext condition="{running}" name="stop" x="{areawidth}*3/4" y="{areaheight}/16 + 20" font="{light}" fontsize="{areaheight}/18" color="{clrWhite}" text="{stop}" />
+                <drawrectangle condition="{running}" x="{areawidth}/4+10" y="{areaheight}/16 + 20 + {areaheight}/36" width="{areawidth}/2 - 20" height="1" color="{clrWhite}" />
+                <drawrectangle condition="{running}" x="{areawidth}/4+10" y="{areaheight}/16 + 20 + {areaheight}/36 -2" width="{areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration}" height="5" color="{clrWhite}" />
+                <!-- start and stop if event is not running -->
+                <drawtext condition="not{running}" x="10" y="{areaheight}/18 + 20" font="{light}" fontsize="{areaheight}/20" color="{clrWhite}" text="{start} - {stop} ({duration} min)" />
+                <!-- scraper poster -->
+                <drawimage condition="{hasposter}" name="poster" imagetype="image" path="{posterpath}" x="10" y="{posy(start)} + {height(start)} + 20" width="{areawidth}/3" height="{areawidth}/3 * {posterheight} / {posterwidth}"/>
+                <!-- description -->
+                <drawtextbox condition="{hasposter}" x="10" y="{posy(poster)}" width="99%" height="{areaheight} - {posy(poster)}" float="topleft" floatwidth="{width(poster)} + 10" floatheight="{height(poster)} + 20" font="{light}" fontsize="{areaheight}/20" color="{clrWhite}" text="{description}" />
+                <drawtextbox condition="not{hasposter}" x="10" y="{posy(poster)}" width="99%" height="{areaheight} - {posy(poster)}" font="{light}" fontsize="{areaheight}/20" color="{clrWhite}" text="{description}" />
+            </area>
+            <area condition="{whatsonnow}||{whatsonnext}" x="63%" y="0" width="36%" height="85%" layer="2">
+                <!-- title -->
+                <drawtext align="center" y="0" font="{semibold}" width="{areawidth}-20" fontsize="10%" color="{clrWhite}" text="{title}" />
+                <!-- progress bar if event is running -->
+                <drawtext condition="{running}" name="start" x="{areawidth}/4 - {width(start)}" y="{areaheight}/16 + 15" font="{light}" fontsize="{areaheight}/15" color="{clrWhite}" text="{start}" />
+                <drawtext condition="{running}" name="stop" x="{areawidth}*3/4" y="{areaheight}/16 + 15" font="{light}" fontsize="{areaheight}/15" color="{clrWhite}" text="{stop}" />
+                <drawrectangle condition="{running}" x="{areawidth}/4+10" y="{areaheight}/16 + 15 + {areaheight}/30" width="{areawidth}/2 - 20" height="1" color="{clrWhite}" />
+                <drawrectangle condition="{running}" x="{areawidth}/4+10" y="{areaheight}/16 + 15 + {areaheight}/30 -2" width="{areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration}" height="5" color="{clrWhite}" />
+                <!-- start and stop if event is not running -->
+                <drawtext condition="not{running}" x="10" y="{areaheight}/18 + 15" font="{light}" fontsize="{areaheight}/20" color="{clrWhite}" text="{start} - {stop} ({duration} min)" />
+                <!-- scraper poster -->
+                <drawimage condition="{hasposter}" name="poster" imagetype="image" path="{posterpath}" x="10" y="{posy(start)} + {height(start)} + 10" width="{areawidth}/3" height="{areawidth}/3 * {posterheight} / {posterwidth}"/>
+                <!-- description -->
+                <drawtextbox condition="{hasposter}" x="10" y="{posy(poster)}" width="99%" height="{areaheight} - {posy(poster)}" float="topleft" floatwidth="{width(poster)} + 10" floatheight="{height(poster)} + 10" font="{light}" fontsize="{areaheight}/18" color="{clrWhite}" text="{description}" />
+                <drawtextbox condition="not{hasposter}" x="10" y="{posy(poster)}" width="99%" height="{areaheight} - {posy(poster)}" font="{light}" fontsize="{areaheight}/18" color="{clrWhite}" text="{description}" />
+            </area>
+            <areascroll condition="{whatsonnow}||{whatsonnext}" mode="forthandback" orientation="vertical" delay="1000" scrollspeed="medium" x="63%" y="85%" width="36%" height="15%" layer="2">
+                <drawtext x="10" y="0" font="{semibold}" fontsize="30%" color="{clrWhite}" text="Next Schedules:" />
+                <loop name="schedule" x="0" y="{areaheight}/4 + 5" orientation="vertical">
+                    <drawtext x="10" font="{light}" width="{areawidth}-20" fontsize="30%" color="{clrWhite}" text="{schedule[start]} {schedule[title]}" />
+                </loop>
+            </areascroll>
+        </currentelement>
+    </menuitems>
+    <!-- Available Variables scrollbar:
+    {height}                  height in one-tenth of a percent of total height
+    {offset}                  offset from top in one-tenth of a percent of total height
+    -->
+    <scrollbar>
+        <area x="60%" y="10%" width="2%" height="82%" layer="3">
+            <fill color="{clrWhite}" />
+            <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
+            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
+        </area>
+    </scrollbar>
+</menuschedules>

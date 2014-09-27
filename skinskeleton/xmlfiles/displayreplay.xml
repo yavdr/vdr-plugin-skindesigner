@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE displayreplay SYSTEM "../../dtd/displayreplay.dtd">
+
+<displayreplay x="0" y="0" width="100%" height="100%" fadetime="0">
+
+    <background>
+    </background>
+
+    <backgroundmodeonly>
+    </backgroundmodeonly>
+
+    <!-- Available Variables datetime:
+    {time}                              time in hh:mm
+    {day}                               day in digits
+    {dayleadingzero}                    day in digits with leading 0
+    {dayname}                           Full name of the day
+    {daynameshort}                      Short 3 char name of the day
+    {month}                             month in digits with leading 0
+    {monthname}                         Full name of the month
+    {monthnameshort}                    3 letter abbrivation of month name
+    {year}                              year in yyyy
+    -->
+    <datetime>
+    </datetime>
+
+    <!-- Available Variables scrapercontent:
+    {mediapath}                         Full Path of Poster or Banner to use in image path attribute
+    {mediawidth}                        width of image in pixel
+    {mediaheight}                       height of image in pixel
+    {isbanner}                          true if image is a banner, false if it is a poster
+    -->
+    <scrapercontent>
+    </scrapercontent>
+
+    <!-- Available Variables rectitle:
+    {rectitle}                     Title of Recording
+    {recsubtitle}                  Subtitle of the Recording
+    {recdate}                      Date Recording in dd.mm.yy
+    {rectime}                      Time of Recording in hh:mm
+    -->
+    <rectitle>
+    </rectitle>
+
+    <!-- Available Variables recinfo:
+    {screenwidth}                      width of currently displayed recording in px
+    {screenheight}                     height of currently displayed recording in px
+    {resolution}                       resolution: hd1080i, hd720p, sd576i
+    {aspect}                           screen aspect, each 4:3, 16:9 or 21:9
+    {isHD}                             true for hd1080i and hd720p
+    {isWideScreen}                     true if aspect is 16:9 or 21:9
+    -->
+    <recinfo>
+    </recinfo>
+
+    <!-- Available Variables currenttime:
+    {reccurrent}                   Current Time in hh:mm:ss
+    -->
+    <currenttime>
+    </currenttime>
+
+    <!-- Available Variables totaltime:
+    {rectotal}                   Total Time in hh:mm:ss
+    -->
+    <totaltime>
+    </totaltime>
+
+    <!-- Available Variables progressbar:
+    {current}                   current frame of recording
+    {total}                     total frames of recording
+    -->
+    <progressbar>
+    </progressbar>
+
+    <!-- Available Variables cutmarks:
+    {marks[]}                   array of available marks
+    {marks[position]}           frame of current mark
+    {marks[endposition]}        frame where startmark ends
+    {marks[total]}              total number of frames
+    {marks[startmark]}          true if mark is start mark
+    -->
+    <cutmarks>
+    </cutmarks>
+
+    <!-- Available Variables controlicons and controliconsmodeonly:
+    {play}              true if recording is played currently
+    {pause}             true if recording is paused
+    {forward}           true if fast forwarding 
+    {forward1x}         true if fast forwarding 1x (with 3 trickspeeds)
+    {forward2x}         true if fast forwarding 2x (with 3 trickspeeds)
+    {forward3x}         true if fast forwarding 3x (with 3 trickspeeds)
+    {rewind}            true if rewinding 
+    {rewind1x}          true if rewinding 1x (with 3 trickspeeds)
+    {rewind2x}          true if rewinding 2x (with 3 trickspeeds)
+    {rewind3x}          true if rewinding 3x (with 3 trickspeeds)
+    -->
+    <controlicons>
+    </controlicons>
+
+    <controliconsmodeonly>
+    </controliconsmodeonly>
+
+    <!-- Available Variables jump:
+    {jump}                      time to jump to in hh:mm
+    -->
+    <jump>
+    </jump>
+    <!-- Available Variables message:
+    {text}                     message text
+    {status}                   true if message is a status message
+    {info}                     true if message is a info message
+    {warning}                  true if message is a warn message
+    {error}                    true if message is a error message
+    -->
+    <message>
+    </message>
+
+</displayreplay>

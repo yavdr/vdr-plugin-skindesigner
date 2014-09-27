@@ -1,0 +1,58 @@
+<menutimers x="0" y="0" width="100%" height="100%" fadetime="0">
+    <menuitems x="0" y="0" orientation="vertical" width="100%" height="100%" align="center" numlistelements="16">
+        <!-- Available Variables channels menu listelement:
+        {title}             Title of Timer
+        {timerstart}        Start Time of Timer in hh::mm
+        {timerstop}         End Time of Timer in hh::mm
+        {day}               Day (numerical)
+        {dayname}           Day, for repeating timers days where timer is active
+        {channelname}       Name of channel which is set for the timer
+        {channelid}         ID of channel which is set for the timer (for dispalying channel logo)
+        {channelnumber}     Number of channel which is set for the timer
+        {eventtitle}        Title of corresponding event
+        {eventstart}        Start Time of corresponding event in hh::mm
+        {eventstop}         Stop Time of corresponding event in hh::mm
+        {current}           true if item is currently selected
+        {flagactive}        true if timer is active
+        {flaginstant}       true if timer is an instant timer
+        {flagvps}           true if timer uses VPS
+        {flagrecording}     true if is recording currently
+        {flagpending}       true if timer is pending
+        -->
+        <listelement>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables channels menu currentelement:
+        {menuitemx}         x position of according menu item
+        {menuitemy}         y position of according menu item
+        {menuitemwidth}     width of according menu item
+        {menuitemheight}    height of according menu item
+        {title}             Title of Timer
+        {timerstart}        Start Time of Timer in hh::mm
+        {timerstop}         End Time of Timer in hh::mm
+        {day}               Day (numerical)
+        {dayname}           Day, for repeating timers days where timer is active
+        {channelname}       Name of channel which is set for the timer
+        {channelid}         ID of channel which is set for the timer (for dispalying channel logo)
+        {channelnumber}     Number of channel which is set for the timer
+        {eventtitle}        Title of corresponding event
+        {eventstart}        Start Time of corresponding event in hh::mm
+        {eventstop}         Stop Time of corresponding event in hh::mm
+        {eventshorttext}    Short Text corresponding event
+        {eventdescription}  Description corresponding event
+        {hasposter}         true if a scraped poster is available for event
+        {posterwidth}       width of scraped poster
+        {posterheight}      height of scraped poster
+        {posterpath}        absolute path of scraped poster
+        {flagactive}        true if timer is active
+        {flaginstant}       true if timer is an instant timer
+        {flagvps}           true if timer uses VPS
+        {flagrecording}     true if is recording currently
+        {flagpending}       true if timer is pending
+        -->
+        <currentelement delay="500" fadetime="0">
+        </currentelement>
+        
+    </menuitems>
+
+</menutimers>

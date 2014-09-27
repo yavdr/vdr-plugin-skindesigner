@@ -1,0 +1,42 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY % functions SYSTEM "functions.dtd">
+
+<!ELEMENT displayaudiotracks (background | header | menuitems)*>
+<!ATTLIST displayaudiotracks
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT background (area|areascroll)*>
+<!ATTLIST background
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT header (area|areascroll)*>
+<!ATTLIST header
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT menuitems (listelement)>
+<!ATTLIST menuitems
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  align (left|top|center|bottom|right) #IMPLIED
+  menuitemwidth CDATA #IMPLIED
+  numlistelements CDATA #REQUIRED
+  orientation (horizontal|vertical) #REQUIRED
+>
+
+<!ELEMENT listelement (area|areascroll)*>
+
+%functions;

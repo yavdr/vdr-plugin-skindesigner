@@ -1,0 +1,85 @@
+<menurecordings x="0" y="0" width="100%" height="100%" fadetime="0">
+    <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
+        <!-- Available Variables recordings menu listelement:
+        {name}                  Name of recording
+        {date}                  Date of recording
+        {time}                  Time of recording
+        {duration}              real duration of recording in minutes
+        {durationevent}         duration of corresponding event in minutes
+        {current}               true if item is currently selected
+        {new}                   true if recording is new
+        {cutted}                true if recording is cutted
+        {folder}                true if item is a folder
+        {numrecordingsfolder}   if item is a folder, number of recordings in this folder
+        {newrecordingsfolder}   if item is a folder, number of new recordings in this folder
+        {hasposterthumbnail}    true if a scraped poster thumbnail is available for recording
+        {thumbnailbwidth}       width of scraped poster thumbnail
+        {thumbnailheight}       height of scraped poster thumbnail
+        {thumbnailpath}         absolute path of scraped poster thumbnail
+        -->
+        <listelement>
+            <!-- Background -->
+            <area x="1%" width="58%" layer="2">
+                <fill condition="not{current}" color="{clrTransparent}" />
+                <fill condition="{current}" color="{clrTransBlueLight}" />
+                <fill condition="{separator}" color="{clrSemiTransBlack}" />
+            </area>
+            <!-- recording folder -->
+            <area condition="{folder}" x="1%" width="58%" layer="2">
+                <drawimage name="foldericon" imagetype="icon" path="ico_recfolder" x="10" width="0.9*{areaheight} * 92 / 136" height="0.9*{areaheight}" valign="center" />
+                <drawtext x="{width(foldericon)} + 20" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{name} ({numrecordingsfolder}, {newrecordingsfolder} new)" />
+            </area>
+            <!-- recording item -->
+            <area condition="not{folder}" x="1%" width="58%" layer="2">
+                <drawtext x="10" valign="center" font="{light}" fontsize="85%" color="{clrWhite}" text="{date} {time}" />
+                <drawtext x="35%" width="60%" valign="center" font="{light}" fontsize="85%" color="{clrWhite}" text="{name}" />
+                <drawimage condition="{new}" name="new" imagetype="icon" path="ico_recnew" x="{areawidth} - {areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+                <drawimage condition="{new}++{cutted}" imagetype="icon" path="ico_cutted" x="{areawidth} - 2*{areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+                <drawimage condition="not{new}++{cutted}" imagetype="icon" path="ico_cutted" x="{areawidth} - {areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+            </area>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables channels menu currentelement:
+        {name}                  Name of recording
+        {shorttext}             Short Text of recording
+        {description}           Descrption of recording        
+        {date}                  Date of recording
+        {time}                  Time of recording
+        {duration}              real duration of recording in minutes
+        {durationevent}         duration of corresponding event in minutes
+        {new}                   true if recording is new
+        {cutted}                true if recording is cutted
+        {folder}                true if item is a folder
+        {numrecordingsfolder}   if item is a folder, number of recordings in this folder
+        {newrecordingsfolder}   if item is a folder, number of new recordings in this folder
+        {hasposter}             true if a scraped poster is available for recording
+        {posterwidth}           width of scraped poster
+        {posterheight}          height of scraped poster
+        {posterpath}            absolute path of scraped poster
+        -->
+        <currentelement delay="500" fadetime="0">
+            <area x="63%" y="0" width="36%" height="100%" layer="2">
+                <!-- header -->
+                <drawtext name="title" x="1%" y="0" width="98%" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{name}" />
+                <drawtext name="shorttext" x="1%" y="{height(title)}" width="98%" font="{semibold}" fontsize="6%" color="{clrWhite}" text="{shorttext}" />
+                <drawtext name="datetime" x="1%" y="{posy(shorttext)} + {height(shorttext)}" font="{light}" fontsize="5%" color="{clrWhite}" text="{date} {time}, {duration} min" />
+                <!-- scraper poster -->
+                <drawimage condition="{hasposter}" name="poster" imagetype="image" path="{posterpath}" x="1%" y="{posy(datetime)} + {height(datetime)} + 20" width="{areawidth}/3" height="{areawidth}/3 * {posterheight} / {posterwidth}"/>
+                <!-- description -->
+                <drawtextbox condition="{hasposter}" x="1%" y="{posy(poster)}" width="98%" height="{areaheight} - {posy(poster)}" float="topleft" floatwidth="{width(poster)} + 10" floatheight="{height(poster)} + 10" font="{light}" fontsize="6%" color="{clrWhite}" text="{description}" />
+                <drawtextbox condition="not{hasposter}" x="1%" y="{posy(poster)}" width="98%" height="{areaheight} - {posy(poster)}" font="{light}" fontsize="6%" color="{clrWhite}" text="{description}" />
+            </area>
+        </currentelement>
+    </menuitems>
+    <!-- Available Variables colorbuttons:
+    {height}                  height in one-tenth of a percent of total height
+    {offset}                  offset from top in one-tenth of a percent of total height
+    -->
+    <scrollbar>
+        <area x="60%" y="10%" width="2%" height="82%" layer="3">
+            <fill color="{clrWhite}" />
+            <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
+            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
+        </area>
+    </scrollbar>
+</menurecordings>

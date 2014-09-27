@@ -1,0 +1,91 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY % functions SYSTEM "functions.dtd">
+
+<!ELEMENT displayreplay (background | backgroundmodeonly |datetime |
+                         scrapercontent | rectitle | recinfo | currenttime | 
+                         totaltime | progressbar | cutmarks | controlicons | 
+                         controliconsmodeonly | jump | message)*>
+<!ATTLIST displayreplay
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT background (area)*>
+<!ATTLIST background
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT backgroundmodeonly (area)*>
+<!ATTLIST backgroundmodeonly
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT datetime (area|areascroll)*>
+<!ATTLIST datetime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT scrapercontent (area|areascroll)*>
+<!ATTLIST scrapercontent
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT rectitle (area|areascroll)*>
+<!ATTLIST rectitle
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT recinfo (area|areascroll)*>
+<!ATTLIST recinfo
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT currenttime (area|areascroll)*>
+<!ATTLIST currenttime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT totaltime (area|areascroll)*>
+<!ATTLIST totaltime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT progressbar (area|areascroll)*>
+<!ATTLIST progressbar
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT cutmarks (area|areascroll)*>
+<!ATTLIST cutmarks
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT controlicons (area|areascroll)*>
+<!ATTLIST controlicons
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT controliconsmodeonly (area|areascroll)*>
+<!ATTLIST controliconsmodeonly
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT jump (area|areascroll)*>
+<!ATTLIST jump
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT message (area|areascroll)*>
+<!ATTLIST message
+  debug CDATA #IMPLIED
+>
+
+%functions;

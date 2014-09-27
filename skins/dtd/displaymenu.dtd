@@ -1,0 +1,251 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY % functions SYSTEM "functions.dtd">
+
+<!ELEMENT displaymenu (background,header,datetime,message,colorbuttons,
+                       menudefault,menumain,menusetup,menuschedules,
+                       menutimers,menuchannels,menurecordings,
+                       menudetailedepg,menudetailedrecording,
+                       menudetailedtext)>
+<!ATTLIST displaymenu
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+>
+
+<!ELEMENT background (area)*>
+<!ATTLIST background
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT header (area|areascroll)*>
+<!ATTLIST header
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT datetime (area|areascroll)*>
+<!ATTLIST datetime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT message (area|areascroll)*>
+<!ATTLIST message
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT colorbuttons (area|areascroll)*>
+<!ATTLIST colorbuttons
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT timers (area|areascroll)*>
+<!ATTLIST timers
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT discusage (area|areascroll)*>
+<!ATTLIST discusage
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT devices (area|areascroll)*>
+<!ATTLIST devices
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT systemload (area|areascroll)*>
+<!ATTLIST systemload
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT scrollbar (area|areascroll)*>
+<!ATTLIST scrollbar
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT detailheader (area|areascroll)*>
+<!ATTLIST detailheader
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT tablabels (area|areascroll)*>
+<!ATTLIST tablabels
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT menudefault (background | header | datetime | colorbuttons | scrollbar | menuitems)*>
+<!ATTLIST menudefault
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menumain (background | header | datetime | colorbuttons | scrollbar | timers | 
+                    discusage | devices | systemload | menuitems)*>
+<!ATTLIST menumain
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menusetup (background | header | datetime | colorbuttons | scrollbar | menuitems)*>
+<!ATTLIST menusetup
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menuschedules (background | header | datetime | colorbuttons | scrollbar | menuitems)*>
+<!ATTLIST menuschedules
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menutimers (background | header | datetime | colorbuttons | scrollbar | menuitems)*>
+<!ATTLIST menutimers
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menuchannels (background | header | datetime | colorbuttons | scrollbar | menuitems)*>
+<!ATTLIST menuchannels
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menurecordings (background | header | datetime | colorbuttons | scrollbar | menuitems)*>
+<!ATTLIST menurecordings
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menudetailedepg (background | header | datetime | colorbuttons | scrollbar |
+                           detailheader | tab | tablabels)*>
+<!ATTLIST menudetailedepg
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menudetailedrecording (background | header | datetime | colorbuttons | scrollbar |
+                                 detailheader | tab | tablabels)*>
+<!ATTLIST menudetailedrecording
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menudetailedtext (background | header | datetime | colorbuttons | scrollbar |
+                            detailheader | tab )*>
+<!ATTLIST menudetailedtext
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT menuitems (listelement,currentelement?)>
+<!ATTLIST menuitems
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  align (left|top|center|bottom|right) #IMPLIED
+  menuitemwidth CDATA #IMPLIED
+  determinatefont CDATA #IMPLIED
+  numlistelements CDATA #REQUIRED
+  orientation (horizontal|vertical) #REQUIRED
+>
+
+<!ELEMENT listelement (area|areascroll)*>
+<!ATTLIST listelement
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT currentelement (area|areascroll)*>
+<!ATTLIST currentelement
+  delay CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT tab (loop|fill|drawtext|drawtextbox|drawimage|drawrectangle|drawellipse)*>
+<!ATTLIST tab
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  layer CDATA #REQUIRED
+  name CDATA #REQUIRED
+  scrollheight CDATA #REQUIRED
+  transparency CDATA #IMPLIED
+  condition CDATA #IMPLIED
+  debug (true|false) #IMPLIED
+>
+
+%functions;
