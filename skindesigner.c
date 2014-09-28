@@ -93,10 +93,10 @@ bool cPluginSkinDesigner::Initialize(void) {
 
 bool cPluginSkinDesigner::Start(void) {
     if (!cOsdProvider::SupportsTrueColor()) {
-        esyslog("skinDesigner: No TrueColor OSD found! Using default Skin LCARS!");
+        esyslog("skindesigner: No TrueColor OSD found! Using default Skin LCARS!");
         return new cSkinLCARS();
     } else
-        dsyslog("skinDesigner: TrueColor OSD found");
+        dsyslog("skindesigner: TrueColor OSD found");
     skinDesigner = new cSkinDesigner(); 
     return skinDesigner;
 }

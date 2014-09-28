@@ -176,7 +176,12 @@ void cXmlParser::DeleteDocument(void) {
 *********************************************************************/
 
 string cXmlParser::GetPath(string xmlFile) {
-    return *cString::sprintf("%s%s/xmlfiles/%s", *config.skinPath, Setup.OSDTheme, xmlFile.c_str());
+    string activeSkin = Setup.OSDSkin;
+    string theme = "default";
+    if (!activeSkin.compare("skindesigner")) {
+        theme = Setup.OSDTheme;
+    }
+    return *cString::sprintf("%s%s/xmlfiles/%s", *config.skinPath, theme.c_str(), xmlFile.c_str());
 }
 
 void cXmlParser::ParseGlobalColors(xmlNodePtr node) {

@@ -2,11 +2,14 @@
 #include "libcore/helpers.h"
 
 cSkinDesigner::cSkinDesigner(void) : cSkin("skindesigner", &::Theme) {
+    esyslog("skindesigner: konstruktor designer");
     backupSkin = NULL;
     useBackupSkin = false;
 
     SetOSDSize();
+    osdSkin =  Setup.OSDSkin;
     osdTheme = Setup.OSDTheme;
+
     config.SetPathes();
     config.SetChannelLogoSize();
     config.CheckDecimalPoint();
@@ -60,6 +63,7 @@ cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
     cSkinDisplayMenu *displayMenu = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
+        firstDisplay = false;
         displayMenu = new cSDDisplayMenu(menuTemplate);
     } else {
         displayMenu = backupSkin->DisplayMenu();
@@ -174,7 +178,6 @@ bool cSkinDesigner::LoadTemplates(void) {
         esyslog("skindesigner: error parsing globals, aborting");
         return false;
     }
-    //globals->Debug();
 
     DeleteTemplates();
 
@@ -301,9 +304,14 @@ bool cSkinDesigner::OsdSizeChanged(void) {
 }
 
 bool cSkinDesigner::ThemeChanged(void) {
+    bool changed = false;
+    if (osdSkin.compare(Setup.OSDSkin) != 0) {
+        osdSkin = Setup.OSDSkin;
+        changed = true;
+    }
     if (osdTheme.compare(Setup.OSDTheme) != 0) {
         osdTheme = Setup.OSDTheme;
-        return true;
+        changed = true;
     }
-    return false;
+    return changed;
 }

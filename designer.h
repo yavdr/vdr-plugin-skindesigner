@@ -17,6 +17,7 @@ private:
     cSkinLCARS *backupSkin;
     bool useBackupSkin;
     cRect osdSize;
+    std::string osdSkin;
     std::string osdTheme;
     cGlobals *globals;
     cTemplate *channelTemplate;
