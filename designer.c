@@ -2,7 +2,6 @@
 #include "libcore/helpers.h"
 
 cSkinDesigner::cSkinDesigner(void) : cSkin("skindesigner", &::Theme) {
-    esyslog("skindesigner: konstruktor designer");
     backupSkin = NULL;
     useBackupSkin = false;
 
