@@ -85,8 +85,12 @@
     {isDolby}                          true if a dolby audio track is available
     {isEncrypted}                      true if channel is encrypted
     {isRecording}                      true if currently a recording is running on this channel
+    {numaudiotracks}                   number of available audio tracks for current channel
+    {audiochannel}                     0 if current channel is stereo, 1 for left chanel only, 2 for right channel only
+    {trackdesc}                        description of the current audio track
+    {tracklang}                        language of the current audio track
     -->
-    <statusinfo>
+    <statusinfo debug="true">
         <area x="22%" y="94%" width="76%" height="6%" layer="2">
             <!-- encrypted / decrypted icon -->
             <drawimage name="enc" condition="{isEncrypted}" imagetype="icon" path="ico_crypt_on" x="{areawidth} - {width(enc)}" valign="center" width="{areaheight}*0.8*1.76" height="{areaheight}*0.8"/>

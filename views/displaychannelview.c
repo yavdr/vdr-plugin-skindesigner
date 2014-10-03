@@ -176,6 +176,9 @@ void cDisplayChannelView::DrawStatusIcons(const cChannel *Channel) {
         return;
     }
 
+    map < string, int > intTokens;
+    map < string, string > stringTokens;
+
     bool isRadio = !Channel->Vpid() && Channel->Apid(0);
     bool hasVT = Channel->Vpid() && Channel->Tpid();
     bool isStereo = Channel->Apid(0);
@@ -188,15 +191,37 @@ void cDisplayChannelView::DrawStatusIcons(const cChannel *Channel) {
             if (Timer->Recording()) 
                 isRecording = true;
 
-    map < string, int > intTokens;
+    //enhanced audio information
+    int numAudioTracks = 0;
+    int audioChannel = -1;
+    string trackDescription = "";
+    string trackLanguage = "";
+
+    cDevice *device = cDevice::PrimaryDevice();
+    if (device) {
+        numAudioTracks = device->NumAudioTracks();
+        audioChannel = device->GetAudioChannel();
+        if (numAudioTracks > 0) {
+            const tTrackId *track = device->GetTrack(device->GetCurrentAudioTrack());
+            if (track) {
+                trackDescription = track->description ? track->description : "";
+                trackLanguage = track->language ? track->language : "";
+            }
+        }
+    }
+
     intTokens.insert(pair<string,int>("isRadio", isRadio));
     intTokens.insert(pair<string,int>("hasVT", hasVT));
     intTokens.insert(pair<string,int>("isStereo", isStereo));
     intTokens.insert(pair<string,int>("isDolby", isDolby));
     intTokens.insert(pair<string,int>("isEncrypted", isEncrypted));
     intTokens.insert(pair<string,int>("isRecording", isRecording));
+    intTokens.insert(pair<string,int>("numaudiotracks", numAudioTracks));
+    intTokens.insert(pair<string,int>("audiochannel", audioChannel));
+    stringTokens.insert(pair<string,string>("trackdesc", trackDescription));
+    stringTokens.insert(pair<string,string>("tracklang", trackLanguage));
 
-    DrawViewElement(veStatusInfo, NULL, &intTokens);
+    DrawViewElement(veStatusInfo, &stringTokens, &intTokens);
 }
 
 void cDisplayChannelView::ClearStatusIcons(void) {
