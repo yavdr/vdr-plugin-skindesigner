@@ -8,3 +8,4 @@ VDR Plugin 'skindesigner' Revision History
 Version 0.0.2
 
 - added some more tokens with more detailed audio information in displaychannel -> statusinfo
+- added hasVPS for current scheduling in displaychannel -> epginfo

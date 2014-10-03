@@ -25,6 +25,7 @@
     {currentelapsed}                   Elapsed time of current Schedule in min
     {currentremaining}                 Remaining time of current Schedule in min
     {currentrecording}                 true if current Schedule is recorded
+    {hasVPS}                           true if current Schedule has VPS
     {nexttitle}                        Title of next Schedule
     {nextsubtitle}                     Subtitle of next Schedule
     {nextstart}                        Start of next Schedule in hh:mm

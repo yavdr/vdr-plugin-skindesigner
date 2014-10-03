@@ -135,6 +135,7 @@ void cDisplayChannelView::DrawEPGInfo(const cEvent *present, const cEvent *next,
         intTokens.insert(pair<string,int>("currentelapsed", (int)round((time(NULL) - present->StartTime())/60)));
         intTokens.insert(pair<string,int>("currentremaining", (int)round((present->EndTime() - time(NULL))/60)));
         intTokens.insert(pair<string,int>("currentrecording", presentRecording ? 1 : 0));
+        intTokens.insert(pair<string,int>("hasVPS", present->Vps()));
     } else {
         stringTokens.insert(pair<string,string>("currenttitle", ""));
         stringTokens.insert(pair<string,string>("currentsubtitle", ""));
@@ -145,6 +146,7 @@ void cDisplayChannelView::DrawEPGInfo(const cEvent *present, const cEvent *next,
         intTokens.insert(pair<string,int>("currentelapsed", 0));
         intTokens.insert(pair<string,int>("currentremaining", 0));
         intTokens.insert(pair<string,int>("currentrecording", 0));
+        intTokens.insert(pair<string,int>("hasVPS", 0));
     }
 
     if (next) {

@@ -44,6 +44,7 @@
     {currentelapsed}                   Elapsed time of current Schedule in min
     {currentremaining}                 Remaining time of current Schedule in min
     {currentrecording}                 true if current Schedule is recorded
+    {hasVPS}                           true if current Schedule has VPS
     {nexttitle}                        Title of next Schedule
     {nextsubtitle}                     Subtitle of next Schedule
     {nextstart}                        Start of next Schedule in hh:mm
@@ -80,7 +81,7 @@
 
     <!-- Available Variables statusinfo:
     {isRadio}                          true if channel is a radio channel
-    {hasVT}                            true if channel has video text   
+    {hasVT}                            true if channel has video text
     {isStereo}                         true if a stereo audio trac is available
     {isDolby}                          true if a dolby audio track is available
     {isEncrypted}                      true if channel is encrypted
@@ -90,7 +91,7 @@
     {trackdesc}                        description of the current audio track
     {tracklang}                        language of the current audio track
     -->
-    <statusinfo debug="true">
+    <statusinfo>
         <area x="22%" y="94%" width="76%" height="6%" layer="2">
             <!-- encrypted / decrypted icon -->
             <drawimage name="enc" condition="{isEncrypted}" imagetype="icon" path="ico_crypt_on" x="{areawidth} - {width(enc)}" valign="center" width="{areaheight}*0.8*1.76" height="{areaheight}*0.8"/>
