@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE displayvolume SYSTEM "../../dtd/displayvolume.dtd">
+<!DOCTYPE displayvolume SYSTEM "../../../dtd/displayvolume.dtd">
 
 <displayvolume x="20%" y="75%" width="60%" height="10%" fadetime="{fadeTime}">
 
@@ -26,14 +26,14 @@
         <!-- Volumebar Background -->
         <area x="4%" y="60%" width="92%" height="30%" layer="2">
             <drawellipse x="0" y="0" width="{areaheight}" height="{areaheight}" color="{clrBlack}" quadrant="0" />
-            <drawellipse x="1" y="1" width="{areaheight}-2" height="{areaheight}-2" color="{clrBrightGreen}" quadrant="0" />
+            <drawellipse x="1" y="1" width="{areaheight}-2" height="{areaheight}-2" color="{clrProgressbar}" quadrant="0" />
             <drawellipse x="{areawidth}-{areaheight}" y="0" width="{areaheight}" height="{areaheight}" color="{clrBlack}" quadrant="0" />
             <drawrectangle x="{areaheight}/2" y="0" width="{areawidth} - {areaheight}" height="{areaheight}" color="{clrBlack}" />
         </area>
         <!-- Volumebar -->
         <area x="5%" y="60%" width="91%" height="30%" layer="3">
-            <drawrectangle x="1" y="1" width="{volume}/{maxvolume}*{areawidth} - {volume}/{maxvolume}*{areaheight}/2" height="{areaheight}-2" color="{clrBrightGreen}" />
-            <drawellipse x="{volume}/{maxvolume}*{areawidth} - {volume}/{maxvolume}*{areaheight}/2" y="1" width="{areaheight}/2 - 2" height="{areaheight}-2" color="{clrBrightGreen}" quadrant="5" />
+            <drawrectangle x="1" y="1" width="{volume}/{maxvolume}*{areawidth} - {volume}/{maxvolume}*{areaheight}/2" height="{areaheight}-2" color="{clrProgressbar}" />
+            <drawellipse x="{volume}/{maxvolume}*{areawidth} - {volume}/{maxvolume}*{areaheight}/2" y="1" width="{areaheight}/2 - 2" height="{areaheight}-2" color="{clrProgressbar}" quadrant="5" />
         </area>        
     </volume>
 

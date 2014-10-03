@@ -26,6 +26,21 @@ cImageCache::~cImageCache() {
     }
 }
 
+void cImageCache::SetPathes(void) {
+    string logoPathSkin = *cString::sprintf("%s%s/themes/%s/logos/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    if (FolderExists(logoPathSkin)) {
+        logoPath = logoPathSkin;
+    } else {
+        logoPath = *config.logoPath;
+    }
+    iconPath = *cString::sprintf("%s%s/themes/%s/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    skinPartsPath = *cString::sprintf("%s%s/themes/%s/skinparts/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+
+    dsyslog("skindesigner: using channel logo path %s", logoPath.c_str());
+    dsyslog("skindesigner: using icon path %s", iconPath.c_str());
+    dsyslog("skindesigner: using skinparts path %s", skinPartsPath.c_str());
+}
+
 void cImageCache::CacheLogo(int width, int height) {
     if (config.numLogosPerSizeInitial == 0)
         return;
@@ -125,14 +140,13 @@ bool cImageCache::LogoExists(string channelID) {
     const cChannel *channel = Channels.GetByChannelID(chanID);
     if (!channel)
         return false;
-    string logoPath = *cString::sprintf("%s%s/logos/", *config.skinPath, Setup.OSDTheme);
     string logoLower = StrToLowerCase(channel->Name());
     string logoExt = *config.logoExtension;
-    bool logoExists = FileExists(logoPath, logoLower, logoExt);
+    bool logoExists = FileExists(logoPath.c_str(), logoLower, logoExt);
     if (logoExists) {
         return true;
     }
-    logoExists = FileExists(logoPath, channelID, logoExt);
+    logoExists = FileExists(logoPath.c_str(), channelID, logoExt);
     if (logoExists) {
         return true;
     }
@@ -265,8 +279,8 @@ bool cImageCache::LoadIcon(eImageType type, string name) {
         subdir = "menuicons";
     else if (type == itIcon)
         subdir = "icons";
-    cString iconPath = cString::sprintf("%s%s/graphics/%s/", *config.skinPath, Setup.OSDTheme, *subdir);
-    success = LoadImage(name, *iconPath, "png");
+    cString subIconPath = cString::sprintf("%s%s/", iconPath.c_str(), *subdir);
+    success = LoadImage(name, *subIconPath, "png");
     if (success) {
         return true;
     }
@@ -276,21 +290,20 @@ bool cImageCache::LoadIcon(eImageType type, string name) {
 bool cImageCache::LoadLogo(const cChannel *channel) {
     if (!channel)
         return false;
-    cString logoPath = cString::sprintf("%s%s/logos/", *config.skinPath, Setup.OSDTheme);
     string channelID = StrToLowerCase(*(channel->GetChannelID().ToString()));
     string logoLower = StrToLowerCase(channel->Name());
     bool success = false;
-    success = LoadImage(channelID.c_str(), *logoPath, *config.logoExtension);
+    success = LoadImage(channelID.c_str(), logoPath.c_str(), *config.logoExtension);
     if (success)
         return true;
-    success = LoadImage(logoLower.c_str(), *logoPath, *config.logoExtension);
+    success = LoadImage(logoLower.c_str(), logoPath.c_str(), *config.logoExtension);
     if (success)
         return true;
     return false;
 }
 
 bool cImageCache::LoadSeparatorLogo(string name) {
-    cString separatorPath = cString::sprintf("%s%s/logos/separatorlogos/", *config.skinPath, Setup.OSDTheme);
+    cString separatorPath = cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
     bool success = false;
     success = LoadImage(nameLower.c_str(), *separatorPath, *config.logoExtension);
@@ -301,8 +314,7 @@ bool cImageCache::LoadSeparatorLogo(string name) {
 
 bool cImageCache::LoadSkinpart(string name) {
     bool success = false;
-    cString iconPath = cString::sprintf("%s%s/graphics/skinparts/", *config.skinPath, Setup.OSDTheme);
-    success = LoadImage(name, *iconPath, "png");
+    success = LoadImage(name, skinPartsPath.c_str(), "png");
     if (success) {
         return true;
     }

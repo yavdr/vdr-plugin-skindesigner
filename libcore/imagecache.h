@@ -18,6 +18,7 @@ public:
     ~cImageCache();
     void Lock(void) { mutex.Lock(); }
     void Unlock(void) { mutex.Unlock(); }
+    void SetPathes(void);
     //channel logos
     void CacheLogo(int width, int height);
     cImage *GetLogo(string channelID, int width, int height);
@@ -41,6 +42,9 @@ private:
     static cMutex mutex;
     static string items[16];
     cImage *tempStaticLogo;
+    string logoPath;
+    string iconPath;
+    string skinPartsPath;
     map<string, cImage*> iconCache;
     map<string, cImage*> channelLogoCache;
     map<string, cImage*> skinPartsCache;

@@ -21,9 +21,9 @@
     
     <scrollbar>
         <area x="30%" y="11%" width="2%" height="78%" layer="2">
-            <fill color="{clrDarkBlue}" />
+            <fill color="{clrBorder}" />
             <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
-            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrDarkGreen}" />
+            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrProgressbar}" />
         </area>
     </scrollbar>
 
@@ -164,12 +164,12 @@
                 <!-- progress bar if event is running -->
                 <drawtext condition="{running}" name="start" x="{areawidth}/4 - {width(start)}" y="9%" font="vdrOsd}" fontsize="6%" color="{clrWhite}" text="{start}" />
                 <drawtext condition="{running}" name="stop" x="{areawidth}*3/4" y="9%" font="{vdrOsd}" fontsize="6%" color="{clrWhite}" text="{stop}" />
-                <drawellipse condition="{running}" x="{areawidth} / 4 + 5" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrDarkBlue}" />
-                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 6" width="{areawidth}/2 - 20" height="11" color="{clrDarkBlue}" />
-                <drawellipse condition="{running}" x="3 * {areawidth} / 4 - 16" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrDarkBlue}" />
-                <drawellipse condition="{running}" x="{areawidth} / 4 + 6" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrBrightGreen}" />
-                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 5" width="{areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration}" height="9" color="{clrBrightGreen}" />
-                <drawellipse condition="{running}" x="{areawidth} / 4 + 10 + {areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration} - 4" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrBrightGreen}" />
+                <drawellipse condition="{running}" x="{areawidth} / 4 + 5" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrBackground}" />
+                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 6" width="{areawidth}/2 - 20" height="11" color="{clrBackground}" />
+                <drawellipse condition="{running}" x="3 * {areawidth} / 4 - 16" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrBackground}" />
+                <drawellipse condition="{running}" x="{areawidth} / 4 + 6" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrProgressbar}" />
+                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 5" width="{areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration}" height="9" color="{clrProgressbar}" />
+                <drawellipse condition="{running}" x="{areawidth} / 4 + 10 + {areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration} - 4" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrProgressbar}" />
                 <!-- start and stop if event is not running -->
                 <drawtext condition="not{running}" x="10" y="9%" font="{vdrOsd}" fontsize="{areaheight}/20" color="{clrWhite}" text="{start} - {stop} ({duration} min)" />
                 <!-- scraper poster -->
@@ -185,12 +185,12 @@
                 <!-- progress bar if event is running -->
                 <drawtext condition="{running}" name="start" x="{areawidth}/4 - {width(start)}" y="11%" font="vdrOsd}" fontsize="8%" color="{clrWhite}" text="{start}" />
                 <drawtext condition="{running}" name="stop" x="{areawidth}*3/4" y="11%" font="{vdrOsd}" fontsize="8%" color="{clrWhite}" text="{stop}" />
-                <drawellipse condition="{running}" x="{areawidth} / 4 + 5" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrDarkBlue}" />
-                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 6" width="{areawidth}/2 - 20" height="11" color="{clrDarkBlue}" />
-                <drawellipse condition="{running}" x="3 * {areawidth} / 4 - 16" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrDarkBlue}" />
-                <drawellipse condition="{running}" x="{areawidth} / 4 + 6" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrBrightGreen}" />
-                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 5" width="{areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration}" height="9" color="{clrBrightGreen}" />
-                <drawellipse condition="{running}" x="{areawidth} / 4 + 10 + {areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration} - 4" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrBrightGreen}" />
+                <drawellipse condition="{running}" x="{areawidth} / 4 + 5" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrBackground}" />
+                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 6" width="{areawidth}/2 - 20" height="11" color="{clrBackground}" />
+                <drawellipse condition="{running}" x="3 * {areawidth} / 4 - 16" y="{posy(start)} + {height(start)} / 2 - 6" width="11" height="11" quadrant="0" color="{clrBackground}" />
+                <drawellipse condition="{running}" x="{areawidth} / 4 + 6" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrProgressbar}" />
+                <drawrectangle condition="{running}" x="{areawidth} / 4 + 10" y="{posy(start)} + {height(start)} / 2 - 5" width="{areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration}" height="9" color="{clrProgressbar}" />
+                <drawellipse condition="{running}" x="{areawidth} / 4 + 10 + {areawidth}/2 * {elapsed} / {duration} - 20 * {elapsed} / {duration} - 4" y="{posy(start)} + {height(start)} / 2 - 5" width="9" height="9" quadrant="0" color="{clrProgressbar}" />
                 <!-- start and stop if event is not running -->
                 <drawtext condition="not{running}" x="10" y="9%" font="{vdrOsd}" fontsize="{areaheight}/20" color="{clrWhite}" text="{start} - {stop} ({duration} min)" />
                 <!-- scraper poster -->

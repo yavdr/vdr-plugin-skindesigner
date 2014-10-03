@@ -1,19 +1,12 @@
 #include "designer.h"
 #include "libcore/helpers.h"
 
-cSkinDesigner::cSkinDesigner(void) : cSkin("skindesigner", &::Theme) {
+cSkinDesigner::cSkinDesigner(string skin) : cSkin(skin.c_str(), &::Theme) {
+    init = true;
+    this->skin = skin;
+
     backupSkin = NULL;
     useBackupSkin = false;
-
-    SetOSDSize();
-    osdSkin =  Setup.OSDSkin;
-    osdTheme = Setup.OSDTheme;
-
-    config.SetPathes();
-    config.SetChannelLogoSize();
-    config.CheckDecimalPoint();
-    fontManager = new cFontManager();
-    imgCache = new cImageCache();
 
     globals = NULL;
     channelTemplate = NULL;
@@ -22,17 +15,7 @@ cSkinDesigner::cSkinDesigner(void) : cSkin("skindesigner", &::Theme) {
     replayTemplate = NULL;
     volumeTemplate = NULL;
     audiotracksTemplate = NULL;
-
-    cStopWatch watch;
-    bool ok = LoadTemplates();
-    if (!ok) {
-        esyslog("skindesigner: error during loading of templates - using LCARS as backup");
-        backupSkin = new cSkinLCARS();
-        useBackupSkin = true;
-    } else {
-        CacheTemplates();
-        watch.Stop("templates loaded and cache created");
-    }
+    dsyslog("skindesigner: skin %s started", skin.c_str());
 }
 
 cSkinDesigner::~cSkinDesigner(void) {
@@ -44,10 +27,43 @@ cSkinDesigner::~cSkinDesigner(void) {
 }
 
 const char *cSkinDesigner::Description(void) {
-  return "SkinDesigner";
+  return skin.c_str();
+}
+
+void cSkinDesigner::Init(void) {
+    dsyslog("skindesigner: initializing skin %s", skin.c_str());
+    SetOSDSize();
+    osdSkin =  Setup.OSDSkin;
+    osdTheme = Setup.OSDTheme;
+
+    config.SetChannelLogoSize();
+    config.CheckDecimalPoint();
+    
+    if (fontManager)
+        delete fontManager;
+    fontManager = new cFontManager();
+    if (imgCache)
+        delete imgCache;
+    imgCache = new cImageCache();
+    imgCache->SetPathes();
+
+    cStopWatch watch;
+    bool ok = LoadTemplates();
+    if (!ok) {
+        esyslog("skindesigner: error during loading of templates - using LCARS as backup");
+        backupSkin = new cSkinLCARS();
+        useBackupSkin = true;
+    } else {
+        CacheTemplates();
+        watch.Stop("templates loaded and cache created");
+    }
+    init = false;
 }
 
 cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
+    if (init) {
+        Init();
+    }
     cSkinDisplayChannel *displayChannel = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
@@ -59,6 +75,9 @@ cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
 }
 
 cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
+    if (init) {
+        Init();
+    }
     cSkinDisplayMenu *displayMenu = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
@@ -71,6 +90,9 @@ cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
 }
 
 cSkinDisplayReplay *cSkinDesigner::DisplayReplay(bool ModeOnly) {
+    if (init) {
+        Init();
+    }
     cSkinDisplayReplay *displayReplay = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
@@ -82,6 +104,9 @@ cSkinDisplayReplay *cSkinDesigner::DisplayReplay(bool ModeOnly) {
 }
 
 cSkinDisplayVolume *cSkinDesigner::DisplayVolume(void) {
+    if (init) {
+        Init();
+    }
     cSkinDisplayVolume *displayVolume = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
@@ -93,6 +118,9 @@ cSkinDisplayVolume *cSkinDesigner::DisplayVolume(void) {
 }
 
 cSkinDisplayTracks *cSkinDesigner::DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks) {
+    if (init) {
+        Init();
+    }
     cSkinDisplayTracks *displayTracks = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
@@ -104,6 +132,9 @@ cSkinDisplayTracks *cSkinDesigner::DisplayTracks(const char *Title, int NumTrack
 }
 
 cSkinDisplayMessage *cSkinDesigner::DisplayMessage(void) {
+    if (init) {
+        Init();
+    }
     cSkinDisplayMessage *displayMessage = NULL;
     if (!useBackupSkin) {
         ReloadCaches();
@@ -261,6 +292,7 @@ void cSkinDesigner::CacheTemplates(void) {
     dsyslog("skindesigner: fonts cached");
     dsyslog("skindesigner: caching images...");
     imgCache->Clear();
+    imgCache->SetPathes();
     channelTemplate->CacheImages();
     menuTemplate->CacheImages();
     messageTemplate->CacheImages();

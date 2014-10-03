@@ -14,6 +14,8 @@
 
 class cSkinDesigner : public cSkin {
 private:
+    bool init;
+    string skin;
     cSkinLCARS *backupSkin;
     bool useBackupSkin;
     cRect osdSize;
@@ -34,7 +36,7 @@ private:
     bool OsdSizeChanged(void);
     bool ThemeChanged(void);
 public:
-    cSkinDesigner(void);
+    cSkinDesigner(string skin);
     virtual ~cSkinDesigner(void);
     virtual const char *Description(void);
     virtual cSkinDisplayChannel *DisplayChannel(bool WithInfo);
@@ -43,6 +45,8 @@ public:
     virtual cSkinDisplayVolume *DisplayVolume(void);
     virtual cSkinDisplayTracks *DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks);
     virtual cSkinDisplayMessage *DisplayMessage(void);
+    void Init(void);
+    void ActivateBackupSkin(void) { useBackupSkin = true; };
     void Reload(void);
     void ListAvailableFonts(void);
 };

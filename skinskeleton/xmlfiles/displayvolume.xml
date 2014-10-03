@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE displayvolume SYSTEM "../../dtd/displayvolume.dtd">
+<!DOCTYPE displayvolume SYSTEM "../../../dtd/displayvolume.dtd">
 
 <displayvolume x="0" y="0" width="100%" height="100%" fadetime="0">
 

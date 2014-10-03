@@ -160,6 +160,8 @@ install-themes:
 install-skins:
 	mkdir -p $(DESTDIR)$(PLGRESDIR)/skins
 	cp -r skins/* $(DESTDIR)$(PLGRESDIR)/skins
+	mkdir -p $(DESTDIR)$(PLGRESDIR)/dtd
+	cp -r dtd/* $(DESTDIR)$(PLGRESDIR)/dtd
 
 install: install-lib install-i18n install-themes install-skins
 

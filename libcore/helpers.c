@@ -97,6 +97,11 @@ bool FileExists(const string &path, const string &name, const string &ext) {
     return (stat (fileName.str().c_str(), &buffer) == 0); 
 }
 
+bool FolderExists(const string &path) {
+    struct stat buffer;
+    return stat(path.c_str(), &buffer) == 0 && S_ISDIR(buffer.st_mode);
+}
+
 bool FirstFileInFolder(string &path, string &extension, string &fileName) {
     DIR *folder = NULL;
     struct dirent *file;

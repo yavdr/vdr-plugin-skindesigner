@@ -15,17 +15,23 @@ private:
     cString CheckSlashAtEnd(std::string path);
     bool epgImagePathSet;
     bool skinPathSet;
+    bool logoPathSet;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
     bool SetupParse(const char *Name, const char *Value);
-    void SetSkinPath(cString path);
-    void SetEpgImagePath(cString path);
     void SetPathes(void);
+    void SetSkinPath(cString path);
+    void SetLogoPath(cString path);
+    void SetEpgImagePath(cString path);
+    void ReadSkins(void);
+    void InitSkinIterator(void) { skinIterator = skins.begin(); };
+    bool GetSkin(string &skin);
     void SetChannelLogoSize(void);
     void CheckDecimalPoint(void);
     cString logoExtension;
     cString skinPath;
+    cString logoPath;
     cString epgImagePath;
     int numLogosPerSizeInitial;
     int limitLogoCache;
@@ -35,12 +41,14 @@ public:
     int logoHeight;
     bool replaceDecPoint;
     char decPoint;
+    vector<string> skins;
+    vector<string>::iterator skinIterator;
 };
 #ifdef DEFINE_CONFIG
     bool firstDisplay = true;
     cDesignerConfig config;
-    cFontManager *fontManager;
-    cImageCache *imgCache;
+    cFontManager *fontManager = NULL;
+    cImageCache *imgCache = NULL;
     cTheme Theme;
 #else
     extern bool firstDisplay;

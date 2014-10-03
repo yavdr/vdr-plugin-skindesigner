@@ -47,6 +47,9 @@ XML skins and epg images. The following paths can be set at startup:
 -s <SKINPATH>, --skinpath=<SKINPATH>
     Path to the XML skins (Default: <ResourceDirectory>/plugins/skindesigner/skins/)
 
+-l <LOGOPATH>, --logopath=<LOGOPATH>
+    Path to common logo set for all skins (Default: <ResourceDirectory>/plugins/skindesigner/logos/)
+
 -e path, --epgimages=path
     Path to the epgimages (Default: <CacheDirectory>/epgimages/)
 

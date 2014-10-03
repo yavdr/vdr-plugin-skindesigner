@@ -13,6 +13,7 @@ std::string CutText(string &text, int width, string fontName, int fontSize);
 std::string StrToLowerCase(string str);
 bool isNumber(const string& s);
 bool FileExists(const string &path, const string &name, const string &ext);
+bool FolderExists(const string &path);
 bool FirstFileInFolder(string &path, string &extension, string &fileName);
 
 class splitstring : public std::string {

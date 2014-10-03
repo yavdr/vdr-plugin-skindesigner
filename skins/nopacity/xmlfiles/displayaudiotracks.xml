@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE displayaudiotracks SYSTEM "../../dtd/displayaudiotracks.dtd">
+<!DOCTYPE displayaudiotracks SYSTEM "../../../dtd/displayaudiotracks.dtd">
 
 <displayaudiotracks x="25%" y="0" width="50%" height="100%" fadetime="{fadeTime}">
     <!-- Available Variables background:

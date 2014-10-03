@@ -5,6 +5,7 @@
 cDesignerConfig::cDesignerConfig() {
     epgImagePathSet = false;
     skinPathSet = false;
+    logoPathSet = false;
     //Common
     logoExtension = "png";
     numLogosPerSizeInitial = 30;
@@ -23,12 +24,14 @@ cDesignerConfig::~cDesignerConfig() {
 void cDesignerConfig::SetPathes(void) {
     if (!skinPathSet)
         skinPath = cString::sprintf("%s/skins/", cPlugin::ResourceDirectory(PLUGIN_NAME_I18N));
+    if (!logoPathSet) 
+        logoPath = cString::sprintf("%s/logos/", cPlugin::ResourceDirectory(PLUGIN_NAME_I18N));
     if (!epgImagePathSet)
         epgImagePath = cString::sprintf("%s/epgimages/", cPlugin::CacheDirectory(PLUGIN_NAME_I18N));
 
     dsyslog("skindesigner: using Skin Directory %s", *skinPath);
+    dsyslog("skindesigner: using common ChannelLogo Directory %s", *logoPath);
     dsyslog("skindesigner: using EPG Images Directory %s", *epgImagePath);
-
 }
 
 void cDesignerConfig::SetSkinPath(cString path) {
@@ -36,10 +39,43 @@ void cDesignerConfig::SetSkinPath(cString path) {
     skinPathSet = true;
 }
 
+void cDesignerConfig::SetLogoPath(cString path) {
+    logoPath = CheckSlashAtEnd(*path);
+    logoPathSet = true;
+}
+
 void cDesignerConfig::SetEpgImagePath(cString path) {
     epgImagePath = CheckSlashAtEnd(*path);
     epgImagePathSet = true;
 }
+
+void cDesignerConfig::ReadSkins(void) {
+    DIR *folder = NULL;
+    struct dirent *dirEntry;
+    folder = opendir(skinPath);
+    if (!folder) {
+        esyslog("skindesigner: no skins found in %s", *skinPath);
+        return;
+    }
+    while (dirEntry = readdir(folder)) {
+        string dirEntryName = dirEntry->d_name;
+        int dirEntryType = dirEntry->d_type;
+        if (!dirEntryName.compare(".") || !dirEntryName.compare("..") || dirEntryType != DT_DIR)
+            continue;
+        skins.push_back(dirEntryName);
+    }
+    dsyslog("skindesigner %d skins found in %s", skins.size(), *skinPath);
+}
+
+bool cDesignerConfig::GetSkin(string &skin) {
+    if (skinIterator == skins.end()) {
+        return false;
+    }
+    skin = *skinIterator;
+    skinIterator++;
+    return true;
+}
+
 
 void cDesignerConfig::SetChannelLogoSize(void) {
     cImageLoader imgLoader;

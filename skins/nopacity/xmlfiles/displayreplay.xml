@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE displayreplay SYSTEM "../../dtd/displayreplay.dtd">
+<!DOCTYPE displayreplay SYSTEM "../../../dtd/displayreplay.dtd">
 
 <displayreplay x="0" y="0" width="100%" height="100%" fadetime="{fadeTime}">
 
@@ -20,7 +20,7 @@
 
     <backgroundmodeonly>
         <area x="40%" y="86%" width="20%" height="11%" layer="3">
-            <fill color="{clrBrightGreen}" />
+            <fill color="{clrBorder}" />
             <drawrectangle x="1" y="1" width="{areawidth} -2" height="{areaheight} -2" color="{clrTransBlack}" />
         </area>
     </backgroundmodeonly>
@@ -107,8 +107,8 @@
     -->
     <progressbar>
         <area x="3%" y="83%" width="94%" height="2%" layer="2">
-            <drawellipse x="1" y="1" width="{areaheight}-2" height="{areaheight}-2" color="{clrBrightGreen}" quadrant="0" />
-            <drawrectangle x="{areaheight}/2" y="1" width="{current}/{total}*{areawidth} - {current}/{total}*{areaheight}" height="{areaheight}-2" color="{clrBrightGreen}" />
+            <drawellipse x="1" y="1" width="{areaheight}-2" height="{areaheight}-2" color="{clrProgressbar}" quadrant="0" />
+            <drawrectangle x="{areaheight}/2" y="1" width="{current}/{total}*{areawidth} - {current}/{total}*{areaheight}" height="{areaheight}-2" color="{clrProgressbar}" />
         </area>
     </progressbar>
 

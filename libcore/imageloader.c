@@ -27,7 +27,13 @@ bool cImageLoader::LoadImage(const char *path, int width, int height) {
 }
 
 void cImageLoader::DeterminateChannelLogoSize(int &width, int &height) {
-    cString logoPath = cString::sprintf("%s%s/logos/", *config.skinPath, Setup.OSDTheme);
+    cString logoPath;
+    cString logoPathSkin = cString::sprintf("%s%s/themes/%s/logos/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    if (FolderExists(*logoPathSkin)) {
+        logoPath = logoPathSkin;
+    } else {
+        logoPath = config.logoPath;
+    }
     cString logoExt = config.logoExtension;
     DIR *folder = NULL;
     struct dirent *file;

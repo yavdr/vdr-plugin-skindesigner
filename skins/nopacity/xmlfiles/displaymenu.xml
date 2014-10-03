@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE displaymenu SYSTEM "../../dtd/displaymenu.dtd" [
+<!DOCTYPE displaymenu SYSTEM "../../../dtd/displaymenu.dtd" [
 <!ENTITY displaymenudefault SYSTEM "displaymenudefault.xml">
 <!ENTITY displaymenumain SYSTEM "displaymenumain.xml">
 <!ENTITY displaymenusetup SYSTEM "displaymenusetup.xml">
@@ -21,20 +21,20 @@
     <background>
         <area x="0" y="0" width="100%" height="100%" layer="1">
             <!-- top bar -->
-            <drawrectangle x="0" y="0" width="{areawidth}" height="10%" color="{clrDarkBlue}" />
-            <drawrectangle x="30%" y="{areaheight}*0.1 - 1" width="71%" height="1" color="{clrDarkGreen}" />
+            <drawrectangle x="0" y="0" width="{areawidth}" height="10%" color="{clrBackground}" />
+            <drawrectangle x="30%" y="{areaheight}*0.1 - 1" width="71%" height="1" color="{clrBorder}" />
             <!-- menu bar -->
-            <drawrectangle x="0" y="10%" width="{areawidth}*29/100" height="81%" color="{clrDarkBlue}" />
-            <drawrectangle x="{areawidth}*29/100 - 1" y="12%" width="1" height="76%" color="{clrDarkGreen}" />
+            <drawrectangle x="0" y="10%" width="{areawidth}*29/100" height="81%" color="{clrBackground}" />
+            <drawrectangle x="{areawidth}*29/100 - 1" y="12%" width="1" height="76%" color="{clrBorder}" />
             <!-- bottom bar -->
-            <drawrectangle x="0" y="90%" width="{areawidth}" height="10%" color="{clrDarkBlue}" />
-            <drawrectangle x="30%" y="{areaheight}*0.9 - 1" width="71%" height="1" color="{clrDarkGreen}" />
+            <drawrectangle x="0" y="90%" width="{areawidth}" height="10%" color="{clrBackground}" />
+            <drawrectangle x="30%" y="{areaheight}*0.9 - 1" width="71%" height="1" color="{clrBorder}" />
             <!-- upper corner -->
-            <drawellipse x="{areawidth}*29/100" y="{areaheight}/10" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-2" color="{clrDarkGreen}" />
-            <drawellipse x="{areawidth}*29/100 - 1" y="{areaheight}/10 - 1" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-2" color="{clrDarkBlue}" />
+            <drawellipse x="{areawidth}*29/100" y="{areaheight}/10" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-2" color="{clrBorder}" />
+            <drawellipse x="{areawidth}*29/100 - 1" y="{areaheight}/10 - 1" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-2" color="{clrBackground}" />
             <!-- lower corner -->
-            <drawellipse x="{areawidth}*29/100" y="{areaheight}*90/100 - {areawidth}*2/100" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-3" color="{clrDarkGreen}" />
-            <drawellipse x="{areawidth}*29/100 - 1" y="{areaheight}*90/100 - {areawidth}*2/100 + 1" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-3" color="{clrDarkBlue}" />
+            <drawellipse x="{areawidth}*29/100" y="{areaheight}*90/100 - {areawidth}*2/100" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-3" color="{clrBorder}" />
+            <drawellipse x="{areawidth}*29/100 - 1" y="{areaheight}*90/100 - {areawidth}*2/100 + 1" width="{areawidth}*2/100" height="{areawidth}*2/100" quadrant="-3" color="{clrBackground}" />
         </area>
         <area x="0" y="0" width="100%" height="10%" layer="2">
             <drawimage imagetype="skinpart" path="headertop" x="0" y="0" width="100%" height="100%"/>

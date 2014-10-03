@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE displaymenu SYSTEM "../../dtd/displaymenu.dtd" [
+<!DOCTYPE displaymenu SYSTEM "../../../dtd/displaymenu.dtd" [
 <!ENTITY displaymenudefault SYSTEM "displaymenudefault.xml">
 <!ENTITY displaymenumain SYSTEM "displaymenumain.xml">
 <!ENTITY displaymenusetup SYSTEM "displaymenusetup.xml">

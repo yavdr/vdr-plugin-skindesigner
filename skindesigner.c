@@ -7,7 +7,6 @@
  */
 #include <getopt.h>
 #include <vdr/plugin.h>
-#include <vdr/skinlcars.h>
 
 #define DEFINE_CONFIG 1
 #include "config.h"
@@ -26,7 +25,7 @@ static const char *MAINMENUENTRY  = "Skin Designer";
 
 class cPluginSkinDesigner : public cPlugin {
 private:
-    cSkinDesigner *skinDesigner;
+    vector<cSkinDesigner*> skins;
 public:
     cPluginSkinDesigner(void);
     virtual ~cPluginSkinDesigner();
@@ -51,7 +50,6 @@ public:
 };
 
 cPluginSkinDesigner::cPluginSkinDesigner(void) {
-    skinDesigner = NULL;
 }
 
 cPluginSkinDesigner::~cPluginSkinDesigner() {
@@ -60,6 +58,7 @@ cPluginSkinDesigner::~cPluginSkinDesigner() {
 const char *cPluginSkinDesigner::CommandLineHelp(void) {
   return
          "  -s <SKINPATH>, --skinpath=<SKINPATH> Set directory where xml skins are stored\n"
+         "  -l <LOGOPATH>, --logopath=<LOGOPATH> Set directory where a common logo set for all skins is stored\n"
          "  -e <EPGIMAGESPATH>, --epgimages=<IMAGESPATH> Set directory where epgimages are stored\n";
 }
 
@@ -67,15 +66,19 @@ bool cPluginSkinDesigner::ProcessArgs(int argc, char *argv[]) {
   // Implement command line argument processing here if applicable.
     static const struct option long_options[] = {
         { "epgimages", required_argument, NULL, 'e' },
+        { "logopath", required_argument, NULL, 'l' },
         { "skinpath", required_argument, NULL, 's' },
         { 0, 0, 0, 0 }
     };
 
     int c;
-    while ((c = getopt_long(argc, argv, "e:s:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "e:s:l:", long_options, NULL)) != -1) {
         switch (c) {
             case 'e':
                 config.SetEpgImagePath(cString(optarg));
+                break;
+            case 'l':
+                config.SetLogoPath(cString(optarg));
                 break;
             case 's':
                 config.SetSkinPath(cString(optarg));
@@ -92,13 +95,24 @@ bool cPluginSkinDesigner::Initialize(void) {
 }
 
 bool cPluginSkinDesigner::Start(void) {
+    bool trueColorAvailable = true;
     if (!cOsdProvider::SupportsTrueColor()) {
         esyslog("skindesigner: No TrueColor OSD found! Using default Skin LCARS!");
-        return new cSkinLCARS();
+        trueColorAvailable = false;
     } else
         dsyslog("skindesigner: TrueColor OSD found");
-    skinDesigner = new cSkinDesigner(); 
-    return skinDesigner;
+    config.SetPathes();
+    config.ReadSkins();
+    config.InitSkinIterator();
+    string skin = "";
+    while (config.GetSkin(skin)) {
+        cSkinDesigner *newSkin = new cSkinDesigner(skin);
+        skins.push_back(newSkin);
+        if (!trueColorAvailable) {
+            newSkin->ActivateBackupSkin();
+        }
+    }
+    return true;
 }
 
 void cPluginSkinDesigner::Stop(void) {
@@ -148,16 +162,26 @@ const char **cPluginSkinDesigner::SVDRPHelpPages(void) {
 }
 
 cString cPluginSkinDesigner::SVDRPCommand(const char *Command, const char *Option, int &ReplyCode) {
+    
+    cSkinDesigner *activeSkin = NULL;
+    for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
+        string activeSkinName = Setup.OSDSkin;
+        string currentSkinName = (*skin)->Description();
+        if (!currentSkinName.compare(activeSkinName)) {
+            activeSkin = *skin;
+            break;
+        }
+    }
+
+    if (!activeSkin)
+        return NULL;
+
     if (strcasecmp(Command, "RELD") == 0) {
-        if (skinDesigner) {
-            skinDesigner->Reload();
-            return "SKINDESIGNER reload of templates and caches forced.";
-        }
+        activeSkin->Reload();
+        return "SKINDESIGNER reload of templates and caches forced.";
     } else if (strcasecmp(Command, "LSTF") == 0) {
-        if (skinDesigner) {
-            skinDesigner->ListAvailableFonts();
-            return "SKINDESIGNER available fonts listed in syslog.";
-        }
+        activeSkin->ListAvailableFonts();
+        return "SKINDESIGNER available fonts listed in syslog.";
     }
     return NULL;
 }

@@ -177,11 +177,14 @@ void cXmlParser::DeleteDocument(void) {
 
 string cXmlParser::GetPath(string xmlFile) {
     string activeSkin = Setup.OSDSkin;
-    string theme = "default";
-    if (!activeSkin.compare("skindesigner")) {
-        theme = Setup.OSDTheme;
+    string activeTheme = Setup.OSDTheme;
+    string path = "";
+    if (!xmlFile.compare("globals.xml")) {
+        path = *cString::sprintf("%s%s/themes/%s/%s", *config.skinPath, activeSkin.c_str(), activeTheme.c_str(), xmlFile.c_str());
+    } else {
+        path = *cString::sprintf("%s%s/xmlfiles/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
     }
-    return *cString::sprintf("%s%s/xmlfiles/%s", *config.skinPath, theme.c_str(), xmlFile.c_str());
+    return path;
 }
 
 void cXmlParser::ParseGlobalColors(xmlNodePtr node) {
