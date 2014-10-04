@@ -19,6 +19,12 @@ void cSkinDesignerSetup::Setup(void) {
     Add(new cMenuEditIntItem(tr("Number to cache initially (per size)"), &data.numLogosPerSizeInitial, 0, 1000));
     Add(new cMenuEditIntItem(tr("Number to cache in maximum"), &data.numLogosMax, 0, 1000));
 
+    if (!imgCache) {
+        SetCurrent(Get(current));
+        Display();
+        return;
+    }
+
     cString message = cString::sprintf("--------------------- %s ---------------------", tr("Cache Statistics"));
     Add(new cOsdItem(*message));
     cList<cOsdItem>::Last()->SetSelectable(false);

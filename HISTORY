@@ -12,3 +12,4 @@ Version 0.0.2
 - added common channel logo path for all skins
 - changed skin handling so that every skin is directly shown in VDR OSD Menu
 - added Theme support, each skin can now have various themes
+- fixed a crash if no skindesigner skins are found and plugin setup menu is called from another skin

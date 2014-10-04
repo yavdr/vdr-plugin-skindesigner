@@ -112,6 +112,9 @@ bool cPluginSkinDesigner::Start(void) {
             newSkin->ActivateBackupSkin();
         }
     }
+    if (skins.size() == 0) {
+        esyslog("skindesigner: no skins found! Using default Skin LCARS!");
+    }
     return true;
 }
 
