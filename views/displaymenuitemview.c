@@ -314,15 +314,20 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
                 intTokens.insert(pair<string,int>("elapsed", 0));
             }
             intTokens.insert(pair<string,int>("duration", event->Duration() / 60));
+            intTokens.insert(pair<string,int>("hasVPS", (bool)event->Vps()));
         } else {
             stringTokens.insert(pair<string,string>("title", event->Title() ? ParseSeparator(event->Title()) : ""));
         }
     }
     if (channel) {
+        stringTokens.insert(pair<string,string>("channelname", channel->Name() ? channel->Name() : ""));
         stringTokens.insert(pair<string,string>("channelid", *(channel->GetChannelID().ToString())));
         if (!event && !selectable) {
             stringTokens.insert(pair<string,string>("title", channel->Name() ? ParseSeparator(channel->Name()) : ""));
         }
+    } else {
+        stringTokens.insert(pair<string,string>("channelname", ""));
+        stringTokens.insert(pair<string,string>("channelid", ""));
     }
 }
 

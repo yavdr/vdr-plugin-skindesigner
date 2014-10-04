@@ -26,12 +26,14 @@
         {duration}                duration of event
         {current}                 true if item is currently selected 
         {separator}               true if item is a list separator 
-        {channelid}               ChannelID as path to display channel logo
+        {channelname}             Channel Name (for what's on now and next)
+        {channelid}               ChannelID as path to display channel logo (for what's on now and next)
         {whatson}                 true if menu "What's on" is displayed
         {whatsonnow}              true if menu "What's on now" is displayed
         {whatsonnext}             true if menu "What's on next" is displayed
         {timerpartitial}          true if partitial timer is set for the event
         {timerfull}               true if full timer is set for the event
+        {hasVPS}                  true if event has VPS information
         -->
         <listelement>
         </listelement>
