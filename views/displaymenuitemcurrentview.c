@@ -151,6 +151,8 @@ void cDisplayMenuItemCurrentSchedulesView::Render(void) {
             intTokens.insert(pair<string,int>("elapsed", 0));
         }
         intTokens.insert(pair<string,int>("duration", event->Duration() / 60));
+        intTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
+        stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
         SetScraperPoster(event);
     }
     if (channel) {
@@ -266,6 +268,8 @@ void cDisplayMenuItemCurrentChannelView::Render(void) {
             stringTokens.insert(pair<string,string>("presenteventdate", *ShortDateString(presentEvent->StartTime())));
             intTokens.insert(pair<string,int>("presenteventelapsed", (time(0) - presentEvent->StartTime())/60));
             intTokens.insert(pair<string,int>("presenteventduration", presentEvent->Duration() / 60));
+            intTokens.insert(pair<string,int>("presenteventdurationhours", presentEvent->Duration() / 3600));
+            stringTokens.insert(pair<string,string>("presenteventdurationminutes", *cString::sprintf("%.2d", (presentEvent->Duration() / 60)%60)));
             SetScraperPoster(presentEvent);
         } else {
             stringTokens.insert(pair<string,string>("presenteventtitle", ""));
@@ -276,7 +280,9 @@ void cDisplayMenuItemCurrentChannelView::Render(void) {
             stringTokens.insert(pair<string,string>("presenteventday", ""));
             stringTokens.insert(pair<string,string>("presenteventdate", ""));
             intTokens.insert(pair<string,int>("presenteventelapsed", 0));
-            intTokens.insert(pair<string,int>("presenteventduration", 0));            
+            intTokens.insert(pair<string,int>("presenteventduration", 0));
+            intTokens.insert(pair<string,int>("presenteventdurationhours", 0));
+            stringTokens.insert(pair<string,string>("presenteventdurationminutes", ""));      
         }
         const cList<cEvent> *events = schedule->Events();
         bool inserted = false;
@@ -291,6 +297,8 @@ void cDisplayMenuItemCurrentChannelView::Render(void) {
                 stringTokens.insert(pair<string,string>("nexteventday", *WeekDayName(nextEvent->StartTime())));
                 stringTokens.insert(pair<string,string>("nexteventdate", *ShortDateString(nextEvent->StartTime())));
                 intTokens.insert(pair<string,int>("nexteventduration", nextEvent->Duration() / 60));
+                intTokens.insert(pair<string,int>("nexteventdurationhours", nextEvent->Duration() / 3600));
+                stringTokens.insert(pair<string,string>("nexteventdurationminutes", *cString::sprintf("%.2d", (nextEvent->Duration() / 60)%60)));
                 inserted = true;
             }
         }
@@ -303,6 +311,8 @@ void cDisplayMenuItemCurrentChannelView::Render(void) {
             stringTokens.insert(pair<string,string>("nexteventday", ""));
             stringTokens.insert(pair<string,string>("nexteventdate", ""));
             intTokens.insert(pair<string,int>("nexteventduration", 0));
+            intTokens.insert(pair<string,int>("nexteventdurationhours", 0));
+            stringTokens.insert(pair<string,string>("nexteventdurationminutes", ""));
         }
     }
     
@@ -535,7 +545,11 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     stringTokens.insert(pair<string,string>("date", recDate.c_str()));
     stringTokens.insert(pair<string,string>("time", recTime.c_str()));
     intTokens.insert(pair<string,int>("duration", recDuration));
+    intTokens.insert(pair<string,int>("durationhours", recDuration / 60));
+    stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
     intTokens.insert(pair<string,int>("durationevent", duration));
+    intTokens.insert(pair<string,int>("durationeventhours", duration / 60));
+    stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens);
 }

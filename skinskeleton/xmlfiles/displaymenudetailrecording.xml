@@ -4,8 +4,12 @@
     {shorttext}               shorttext of recording
     {date}                    date of recording in dd.mm.yy
     {time}                    time of current event in hh:mm
-    {duration}                real duration of recording in minutes
-    {durationevent}           duration of according event in minutes
+    {duration}              real duration of recording in minutes
+    {durationhours}         real duration, full hours
+    {durationminutes}       real duration, rest of minutes
+    {durationevent}         duration of corresponding event in minutes
+    {durationeventhours}    event duration, full hours
+    {durationeventminutes}  event duration, rest of minutes
     {ismovie}                 true if event is scraped as a movie
     {isseries}                true if event is scraped as a series
     {posteravailable}         true if a poster is available
@@ -27,8 +31,12 @@
     {description}             description of recording
     {date}                    date of recording in dd.mm.yy
     {time}                    time of recording in hh:mm
-    {duration}                real duration of recording in minutes
-    {durationevent}           duration of according event in minutes
+    {duration}              real duration of recording in minutes
+    {durationhours}         real duration, full hours
+    {durationminutes}       real duration, rest of minutes
+    {durationevent}         duration of corresponding event in minutes
+    {durationeventhours}    event duration, full hours
+    {durationeventminutes}  event duration, rest of minutes
 
     {recordingsize}           size of recording (automatically in GB / MB)
     {recordingsizecutted}     size of cutted recording (automatically in GB / MB)

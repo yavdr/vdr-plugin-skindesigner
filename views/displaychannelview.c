@@ -132,10 +132,12 @@ void cDisplayChannelView::DrawEPGInfo(const cEvent *present, const cEvent *next,
         stringTokens.insert(pair<string,string>("currentstop", *present->GetEndTimeString()));
         
         intTokens.insert(pair<string,int>("currentduration", present->Duration() / 60));
+        intTokens.insert(pair<string,int>("currentdurationhours", present->Duration() / 3600));
+        stringTokens.insert(pair<string,string>("currentdurationminutes", *cString::sprintf("%.2d", (present->Duration() / 60)%60)));
         intTokens.insert(pair<string,int>("currentelapsed", (int)round((time(NULL) - present->StartTime())/60)));
         intTokens.insert(pair<string,int>("currentremaining", (int)round((present->EndTime() - time(NULL))/60)));
         intTokens.insert(pair<string,int>("currentrecording", presentRecording ? 1 : 0));
-        intTokens.insert(pair<string,int>("hasVPS", present->Vps()));
+        intTokens.insert(pair<string,int>("hasVPS", (bool)present->Vps()));
     } else {
         stringTokens.insert(pair<string,string>("currenttitle", ""));
         stringTokens.insert(pair<string,string>("currentsubtitle", ""));
@@ -143,6 +145,8 @@ void cDisplayChannelView::DrawEPGInfo(const cEvent *present, const cEvent *next,
         stringTokens.insert(pair<string,string>("currentstop", ""));
         
         intTokens.insert(pair<string,int>("currentduration", 0));
+        intTokens.insert(pair<string,int>("currentdurationhours", 0));
+        stringTokens.insert(pair<string,string>("currentdurationminutes", ""));
         intTokens.insert(pair<string,int>("currentelapsed", 0));
         intTokens.insert(pair<string,int>("currentremaining", 0));
         intTokens.insert(pair<string,int>("currentrecording", 0));
@@ -156,6 +160,8 @@ void cDisplayChannelView::DrawEPGInfo(const cEvent *present, const cEvent *next,
         stringTokens.insert(pair<string,string>("nextstop", *next->GetEndTimeString()));
 
         intTokens.insert(pair<string,int>("nextduration", next->Duration() / 60));
+        intTokens.insert(pair<string,int>("nextdurationhours", next->Duration() / 3600));
+        stringTokens.insert(pair<string,string>("nextdurationminutes", *cString::sprintf("%.2d", (next->Duration() / 60)%60)));
         intTokens.insert(pair<string,int>("nextrecording", nextRecording ? 1 : 0));
     } else {
         stringTokens.insert(pair<string,string>("nexttitle", ""));
@@ -164,6 +170,8 @@ void cDisplayChannelView::DrawEPGInfo(const cEvent *present, const cEvent *next,
         stringTokens.insert(pair<string,string>("nextstop", ""));
 
         intTokens.insert(pair<string,int>("nextduration", 0));
+        intTokens.insert(pair<string,int>("nextdurationhours", 0));
+        stringTokens.insert(pair<string,string>("nextdurationminutes", ""));
         intTokens.insert(pair<string,int>("nextrecording", 0));
     }
     DrawViewElement(veEpgInfo, &stringTokens, &intTokens);

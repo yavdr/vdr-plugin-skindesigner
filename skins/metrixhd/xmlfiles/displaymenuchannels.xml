@@ -59,6 +59,8 @@
         {presenteventdate}              present event date in dd:mm:yy
         {presenteventelapsed}           present event elapsed time
         {presenteventduration}          present event duration
+        {presenteventdurationhours}     duration, full hours
+        {presenteventdurationminutes}   duration, rest of minutes
         {hasposter}                     true if a scraped poster is available for this elements present evemt
         {posterwidth}                   width of scraped poster
         {posterheight}                  height of scraped poster
@@ -70,7 +72,9 @@
         {nexteventdescription}          next event description
         {nexteventday}                  next event name of day
         {nexteventdate}                 next event date in dd:mm:yy
-        {nexteventdate}                 next event duration
+        {nexteventduration}             next event duration
+        {nexteventdurationhours}        duration, full hours
+        {nexteventdurationminutes}      duration, rest of minutes
         {schedule[]}                    array with following 10 schedules
         {schedule[title]}               title of event
         {schedule[shorttext]}           shorttext of event

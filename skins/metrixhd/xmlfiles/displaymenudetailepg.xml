@@ -95,6 +95,8 @@
     {running}                 true if event is currently running
     {elapsed}                 elapsed time of event, if not running 0
     {duration}                duration of event
+    {durationhours}           duration, full hours
+    {durationminutes}         duration, rest of minutes
     {channelid}               ChannelID as path to display channel logo
     {ismovie}                 true if event is scraped as a movie
     {isseries}                true if event is scraped as a series
@@ -143,6 +145,8 @@
     {running}                 true if event is currently running
     {elapsed}                 elapsed time of event, if not running 0
     {duration}                duration of event
+    {durationhours}           duration, full hours
+    {durationminutes}         duration, rest of minutes
     {channelid}               ChannelID as path to display channel logo
     {hasreruns}               true if reruns of this event are found
     {reruns[]}                array with reruns

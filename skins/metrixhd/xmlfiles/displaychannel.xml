@@ -41,6 +41,8 @@
     {currentstart}                     Start of current Schedule in hh:mm
     {currentstop}                      End of current Schedule in hh:mm 
     {currentduration}                  Duration of current Schedule in min
+    {currentdurationhours}             Duration, full hours
+    {currentdurationminutes}           Duration, rest of minutes
     {currentelapsed}                   Elapsed time of current Schedule in min
     {currentremaining}                 Remaining time of current Schedule in min
     {currentrecording}                 true if current Schedule is recorded
@@ -50,6 +52,8 @@
     {nextstart}                        Start of next Schedule in hh:mm
     {nextstop}                         Stop of next Schedule in hh:mm
     {nextduration}                     Duration of next Schedule in min
+    {nextdurationhours}                Duration, full hours
+    {nextdurationminutes}              Duration, rest of minutes
     {nextrecording}                    true if next Schedule will be recorded
     -->
     <epginfo>

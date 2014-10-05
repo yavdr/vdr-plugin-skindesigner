@@ -314,6 +314,8 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
                 intTokens.insert(pair<string,int>("elapsed", 0));
             }
             intTokens.insert(pair<string,int>("duration", event->Duration() / 60));
+            intTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
+            stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
             intTokens.insert(pair<string,int>("hasVPS", (bool)event->Vps()));
         } else {
             stringTokens.insert(pair<string,string>("title", event->Title() ? ParseSeparator(event->Title()) : ""));
@@ -642,7 +644,11 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     stringTokens.insert(pair<string,string>("date", recDate.c_str()));
     stringTokens.insert(pair<string,string>("time", recTime.c_str()));
     intTokens.insert(pair<string,int>("duration", recDuration));
+    intTokens.insert(pair<string,int>("durationhours", recDuration / 60));
+    stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
     intTokens.insert(pair<string,int>("durationevent", duration));
+    intTokens.insert(pair<string,int>("durationeventhours", duration / 60));
+    stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
 
     static cPlugin *pScraper = GetScraperPlugin();
     if (!pScraper || !recording) {

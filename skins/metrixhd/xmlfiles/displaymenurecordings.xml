@@ -5,7 +5,11 @@
         {date}                  Date of recording
         {time}                  Time of recording
         {duration}              real duration of recording in minutes
+        {durationhours}         real duration, full hours
+        {durationminutes}       real duration, rest of minutes
         {durationevent}         duration of corresponding event in minutes
+        {durationeventhours}    event duration, full hours
+        {durationeventminutes}  event duration, rest of minutes
         {current}               true if item is currently selected
         {new}                   true if recording is new
         {cutted}                true if recording is cutted
@@ -46,7 +50,11 @@
         {date}                  Date of recording
         {time}                  Time of recording
         {duration}              real duration of recording in minutes
+        {durationhours}         real duration, full hours
+        {durationminutes}       real duration, rest of minutes
         {durationevent}         duration of corresponding event in minutes
+        {durationeventhours}    event duration, full hours
+        {durationeventminutes}  event duration, rest of minutes
         {new}                   true if recording is new
         {cutted}                true if recording is cutted
         {folder}                true if item is a folder

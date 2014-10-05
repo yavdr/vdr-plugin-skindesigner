@@ -24,6 +24,8 @@
         {running}                 true if event is currently running
         {elapsed}                 elapsed time of event, if not running 0
         {duration}                duration of event
+        {durationhours}           duration, full hours
+        {durationminutes}         duration, rest of minutes
         {current}                 true if item is currently selected 
         {separator}               true if item is a list separator 
         {channelname}             Channel Name (for what's on now and next)
@@ -52,6 +54,8 @@
         {running}                 true if event is currently running
         {elapsed}                 elapsed time of event, if not running 0
         {duration}                duration of event
+        {durationhours}           duration, full hours
+        {durationminutes}         duration, rest of minutes
         {channelid}               ChannelID as path to display channel logo
         {hasposter}               true if a scraped poster is available for this element
         {posterwidth}             width of scraped poster

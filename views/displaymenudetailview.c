@@ -118,7 +118,9 @@ void cDisplayMenuDetailView::SetTokens(void) {
             intTokens.insert(pair<string,int>("elapsed", 0));
         }
         intTokens.insert(pair<string,int>("duration", event->Duration() / 60));    
-    
+        intTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
+        stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
+
         vector< map< string, string > > reruns;
         bool hasReruns = LoadReruns(&reruns);
         loopTokens.insert(pair<string, vector< map< string, string > > >("reruns", reruns));
@@ -151,7 +153,11 @@ void cDisplayMenuDetailView::SetTokens(void) {
                 stringTokens.insert(pair<string,string>("date", recDate.c_str()));
                 stringTokens.insert(pair<string,string>("time", recTime.c_str()));
                 intTokens.insert(pair<string,int>("duration", recDuration));
+                intTokens.insert(pair<string,int>("durationhours", recDuration / 60));
+                stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
                 intTokens.insert(pair<string,int>("durationevent", duration));
+                intTokens.insert(pair<string,int>("durationeventhours", duration / 60));
+                stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
             }
         } else {
             stringTokens.insert(pair<string,string>("shorttext", ""));
@@ -161,7 +167,11 @@ void cDisplayMenuDetailView::SetTokens(void) {
             stringTokens.insert(pair<string,string>("date", ""));
             stringTokens.insert(pair<string,string>("time", ""));
             intTokens.insert(pair<string,int>("duration", recDuration));
+            intTokens.insert(pair<string,int>("durationhours", recDuration / 60));
+            stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
             intTokens.insert(pair<string,int>("durationevent", 0));
+            intTokens.insert(pair<string,int>("durationeventhours", 0));
+            stringTokens.insert(pair<string,string>("durationeventminutes", ""));
         }
         LoadRecordingInformation();
         SetScraperTokens();
@@ -804,6 +814,8 @@ void cDisplayMenuDetailView::DrawHeader(void) {
             headerIntTokens.insert(pair<string,int>("elapsed", 0));
         }
         headerIntTokens.insert(pair<string,int>("duration", event->Duration() / 60));
+        headerIntTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
+        headerStringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
 
         stringstream epgImageName;
         epgImageName << event->EventID();
@@ -846,7 +858,11 @@ void cDisplayMenuDetailView::DrawHeader(void) {
                 headerStringTokens.insert(pair<string,string>("date", recDate.c_str()));
                 headerStringTokens.insert(pair<string,string>("time", recTime.c_str()));
                 headerIntTokens.insert(pair<string,int>("duration", recDuration));
+                headerIntTokens.insert(pair<string,int>("durationhours", recDuration / 60));
+                headerStringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
                 headerIntTokens.insert(pair<string,int>("durationevent", duration));
+                headerIntTokens.insert(pair<string,int>("durationeventhours", duration / 60));
+                headerStringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
             }
         } else {
             headerStringTokens.insert(pair<string,string>("shorttext", ""));
@@ -855,7 +871,11 @@ void cDisplayMenuDetailView::DrawHeader(void) {
             headerStringTokens.insert(pair<string,string>("date", ""));
             headerStringTokens.insert(pair<string,string>("time", ""));
             headerIntTokens.insert(pair<string,int>("duration", recDuration));
+            headerIntTokens.insert(pair<string,int>("durationhours", recDuration / 60));
+            headerStringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
             headerIntTokens.insert(pair<string,int>("durationevent", 0));
+            headerIntTokens.insert(pair<string,int>("durationeventhours", 0));
+            headerStringTokens.insert(pair<string,string>("durationeventminutes", ""));
         }
 
         string recImage = "";
