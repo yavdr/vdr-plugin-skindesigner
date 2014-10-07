@@ -46,6 +46,20 @@ bool cDisplayMenuView::DrawHeader(void) {
     stringTokens.insert(pair<string,string>("icon", icon));
     intTokens.insert(pair<string,int>("hasicon", hasIcon));
 
+    //Disc Usage
+    string vdrUsageString = *cVideoDiskUsage::String();
+    int discUsage = cVideoDiskUsage::UsedPercent();
+    bool discAlert = (discUsage > 95) ? true : false;
+    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
+    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
+
+    intTokens.insert(pair<string, int>("usedpercent", discUsage));
+    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
+    intTokens.insert(pair<string, int>("discalert", discAlert));
+    intTokens.insert(pair<string, int>("freegb", freeGB));
+    stringTokens.insert(pair<string,string>("freetime", freeTime));
+    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
+
     ClearViewElement(veHeader);
     DrawViewElement(veHeader, &stringTokens, &intTokens);
     return true;

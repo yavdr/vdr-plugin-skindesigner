@@ -33,6 +33,12 @@
     {vdrversion}              running VDR Version
     {hasicon}                 true if a menu icon is available
     {icon}                    path of menu icon
+    {freetime}                available disc capacity in hh:mm
+    {freepercent}             available disc capacity in percent
+    {usedpercent}             used disc capacity in percent
+    {freegb}                  available disc capacity in gigabytes
+    {discalert}               true if disc usage is > 95%
+    {vdrusagestring}          localized VDR internal usage string
     -->
     <header>
         <area x="0" y="0" width="41%" height="10%" layer="2">
