@@ -24,8 +24,11 @@
         {shorttext}               shorttext of event
         {start}                   event start time in hh::mm
         {stop}                    event stop time
-        {day}                     day of current event
+        {day}                     day of current event as three letter abrivation
         {date}                    date of current event in dd.mm.yy
+        {daynumeric}              day as number
+        {month}                   month as number
+        {year}                    year as number
         {running}                 true if event is currently running
         {elapsed}                 elapsed time of event, if not running 0
         {duration}                duration of event
@@ -109,6 +112,9 @@
         {stop}                    event stop time
         {day}                     day of current event
         {date}                    date of current event in dd.mm.yy
+        {daynumeric}              day as number
+        {month}                   month as number
+        {year}                    year as number
         {running}                 true if event is currently running
         {elapsed}                 elapsed time of event, if not running 0
         {duration}                duration of event

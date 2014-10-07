@@ -301,8 +301,14 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
             stringTokens.insert(pair<string,string>("shorttext", event->ShortText() ? event->ShortText() : ""));
             stringTokens.insert(pair<string,string>("start", *(event->GetTimeString())));
             stringTokens.insert(pair<string,string>("stop", *(event->GetEndTimeString())));
-            stringTokens.insert(pair<string,string>("day", *WeekDayName(event->StartTime())));
-            stringTokens.insert(pair<string,string>("date", *ShortDateString(event->StartTime())));
+            time_t startTime = event->StartTime();
+            stringTokens.insert(pair<string,string>("day", *WeekDayName(startTime)));
+            stringTokens.insert(pair<string,string>("date", *ShortDateString(startTime)));
+            struct tm * sStartTime = localtime(&startTime);
+            intTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
+            intTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
+            intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
+
             bool isRunning = false;
             time_t now = time(NULL);
             if ((now >= event->StartTime()) && (now <= event->EndTime()))
@@ -638,6 +644,13 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
         recDate = *DateString(start);
         recTime = *TimeString(start);
     }
+
+    time_t startTime = event->StartTime();
+    struct tm * sStartTime = localtime(&startTime);
+    intTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
+    intTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
+    intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
+
     int duration = event->Duration() / 60;
     int recDuration = recording->LengthInSeconds();
     recDuration = (recDuration>0)?(recDuration / 60):0;

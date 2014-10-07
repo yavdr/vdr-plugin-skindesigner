@@ -103,8 +103,14 @@ void cDisplayMenuDetailView::SetTokens(void) {
         stringTokens.insert(pair<string,string>("description", event->Description() ? event->Description() : ""));
         stringTokens.insert(pair<string,string>("start", *(event->GetTimeString())));
         stringTokens.insert(pair<string,string>("stop", *(event->GetEndTimeString())));
-        stringTokens.insert(pair<string,string>("day", *WeekDayName(event->StartTime())));
-        stringTokens.insert(pair<string,string>("date", *ShortDateString(event->StartTime())));
+        time_t startTime = event->StartTime();
+        stringTokens.insert(pair<string,string>("day", *WeekDayName(startTime)));
+        stringTokens.insert(pair<string,string>("date", *ShortDateString(startTime)));
+        struct tm * sStartTime = localtime(&startTime);
+        intTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
+        intTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
+        intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
+
         stringTokens.insert(pair<string,string>("channelid", *(event->ChannelID().ToString())));
 
         bool isRunning = false;
@@ -147,11 +153,16 @@ void cDisplayMenuDetailView::SetTokens(void) {
                     recDate = *DateString(start);
                     recTime = *TimeString(start);
                 }
+                stringTokens.insert(pair<string,string>("date", recDate.c_str()));
+                stringTokens.insert(pair<string,string>("time", recTime.c_str()));
+                time_t startTime = event->StartTime();
+                struct tm * sStartTime = localtime(&startTime);
+                intTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
+                intTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
+                intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
                 int duration = event->Duration() / 60;
                 int recDuration = recording->LengthInSeconds();
                 recDuration = (recDuration>0)?(recDuration / 60):0;
-                stringTokens.insert(pair<string,string>("date", recDate.c_str()));
-                stringTokens.insert(pair<string,string>("time", recTime.c_str()));
                 intTokens.insert(pair<string,int>("duration", recDuration));
                 intTokens.insert(pair<string,int>("durationhours", recDuration / 60));
                 stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));
@@ -799,8 +810,15 @@ void cDisplayMenuDetailView::DrawHeader(void) {
         headerStringTokens.insert(pair<string,string>("shorttext", event->ShortText() ? event->ShortText() : ""));
         headerStringTokens.insert(pair<string,string>("start", *(event->GetTimeString())));
         headerStringTokens.insert(pair<string,string>("stop", *(event->GetEndTimeString())));
-        headerStringTokens.insert(pair<string,string>("day", *WeekDayName(event->StartTime())));
-        headerStringTokens.insert(pair<string,string>("date", *ShortDateString(event->StartTime())));
+        
+        time_t startTime = event->StartTime();
+        headerStringTokens.insert(pair<string,string>("day", *WeekDayName(startTime)));
+        headerStringTokens.insert(pair<string,string>("date", *ShortDateString(startTime)));
+        struct tm * sStartTime = localtime(&startTime);
+        headerIntTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
+        headerIntTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
+        headerIntTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
+
         headerStringTokens.insert(pair<string,string>("channelid", *(event->ChannelID().ToString())));
 
         bool isRunning = false;
@@ -857,6 +875,11 @@ void cDisplayMenuDetailView::DrawHeader(void) {
                 recDuration = (recDuration>0)?(recDuration / 60):0;
                 headerStringTokens.insert(pair<string,string>("date", recDate.c_str()));
                 headerStringTokens.insert(pair<string,string>("time", recTime.c_str()));
+                time_t startTime = event->StartTime();
+                struct tm * sStartTime = localtime(&startTime);
+                headerIntTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
+                headerIntTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
+                headerIntTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
                 headerIntTokens.insert(pair<string,int>("duration", recDuration));
                 headerIntTokens.insert(pair<string,int>("durationhours", recDuration / 60));
                 headerStringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", recDuration%60)));

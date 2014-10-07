@@ -89,7 +89,10 @@
     {name}                    name of recording
     {shorttext}               shorttext of recording
     {date}                    date of recording in dd.mm.yy
-    {time}                    time of current event in hh:mm
+    {time}                    time of current recording in hh:mm
+    {daynumeric}              day as number
+    {month}                   month as number
+    {year}                    year as number
     {duration}                real duration of recording in minutes
     {durationhours}           real duration, full hours
     {durationminutes}         real duration, rest of minutes
@@ -137,6 +140,9 @@
     {description}             description of recording
     {date}                    date of recording in dd.mm.yy
     {time}                    time of recording in hh:mm
+    {daynumeric}              day as number
+    {month}                   month as number
+    {year}                    year as number
     {duration}                real duration of recording in minutes
     {durationhours}           real duration, full hours
     {durationminutes}         real duration, rest of minutes

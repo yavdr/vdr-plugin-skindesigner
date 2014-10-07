@@ -4,6 +4,9 @@
         {name}                  Name of recording
         {date}                  Date of recording
         {time}                  Time of recording
+        {daynumeric}            day as number
+        {month}                 month as number
+        {year}                  year as number
         {duration}              real duration of recording in minutes
         {durationhours}         real duration, full hours
         {durationminutes}       real duration, rest of minutes
@@ -49,6 +52,9 @@
         {description}           Descrption of recording        
         {date}                  Date of recording
         {time}                  Time of recording
+        {daynumeric}            day as number
+        {month}                 month as number
+        {year}                  year as number
         {duration}              real duration of recording in minutes
         {durationhours}         real duration, full hours
         {durationminutes}       real duration, rest of minutes
