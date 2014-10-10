@@ -28,6 +28,7 @@
         <var type="int" name="border">5</var>
         <var type="int" name="fadeTime">0</var>
         <var type="string" name="stringglobal">hützligrütz</var>
+        <var type="double" name="pi">3.14</var>
     </variables>
     <!--
     translations used in the skin

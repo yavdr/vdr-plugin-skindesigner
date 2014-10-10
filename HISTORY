@@ -16,3 +16,4 @@ Version 0.0.2
 - added {durationhours} and {durationminutes} tokens in several view elements
 - added discusage icons to menu header view element so that it discusage can be displayed in every menu view
 - added numeric day, month and year tokens in different view elements
+- support for global variables type "double"

@@ -13,7 +13,7 @@
 <!ELEMENT var (#PCDATA)>
 <!ATTLIST var
   name NMTOKEN #REQUIRED
-  type (int|string) #REQUIRED>
+  type (int|double|string) #REQUIRED>
 
 <!ELEMENT token (trans)+>
 <!ATTLIST token

@@ -291,6 +291,9 @@ void cXmlParser::InsertVariable(string name, string type, string value) {
     if (!type.compare("int")) {
         int val = atoi(value.c_str());
         globals->intVars.insert(pair<string, int>(name, val));
+    } else if (!type.compare("double")) {
+        double val = atof(value.c_str());
+        globals->doubleVars.insert(pair<string, double>(name, val));
     } else if (!type.compare("string")) {
         globals->stringVars.insert(pair<string, string>(name, value));
     }

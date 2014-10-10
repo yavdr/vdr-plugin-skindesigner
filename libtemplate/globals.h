@@ -27,6 +27,7 @@ public:
     virtual ~cGlobals(void) {};
     map <string, tColor> colors;
     map <string, int> intVars;
+    map <string, double> doubleVars;
     map <string, string> stringVars;
     map <string, string> fonts;
     map <string, map< string, string > > translations;

@@ -156,6 +156,17 @@ bool cNumericParameter::CheckExpression(int &val, string &parsedVal) {
                 parsedValue = parsedValue.replace(foundToken, token.size(), st.str());
             }
         }
+        for (map<string, double>::iterator globDouble = globals->doubleVars.begin(); globDouble != globals->doubleVars.end(); globDouble++) {
+            stringstream sToken;
+            sToken << "{" << globDouble->first << "}";
+            string token = sToken.str();
+            size_t foundToken = parsedValue.find(token);
+            if (foundToken != string::npos) {
+                stringstream st;
+                st << globDouble->second;
+                parsedValue = parsedValue.replace(foundToken, token.size(), st.str());
+            }
+        }
     }
 
     if (IsNumber(parsedValue)) {
