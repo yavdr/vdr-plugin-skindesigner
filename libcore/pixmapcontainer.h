@@ -27,8 +27,6 @@ protected:
     void SetInitFinished(void) { pixContainerInit = false; };
     bool CreateOsd(int Left, int Top, int Width, int Height);
     void DeleteOsdOnExit(void) { deleteOsdOnExit = true; };
-    void LockFlush(void);
-    void OpenFlush(void);
     //Wrappers for access to pixmaps
     bool PixmapExists(int num);
     int NumPixmaps(void) { return numPixmaps; };
@@ -66,6 +64,8 @@ protected:
 public:
     cPixmapContainer(int numPixmaps);
     virtual ~cPixmapContainer(void);
+    void LockFlush(void);
+    void OpenFlush(void);
     void DoFlush(void);
     virtual void Action(void) {};
 };
