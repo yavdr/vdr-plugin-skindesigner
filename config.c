@@ -16,6 +16,10 @@ cDesignerConfig::cDesignerConfig() {
     logoWidth = 268;
     logoHeight = 200;
     replaceDecPoint = false;
+    //settings for rerun display
+    rerunAmount = 10;
+    rerunDistance = 2;
+    rerunMaxChannel = 0;
 }
 
 cDesignerConfig::~cDesignerConfig() {
@@ -107,6 +111,9 @@ bool cDesignerConfig::SetupParse(const char *Name, const char *Value) {
     else if (!strcasecmp(Name, "LimitChannelLogoCache"))   limitLogoCache = atoi(Value);
     else if (!strcasecmp(Name, "NumberLogosInitially"))    numLogosPerSizeInitial = atoi(Value);
     else if (!strcasecmp(Name, "NumberLogosMax"))          numLogosMax = atoi(Value);
+    else if (!strcasecmp(Name, "RerunAmount"))             rerunAmount = atoi(Value);
+    else if (!strcasecmp(Name, "RerunDistance"))           rerunDistance = atoi(Value);
+    else if (!strcasecmp(Name, "RerunMaxChannel"))         rerunMaxChannel = atoi(Value);
     else return false;
     return true;
 }

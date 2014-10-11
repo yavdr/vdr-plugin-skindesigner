@@ -425,16 +425,18 @@ bool cDisplayMenuDetailView::LoadReruns(vector< map< string, string > > *reruns)
 
     if (isempty(event->Title()))
         return false;
-    
-    int maxNumReruns = 10;
+
+    int maxNumReruns = config.rerunAmount;
+    int rerunDistance = config.rerunDistance * 3600;
+    int rerunNaxChannel = config.rerunMaxChannel;
 
     Epgsearch_searchresults_v1_0 data;
     string strQuery = event->Title();
-    data.useSubTitle = true;
     data.query = (char *)strQuery.c_str();
     data.mode = 0;
     data.channelNr = 0;
     data.useTitle = true;
+    data.useSubTitle = true;
     data.useDescription = false;
 
     bool foundRerun = false;
@@ -444,8 +446,24 @@ bool cDisplayMenuDetailView::LoadReruns(vector< map< string, string > > *reruns)
             foundRerun = true;
             int i = 0;
             for (Epgsearch_searchresults_v1_0::cServiceSearchResult *r = list->First(); r && i < maxNumReruns; r = list->Next(r)) {
-                if ((event->ChannelID() == r->event->ChannelID()) && (event->StartTime() == r->event->StartTime()))
+                time_t eventStart = event->StartTime();
+                time_t rerunStart = r->event->StartTime();
+                cChannel *channel = Channels.GetByChannelID(r->event->ChannelID(), true, true);
+                //check for identical event
+                if ((event->ChannelID() == r->event->ChannelID()) && (eventStart == rerunStart))
                     continue;
+                //check for timely distance
+                if (rerunDistance > 0) {
+                    if (rerunStart - eventStart < rerunDistance) {
+                        continue;
+                    }
+                }
+                //check for maxchannel
+                if (rerunNaxChannel > 0) {
+                    if (channel && channel->Number() > rerunNaxChannel) {
+                        continue;
+                    }
+                }
                 i++;
                 map< string, string > rerun;
                 rerun.insert(pair<string, string>("reruns[title]", r->event->Title() ? r->event->Title() : ""));
@@ -460,7 +478,6 @@ bool cDisplayMenuDetailView::LoadReruns(vector< map< string, string > > *reruns)
                 bool logoExists = imgCache->LogoExists(channelID);
                 rerun.insert(pair<string, string>("reruns[channellogoexists]", logoExists ? "1" : "0"));
 
-                cChannel *channel = Channels.GetByChannelID(r->event->ChannelID(), true, true);
                 if (channel) {
                     stringstream channelNumber;
                     channelNumber << channel->Number();

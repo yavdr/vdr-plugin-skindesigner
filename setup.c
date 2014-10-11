@@ -13,6 +13,18 @@ void cSkinDesignerSetup::Setup(void) {
     int current = Current();
     Clear();
 
+    cString message = cString::sprintf("---------------- %s ----------------", tr("Reruns"));
+    Add(new cOsdItem(*message));
+    cList<cOsdItem>::Last()->SetSelectable(false);
+
+    Add(new cMenuEditIntItem(tr("Maximum number of reruns to display"), &data.rerunAmount, 1, 100));
+    Add(new cMenuEditIntItem(tr("Minimum timely distance of rerun (in hours)"), &data.rerunDistance, 0, 1000));
+    Add(new cMenuEditIntItem(tr("Limit Channel Numbers (0 = no limit)"), &data.rerunMaxChannel, 0, 1000));
+
+    message = cString::sprintf("---------------- %s ----------------", tr("Image Loading"));
+    Add(new cOsdItem(*message));
+    cList<cOsdItem>::Last()->SetSelectable(false);
+
     Add(new cMenuEditBoolItem(tr("Debug Image Loading"), &data.debugImageLoading));
 
     Add(new cMenuEditBoolItem(tr("Limit Channel Logo Cache"), &data.limitLogoCache));
@@ -25,7 +37,7 @@ void cSkinDesignerSetup::Setup(void) {
         return;
     }
 
-    cString message = cString::sprintf("--------------------- %s ---------------------", tr("Cache Statistics"));
+    message = cString::sprintf("---------------- %s ----------------", tr("Cache Statistics"));
     Add(new cOsdItem(*message));
     cList<cOsdItem>::Last()->SetSelectable(false);
 
@@ -76,4 +88,7 @@ void cSkinDesignerSetup::Store(void) {
     SetupStore("LimitChannelLogoCache", config.limitLogoCache);
     SetupStore("NumberLogosInitially", config.numLogosPerSizeInitial);
     SetupStore("NumberLogosMax", config.numLogosMax);
+    SetupStore("RerunAmount", config.rerunAmount);
+    SetupStore("RerunDistance", config.rerunDistance);
+    SetupStore("RerunMaxChannel", config.rerunMaxChannel);
 }

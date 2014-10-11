@@ -43,6 +43,9 @@ public:
     char decPoint;
     vector<string> skins;
     vector<string>::iterator skinIterator;
+    int rerunAmount;
+    int rerunDistance;
+    int rerunMaxChannel;
 };
 #ifdef DEFINE_CONFIG
     bool firstDisplay = true;
