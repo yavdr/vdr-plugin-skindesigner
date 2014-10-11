@@ -126,6 +126,7 @@ void cDisplayMenuDetailView::SetTokens(void) {
         intTokens.insert(pair<string,int>("duration", event->Duration() / 60));    
         intTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
         stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
+        stringTokens.insert(pair<string,string>("vps", *event->GetVpsString()));
 
         vector< map< string, string > > reruns;
         bool hasReruns = LoadReruns(&reruns);
@@ -851,6 +852,7 @@ void cDisplayMenuDetailView::DrawHeader(void) {
         headerIntTokens.insert(pair<string,int>("duration", event->Duration() / 60));
         headerIntTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
         headerStringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
+        headerStringTokens.insert(pair<string,string>("vps", *event->GetVpsString()));
 
         stringstream epgImageName;
         epgImageName << event->EventID();
