@@ -24,6 +24,7 @@ enum eViewElement {
     veBackground,
     veDateTime,
     veMessage,
+    veCustomTokens,
     //DisplayChannel ViewElements
     veChannelInfo,
     veChannelGroup,

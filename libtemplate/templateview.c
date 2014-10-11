@@ -593,6 +593,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("datetime");
     viewElementsAllowed.insert("message");
+    viewElementsAllowed.insert("customtokens");
 }
 
 string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
@@ -637,6 +638,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
         case veMessage:
             name = "Message";
             break;
+        case veCustomTokens:
+            name = "Custom Tokens";
+            break;
         default:
             name = "Unknown";
             break;
@@ -673,6 +677,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veDateTime;
     } else if (!sViewElement.compare("message")) {
         ve = veMessage;
+    } else if (!sViewElement.compare("customtokens")) {
+        ve = veCustomTokens;
     }
 
     if (ve == veUndefined) {

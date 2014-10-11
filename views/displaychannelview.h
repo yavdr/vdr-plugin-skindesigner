@@ -43,6 +43,7 @@ public:
     void DrawChannelGroups(const cChannel *Channel, cString ChannelName);
     void ClearChannelGroups(void);
     void DisplayMessage(eMessageType Type, const char *Text);
+    void DrawCustomTokens(void);
     void DoStart(void) { Start(); };
     void Flush(void) { DoFlush(); };
 };

@@ -16,6 +16,10 @@ bool FileExists(const string &path, const string &name, const string &ext);
 bool FolderExists(const string &path);
 bool FirstFileInFolder(string &path, string &extension, string &fileName);
 
+string &ltrim(string &s);
+string &rtrim(string &s);
+string &trim(string &s);
+
 class splitstring : public std::string {
     std::vector<std::string> flds;
 public:

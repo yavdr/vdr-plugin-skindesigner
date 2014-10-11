@@ -479,6 +479,17 @@ void cDisplayChannelView::DisplayMessage(eMessageType Type, const char *Text) {
     DrawViewElement(veMessage, &stringTokens, &intTokens);
 }
 
+void cDisplayChannelView::DrawCustomTokens(void) {
+    if (!ViewElementImplemented(veCustomTokens)) {
+        return;
+    }
+    if (!tmplView)
+        return;
+    map < string, string > stringTokens = tmplView->GetCustomTokens();
+    map < string, int > intTokens;
+    DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
+}
+
 void cDisplayChannelView::Action(void) {
     SetInitFinished();
     FadeIn();

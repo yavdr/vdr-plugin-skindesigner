@@ -157,6 +157,10 @@ const char **cPluginSkinDesigner::SVDRPHelpPages(void) {
     static const char *HelpPages[] = {
         "RELD\n"
         "    force reload of templates and caches",
+        "SCTK\n"
+        "    Set custom Token name = value",
+        "LCTK\n"
+        "    List custom Tokens",
         "LSTF\n"
         "    List available Fonts",
         0
@@ -176,17 +180,39 @@ cString cPluginSkinDesigner::SVDRPCommand(const char *Command, const char *Optio
         }
     }
 
-    if (!activeSkin)
-        return NULL;
+    if (!activeSkin) {
+        ReplyCode = 550;
+        return "";
+    }
 
     if (strcasecmp(Command, "RELD") == 0) {
         activeSkin->Reload();
+        ReplyCode = 250;
         return "SKINDESIGNER reload of templates and caches forced.";
     } else if (strcasecmp(Command, "LSTF") == 0) {
         activeSkin->ListAvailableFonts();
+        ReplyCode = 250;
         return "SKINDESIGNER available fonts listed in syslog.";
+    } else if (strcasecmp(Command, "SCTK") == 0) {
+        if (!Option) {
+            ReplyCode = 501;
+            return "SKINDESIGNER SCTK Error: no Token name = value set";
+        }
+        bool optionOk = activeSkin->SetCustomToken(Option);
+        if (optionOk) {
+            ReplyCode = 250;
+            return cString::sprintf("SKINDESIGNER Set custom Token %s", Option);
+        } else {
+            ReplyCode = 501;
+            return cString::sprintf("SKINDESIGNER Invalid custom Token %s", Option);
+        }
+    } else if (strcasecmp(Command, "LCTK") == 0) {
+        activeSkin->ListCustomTokens();
+        ReplyCode = 250;
+        return "SKINDESIGNER Custom Tokens listed in Log";
     }
-    return NULL;
+    ReplyCode = 502;
+    return "";
 }
 
 VDRPLUGINCREATOR(cPluginSkinDesigner); // Don't touch this!

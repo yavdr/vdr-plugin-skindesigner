@@ -163,6 +163,10 @@ void cSDDisplayChannel::Flush(void) {
     if (!doOutput)
         return;
 
+    if (initial) {
+        channelView->DrawCustomTokens();
+    }
+
     if (initial || channelChange) {
         channelView->DrawDate();
     }

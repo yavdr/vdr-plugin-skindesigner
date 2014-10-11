@@ -19,3 +19,4 @@ Version 0.0.2
 - support for global variables type "double"
 - added setup options to configure rerun display behaviour
 - changed display of menu lists, do flush first after complete rendering
+- added support for custom tokens in dislaychannel

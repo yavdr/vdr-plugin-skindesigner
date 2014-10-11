@@ -99,6 +99,7 @@ public:
     int GetNumPixmapsViewElement(eViewElement ve);
     int GetNumListViewMenuItems(void);
     bool GetScalingWindow(cRect &scalingWindow);
+    map<string,string> GetCustomTokens(void) { return globals->customTokens; };
     //Checks for parsing template XML files
     bool ValidSubView(const char *subView);
     bool ValidViewElement(const char *viewElement);

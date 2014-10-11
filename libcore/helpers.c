@@ -121,6 +121,24 @@ bool FirstFileInFolder(string &path, string &extension, string &fileName) {
     return false;
 }
 
+// trim from start
+string &ltrim(string &s) {
+    s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
+    return s;
+}
+
+// trim from end
+string &rtrim(string &s) {
+    s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
+    return s;
+}
+
+// trim from both ends
+string &trim(string &s) {
+    return ltrim(rtrim(s));
+}
+
+
 // split: receives a char delimiter; returns a vector of strings
 // By default ignores repeated delimiters, unless argument rep == 1.
 vector<string>& splitstring::split(char delim, int rep) {

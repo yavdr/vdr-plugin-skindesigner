@@ -219,4 +219,12 @@
             <drawtext align="center" valign="center" width="{areawidth} - 80" font="{light}" fontsize="40%" color="{clrWhite}" text="{text}" />
         </area>
     </message>
+
+    <!-- Available Variables customtokens:
+    all custom tokens set by the svdrp command SCTK are available in this viewelement
+    For instance, use an appropriate script which runs periodically as cronjob and
+    sets these custom tokens with svdrpsend or dbus2vdr
+    --> 
+    <customtokens>
+    </customtokens>
 </displaychannel>

@@ -170,6 +170,37 @@ void cSkinDesigner::ListAvailableFonts(void) {
     fontManager->ListAvailableFonts();
 }
 
+bool cSkinDesigner::SetCustomToken(string option) {
+    splitstring s(option.c_str());
+    vector<string> flds = s.split('=', 0);
+
+    if (flds.size() != 2)
+        return false;
+
+    string key = trim(flds[0]);
+    string val = trim(flds[1]);
+
+    if (!globals)
+        return true;
+
+    map<string, string>::iterator hit = globals->customTokens.find(key);
+    if (hit != globals->customTokens.end()) {
+        globals->customTokens.erase(key);
+    }
+    globals->customTokens.insert(pair<string,string>(key, val));
+
+    return true;
+}
+
+void cSkinDesigner::ListCustomTokens(void) {
+    if (!globals)
+        return;
+
+    for (map<string, string>::iterator it = globals->customTokens.begin(); it != globals->customTokens.end(); it++) {
+        dsyslog("skindesigner: custom token \"%s\" = \"%s\"", (it->first).c_str(), (it->second).c_str());
+    }
+}
+
 /*********************************************************************************
 * PRIVATE FUNCTIONS
 *********************************************************************************/    

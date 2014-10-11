@@ -49,6 +49,8 @@ public:
     void ActivateBackupSkin(void) { useBackupSkin = true; };
     void Reload(void);
     void ListAvailableFonts(void);
+    bool SetCustomToken(string option);
+    void ListCustomTokens(void);
 };
 
 #endif //__SKINDESIGNER_H
