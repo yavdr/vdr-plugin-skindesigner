@@ -154,7 +154,7 @@ bool cImageCache::LogoExists(string channelID) {
 }
 
 bool cImageCache::SeparatorLogoExists(string name) {
-    string separatorPath = *cString::sprintf("%s%s/logos/separatorlogos/", *config.skinPath, Setup.OSDTheme);
+    string separatorPath = *cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
     string logoExt = *config.logoExtension;
     bool logoExists = FileExists(separatorPath, nameLower, logoExt);
