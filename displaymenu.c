@@ -2,6 +2,7 @@
 #include "libcore/helpers.h"
 
 cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
+    textAreaFont = NULL; 
     doOutput = true;
     state = vsInit;
     if (!menuTemplate) {
@@ -20,6 +21,8 @@ cSDDisplayMenu::~cSDDisplayMenu() {
     if (!doOutput)
         return;
     delete rootView;
+    if (textAreaFont)
+        delete textAreaFont;
 }
 
 void cSDDisplayMenu::Scroll(bool Up, bool Page) {
@@ -180,7 +183,10 @@ int cSDDisplayMenu::GetTextAreaWidth(void) const {
 }
 
 const cFont *cSDDisplayMenu::GetTextAreaFont(bool FixedFont) const {
-    return NULL;
+    if (textAreaFont)
+        return textAreaFont;
+    textAreaFont = rootView->GetTextAreaFont();
+    return textAreaFont;
 }
 
 void cSDDisplayMenu::SetScrollbar(int Total, int Offset) {

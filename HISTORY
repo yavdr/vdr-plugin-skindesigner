@@ -21,3 +21,5 @@ Version 0.0.2
 - changed display of menu lists, do flush first after complete rendering
 - added support for custom tokens in dislaychannel
 - added vps token in menudetailepg
+- implemented cSDDisplayMenu::GetTextAreaFont()
+

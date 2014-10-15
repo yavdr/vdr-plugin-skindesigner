@@ -28,6 +28,7 @@ class cFontManager {
         int Width(string fontName, int fontSize, const char *text);
         int Height(string fontName, int fontSize);
         cFont *Font(string fontName, int fontSize);
+        cFont *FontUncached(string fontName, int fontSize);
         void Debug(void);
         void ListAvailableFonts(void);
 };

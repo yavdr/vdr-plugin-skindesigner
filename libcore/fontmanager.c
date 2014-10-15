@@ -108,6 +108,12 @@ cFont *cFontManager::Font(string fontName, int fontSize) {
     return font;
 }
 
+cFont *cFontManager::FontUncached(string fontName, int fontSize) {
+    cMutexLock MutexLock(&mutex);
+    cFont *font = CreateFont(fontName, fontSize);
+    return font;
+}
+
 /********************************************************************************
 * Private Functions 
 ********************************************************************************/

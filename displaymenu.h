@@ -18,6 +18,7 @@ private:
     cDisplayMenuRootView *rootView;
     eViewState state;
     bool doOutput;
+    mutable cFont *textAreaFont;
 protected:
     int Tab(int n);
 public:

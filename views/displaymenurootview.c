@@ -288,13 +288,27 @@ int cDisplayMenuRootView::GetListViewWidth(void) {
 int cDisplayMenuRootView::GetTextAreaWidth(void) {
     if (!tmplView)
         return 1900;
-    cTemplateView *tempSubView = tmplView->GetSubView(svMenuDefault);
-    if (!tempSubView)
+    cTemplateView *tmplSubView = tmplView->GetSubView(svMenuDefault);
+    if (!tmplSubView)
         return 1900;
-    int areaWidth = tempSubView->GetNumericParameter(ptWidth);
+    int areaWidth = tmplSubView->GetNumericParameter(ptWidth);
     if (areaWidth > 0)
         return areaWidth;
     return 1900;
+}
+
+cFont *cDisplayMenuRootView::GetTextAreaFont(void) {
+    if (!tmplView)
+        return NULL;
+    cTemplateView *tmplSubViewDefault = tmplView->GetSubView(svMenuDefault);
+    if (!tmplSubViewDefault)
+        return NULL;
+
+    cTemplateViewList *tmplViewList = tmplSubViewDefault->GetViewList(vlMenuItem);
+    if (!tmplViewList)
+        return NULL;
+
+    return tmplViewList->GetTextAreaFont();
 }
 
 

@@ -46,6 +46,7 @@ public:
     int GetMaxItems(void);
     int GetListViewWidth(void);
     int GetTextAreaWidth(void);
+    cFont *GetTextAreaFont(void);
     bool SubViewAvailable(void) { return subViewAvailable; };
     cDisplayMenuListView *GetListView(void) { return listView; };
     void Render(void);

@@ -41,6 +41,7 @@ public:
     cTemplateViewElement *GetListElement(void) { return listElement; };
     cTemplateViewElement *GetListElementCurrent(void) { return currentElement; };
     int GetAverageFontWidth(void);
+    cFont *GetTextAreaFont(void);
     int GetMenuItemWidth(void);
     int GetNumPixmaps(void);
     void Debug(void);

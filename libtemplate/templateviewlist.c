@@ -115,6 +115,54 @@ int cTemplateViewList::GetAverageFontWidth(void) {
     return averageFontWidth;
 }
 
+cFont *cTemplateViewList::GetTextAreaFont(void) {
+    if (!listElement)
+        return NULL;
+
+    int fontWidth = 0;
+    int numItems = GetNumericParameter(ptNumElements);
+    int listHeight = GetNumericParameter(ptHeight);
+    if (listHeight <= 0)
+        return NULL;
+    int itemHeight = (double)listHeight / (double)numItems;
+    string fontFuncName = parameters->GetParameter(ptDeterminateFont);
+
+    cTemplateFunction *fontFunc = listElement->GetFunction(fontFuncName);
+    if (!fontFunc)
+        return NULL;
+
+    string fontNameToken = fontFunc->GetParameter(ptFont);
+    string paramFontSize = fontFunc->GetParameter(ptFontSize);
+
+    string fontName = "";
+    if ((fontNameToken.find("{") == 0) && (fontNameToken.find("}") == (fontNameToken.size()-1))) {
+        fontNameToken = fontNameToken.substr(1, fontNameToken.size()-2);
+        map<string,string>::iterator hit = globals->fonts.find(fontNameToken);
+        if (hit != globals->fonts.end()) {
+            fontName = hit->second;
+        } else {
+            map<string,string>::iterator def = globals->fonts.find("vdrOsd");
+            if (def == globals->fonts.end())
+                return NULL;
+            fontName = def->second;
+        }
+    } else {
+        //if no token, directly use input
+        fontName = fontNameToken;
+    }
+
+    cNumericParameter pFontSize(paramFontSize);
+    pFontSize.SetGlobals(globals);
+    pFontSize.SetAreaSize(1000, itemHeight);
+    pFontSize.SetVertical();
+    int fontSize = pFontSize.Parse(paramFontSize);
+    if (!pFontSize.Valid())
+        return NULL;
+
+    return fontManager->FontUncached(fontName, fontSize);
+}
+
+
 int cTemplateViewList::GetMenuItemWidth(void) {
     return GetNumericParameter(ptMenuItemWidth);    
 }
