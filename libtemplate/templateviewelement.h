@@ -32,6 +32,7 @@ enum eViewElement {
     veProgressBar,
     veProgressBarBack,
     veStatusInfo,
+    veAudioInfo,
     veScreenResolution,
     veSignalQuality,
     veSignalQualityBack,

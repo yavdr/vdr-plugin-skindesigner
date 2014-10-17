@@ -18,7 +18,6 @@ private:
     int lastSignalQuality;
     int lastScreenWidth;
     int currentLast;
-    bool showSignal;
     const cEvent *present;
     void SetProgressBar(const cEvent *present);
 public:

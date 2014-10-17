@@ -13,6 +13,10 @@ cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplVi
     lastSignalDisplay = 0;
     lastSignalStrength = 0;
     lastSignalQuality = 0;
+    lastNumAudioTracks = 0;
+    lastAudioChannel = -1;
+    lastTracDesc = "";
+    lastTrackLang = "";
     DeleteOsdOnExit();
     SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
@@ -201,7 +205,25 @@ void cDisplayChannelView::DrawStatusIcons(const cChannel *Channel) {
             if (Timer->Recording()) 
                 isRecording = true;
 
-    //enhanced audio information
+    intTokens.insert(pair<string,int>("isRadio", isRadio));
+    intTokens.insert(pair<string,int>("hasVT", hasVT));
+    intTokens.insert(pair<string,int>("isStereo", isStereo));
+    intTokens.insert(pair<string,int>("isDolby", isDolby));
+    intTokens.insert(pair<string,int>("isEncrypted", isEncrypted));
+    intTokens.insert(pair<string,int>("isRecording", isRecording));
+
+    DrawViewElement(veStatusInfo, &stringTokens, &intTokens);
+}
+
+void cDisplayChannelView::ClearStatusIcons(void) {
+    ClearViewElement(veStatusInfo);
+}
+
+void cDisplayChannelView::DrawAudioInfo(void) {
+    if (!ViewElementImplemented(veAudioInfo)) {
+        return;
+    }
+
     int numAudioTracks = 0;
     int audioChannel = -1;
     string trackDescription = "";
@@ -219,23 +241,26 @@ void cDisplayChannelView::DrawStatusIcons(const cChannel *Channel) {
             }
         }
     }
+    if (lastNumAudioTracks != numAudioTracks || lastAudioChannel != audioChannel || lastTracDesc.compare(trackDescription) || lastTrackLang.compare(trackLanguage)) {
+        lastNumAudioTracks = numAudioTracks;
+        lastAudioChannel = audioChannel;
+        lastTracDesc = trackDescription;
+        lastTrackLang = trackLanguage;
 
-    intTokens.insert(pair<string,int>("isRadio", isRadio));
-    intTokens.insert(pair<string,int>("hasVT", hasVT));
-    intTokens.insert(pair<string,int>("isStereo", isStereo));
-    intTokens.insert(pair<string,int>("isDolby", isDolby));
-    intTokens.insert(pair<string,int>("isEncrypted", isEncrypted));
-    intTokens.insert(pair<string,int>("isRecording", isRecording));
-    intTokens.insert(pair<string,int>("numaudiotracks", numAudioTracks));
-    intTokens.insert(pair<string,int>("audiochannel", audioChannel));
-    stringTokens.insert(pair<string,string>("trackdesc", trackDescription));
-    stringTokens.insert(pair<string,string>("tracklang", trackLanguage));
-
-    DrawViewElement(veStatusInfo, &stringTokens, &intTokens);
+        map < string, int > intTokens;
+        map < string, string > stringTokens;
+        intTokens.insert(pair<string,int>("numaudiotracks", numAudioTracks));
+        intTokens.insert(pair<string,int>("audiochannel", audioChannel));
+        stringTokens.insert(pair<string,string>("trackdesc", trackDescription));
+        stringTokens.insert(pair<string,string>("tracklang", trackLanguage));
+        
+        ClearAudioInfo();
+        DrawViewElement(veAudioInfo, &stringTokens, &intTokens);
+    }
 }
 
-void cDisplayChannelView::ClearStatusIcons(void) {
-    ClearViewElement(veStatusInfo);
+void cDisplayChannelView::ClearAudioInfo(void) {
+    ClearViewElement(veAudioInfo);
 }
 
 void cDisplayChannelView::DrawScreenResolution(void) {

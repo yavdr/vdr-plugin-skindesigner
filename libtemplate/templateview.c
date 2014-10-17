@@ -587,6 +587,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("progressbar");
     viewElementsAllowed.insert("progressbarback");
     viewElementsAllowed.insert("statusinfo");
+    viewElementsAllowed.insert("audioinfo");
     viewElementsAllowed.insert("screenresolution");
     viewElementsAllowed.insert("signalquality");
     viewElementsAllowed.insert("signalqualityback");
@@ -619,6 +620,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
             break;
         case veStatusInfo:
             name = "StatusInfo";
+            break;
+        case veAudioInfo:
+            name = "AudioInfo";
             break;
         case veScreenResolution:
             name = "Screen Resolution";
@@ -665,6 +669,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veProgressBarBack;
     } else if (!sViewElement.compare("statusinfo")) {
         ve = veStatusInfo;
+    } else if (!sViewElement.compare("audioinfo")) {
+        ve = veAudioInfo;
     } else if (!sViewElement.compare("screenresolution")) {
         ve = veScreenResolution;
     } else if (!sViewElement.compare("signalquality")) {

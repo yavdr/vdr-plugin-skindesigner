@@ -12,6 +12,10 @@ private:
     int lastSignalDisplay;
     int lastSignalStrength;
     int lastSignalQuality;
+    int lastNumAudioTracks;
+    int lastAudioChannel;
+    string lastTracDesc;
+    string lastTrackLang;
     string GetScreenResolutionString(int width, int height, bool *isHD);
     string GetScreenAspectString(double aspect, bool *isWideScreen);
     string GetChannelSep(const cChannel *channel, bool prev);
@@ -32,6 +36,8 @@ public:
     void ClearEPGInfo(void);
     void DrawStatusIcons(const cChannel *Channel);
     void ClearStatusIcons(void);
+    void DrawAudioInfo(void);
+    void ClearAudioInfo(void);
     void DrawScreenResolution(void);
     void ClearScreenResolution(void);
     void DrawScraperContent(const cEvent *event);

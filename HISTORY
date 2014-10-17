@@ -22,4 +22,4 @@ Version 0.0.2
 - added support for custom tokens in dislaychannel
 - added vps token in menudetailepg
 - implemented cSDDisplayMenu::GetTextAreaFont()
-
+- introduced new viewelement audioinfo in displaychannel

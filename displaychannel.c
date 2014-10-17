@@ -63,12 +63,15 @@ void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     channelView->ClearStatusIcons();
     channelView->ClearChannelGroups();
     channelView->ClearScraperContent();
+    channelView->ClearAudioInfo();
     if (!groupSep) {
         channelView->DrawChannel(ChannelNumber, ChannelName, ChannelID, (Number > 0)?true:false);
         channelView->DrawProgressBarBack();
         channelView->DrawSignalBackground();
-        if (Channel)
+        if (Channel) {
             channelView->DrawStatusIcons(Channel);
+            channelView->DrawAudioInfo();
+        }
     } else {
         channelView->ClearSignal();
         channelView->ClearSignalBackground();
@@ -155,6 +158,7 @@ void cSDDisplayChannel::SetMessage(eMessageType Type, const char *Text) {
     channelView->ClearSignal();
     channelView->ClearSignalBackground();
     channelView->ClearScraperContent();
+    channelView->ClearAudioInfo();
     channelView->DisplayMessage(Type, Text);
     groupSep = true;
 }
@@ -180,6 +184,7 @@ void cSDDisplayChannel::Flush(void) {
     if (!groupSep) {
         channelView->DrawScreenResolution();
         channelView->DrawSignal();
+        channelView->DrawAudioInfo();
     } else {
         channelView->ClearStatusIcons();
         channelView->ClearScreenResolution();

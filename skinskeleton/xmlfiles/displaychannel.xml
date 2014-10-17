@@ -57,13 +57,19 @@
     {isDolby}                          true if a dolby audio track is available
     {isEncrypted}                      true if channel is encrypted
     {isRecording}                      true if currently a recording is running on this channel
+    -->
+    <statusinfo>
+    </statusinfo>
+
+    <!-- Available Variables audioinfo:
     {numaudiotracks}                   number of available audio tracks for current channel
     {audiochannel}                     0 if current channel is stereo, 1 for left chanel only, 2 for right channel only
     {trackdesc}                        description of the current audio track
     {tracklang}                        language of the current audio track
     -->
-    <statusinfo>
-    </statusinfo>
+    <audioinfo>
+    </audioinfo>
+
 
     <!-- Available Variables screenresolution:
     {screenwidth}                      width of currently displayed channel in px
