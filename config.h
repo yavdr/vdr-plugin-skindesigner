@@ -19,6 +19,9 @@ private:
     cRect osdSize;
     string osdSkin;
     string osdTheme;
+    string fontFix;
+    string fontOsd;
+    string fontSml;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
@@ -36,6 +39,8 @@ public:
     bool SkinChanged(void);
     void SetOSDSize(void);
     bool OsdSizeChanged(void);
+    void SetOSDFonts(void);
+    bool OsdFontsChanged(void);
     cString logoExtension;
     cString skinPath;
     cString logoPath;

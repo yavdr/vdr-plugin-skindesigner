@@ -163,6 +163,7 @@ void cSkinDesigner::Init(void) {
         if (init) {
             config.SetSkin();
             config.SetOSDSize();
+            config.SetOSDFonts();
         }
         dsyslog("skindesigner: initializing skin %s", skin.c_str());
         
@@ -188,6 +189,21 @@ void cSkinDesigner::Init(void) {
             watch.Stop("templates loaded and cache created");
         }
         init = false;
+    } else if (config.OsdFontsChanged()) {
+        dsyslog("skindesigner: reloading fonts");
+        if (fontManager)
+            delete fontManager;
+        fontManager = new cFontManager();
+        cStopWatch watch;
+        bool ok = LoadTemplates();
+        if (!ok) {
+            esyslog("skindesigner: error during loading of templates - using LCARS as backup");
+            backupSkin = new cSkinLCARS();
+            useBackupSkin = true;
+        } else {
+            CacheTemplates();
+            watch.Stop("templates loaded and cache created");
+        }
     }
 }
 

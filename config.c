@@ -23,10 +23,10 @@ cDesignerConfig::cDesignerConfig() {
     //menu display style, display menu items 
     //one after each other or in one step
     blockFlush = 1;
-    //remember current skin and theme    
+    //remember current skin and theme, osd size and osd fonts
     SetSkin();
-    //remember osd size   
     SetOSDSize();
+    SetOSDFonts();
 }
 
 cDesignerConfig::~cDesignerConfig() {
@@ -144,6 +144,28 @@ bool cDesignerConfig::OsdSizeChanged(void) {
         return true;
     }
     return false; 
+}
+
+void cDesignerConfig::SetOSDFonts(void) {
+    fontFix = Setup.FontFix;
+    fontOsd = Setup.FontOsd;
+    fontSml = Setup.FontSml;
+}
+
+bool cDesignerConfig::OsdFontsChanged(void) {
+    bool changed = false;
+    if (fontFix.compare(Setup.FontFix) != 0) {
+        changed = true;
+    }
+    if (fontOsd.compare(Setup.FontOsd) != 0) {
+        changed = true;
+    }
+    if (fontSml.compare(Setup.FontSml) != 0) {
+        changed = true;
+    }
+    if (changed)
+        SetOSDFonts();
+    return changed;
 }
 
 cString cDesignerConfig::CheckSlashAtEnd(std::string path) {
