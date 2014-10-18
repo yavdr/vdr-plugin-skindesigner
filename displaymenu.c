@@ -79,7 +79,8 @@ bool cSDDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, 
         return true;
     if (!rootView->SubViewAvailable())
         return false;
-    rootView->LockFlush();
+    if (config.blockFlush)
+        rootView->LockFlush();
     if (Current) {
         if (Channel) {
             rootView->SetChannel(Channel);
@@ -101,7 +102,8 @@ bool cSDDisplayMenu::SetItemTimer(const cTimer *Timer, int Index, bool Current, 
         return true;
     if (!rootView->SubViewAvailable())
         return false;
-    rootView->LockFlush();
+    if (config.blockFlush)
+        rootView->LockFlush();
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
@@ -116,7 +118,8 @@ bool cSDDisplayMenu::SetItemChannel(const cChannel *Channel, int Index, bool Cur
         return true;
     if (!rootView->SubViewAvailable())
         return false;
-    rootView->LockFlush();
+    if (config.blockFlush)
+        rootView->LockFlush();
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
@@ -131,7 +134,8 @@ bool cSDDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, bo
         return true;
     if (!rootView->SubViewAvailable())
         return false;
-    rootView->LockFlush();
+    if (config.blockFlush)
+        rootView->LockFlush();
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
@@ -148,7 +152,8 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
     if (!list) {
         return;
     }
-    rootView->LockFlush();
+    if (config.blockFlush)
+        rootView->LockFlush();
     eMenuCategory cat = MenuCategory();
     if (cat == mcMain) {
         list->AddMainMenuItem(Index, Text, Current, Selectable);
@@ -243,7 +248,8 @@ void cSDDisplayMenu::Flush(void) {
         }
     }
     if (doFlush) {
-        rootView->OpenFlush();
+        if (config.blockFlush)
+            rootView->OpenFlush();
         rootView->DoFlush();
     }
     state = vsIdle;

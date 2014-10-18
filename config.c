@@ -20,6 +20,9 @@ cDesignerConfig::cDesignerConfig() {
     rerunAmount = 10;
     rerunDistance = 2;
     rerunMaxChannel = 0;
+    //menu display style, display menu items 
+    //one after each other or in one step
+    blockFlush = 1;
 }
 
 cDesignerConfig::~cDesignerConfig() {
@@ -114,6 +117,7 @@ bool cDesignerConfig::SetupParse(const char *Name, const char *Value) {
     else if (!strcasecmp(Name, "RerunAmount"))             rerunAmount = atoi(Value);
     else if (!strcasecmp(Name, "RerunDistance"))           rerunDistance = atoi(Value);
     else if (!strcasecmp(Name, "RerunMaxChannel"))         rerunMaxChannel = atoi(Value);
+    else if (!strcasecmp(Name, "BlockFlush"))              blockFlush = atoi(Value);
     else return false;
     return true;
 }

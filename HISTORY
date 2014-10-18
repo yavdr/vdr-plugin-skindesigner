@@ -23,3 +23,4 @@ Version 0.0.2
 - added vps token in menudetailepg
 - implemented cSDDisplayMenu::GetTextAreaFont()
 - introduced new viewelement audioinfo in displaychannel
+- added setup option to choose Menu Item display method between "at one go" and "after one another"

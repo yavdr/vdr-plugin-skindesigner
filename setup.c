@@ -2,6 +2,8 @@
 
 cSkinDesignerSetup::cSkinDesignerSetup() {
     data = config;
+    menuDisplayStyle[0] = tr("after one another");
+    menuDisplayStyle[1] = tr("at one go");
     Setup();
 }
 
@@ -12,6 +14,8 @@ cSkinDesignerSetup::~cSkinDesignerSetup() {
 void cSkinDesignerSetup::Setup(void) {
     int current = Current();
     Clear();
+
+    Add(new cMenuEditStraItem(tr("Menu Item display method"), &data.blockFlush, 2, menuDisplayStyle));
 
     cString message = cString::sprintf("---------------- %s ----------------", tr("Reruns"));
     Add(new cOsdItem(*message));
@@ -91,4 +95,5 @@ void cSkinDesignerSetup::Store(void) {
     SetupStore("RerunAmount", config.rerunAmount);
     SetupStore("RerunDistance", config.rerunDistance);
     SetupStore("RerunMaxChannel", config.rerunMaxChannel);
+    SetupStore("BlockFlush", config.blockFlush);
 }

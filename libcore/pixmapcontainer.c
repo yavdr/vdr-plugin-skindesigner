@@ -56,7 +56,7 @@ bool cPixmapContainer::CreateOsd(int Left, int Top, int Width, int Height) {
     return false;
 }
 
-void cPixmapContainer::LockFlush(void) { 
+void cPixmapContainer::LockFlush(void) {
     flushState = fsLock; 
 }
 

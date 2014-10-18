@@ -46,7 +46,9 @@ public:
     int rerunAmount;
     int rerunDistance;
     int rerunMaxChannel;
+    int blockFlush;
 };
+
 #ifdef DEFINE_CONFIG
     bool firstDisplay = true;
     cDesignerConfig config;

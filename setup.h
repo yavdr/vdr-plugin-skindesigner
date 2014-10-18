@@ -8,7 +8,8 @@ class cSkinDesignerSetup : public cMenuSetupPage {
         cSkinDesignerSetup(void);
         virtual ~cSkinDesignerSetup();
     private:
-        cDesignerConfig data; 
+        cDesignerConfig data;
+        const char *menuDisplayStyle[2];
         void Setup(void);
         virtual eOSState ProcessKey(eKeys Key);
         virtual void Store(void);
