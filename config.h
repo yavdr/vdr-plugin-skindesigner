@@ -9,6 +9,7 @@
 #include <vdr/plugin.h>
 #include "libcore/fontmanager.h"
 #include "libcore/imagecache.h"
+#include "libcore/recfolderinfo.h"
 
 class cDesignerConfig {
 private:
@@ -67,12 +68,14 @@ public:
     cFontManager *fontManager = NULL;
     cImageCache *imgCache = NULL;
     cTheme Theme;
+    cRecordingsFolderInfo recFolderInfo(Recordings);
 #else
     extern bool firstDisplay;
     extern cDesignerConfig config;
     extern cFontManager *fontManager;
     extern cImageCache *imgCache;
     extern cTheme Theme;
+    extern cRecordingsFolderInfo recFolderInfo;
 #endif
 
 #endif //__DESIGNER_CONFIG_H

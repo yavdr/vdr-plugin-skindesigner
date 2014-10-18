@@ -2,6 +2,7 @@
 #include "../services/scraper2vdr.h"
 #include "../config.h"
 #include "../libcore/helpers.h"
+#include "../libcore/recfolderinfo.h"
 #include <sstream>
 #include <algorithm>
 
@@ -611,12 +612,20 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
 
     string name = recording->Name() ? recording->Name() : "";
     string buffer = "";
+    stringstream folderName;
     try {
         vector<string> tokens;
         istringstream f(name.c_str());
         string s;
+        int i=0;
         while (getline(f, s, FOLDERDELIMCHAR)) {
             tokens.push_back(s);
+            if (isFolder && i <= level) {
+                if (i > 0)
+                    folderName << FOLDERDELIMCHAR;
+                folderName << s;
+                i++;
+            }
         }
         buffer = tokens.at(level);
         if (!isFolder && recording->IsEdited()) {
@@ -625,6 +634,7 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     } catch (...) {
         buffer = name.c_str();
     }
+
     stringTokens.insert(pair<string,string>("name", buffer.c_str()));
     intTokens.insert(pair<string,int>("new", recording->IsNew()));
     intTokens.insert(pair<string,int>("newrecordingsfolder", newRecs));
@@ -637,12 +647,24 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     event = info->GetEvent();
     if (!event) return;
 
-    string recDate = *(event->GetDateString());
-    string recTime = *(event->GetTimeString());
-    if (recDate.find("1970") != string::npos) {
-        time_t start = recording->Start();
-        recDate = *DateString(start);
-        recTime = *TimeString(start);
+
+    string recDate = "";
+    string recTime = "";
+
+    if (isFolder) {
+        cRecordingsFolderInfo::cFolderInfo *folderInfo = recFolderInfo.Get(folderName.str().c_str());
+        if (folderInfo) {
+            recDate = *DateString(folderInfo->Latest);
+            recTime = *TimeString(folderInfo->Latest);
+        }
+    } else {
+        recDate = *(event->GetDateString());
+        recTime = *(event->GetTimeString());
+        if (recDate.find("1970") != string::npos) {
+            time_t start = recording->Start();
+            recDate = *DateString(start);
+            recTime = *TimeString(start);
+        }
     }
 
     time_t startTime = event->StartTime();
