@@ -16,6 +16,9 @@ private:
     bool epgImagePathSet;
     bool skinPathSet;
     bool logoPathSet;
+    cRect osdSize;
+    string osdSkin;
+    string osdTheme;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
@@ -29,6 +32,10 @@ public:
     bool GetSkin(string &skin);
     void SetChannelLogoSize(void);
     void CheckDecimalPoint(void);
+    void SetSkin(void);
+    bool SkinChanged(void);
+    void SetOSDSize(void);
+    bool OsdSizeChanged(void);
     cString logoExtension;
     cString skinPath;
     cString logoPath;

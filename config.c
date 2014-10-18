@@ -23,6 +23,10 @@ cDesignerConfig::cDesignerConfig() {
     //menu display style, display menu items 
     //one after each other or in one step
     blockFlush = 1;
+    //remember current skin and theme    
+    SetSkin();
+    //remember osd size   
+    SetOSDSize();
 }
 
 cDesignerConfig::~cDesignerConfig() {
@@ -99,6 +103,47 @@ void cDesignerConfig::CheckDecimalPoint(void) {
         replaceDecPoint = true;
         decPoint = decimalPoint[0];
     }
+}
+
+void cDesignerConfig::SetSkin(void) {
+    osdSkin =  Setup.OSDSkin;
+    osdTheme = Setup.OSDTheme;
+}
+
+bool cDesignerConfig::SkinChanged(void) {
+    bool changed = false;
+    if (osdSkin.compare(Setup.OSDSkin) != 0) {
+        dsyslog("skindesigner: skin changed from %s to %s", osdSkin.c_str(), Setup.OSDSkin);
+        changed = true;
+    }
+    if (osdTheme.compare(Setup.OSDTheme) != 0) {
+        dsyslog("skindesigner: theme changed from %s to %s", osdTheme.c_str(), Setup.OSDTheme);
+        changed = true;
+    }
+    if (changed)
+        SetSkin();
+    return changed;
+}
+
+void cDesignerConfig::SetOSDSize(void) {
+    osdSize.SetWidth(cOsd::OsdWidth());
+    osdSize.SetHeight(cOsd::OsdHeight());
+    osdSize.SetX(cOsd::OsdLeft());
+    osdSize.SetY(cOsd::OsdTop());
+}
+
+bool cDesignerConfig::OsdSizeChanged(void) {
+   if ((osdSize.Width() != cOsd::OsdWidth()) ||
+        (osdSize.Height() != cOsd::OsdHeight()) ||
+        (osdSize.X() != cOsd::OsdLeft()) ||
+        (osdSize.Y() != cOsd::OsdTop())) {
+        dsyslog("skindesigner: osd size changed");
+        dsyslog("skindesigner: old osd size: top %d left %d size %d * %d", osdSize.X(), osdSize.Y(), osdSize.Width(), osdSize.Height());
+        SetOSDSize();
+        dsyslog("skindesigner: new osd size: top %d left %d size %d * %d", osdSize.X(), osdSize.Y(), osdSize.Width(), osdSize.Height());
+        return true;
+    }
+    return false; 
 }
 
 cString cDesignerConfig::CheckSlashAtEnd(std::string path) {

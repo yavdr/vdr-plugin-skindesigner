@@ -7,7 +7,7 @@ cSkinDesigner::cSkinDesigner(string skin) : cSkin(skin.c_str(), &::Theme) {
 
     backupSkin = NULL;
     useBackupSkin = false;
-
+    
     globals = NULL;
     channelTemplate = NULL;
     menuTemplate = NULL;
@@ -15,6 +15,7 @@ cSkinDesigner::cSkinDesigner(string skin) : cSkin(skin.c_str(), &::Theme) {
     replayTemplate = NULL;
     volumeTemplate = NULL;
     audiotracksTemplate = NULL;
+
     dsyslog("skindesigner: skin %s started", skin.c_str());
 }
 
@@ -30,43 +31,10 @@ const char *cSkinDesigner::Description(void) {
   return skin.c_str();
 }
 
-void cSkinDesigner::Init(void) {
-    dsyslog("skindesigner: initializing skin %s", skin.c_str());
-    SetOSDSize();
-    osdSkin =  Setup.OSDSkin;
-    osdTheme = Setup.OSDTheme;
-
-    config.SetChannelLogoSize();
-    config.CheckDecimalPoint();
-    
-    if (fontManager)
-        delete fontManager;
-    fontManager = new cFontManager();
-    if (imgCache)
-        delete imgCache;
-    imgCache = new cImageCache();
-    imgCache->SetPathes();
-
-    cStopWatch watch;
-    bool ok = LoadTemplates();
-    if (!ok) {
-        esyslog("skindesigner: error during loading of templates - using LCARS as backup");
-        backupSkin = new cSkinLCARS();
-        useBackupSkin = true;
-    } else {
-        CacheTemplates();
-        watch.Stop("templates loaded and cache created");
-    }
-    init = false;
-}
-
 cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
-    if (init) {
-        Init();
-    }
     cSkinDisplayChannel *displayChannel = NULL;
     if (!useBackupSkin) {
-        ReloadCaches();
+        Init();
         displayChannel = new cSDDisplayChannel(channelTemplate, WithInfo);
     } else {
         displayChannel = backupSkin->DisplayChannel(WithInfo);
@@ -75,12 +43,9 @@ cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
 }
 
 cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
-    if (init) {
-        Init();
-    }
     cSkinDisplayMenu *displayMenu = NULL;
     if (!useBackupSkin) {
-        ReloadCaches();
+        Init();
         firstDisplay = false;
         displayMenu = new cSDDisplayMenu(menuTemplate);
     } else {
@@ -90,12 +55,9 @@ cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
 }
 
 cSkinDisplayReplay *cSkinDesigner::DisplayReplay(bool ModeOnly) {
-    if (init) {
-        Init();
-    }
     cSkinDisplayReplay *displayReplay = NULL;
     if (!useBackupSkin) {
-        ReloadCaches();
+        Init();
         displayReplay = new cSDDisplayReplay(replayTemplate, ModeOnly);
     } else {
         displayReplay = backupSkin->DisplayReplay(ModeOnly);
@@ -104,12 +66,9 @@ cSkinDisplayReplay *cSkinDesigner::DisplayReplay(bool ModeOnly) {
 }
 
 cSkinDisplayVolume *cSkinDesigner::DisplayVolume(void) {
-    if (init) {
-        Init();
-    }
     cSkinDisplayVolume *displayVolume = NULL;
     if (!useBackupSkin) {
-        ReloadCaches();
+        Init();
         displayVolume = new cSDDisplayVolume(volumeTemplate);
     } else {
         displayVolume = backupSkin->DisplayVolume();
@@ -118,12 +77,9 @@ cSkinDisplayVolume *cSkinDesigner::DisplayVolume(void) {
 }
 
 cSkinDisplayTracks *cSkinDesigner::DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks) {
-    if (init) {
-        Init();
-    }
     cSkinDisplayTracks *displayTracks = NULL;
     if (!useBackupSkin) {
-        ReloadCaches();
+        Init();
         displayTracks = new cSDDisplayTracks(audiotracksTemplate, Title, NumTracks, Tracks);
     } else {
         displayTracks = backupSkin->DisplayTracks(Title, NumTracks, Tracks);
@@ -132,12 +88,9 @@ cSkinDisplayTracks *cSkinDesigner::DisplayTracks(const char *Title, int NumTrack
 }
 
 cSkinDisplayMessage *cSkinDesigner::DisplayMessage(void) {
-    if (init) {
-        Init();
-    }
     cSkinDisplayMessage *displayMessage = NULL;
     if (!useBackupSkin) {
-        ReloadCaches();
+        Init();
         displayMessage = new cSDDisplayMessage(messageTemplate);
     } else {
         displayMessage = backupSkin->DisplayMessage();
@@ -204,6 +157,40 @@ void cSkinDesigner::ListCustomTokens(void) {
 /*********************************************************************************
 * PRIVATE FUNCTIONS
 *********************************************************************************/    
+void cSkinDesigner::Init(void) {
+    if (init || config.OsdSizeChanged() || config.SkinChanged()) {
+        
+        if (init) {
+            config.SetSkin();
+            config.SetOSDSize();
+        }
+        dsyslog("skindesigner: initializing skin %s", skin.c_str());
+        
+        config.SetChannelLogoSize();
+        config.CheckDecimalPoint();
+        
+        if (fontManager)
+            delete fontManager;
+        fontManager = new cFontManager();
+        if (imgCache)
+            delete imgCache;
+        imgCache = new cImageCache();
+        imgCache->SetPathes();
+
+        cStopWatch watch;
+        bool ok = LoadTemplates();
+        if (!ok) {
+            esyslog("skindesigner: error during loading of templates - using LCARS as backup");
+            backupSkin = new cSkinLCARS();
+            useBackupSkin = true;
+        } else {
+            CacheTemplates();
+            watch.Stop("templates loaded and cache created");
+        }
+        init = false;
+    }
+}
+
 void cSkinDesigner::DeleteTemplates(void) {
     if (channelTemplate) {
         delete channelTemplate;
@@ -232,7 +219,8 @@ void cSkinDesigner::DeleteTemplates(void) {
 }
 
 bool cSkinDesigner::LoadTemplates(void) {
-    
+    if (globals)
+        delete globals;
     globals = new cGlobals();
     bool ok = globals->ReadFromXML();
     if (!ok) {
@@ -333,47 +321,3 @@ void cSkinDesigner::CacheTemplates(void) {
     imgCache->Debug(false);
 }
 
-void cSkinDesigner::ReloadCaches(void) {
-    if (OsdSizeChanged() || ThemeChanged()) {
-        cStopWatch watch;
-        bool ok = LoadTemplates();
-        if (ok) {
-            CacheTemplates();
-        }
-        watch.Stop("templates reloaded and cache recreated");
-    }
-}
-
-void cSkinDesigner::SetOSDSize(void) {
-    osdSize.SetWidth(cOsd::OsdWidth());
-    osdSize.SetHeight(cOsd::OsdHeight());
-    osdSize.SetX(cOsd::OsdLeft());
-    osdSize.SetY(cOsd::OsdTop());
-}
-
-bool cSkinDesigner::OsdSizeChanged(void) {
-   if ((osdSize.Width() != cOsd::OsdWidth()) ||
-        (osdSize.Height() != cOsd::OsdHeight()) ||
-        (osdSize.X() != cOsd::OsdLeft()) ||
-        (osdSize.Y() != cOsd::OsdTop())) {
-        dsyslog("skindesigner: osd size changed");
-        dsyslog("skindesigner: old osd size: top %d left %d size %d * %d", osdSize.X(), osdSize.Y(), osdSize.Width(), osdSize.Height());
-        SetOSDSize();
-        dsyslog("skindesigner: new osd size: top %d left %d size %d * %d", osdSize.X(), osdSize.Y(), osdSize.Width(), osdSize.Height());
-        return true;
-    }
-    return false; 
-}
-
-bool cSkinDesigner::ThemeChanged(void) {
-    bool changed = false;
-    if (osdSkin.compare(Setup.OSDSkin) != 0) {
-        osdSkin = Setup.OSDSkin;
-        changed = true;
-    }
-    if (osdTheme.compare(Setup.OSDTheme) != 0) {
-        osdTheme = Setup.OSDTheme;
-        changed = true;
-    }
-    return changed;
-}

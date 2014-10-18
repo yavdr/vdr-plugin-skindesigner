@@ -18,9 +18,6 @@ private:
     string skin;
     cSkinLCARS *backupSkin;
     bool useBackupSkin;
-    cRect osdSize;
-    std::string osdSkin;
-    std::string osdTheme;
     cGlobals *globals;
     cTemplate *channelTemplate;
     cTemplate *menuTemplate;
@@ -28,13 +25,11 @@ private:
     cTemplate *replayTemplate;
     cTemplate *volumeTemplate;
     cTemplate *audiotracksTemplate;
-    void DeleteTemplates(void);
+    void Init(void);
     void ReloadCaches(void);
+    void DeleteTemplates(void);
     bool LoadTemplates(void);
     void CacheTemplates(void);
-    void SetOSDSize(void);
-    bool OsdSizeChanged(void);
-    bool ThemeChanged(void);
 public:
     cSkinDesigner(string skin);
     virtual ~cSkinDesigner(void);
@@ -45,7 +40,6 @@ public:
     virtual cSkinDisplayVolume *DisplayVolume(void);
     virtual cSkinDisplayTracks *DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks);
     virtual cSkinDisplayMessage *DisplayMessage(void);
-    void Init(void);
     void ActivateBackupSkin(void) { useBackupSkin = true; };
     void Reload(void);
     void ListAvailableFonts(void);
