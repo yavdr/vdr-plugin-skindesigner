@@ -635,36 +635,38 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
         buffer = name.c_str();
     }
 
+    const cRecording *usedRecording = recording;
+
+    if (isFolder) {
+        cRecordingsFolderInfo::cFolderInfo *folderInfo = recFolderInfo.Get(folderName.str().c_str());
+        if (folderInfo) {
+            cRecording *newestRec = Recordings.GetByName(*folderInfo->LatestFileName);
+            if (newestRec) {
+                usedRecording = newestRec;
+            }
+            delete folderInfo;
+        }
+    }
+
     stringTokens.insert(pair<string,string>("name", buffer.c_str()));
-    intTokens.insert(pair<string,int>("new", recording->IsNew()));
+    intTokens.insert(pair<string,int>("new", usedRecording->IsNew()));
     intTokens.insert(pair<string,int>("newrecordingsfolder", newRecs));
     intTokens.insert(pair<string,int>("numrecordingsfolder", total));
-    intTokens.insert(pair<string,int>("cutted", recording->IsEdited()));
+    intTokens.insert(pair<string,int>("cutted", usedRecording->IsEdited()));
 
     const cEvent *event = NULL;
-    const cRecordingInfo *info = recording->Info();
+    const cRecordingInfo *info = usedRecording->Info();
     if (!info) return;
     event = info->GetEvent();
     if (!event) return;
 
 
-    string recDate = "";
-    string recTime = "";
-
-    if (isFolder) {
-        cRecordingsFolderInfo::cFolderInfo *folderInfo = recFolderInfo.Get(folderName.str().c_str());
-        if (folderInfo) {
-            recDate = *DateString(folderInfo->Latest);
-            recTime = *TimeString(folderInfo->Latest);
-        }
-    } else {
-        recDate = *(event->GetDateString());
-        recTime = *(event->GetTimeString());
-        if (recDate.find("1970") != string::npos) {
-            time_t start = recording->Start();
-            recDate = *DateString(start);
-            recTime = *TimeString(start);
-        }
+    string recDate = *(event->GetDateString());
+    string recTime = *(event->GetTimeString());
+    if (recDate.find("1970") != string::npos) {
+        time_t start = usedRecording->Start();
+        recDate = *DateString(start);
+        recTime = *TimeString(start);
     }
 
     time_t startTime = event->StartTime();
@@ -674,7 +676,7 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
 
     int duration = event->Duration() / 60;
-    int recDuration = recording->LengthInSeconds();
+    int recDuration = usedRecording->LengthInSeconds();
     recDuration = (recDuration>0)?(recDuration / 60):0;
     stringTokens.insert(pair<string,string>("date", recDate.c_str()));
     stringTokens.insert(pair<string,string>("time", recTime.c_str()));
@@ -686,7 +688,7 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
 
     static cPlugin *pScraper = GetScraperPlugin();
-    if (!pScraper || !recording) {
+    if (!pScraper || !usedRecording) {
         intTokens.insert(pair<string,int>("hasposterthumbnail", false));
         intTokens.insert(pair<string,int>("thumbnailbwidth", -1));
         intTokens.insert(pair<string,int>("thumbnailheight", -1));
@@ -696,7 +698,7 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
 
     ScraperGetPosterThumb call;
     call.event = NULL;
-    call.recording = recording;
+    call.recording = usedRecording;
     if (pScraper->Service("GetPosterThumb", &call)) {
         intTokens.insert(pair<string,int>("hasposterthumbnail", true));
         intTokens.insert(pair<string,int>("thumbnailbwidth", call.poster.width));

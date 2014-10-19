@@ -531,15 +531,29 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     } catch (...) {
         buffer = name.c_str();
     }
+
+    const cRecording *usedRecording = recording;
+
+    if (isFolder) {
+        cRecordingsFolderInfo::cFolderInfo *folderInfo = recFolderInfo.Get(folderName.str().c_str());
+        if (folderInfo) {
+            cRecording *newestRec = Recordings.GetByName(*folderInfo->LatestFileName);
+            if (newestRec) {
+                usedRecording = newestRec;
+            }
+            delete folderInfo;
+        }
+    }
+
     stringTokens.insert(pair<string,string>("name", buffer.c_str()));
-    intTokens.insert(pair<string,int>("new", recording->IsNew()));
+    intTokens.insert(pair<string,int>("new", usedRecording->IsNew()));
     intTokens.insert(pair<string,int>("newrecordingsfolder", newRecs));
     intTokens.insert(pair<string,int>("numrecordingsfolder", total));
-    intTokens.insert(pair<string,int>("cutted", recording->IsEdited()));
+    intTokens.insert(pair<string,int>("cutted", usedRecording->IsEdited()));
 
-    SetScraperPoster(NULL, recording);
+    SetScraperPoster(NULL, usedRecording);
 
-    const cRecordingInfo *info = recording->Info();
+    const cRecordingInfo *info = usedRecording->Info();
     if (!info) return;
     
     stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
@@ -548,23 +562,12 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     const cEvent *event = info->GetEvent();
     if (!event) return;
 
-    string recDate = "";
-    string recTime = "";
-
-    if (isFolder) {
-        cRecordingsFolderInfo::cFolderInfo *folderInfo = recFolderInfo.Get(folderName.str().c_str());
-        if (folderInfo) {
-            recDate = *DateString(folderInfo->Latest);
-            recTime = *TimeString(folderInfo->Latest);
-        }
-    } else {
-        recDate = *(event->GetDateString());
-        recTime = *(event->GetTimeString());
-        if (recDate.find("1970") != string::npos) {
-            time_t start = recording->Start();
-            recDate = *DateString(start);
-            recTime = *TimeString(start);
-        }
+    string recDate = *(event->GetDateString());
+    string recTime = *(event->GetTimeString());
+    if (recDate.find("1970") != string::npos) {
+        time_t start = usedRecording->Start();
+        recDate = *DateString(start);
+        recTime = *TimeString(start);
     }
 
     time_t startTime = event->StartTime();
@@ -574,7 +577,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
 
     int duration = event->Duration() / 60;
-    int recDuration = recording->LengthInSeconds();
+    int recDuration = usedRecording->LengthInSeconds();
     recDuration = (recDuration>0)?(recDuration / 60):0;
     stringTokens.insert(pair<string,string>("date", recDate.c_str()));
     stringTokens.insert(pair<string,string>("time", recTime.c_str()));

@@ -11,6 +11,7 @@ private:
   cString   _name;
   time_t    _latest;
   int       _count;
+  cString   _latestFileName;
 
   void UpdateData(cRecording *Recording);
   cFolderInfoIntern *FindSubFolder(const char *Name) const;
@@ -33,12 +34,13 @@ public:
 };
 
 
-cRecordingsFolderInfo::cFolderInfo::cFolderInfo(const char *Name, const char *FullName, time_t Latest, int Count)
+cRecordingsFolderInfo::cFolderInfo::cFolderInfo(const char *Name, const char *FullName, time_t Latest, int Count, const char *LatestFileName)
 {
   this->Name = Name;
   this->FullName = FullName;
   this->Latest = Latest;
   this->Count = Count;
+  this->LatestFileName= LatestFileName;
 }
 
 
@@ -65,8 +67,15 @@ void cRecordingsFolderInfo::Rebuild(void)
   _recordings.StateChanged(_recState);
   cFolderInfoIntern *info;
   for (cRecording *rec = _recordings.First(); rec; rec = _recordings.Next(rec)) {
-      info = _root->Find(*rec->Folder(), true);
+      //cRecording::Folder() first available since VDR 2.1.2
+      cString folder("");
+      char *folderName = strdup(rec->Name());
+      if (char *s = strrchr(folderName, FOLDERDELIMCHAR))
+        folder = cString(folderName, s);
+      info = _root->Find(*folder, true);
+      //info = _root->Find(*rec->Folder(), true);
       info->Add(rec);
+      free(folderName);
       }
 }
 
@@ -97,6 +106,7 @@ cRecordingsFolderInfo::cFolderInfoIntern::cFolderInfoIntern(cFolderInfoIntern *P
 ,_name(Name)
 ,_latest(0)
 ,_count(0)
+,_latestFileName("")
 {
   _subFolders = new cList<cFolderInfoIntern>();
 }
@@ -145,8 +155,10 @@ void cRecordingsFolderInfo::cFolderInfoIntern::UpdateData(cRecording *Recording)
 
   // update date if newer
   time_t recdate = Recording->Start();
-  if (_latest < recdate)
+  if (_latest < recdate) {
      _latest = recdate;
+     _latestFileName = Recording->FileName();
+     }
 }
 
 cRecordingsFolderInfo::cFolderInfoIntern *cRecordingsFolderInfo::cFolderInfoIntern::FindSubFolder(const char *Name) const
@@ -170,7 +182,7 @@ void cRecordingsFolderInfo::cFolderInfoIntern::Add(cRecording *Recording)
 
 cRecordingsFolderInfo::cFolderInfo *cRecordingsFolderInfo::cFolderInfoIntern::GetInfo(void) const
 {
-  return new cRecordingsFolderInfo::cFolderInfo(*_name, *FullName(), _latest, _count);
+  return new cRecordingsFolderInfo::cFolderInfo(*_name, *FullName(), _latest, _count, *_latestFileName);
 }
 
 cString cRecordingsFolderInfo::cFolderInfoIntern::FullName(void) const
