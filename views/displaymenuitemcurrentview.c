@@ -558,7 +558,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     
     stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
     stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
-
+    
     const cEvent *event = info->GetEvent();
     if (!event) return;
 

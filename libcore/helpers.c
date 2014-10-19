@@ -138,7 +138,6 @@ string &trim(string &s) {
     return ltrim(rtrim(s));
 }
 
-
 // split: receives a char delimiter; returns a vector of strings
 // By default ignores repeated delimiters, unless argument rep == 1.
 vector<string>& splitstring::split(char delim, int rep) {
