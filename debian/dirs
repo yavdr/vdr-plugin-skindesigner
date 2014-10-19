@@ -1,0 +1,4 @@
+var/cache/vdr/plugins
+var/cache/vdr/plugins/skindesigner
+usr/share/vdr/plugins/skindesigner/skins
+
