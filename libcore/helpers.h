@@ -37,4 +37,8 @@ public:
 	void Report(const char* message);
 	void Stop(const char* message);
 };
+
+string GetScreenResolutionString(int width, int height, bool *isHD);
+string GetScreenAspectString(double aspect, bool *isWideScreen);
+
 #endif // __HELPERS_H
