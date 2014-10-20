@@ -4,6 +4,7 @@
     the correct column widths -->
     <menuitems x="0" y="0" orientation="vertical" width="100%" height="100%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="16">
         <!-- Available Variables default menu listelement:
+        {nummenuitem}               number of item in list, starts with 1
         {column1}                   text of column1
         {column2}                   text of column2
         {column3}                   text of column3

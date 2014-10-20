@@ -235,6 +235,7 @@
 
     <menuitems x="0" y="7%" orientation="vertical" width="70%" height="56%" align="center" numlistelements="8">
         <!-- Available Variables main menu listelement:
+        {nummenuitem}             number of item in list, starts with 1
         {label}                   label of menu item
         {number}                  number of menu item (or empty string if not set)
         {icon}                    path of appropriate icon

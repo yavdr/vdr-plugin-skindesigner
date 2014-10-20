@@ -1,6 +1,7 @@
 <menuchannels x="0" y="0" width="100%" height="100%" fadetime="0">
     <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
         <!-- Available Variables channels menu listelement:
+        {nummenuitem}             number of item in list, starts with 1
         {number}                  number of the displayed channel
         {name}                    name of the displayed channel
         {channelid}               ChannelID as path to display channel logo

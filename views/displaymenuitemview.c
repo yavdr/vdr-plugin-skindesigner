@@ -137,6 +137,7 @@ void cDisplayMenuItemDefaultView::SetTokens(void) {
     }
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
 }
 
 void cDisplayMenuItemDefaultView::Prepare(void) {
@@ -187,6 +188,7 @@ void cDisplayMenuItemMainView::SetTokens(void) {
 
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
 }
 
 void cDisplayMenuItemMainView::Prepare(void) {
@@ -282,6 +284,7 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
     itemInit = false;
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
     intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnow", (cat == mcScheduleNow) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnext", (cat == mcScheduleNext) ? true: false));
@@ -404,6 +407,7 @@ void cDisplayMenuItemChannelsView::SetTokens(void) {
     //general channel information
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
     intTokens.insert(pair<string,int>("number", channel->Number()));
     intTokens.insert(pair<string,int>("transponder", channel->Transponder()));
     intTokens.insert(pair<string,int>("frequency", channel->Frequency()));
@@ -498,6 +502,7 @@ void cDisplayMenuItemTimersView::SetTokens(void) {
     itemInit = false;
  
     intTokens.insert(pair<string,int>("current", current));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
     intTokens.insert(pair<string,int>("flagactive", timer->HasFlags(tfActive)));
     intTokens.insert(pair<string,int>("flaginstant", timer->HasFlags(tfInstant)));
     intTokens.insert(pair<string,int>("flagvps", timer->HasFlags(tfVps)));
@@ -607,6 +612,7 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     if (!recording) return;
 
     intTokens.insert(pair<string,int>("current", current));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
     bool isFolder = (total > 0) ? true : false;
     intTokens.insert(pair<string,int>("folder", isFolder));
 
