@@ -1,6 +1,7 @@
 #include "../services/scraper2vdr.h"
 #include "../libcore/helpers.h"
 #include "../libcore/recfolderinfo.h"
+#include "../libcore/extrecinfo.h"
 #include "displaymenuitemcurrentview.h"
 
 
@@ -504,6 +505,8 @@ void cDisplayMenuItemCurrentRecordingView::Prepare(void) {
 void cDisplayMenuItemCurrentRecordingView::Render(void) {
     if (!recording)
         return;
+    map < string, vector< map< string, string > > > loopTokens;
+
     bool isFolder = (total > 0) ? true : false;
     intTokens.insert(pair<string,int>("folder", isFolder));
 
@@ -553,9 +556,44 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
 
     SetScraperPoster(NULL, usedRecording);
 
+
     const cRecordingInfo *info = usedRecording->Info();
     if (!info) return;
-    
+
+    bool extRecinfoAvailable = false;    
+    if (info->Aux()) {
+        cExtRecInfo extRecInfo(info->Aux());
+        if (extRecInfo.Parse()) {
+            extRecinfoAvailable = true;
+            intTokens.insert(pair<string,int>("screenwidth", extRecInfo.resWidth));
+            intTokens.insert(pair<string,int>("screenheight", extRecInfo.resHeight));
+            intTokens.insert(pair<string,int>("isHD", extRecInfo.isHD));
+            intTokens.insert(pair<string,int>("isWideScreen", extRecInfo.isWideScreen));
+            intTokens.insert(pair<string,int>("isDolby", extRecInfo.isDolby));
+            stringTokens.insert(pair<string,string>("resolution", extRecInfo.resString));
+            stringTokens.insert(pair<string,string>("aspect", extRecInfo.aspectratio));
+            stringTokens.insert(pair<string,string>("codec", extRecInfo.codec));
+            stringTokens.insert(pair<string,string>("format", extRecInfo.format));
+            stringTokens.insert(pair<string,string>("framerate", extRecInfo.framerate));
+            stringTokens.insert(pair<string,string>("interlace", extRecInfo.interlace));
+            intTokens.insert(pair<string,int>("numtracks", extRecInfo.tracks.size()));
+            vector< map<string,string> > trackTokens;
+            int  trackNumber = 1;
+            for (vector<tAudioTrack>::iterator track = extRecInfo.tracks.begin(); track != extRecInfo.tracks.end(); track++) {
+                map<string,string> element;
+                stringstream trackNum;
+                trackNum << trackNumber++;
+                element.insert(pair<string,string>("track[num]", trackNum.str()));
+                element.insert(pair<string,string>("track[codec]", (*track).codec));
+                element.insert(pair<string,string>("track[bitrate]", (*track).bitrate));
+                element.insert(pair<string,string>("track[language]", (*track).language));
+                trackTokens.push_back(element);
+            }            
+            loopTokens.insert(pair<string, vector< map< string, string > > >("track", trackTokens));
+        }
+    }
+    intTokens.insert(pair<string,int>("extrecinfoavailable", extRecinfoAvailable));
+
     stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
     stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
     
@@ -588,7 +626,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     intTokens.insert(pair<string,int>("durationeventhours", duration / 60));
     stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
     SetTokensPosMenuItem();
-    DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens);
+    DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
 }
 
 void cDisplayMenuItemCurrentRecordingView::Clear(void) {

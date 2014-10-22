@@ -27,3 +27,6 @@ Version 0.0.2
 - fixed bug that new skin was not properly loaded sometimes when skin was changed in OSD Setup menu
 - fixed bug that new font was displayed first after VDR restart when font was changed in OSD Setup menu
 - display always newest recording of folders in recordings list, thanks@ Lars Hanisch for providing the patch
+- added extented recording information
+- added token {nummenuitem} as number of item in for every list, value starts with 1
+

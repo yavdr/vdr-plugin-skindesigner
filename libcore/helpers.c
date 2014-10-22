@@ -175,3 +175,46 @@ void cStopWatch::Report(const char* message) {
 void cStopWatch::Stop(const char* message) {
     dsyslog("skindesigner: %s - needed %d ms", message, (int)(cTimeMs::Now() - start));
 }
+
+//View Helpers
+string GetScreenResolutionString(int width, int height, bool *isHD) {
+    string name = "";
+    switch (width) {
+        case 1920:
+        case 1440:
+            name = "hd1080i";
+            *isHD = true;
+            break;
+        case 1280:
+            if (height == 720)
+                name = "hd720p";
+            else
+                name = "hd1080i";
+            *isHD = true;
+            break;
+        case 720:
+            name = "sd576i";
+            break;
+        default:
+            name = "sd576i";
+            break;
+    }
+    return name;
+}
+
+string GetScreenAspectString(double aspect, bool *isWideScreen) {
+    string name = "";
+    *isWideScreen = false;
+    if (aspect == 4.0/3.0) {
+        name = "4:3";
+        *isWideScreen = false;
+    } else if (aspect == 16.0/9.0) {
+        name = "16:9";
+        *isWideScreen = true;
+    } else if (aspect == 2.21) {
+        name = "21:9";
+        *isWideScreen = true;
+    }
+    return name;
+}
+

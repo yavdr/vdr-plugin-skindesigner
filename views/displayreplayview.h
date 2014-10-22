@@ -7,8 +7,6 @@
 class cDisplayReplayView : public cView {
 private:
     cString lastDate;
-    string GetScreenResolutionString(int width, int height, bool *isHD);
-    string GetScreenAspectString(double aspect, bool *isWideScreen);
     virtual void Action(void);
 public:
     cDisplayReplayView(cTemplateView *tmplView);

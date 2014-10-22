@@ -1,0 +1,4 @@
+General;<mediainfo>
+Video;<res_width>%Width%</res_width><res_height>%Height%</res_height><aspectratio>%DisplayAspectRatio/String%</aspectratio><codec>%Codec%</codec><format>%Format_Commercial%</format><framerate>%FrameRate%</framerate><interlace>%Interlacement%</interlace>
+Audio;<track><codec>%Format_Commercial%</codec><bitrate>%BitRate%</bitrate><language>%Language%</language></track>
+File_End;</mediainfo>

@@ -16,8 +16,6 @@ private:
     int lastAudioChannel;
     string lastTracDesc;
     string lastTrackLang;
-    string GetScreenResolutionString(int width, int height, bool *isHD);
-    string GetScreenAspectString(double aspect, bool *isWideScreen);
     string GetChannelSep(const cChannel *channel, bool prev);
     virtual void Action(void);
 public:
