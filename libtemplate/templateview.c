@@ -41,7 +41,7 @@ void cTemplateView::SetParameters(vector<pair<string, string> > &params) {
     parameters->SetParameters(params);
 }
 
-void cTemplateView::SetContainer(int x, int y, int width, int height) { 
+void cTemplateView::SetContainer(int x, int y, int width, int height) {
     containerX = x;
     containerY = y;
     containerWidth = width; 
@@ -341,7 +341,7 @@ void cTemplateView::PreCache(bool isSubview) {
     }
     //Calculate OSD Size
     parameters->CalculateParameters();
-    
+
     int osdX = parameters->GetNumericParameter(ptX);
     int osdY = parameters->GetNumericParameter(ptY);
     int osdWidth = parameters->GetNumericParameter(ptWidth);

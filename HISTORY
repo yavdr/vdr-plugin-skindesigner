@@ -28,5 +28,5 @@ Version 0.0.2
 - fixed bug that new font was displayed first after VDR restart when font was changed in OSD Setup menu
 - display always newest recording of folders in recordings list, thanks@ Lars Hanisch for providing the patch
 - added extented recording information
-- added token {nummenuitem} as number of item in for every list, value starts with 1
+- added token {nummenuitem} as number of item for every list, value starts with 1
 
