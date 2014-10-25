@@ -30,4 +30,4 @@ Version 0.0.2
 - added extented recording information
 - added token {nummenuitem} as number of item for every list, value starts with 1
 - fixed bug that x and y of subviews was not respected
-
+- if a subview is completely not set in a skin, the default menu is used 

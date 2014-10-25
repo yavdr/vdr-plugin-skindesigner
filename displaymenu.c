@@ -155,9 +155,9 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
     if (config.blockFlush)
         rootView->LockFlush();
     eMenuCategory cat = MenuCategory();
-    if (cat == mcMain) {
+    if (cat == mcMain && rootView->SubViewAvailable()) {
         list->AddMainMenuItem(Index, Text, Current, Selectable);
-    } else if (cat == mcSetup) {
+    } else if (cat == mcSetup && rootView->SubViewAvailable()) {
         list->AddSetupMenuItem(Index, Text, Current, Selectable);        
     } else {
         string *tabTexts = new string[MaxTabs];

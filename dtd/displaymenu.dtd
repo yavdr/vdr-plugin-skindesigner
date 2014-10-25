@@ -3,8 +3,8 @@
 <!ENTITY % functions SYSTEM "functions.dtd">
 
 <!ELEMENT displaymenu (background,header,datetime,message,colorbuttons,
-                       menudefault,menumain,menusetup,menuschedules,
-                       menutimers,menuchannels,menurecordings,
+                       menudefault,menumain*,menusetup*,menuschedules*,
+                       menutimers*,menuchannels*,menurecordings*,
                        menudetailedepg,menudetailedrecording,
                        menudetailedtext)>
 <!ATTLIST displaymenu
