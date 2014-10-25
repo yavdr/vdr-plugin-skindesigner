@@ -35,6 +35,7 @@ protected:
     void DrawText(int num, const cPoint &Point, const char *s, tColor ColorFg, tColor ColorBg, std::string fontName, int fontSize);
     void DrawRectangle(int num, const cRect &Rect, tColor Color);
     void DrawEllipse(int num, const cRect &Rect, tColor Color, int Quadrants = 0);
+    void DrawSlope(int num, const cRect &Rect, tColor Color, int Type);
     void DrawImage(int num, const cPoint &Point, const cImage &Image);
     void DrawBitmap(int num, const cPoint &Point, const cBitmap &Bitmap, tColor ColorFg = 0, tColor ColorBg = 0, bool Overlay = false);
     void Fill(int num, tColor Color);

@@ -83,6 +83,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptTransparency;
         } else if (!name.compare("quadrant")) {
             p.first = ptQuadrant;
+        } else if (!name.compare("type")) {
+            p.first = ptType;
         } else if (!name.compare("align")) {
             p.first = ptAlign;
         } else if (!name.compare("valign")) {
@@ -215,6 +217,7 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptLayer:
             case ptTransparency:
             case ptQuadrant:
+            case ptType:
             case ptNumElements:
             case ptFloatWidth:
             case ptFloatHeight:
@@ -299,6 +302,9 @@ void cTemplateFunction::CompleteParameters(void) {
             CalculateAlign(GetNumericParameter(ptWidth), GetNumericParameter(ptHeight));
             break;
         case ftDrawEllipse:
+            CalculateAlign(GetNumericParameter(ptWidth), GetNumericParameter(ptHeight));
+            break;
+        case ftDrawSlope:
             CalculateAlign(GetNumericParameter(ptWidth), GetNumericParameter(ptHeight));
             break;
         case ftDrawText:
@@ -439,6 +445,7 @@ int cTemplateFunction::GetWidth(bool cutted) {
         case ftDrawImage:
         case ftDrawRectangle:
         case ftDrawEllipse:
+        case ftDrawSlope:
         case ftDrawTextBox:
             funcWidth = GetNumericParameter(ptWidth);
             break;
@@ -459,6 +466,7 @@ int cTemplateFunction::GetHeight(void) {
         case ftDrawImage:
         case ftDrawRectangle:
         case ftDrawEllipse:
+        case ftDrawSlope:
             funcHeight = GetNumericParameter(ptHeight);
             break;
         case ftDrawTextBox: {
@@ -1265,6 +1273,9 @@ string cTemplateFunction::GetFuncName(void) {
         case ftDrawEllipse:
             name = "Function DrawEllipse";
             break;
+        case ftDrawSlope:
+            name = "Function DrawSlope";
+            break;
         case ftNone:
             name = "Undefined";
             break;
@@ -1331,6 +1342,9 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptQuadrant:
             name = "Quadrant";
+            break;
+        case ptType:
+            name = "Type";
             break;
         case ptAlign:
             name = "Align";

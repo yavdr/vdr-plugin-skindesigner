@@ -136,6 +136,15 @@ void cPixmapContainer::DrawEllipse(int num, const cRect &Rect, tColor Color, int
     pixmaps[num]->DrawEllipse(Rect, Color, Quadrants);
 }
 
+void cPixmapContainer::DrawSlope(int num, const cRect &Rect, tColor Color, int Type) {
+    if (checkRunning && !Running())
+        return;
+    cMutexLock MutexLock(&mutex);
+    if (!pixmaps[num])
+        return;
+    pixmaps[num]->DrawSlope(Rect, Color, Type);
+}
+
 void cPixmapContainer::DrawImage(int num, const cPoint &Point, const cImage &Image) {
     if (checkRunning && !Running())
         return;

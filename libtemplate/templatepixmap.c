@@ -107,6 +107,8 @@ void cTemplatePixmap::AddFunction(string name, vector<pair<string, string> > &pa
         type = ftDrawRectangle;
     } else if (!name.compare("drawellipse")) {
         type = ftDrawEllipse;
+    } else if (!name.compare("drawslope")) {
+        type = ftDrawSlope;
     }
 
     if (type == ftNone) {

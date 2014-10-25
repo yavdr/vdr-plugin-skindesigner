@@ -558,6 +558,20 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("quadrant");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
+    name = "drawslope";
+    attributes.clear();
+    attributes.insert("debug");
+    attributes.insert("condition");
+    attributes.insert("name");
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("align");
+    attributes.insert("valign");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("color");
+    attributes.insert("type");
+    funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 }
 
 /************************************************************************************

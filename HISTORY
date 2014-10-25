@@ -32,4 +32,6 @@ Version 0.0.2
 - fixed bug that x and y of subviews was not respected
 - if a subview is completely not set in a skin, the default menu is used
 - fixed a bug if displaydetailedtext is called without correct menucat (mailbox plugin)
+- implemented function drawslope, see Wiki for documentation
+
 
