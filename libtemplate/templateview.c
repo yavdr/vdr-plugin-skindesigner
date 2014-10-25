@@ -352,7 +352,11 @@ void cTemplateView::PreCache(bool isSubview) {
     for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         cTemplateViewElement *viewElement = it->second;
         viewElement->SetGlobals(globals);
-        viewElement->SetContainer(0, 0, osdWidth, osdHeight);
+        if (!isSubview)
+            viewElement->SetContainer(0, 0, osdWidth, osdHeight);
+        else
+            viewElement->SetContainer(osdX, osdY, osdWidth, osdHeight);
+        viewElement->CalculateParameters();
         viewElement->CalculatePixmapParameters();
         viewElement->SetPixOffset(pixOffset);
         pixOffset += viewElement->GetNumPixmaps();
@@ -362,13 +366,16 @@ void cTemplateView::PreCache(bool isSubview) {
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
         cTemplateViewList *viewList = it->second;
         viewList->SetGlobals(globals);
-        viewList->SetContainer(0, 0, osdWidth, osdHeight);
+        //viewlists are only in subviews
+        viewList->SetContainer(osdX, osdY, osdWidth, osdHeight);
+        viewList->CalculateParameters();
         viewList->CalculateListParameters();
     }
 
     //Cache ViewTabs
     for (vector<cTemplateViewTab*>::iterator tab = viewTabs.begin(); tab != viewTabs.end(); tab++) {
-        (*tab)->SetContainer(containerX, containerY, containerWidth, containerHeight);
+        //viewtabs are only in subviews
+        (*tab)->SetContainer(osdX, osdY, osdWidth, osdHeight);
         (*tab)->SetGlobals(globals);
         (*tab)->CalculateParameters();
     }

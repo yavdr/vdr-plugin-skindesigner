@@ -29,4 +29,5 @@ Version 0.0.2
 - display always newest recording of folders in recordings list, thanks@ Lars Hanisch for providing the patch
 - added extented recording information
 - added token {nummenuitem} as number of item for every list, value starts with 1
+- fixed bug that x and y of subviews was not respected
 
