@@ -612,6 +612,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("screenresolution");
     viewElementsAllowed.insert("signalquality");
     viewElementsAllowed.insert("signalqualityback");
+    viewElementsAllowed.insert("devices");
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("datetime");
     viewElementsAllowed.insert("message");
@@ -653,6 +654,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
             break;
         case veSignalQualityBack:
             name = "Signal Quality Background";
+            break;
+        case veDevices:
+            name = "Devices";
             break;
         case veScraperContent:
             name = "Scraper Content";
@@ -698,6 +702,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veSignalQuality;
     } else if (!sViewElement.compare("signalqualityback")) {
         ve = veSignalQualityBack;
+    } else if (!sViewElement.compare("devices")) {
+        ve = veDevices;
     } else if (!sViewElement.compare("scrapercontent")) {
         ve = veScraperContent;
     } else if (!sViewElement.compare("datetime")) {

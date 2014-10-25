@@ -17,6 +17,7 @@ cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplVi
     lastAudioChannel = -1;
     lastTracDesc = "";
     lastTrackLang = "";
+    InitDevices();
     DeleteOsdOnExit();
     SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
@@ -109,7 +110,8 @@ void cDisplayChannelView::DrawProgressBar(cString &start, cString &stop, int Cur
     intTokens.insert(pair<string, int>("duration", Total));
     intTokens.insert(pair<string, int>("elapsed", Current));
     intTokens.insert(pair<string, int>("remaining", Total - Current));
-    
+
+    ClearProgressBar();
     DrawViewElement(veProgressBar, &stringTokens, &intTokens);
 }
 
@@ -397,6 +399,29 @@ void cDisplayChannelView::ClearSignal(void) {
 
 void cDisplayChannelView::ClearSignalBackground(void) {
     ClearViewElement(veSignalQualityBack);
+}
+
+void cDisplayChannelView::DrawDevices(bool initial) {
+    if (!ViewElementImplemented(veDevices)) {
+        return;
+    }
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    map < string, vector< map< string, string > > > deviceLoopTokens;
+    vector< map< string, string > > devices;
+
+    bool changed = SetDevices(initial, &intTokens, &devices);
+    if (!changed)
+        return;
+
+    deviceLoopTokens.insert(pair< string, vector< map< string, string > > >("devices", devices));
+    
+    ClearViewElement(veDevices);
+    DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);
+}
+
+void cDisplayChannelView::ClearDevices(void) {
+    ClearViewElement(veDevices);
 }
 
 void cDisplayChannelView::DrawChannelGroups(const cChannel *Channel, cString ChannelName) {

@@ -34,6 +34,7 @@ Version 0.0.2
 - fixed a bug if displaydetailedtext is called without correct menucat (mailbox plugin)
 - implemented function drawslope, see Wiki for documentation
 - using default menu list in case an invalid MenuCategory is set
+- added device info in displaychannel, example in metrixHD
 
 
 

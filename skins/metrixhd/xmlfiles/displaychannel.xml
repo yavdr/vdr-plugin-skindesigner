@@ -173,6 +173,41 @@
     <signalqualityback>
     </signalqualityback>
 
+    <!-- Available Variables devices:
+    {numdevices}                number of available devices
+    {devices[]}                 array with available devices
+    {devices[num]}              number of current device
+    {devices[type]}             type of device (DVB-S, DVB-C, ...)
+    {devices[istuned]}          true if device is currently tuned to a transponder
+    {devices[livetv]}           true if device is currently playing livetv
+    {devices[recording]}        true if device is currently recording
+    {devices[hascam]}           true if device has a CAM
+    {devices[cam]}              number of CAM
+    {devices[signalstrength]}   signalstrength of devcie
+    {devices[signalquality]}    signalstrength of devcie
+    {devices[channelnumber]}    number of the currently tuned channel
+    {devices[channelname]}      name of the currently tuned channel
+    {devices[channelid]}        ID of the currently tuned channel
+    {devices[source]}           source of the currently tuned channel
+    -->
+    <devices>
+        <area x="70%" y="15%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
+            <fill color="{clrTransBlack}"/>
+        </area>
+        <area x="70%" y="15%" width="30%" height="{areaheight}/12 * {numdevices}" layer="2">
+            <loop name="devices" x="0" y="0" orientation="vertical" columnwidth="{areawidth}" rowheight="{areaheight} / {numdevices}" overflow="cut">
+                <drawtext name="label" x="5" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
+                <drawtext condition="{devices[hascam]}" x="{width(label)} + 15" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="(CAM {devices[cam]})" />
+                <drawtext condition="{devices[recording]} ++ {devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrRed}" text="LiveTV, Recording ({devices[channelname]}) " />
+                <drawtext condition="{devices[recording]} ++ not{devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrRed}" text="Recording ({devices[channelname]}) " />
+                <drawtext condition="not{devices[recording]} ++ {devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="LiveTV ({devices[channelname]}) " />
+                <drawrectangle condition="{devices[istuned]}" x="5" y="{rowheight}/3 + 5" width="{areawidth} * {devices[signalstrength]} / 100 - 10 * {devices[signalstrength]} / 100" height="{rowheight}/3 - 10" color="{clrTransWhite}" />
+                <drawrectangle condition="{devices[istuned]}" x="5" y="2*{rowheight}/3 + 5" width="{areawidth} * {devices[signalquality]} / 100 - 10 * {devices[signalquality]} / 100" height="{rowheight}/3 - 10" color="{clrTransWhite}" />
+                <drawtext condition="not{devices[istuned]}" align="center" y="{rowheight}/2" font="{light}" fontsize="{rowheight}*0.40" color="{clrWhite}" text="not tuned" />
+            </loop>
+        </area>
+    </devices>
+
     <!-- Available Variables scrapercontent:
     {mediapath}                         Full Path of Poster or Banner to use in image path attribute
     {mediawidth}                        width of image in pixel

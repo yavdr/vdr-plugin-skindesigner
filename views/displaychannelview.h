@@ -3,8 +3,9 @@
 
 #include "../libtemplate/template.h"
 #include "view.h"
+#include "viewhelpers.h"
 
-class cDisplayChannelView : public cView {
+class cDisplayChannelView : public cView, public cViewHelpers {
 private:
     cString lastDate;
     int lastScreenWidth;
@@ -44,6 +45,8 @@ public:
     void DrawSignalBackground(void);
     void ClearSignal(void);
     void ClearSignalBackground(void);
+    void DrawDevices(bool initial);
+    void ClearDevices(void);
     void DrawChannelGroups(const cChannel *Channel, cString ChannelName);
     void ClearChannelGroups(void);
     void DisplayMessage(eMessageType Type, const char *Text);
