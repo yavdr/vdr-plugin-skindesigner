@@ -12,6 +12,7 @@ cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cVi
     else
         SetFadeTime(0);
     cat = mcUndefined;
+    buttonTexts = NULL;
 }
 
 cDisplayMenuView::~cDisplayMenuView() {
@@ -106,10 +107,10 @@ bool cDisplayMenuView::DrawColorButtons(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
 
-    stringTokens.insert(pair<string,string>("red", buttonTexts[0]));
-    stringTokens.insert(pair<string,string>("green", buttonTexts[1]));
-    stringTokens.insert(pair<string,string>("yellow", buttonTexts[2]));
-    stringTokens.insert(pair<string,string>("blue", buttonTexts[3]));
+    stringTokens.insert(pair<string,string>("red", buttonTexts ? buttonTexts[0] : ""));
+    stringTokens.insert(pair<string,string>("green", buttonTexts ? buttonTexts[1]: ""));
+    stringTokens.insert(pair<string,string>("yellow", buttonTexts ? buttonTexts[2]: ""));
+    stringTokens.insert(pair<string,string>("blue", buttonTexts ? buttonTexts[3] : ""));
 
     int colorKeys[4] = { Setup.ColorKey0, Setup.ColorKey1, Setup.ColorKey2, Setup.ColorKey3 };
 

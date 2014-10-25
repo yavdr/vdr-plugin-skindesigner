@@ -12,6 +12,10 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     view = NULL;
     listView = NULL;
     detailView = NULL;
+    buttonTexts[0] = "";
+    buttonTexts[1] = "";
+    buttonTexts[2] = "";
+    buttonTexts[3] = "";
     defaultBackgroundDrawn = false;
     defaultHeaderDrawn = false;
     defaultButtonsDrawn = false;
@@ -216,14 +220,24 @@ void cDisplayMenuRootView::SetMessage(eMessageType type, const char *text) {
 }
 
 void cDisplayMenuRootView::SetDetailedViewEvent(const cEvent *event) {
-    if (!detailView)
-        detailView = new cDisplayMenuDetailView(subView);
+    if (!detailView) {
+        if (viewType != svMenuDetailedEpg) {
+            SetMenu(mcEvent, true);
+        } else {
+            detailView = new cDisplayMenuDetailView(subView);
+        }
+    }
     detailView->SetEvent(event);
 }
 
 void cDisplayMenuRootView::SetDetailedViewRecording(const cRecording *recording) {
-    if (!detailView)
-        detailView = new cDisplayMenuDetailView(subView);
+    if (!detailView) {
+        if (viewType != svMenuDetailedRecording) {
+            SetMenu(mcRecordingInfo, true);
+        } else {
+            detailView = new cDisplayMenuDetailView(subView);
+        }
+    }
     detailView->SetRecording(recording);
 }
 
@@ -231,7 +245,6 @@ void cDisplayMenuRootView::SetDetailedViewText(const char *text) {
     if (!detailView) {
         if (viewType != svMenuDetailedText) {
             SetMenu(mcText, true);
-            SetButtonTexts(NULL, NULL, NULL, NULL);
         } else {
             detailView = new cDisplayMenuDetailView(subView);
         }
@@ -281,7 +294,9 @@ int cDisplayMenuRootView::GetMaxItems(void) {
     if (listView) {
         return listView->GetMaxItems();
     }
-    return 0;
+    //wrong menucat
+    SetMenu(mcUnknown, true);
+    return listView->GetMaxItems();
 }
 
 int cDisplayMenuRootView::GetListViewWidth(void) {
