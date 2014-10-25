@@ -228,8 +228,14 @@ void cDisplayMenuRootView::SetDetailedViewRecording(const cRecording *recording)
 }
 
 void cDisplayMenuRootView::SetDetailedViewText(const char *text) {
-    if (!detailView)
-        detailView = new cDisplayMenuDetailView(subView);
+    if (!detailView) {
+        if (viewType != svMenuDetailedText) {
+            SetMenu(mcText, true);
+            SetButtonTexts(NULL, NULL, NULL, NULL);
+        } else {
+            detailView = new cDisplayMenuDetailView(subView);
+        }
+    }
     detailView->SetText(text);
 }
 
@@ -313,7 +319,6 @@ cFont *cDisplayMenuRootView::GetTextAreaFont(void) {
 
 
 void cDisplayMenuRootView::Render(void) {
-
     if (!view->DrawBackground()) {
         if (!defaultBackgroundDrawn) {
             defaultBackgroundDrawn = true;
