@@ -44,8 +44,8 @@ bool cDisplayMenuRootView::createOsd(void) {
 }
 
 /* Categories:
-mcUndefined = -1,
-mcUnknown = 0,
+-1 mcUndefined,
+0  mcUnknown,
 1  mcMain,
 2  mcSchedule,
 3  mcScheduleNow,
