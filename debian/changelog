@@ -1,3 +1,9 @@
+vdr-plugin-skindesigner (0.0.2.git20141025.1247-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot (commit 1d5a75af58aa2f3ce87a6ae32c357c948b872f0d)
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Sat, 25 Oct 2014 15:01:13 +0200
+
 vdr-plugin-skindesigner (0.0.2.git20141020.1749-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot (commit 1809656e5826ebea73ce8f337ef5b6a75ce2714f)
