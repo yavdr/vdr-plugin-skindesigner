@@ -1067,8 +1067,17 @@ void cTemplateFunction::ParseStringParameters(void) {
     }
     parsedText = text.str();
 
-    //now check further possible string variables
     string path = GetParameter(ptPath);
+    if (GetNumericParameter(ptImageType) == itImage && path.size() > 0) {
+        //no absolute pathes allowed
+        if (!startswith(path.c_str(), "{")) {
+            esyslog("skindesigner: no absolute pathes allowed for images - %s", path.c_str());
+        }
+        if (startswith(path.c_str(), "{ressourcedir}")) {
+            imgPath = path.replace(0, 14, *config.GetSkinRessourcePath());
+        }
+    }
+    //now check further possible string variables
     if (stringTokens && path.size() > 0 && path.find("{") != string::npos) {
         for (map < string, string >::iterator it = stringTokens->begin(); it != stringTokens->end(); it++) {
             size_t found = path.find(it->first);
