@@ -37,6 +37,7 @@ Version 0.0.2
 - added device info in displaychannel, example in metrixHD
 - improved menu icon display, additionally using menu cat
 - changed devices list, device numbers start with 0
+- fixed bug that hasposter is only true if poster really exists
 
 
 

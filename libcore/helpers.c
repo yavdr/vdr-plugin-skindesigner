@@ -90,6 +90,11 @@ bool isNumber(const string& s) {
     return !s.empty() && it == s.end();
 }
 
+bool FileExists(const string &fullpath) {
+    struct stat buffer;
+    return (stat (fullpath.c_str(), &buffer) == 0); 
+}
+
 bool FileExists(const string &path, const string &name, const string &ext) {
     stringstream fileName;
     fileName << path << name << "." << ext;
