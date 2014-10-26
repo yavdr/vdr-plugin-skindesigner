@@ -40,7 +40,7 @@ Version 0.0.2
 - fixed bug that hasposter is only true if poster really exists
 - no absolute pathes allowed for image type "image", path has to start with {ressourcedir}
 
-
+Version 0.0.3
 
 
 
