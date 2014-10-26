@@ -17,6 +17,7 @@ private:
     void DoDrawFloatingTextBox(int num, cTemplateFunction *func);
     void DoDrawRectangle(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawEllipse(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
+    void DoDrawSlope(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawImage(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void ActivateScrolling(void);
 protected:

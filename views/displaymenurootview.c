@@ -6,12 +6,17 @@
 #include "../libcore/helpers.h"
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
+    cat = mcUndefined;
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
     view = NULL;
     listView = NULL;
     detailView = NULL;
+    buttonTexts[0] = "";
+    buttonTexts[1] = "";
+    buttonTexts[2] = "";
+    buttonTexts[3] = "";
     defaultBackgroundDrawn = false;
     defaultHeaderDrawn = false;
     defaultButtonsDrawn = false;
@@ -77,6 +82,7 @@ bool cDisplayMenuRootView::createOsd(void) {
 
 void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
     eSubView newViewType = svUndefined;
+    cat = menuCat;
     bool isListView = true;
     switch (menuCat) {
         case mcMain:
@@ -153,7 +159,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
             default:
                 view = new cDisplayMenuView(subView, menuInit);
         }
-        
+        view->SetMenuCat(cat);
         //Cleanup root view
         ClearRootView();
 
@@ -216,14 +222,24 @@ void cDisplayMenuRootView::SetMessage(eMessageType type, const char *text) {
 }
 
 void cDisplayMenuRootView::SetDetailedViewEvent(const cEvent *event) {
-    if (!detailView)
-        detailView = new cDisplayMenuDetailView(subView);
+    if (!detailView) {
+        if (viewType != svMenuDetailedEpg) {
+            SetMenu(mcEvent, true);
+        } else {
+            detailView = new cDisplayMenuDetailView(subView);
+        }
+    }
     detailView->SetEvent(event);
 }
 
 void cDisplayMenuRootView::SetDetailedViewRecording(const cRecording *recording) {
-    if (!detailView)
-        detailView = new cDisplayMenuDetailView(subView);
+    if (!detailView) {
+        if (viewType != svMenuDetailedRecording) {
+            SetMenu(mcRecordingInfo, true);
+        } else {
+            detailView = new cDisplayMenuDetailView(subView);
+        }
+    }
     detailView->SetRecording(recording);
 }
 
@@ -231,7 +247,6 @@ void cDisplayMenuRootView::SetDetailedViewText(const char *text) {
     if (!detailView) {
         if (viewType != svMenuDetailedText) {
             SetMenu(mcText, true);
-            SetButtonTexts(NULL, NULL, NULL, NULL);
         } else {
             detailView = new cDisplayMenuDetailView(subView);
         }
@@ -281,7 +296,9 @@ int cDisplayMenuRootView::GetMaxItems(void) {
     if (listView) {
         return listView->GetMaxItems();
     }
-    return 0;
+    //wrong menucat
+    SetMenu(mcUnknown, true);
+    return listView->GetMaxItems();
 }
 
 int cDisplayMenuRootView::GetListViewWidth(void) {
@@ -393,7 +410,8 @@ void cDisplayMenuRootView::DrawHeader(void) {
 
     //check for standard menu entries
     bool hasIcon = false;
-    string icon = imgCache->GetIconName(menuTitle);
+
+    string icon = imgCache->GetIconName(menuTitle, cat);
     if (icon.size() > 0)
         hasIcon = true;
 

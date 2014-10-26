@@ -706,7 +706,7 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     call.event = NULL;
     call.recording = usedRecording;
     if (pScraper->Service("GetPosterThumb", &call)) {
-        intTokens.insert(pair<string,int>("hasposterthumbnail", true));
+        intTokens.insert(pair<string,int>("hasposterthumbnail", FileExists(call.poster.path)));
         intTokens.insert(pair<string,int>("thumbnailbwidth", call.poster.width));
         intTokens.insert(pair<string,int>("thumbnailheight", call.poster.height));
         stringTokens.insert(pair<string,string>("thumbnailpath", call.poster.path));

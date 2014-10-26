@@ -42,7 +42,7 @@ void cDisplayMenuItemCurrentView::SetScraperPoster(const cEvent *event, const cR
     call.event = event;
     call.recording = recording;
     if (pScraper->Service("GetPoster", &call)) {
-        intTokens.insert(pair<string,int>("hasposter", true));
+        intTokens.insert(pair<string,int>("hasposter", FileExists(call.poster.path)));
         intTokens.insert(pair<string,int>("posterwidth", call.poster.width));
         intTokens.insert(pair<string,int>("posterheight", call.poster.height));
         stringTokens.insert(pair<string,string>("posterpath", call.poster.path));

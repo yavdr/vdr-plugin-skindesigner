@@ -42,6 +42,7 @@ public:
     bool OsdSizeChanged(void);
     void SetOSDFonts(void);
     bool OsdFontsChanged(void);
+    cString GetSkinRessourcePath(void);
     cString logoExtension;
     cString skinPath;
     cString logoPath;

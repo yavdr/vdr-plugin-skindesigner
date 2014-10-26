@@ -24,6 +24,7 @@ enum eViewElement {
     veBackground,
     veDateTime,
     veMessage,
+    veDevices,
     veCustomTokens,
     //DisplayChannel ViewElements
     veChannelInfo,
@@ -43,7 +44,6 @@ enum eViewElement {
     veDiscUsage,
     veSystemLoad,
     veTimers,
-    veDevices,
     veMenuItem,
     veMenuCurrentItemDetail,
     veScrollbar,

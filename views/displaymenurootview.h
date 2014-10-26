@@ -8,6 +8,7 @@
 
 class cDisplayMenuRootView : public cView {
 private:
+    eMenuCategory cat;
     eSubView viewType;
     cTemplateView *subView;
     bool subViewAvailable;

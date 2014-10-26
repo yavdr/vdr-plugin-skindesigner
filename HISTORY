@@ -32,4 +32,16 @@ Version 0.0.2
 - fixed bug that x and y of subviews was not respected
 - if a subview is completely not set in a skin, the default menu is used
 - fixed a bug if displaydetailedtext is called without correct menucat (mailbox plugin)
+- implemented function drawslope, see Wiki for documentation
+- using default menu list in case an invalid MenuCategory is set
+- added device info in displaychannel, example in metrixHD
+- improved menu icon display, additionally using menu cat
+- changed devices list, device numbers start with 0
+- fixed bug that hasposter is only true if poster really exists
+- no absolute pathes allowed for image type "image", path has to start with {ressourcedir}
+
+Version 0.0.3
+
+
+
 

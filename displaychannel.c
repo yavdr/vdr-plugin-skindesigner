@@ -185,11 +185,13 @@ void cSDDisplayChannel::Flush(void) {
         channelView->DrawScreenResolution();
         channelView->DrawSignal();
         channelView->DrawAudioInfo();
+        channelView->DrawDevices(initial);
     } else {
         channelView->ClearStatusIcons();
         channelView->ClearScreenResolution();
         channelView->ClearSignal();
         channelView->ClearSignalBackground();
+        channelView->ClearDevices();
     }
 
     if (initial) {

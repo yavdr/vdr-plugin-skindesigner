@@ -32,6 +32,7 @@ enum eFuncType {
     ftDrawImage,
     ftDrawRectangle,
     ftDrawEllipse,
+    ftDrawSlope,
     ftNone
 };
 
@@ -54,6 +55,7 @@ enum eParamType {
     ptLayer,
     ptTransparency,
     ptQuadrant,
+    ptType,
     ptAlign,
     ptValign,
     ptScrollMode,

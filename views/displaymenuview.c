@@ -12,6 +12,7 @@ cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cVi
     else
         SetFadeTime(0);
     cat = mcUndefined;
+    buttonTexts = NULL;
 }
 
 cDisplayMenuView::~cDisplayMenuView() {
@@ -40,7 +41,7 @@ bool cDisplayMenuView::DrawHeader(void) {
 
     //check for standard menu entries
     bool hasIcon = false;
-    string icon = imgCache->GetIconName(menuTitle);
+    string icon = imgCache->GetIconName(menuTitle, cat);
     if (icon.size() > 0)
         hasIcon = true;
     stringTokens.insert(pair<string,string>("icon", icon));
@@ -106,10 +107,10 @@ bool cDisplayMenuView::DrawColorButtons(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
 
-    stringTokens.insert(pair<string,string>("red", buttonTexts[0]));
-    stringTokens.insert(pair<string,string>("green", buttonTexts[1]));
-    stringTokens.insert(pair<string,string>("yellow", buttonTexts[2]));
-    stringTokens.insert(pair<string,string>("blue", buttonTexts[3]));
+    stringTokens.insert(pair<string,string>("red", buttonTexts ? buttonTexts[0] : ""));
+    stringTokens.insert(pair<string,string>("green", buttonTexts ? buttonTexts[1]: ""));
+    stringTokens.insert(pair<string,string>("yellow", buttonTexts ? buttonTexts[2]: ""));
+    stringTokens.insert(pair<string,string>("blue", buttonTexts ? buttonTexts[3] : ""));
 
     int colorKeys[4] = { Setup.ColorKey0, Setup.ColorKey1, Setup.ColorKey2, Setup.ColorKey3 };
 
@@ -222,9 +223,6 @@ cDisplayMenuMainView::cDisplayMenuMainView(cTemplateView *tmplView, bool menuIni
 cDisplayMenuMainView::~cDisplayMenuMainView() {
     CancelSave();
     FadeOut();
-    delete[] lastSignalStrength;
-    delete[] lastSignalQuality;
-    delete[] recDevices;
 }
 
 void cDisplayMenuMainView::DrawStaticViewElements(void) {
@@ -359,18 +357,6 @@ void cDisplayMenuMainView::DrawDiscUsage(void) {
     DrawViewElement(veDiscUsage, &stringTokens, &intTokens);
 }
 
-void cDisplayMenuMainView::InitDevices(void) {
-    int numDevices = cDevice::NumDevices();
-    lastSignalStrength = new int[numDevices];
-    lastSignalQuality = new int[numDevices];
-    recDevices = new bool[numDevices];
-    for (int i=0; i<numDevices; i++) {
-        lastSignalStrength[i] = 0;
-        lastSignalQuality[i] = 0;
-        recDevices[i] = false;
-    }
-}
-
 bool cDisplayMenuMainView::DrawLoad(void) {
     if (!ViewElementImplemented(veSystemLoad)) {
         return false;
@@ -399,120 +385,22 @@ bool cDisplayMenuMainView::DrawDevices(void) {
     if (!ViewElementImplemented(veDevices)) {
         return false;
     }
-    int numDevices = cDevice::NumDevices();
-    if (!initial) {
-        //check if drawing is necessary
-        bool changed = false;
-        for (int i = 0; i < numDevices; i++) {
-            const cDevice *device = cDevice::GetDevice(i);
-            if (!device || !device->NumProvidedSystems()) {
-                continue;
-            }
-            if ((device->SignalStrength() != lastSignalStrength[i]) || (device->SignalQuality() != lastSignalQuality[i])) {
-                changed = true;
-                break;
-            }
-        }
-        if (!changed) {
-            return false;
-        }
-    }
 
     map < string, string > stringTokens;
     map < string, int > intTokens;
-
     map < string, vector< map< string, string > > > deviceLoopTokens;
     vector< map< string, string > > devices;
 
-    //check device which currently displays live tv
-    int deviceLiveTV = -1;
-    cDevice *primaryDevice = cDevice::PrimaryDevice();
-    if (primaryDevice) {
-        if (!primaryDevice->Replaying() || primaryDevice->Transferring())
-            deviceLiveTV = cDevice::ActualDevice()->DeviceNumber();
-        else
-            deviceLiveTV = primaryDevice->DeviceNumber();
-    }
+    bool changed = SetDevices(initial, &intTokens, &devices);
+    if (!changed)
+        return false;
 
-    //check currently recording devices
-    for (cTimer *timer = Timers.First(); timer; timer = Timers.Next(timer)) {
-        if (!timer->Recording()) {
-            continue;
-        }
-        if (cRecordControl *RecordControl = cRecordControls::GetRecordControl(timer)) {
-            const cDevice *recDevice = RecordControl->Device();
-            if (recDevice) {
-                recDevices[recDevice->DeviceNumber()] = true;
-            }
-        }
-    }
-    int actualNumDevices = 0;
-    for (int i = 0; i < numDevices; i++) {
-        const cDevice *device = cDevice::GetDevice(i);
-        if (!device || !device->NumProvidedSystems()) {
-            continue;
-        }
-        actualNumDevices++;
-        map< string, string > deviceVals;
-        stringstream strNum;
-        strNum << actualNumDevices;
-        deviceVals.insert(pair< string, string >("devices[num]", strNum.str()));
-        deviceVals.insert(pair< string, string >("devices[type]", *(device->DeviceType())));
-        cCamSlot *camSlot = device->CamSlot();
-        int camNumber = -1;
-        if (camSlot) {
-            camNumber = camSlot->SlotNumber();
-            deviceVals.insert(pair< string, string >("devices[hascam]", "1"));
-        } else {
-            deviceVals.insert(pair< string, string >("devices[hascam]", "0"));
-        }
-        int signalStrength = device->SignalStrength();
-        int signalQuality = device->SignalQuality();
-        stringstream strCamNumber;
-        strCamNumber << camNumber;
-        deviceVals.insert(pair< string, string >("devices[cam]", strCamNumber.str()));
-        stringstream strStrength;
-        strStrength << signalStrength;
-        deviceVals.insert(pair< string, string >("devices[signalstrength]", strStrength.str()));
-        stringstream strQuality;
-        strQuality << signalQuality;
-        deviceVals.insert(pair< string, string >("devices[signalquality]", strQuality.str()));
-
-        deviceVals.insert(pair< string, string >("devices[livetv]", i == deviceLiveTV ? "1" : "0"));
-        deviceVals.insert(pair< string, string >("devices[recording]", recDevices[i] ? "1" : "0"));
-
-        const cChannel *channel = device->GetCurrentlyTunedTransponder();
-        const cSource *source = (channel) ? Sources.Get(channel->Source()) : NULL;
-        if (channel && channel->Number() > 0) {
-            stringstream strChanNum;
-            strChanNum << channel->Number();
-            deviceVals.insert(pair< string, string >("devices[channelnumber]", strChanNum.str()));
-            deviceVals.insert(pair< string, string >("devices[channelname]", channel->Name()));
-            deviceVals.insert(pair< string, string >("devices[channelid]", *(channel->GetChannelID().ToString())));
-            deviceVals.insert(pair< string, string >("devices[istuned]", "1"));
-        } else {
-            deviceVals.insert(pair< string, string >("devices[channelnumber]", "0"));
-            deviceVals.insert(pair< string, string >("devices[channelname]", ""));
-            deviceVals.insert(pair< string, string >("devices[channelid]", ""));
-            deviceVals.insert(pair< string, string >("devices[istuned]", "0"));
-        }
-    
-        deviceVals.insert(pair< string, string >("devices[source]", source ? source->Description() : ""));
-
-        devices.push_back(deviceVals);
-
-        lastSignalStrength[i] = signalStrength;
-        lastSignalQuality[i] = signalQuality;
-    }
     deviceLoopTokens.insert(pair< string, vector< map< string, string > > >("devices", devices));
-
-    intTokens.insert(pair<string, int>("numdevices", actualNumDevices));
     
     ClearViewElement(veDevices);
     DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);
     return true;
 }
-
 /************************************************************************
 * cDisplayMenuSchedulesView
 ************************************************************************/
@@ -547,6 +435,13 @@ bool cDisplayMenuSchedulesView::DrawHeader(void) {
         stringTokens.insert(pair<string,string>("channelid", *(channel->GetChannelID().ToString())));
         
     }
+    bool hasIcon = false;
+    string icon = imgCache->GetIconName(menuTitle, cat);
+    if (icon.size() > 0)
+        hasIcon = true;
+
+    stringTokens.insert(pair<string,string>("icon", icon));
+    intTokens.insert(pair<string,int>("hasicon", hasIcon));
     ClearViewElement(veHeader);
     DrawViewElement(veHeader, &stringTokens, &intTokens);
     return true;

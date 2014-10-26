@@ -251,6 +251,9 @@ void cView::DrawPixmap(int num, cTemplatePixmap *pix, map < string, vector< map<
             case ftDrawEllipse:
                 DoDrawEllipse(num, func);
                 break;
+            case ftDrawSlope:
+                DoDrawSlope(num, func);
+                break;
             case ftDrawImage:
                 DoDrawImage(num, func);
                 break;
@@ -347,6 +350,9 @@ void cView::DrawLoop(int numPixmap, cTemplateFunction *func, map < string, vecto
                     break;
                 case ftDrawEllipse:
                     DoDrawEllipse(numPixmap, func, x0, y0);
+                    break;
+                case ftDrawSlope:
+                    DoDrawSlope(numPixmap, func, x0, y0);
                     break;
                 case ftDrawImage:
                     DoDrawImage(numPixmap, func, x0, y0);
@@ -634,7 +640,30 @@ void cView::DoDrawEllipse(int num, cTemplateFunction *func, int x0, int y0) {
     cRect size(x, y, w, h);
     tColor clr = func->GetColorParameter(ptColor);
     int quadrant = func->GetNumericParameter(ptQuadrant);
+    if (quadrant < -4 || quadrant > 8) {
+        esyslog("skindesigner: wrong quadrant %d for drawellipse, allowed values are from -4 to 8", quadrant);
+        quadrant = 0;
+    }
     DrawEllipse(num, size, clr, quadrant);
+}
+
+void cView::DoDrawSlope(int num, cTemplateFunction *func, int x0, int y0) {
+    int x = func->GetNumericParameter(ptX);
+    int y = func->GetNumericParameter(ptY);
+    if (x < 0) x = 0;
+    x += x0;
+    if (y < 0) y = 0;
+    y += y0;
+    int w = func->GetNumericParameter(ptWidth);
+    int h = func->GetNumericParameter(ptHeight);
+    cRect size(x, y, w, h);
+    tColor clr = func->GetColorParameter(ptColor);
+    int type = func->GetNumericParameter(ptType);
+    if (type < 0 || type > 7) {
+        esyslog("skindesigner: wrong type %d for drawslope, allowed values are from 0 to 7", type);
+        type = 0;
+    }
+    DrawSlope(num, size, clr, type);
 }
 
 void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {

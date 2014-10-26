@@ -2,6 +2,7 @@
 #define __DISPLAYMENUVIEW_H
 
 #include "../libtemplate/template.h"
+#include "viewhelpers.h"
 #include "displaymenulistview.h"
 
 class cDisplayMenuView : public cView {
@@ -28,17 +29,13 @@ public:
     bool BackgroundImplemented(void);
 };
 
-class cDisplayMenuMainView : public cDisplayMenuView {
+class cDisplayMenuMainView : public cDisplayMenuView, public cViewHelpers {
 private:
     bool initial;
-    int* lastSignalStrength;
-    int* lastSignalQuality;
     double lastSystemLoad;
-    bool* recDevices;
     void DrawTimers(void);
     void DrawDiscUsage(void);
     bool DrawLoad(void);
-    void InitDevices(void);
     bool DrawDevices(void);
 public:
     cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit);

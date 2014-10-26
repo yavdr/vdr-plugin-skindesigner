@@ -87,7 +87,6 @@ bool cDesignerConfig::GetSkin(string &skin) {
     return true;
 }
 
-
 void cDesignerConfig::SetChannelLogoSize(void) {
     cImageLoader imgLoader;
     imgLoader.DeterminateChannelLogoSize(logoWidth, logoHeight);
@@ -166,6 +165,10 @@ bool cDesignerConfig::OsdFontsChanged(void) {
     if (changed)
         SetOSDFonts();
     return changed;
+}
+
+cString cDesignerConfig::GetSkinRessourcePath(void) {
+    return cString::sprintf("%s%s", *skinPath, osdSkin.c_str());
 }
 
 cString cDesignerConfig::CheckSlashAtEnd(std::string path) {

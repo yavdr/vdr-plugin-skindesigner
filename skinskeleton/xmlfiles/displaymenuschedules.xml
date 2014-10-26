@@ -2,6 +2,8 @@
     <!-- Available Variables header:
     {title}                         title of current menu
     {vdrversion}                    running VDR Version
+    {hasicon}                       true if a menu icon is available
+    {icon}                          path of menu icon
     {channelnumber}                 Number of Channel of current event
     {channelname}                   Name of current Channel of current event
     {channellogoexists}             true if a channel logo exists 
