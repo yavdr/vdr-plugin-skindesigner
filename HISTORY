@@ -36,6 +36,8 @@ Version 0.0.2
 - using default menu list in case an invalid MenuCategory is set
 - added device info in displaychannel, example in metrixHD
 - improved menu icon display, additionally using menu cat
+- changed devices list, device numbers start with 0
+
 
 
 

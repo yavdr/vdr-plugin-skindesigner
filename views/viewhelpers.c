@@ -74,10 +74,11 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
         if (!device || !device->NumProvidedSystems()) {
             continue;
         }
-        actualNumDevices++;
+        
         map< string, string > deviceVals;
         stringstream strNum;
         strNum << actualNumDevices;
+        actualNumDevices++;
         deviceVals.insert(pair< string, string >("devices[num]", strNum.str()));
         deviceVals.insert(pair< string, string >("devices[type]", *(device->DeviceType())));
         cCamSlot *camSlot = device->CamSlot();
