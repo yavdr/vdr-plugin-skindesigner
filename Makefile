@@ -90,7 +90,7 @@ OBJS = $(PLUGIN).o \
        libtemplate/templateloopfunction.o \
        libtemplate/xmlparser.o \
        views/view.o \
-	   views/viewhelpers.o \
+       views/viewhelpers.o \
        views/displaychannelview.o \
        views/displaymenurootview.o \
        views/displaymenuview.o \

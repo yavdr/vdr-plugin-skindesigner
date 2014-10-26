@@ -41,7 +41,7 @@ bool cDisplayMenuView::DrawHeader(void) {
 
     //check for standard menu entries
     bool hasIcon = false;
-    string icon = imgCache->GetIconName(menuTitle);
+    string icon = imgCache->GetIconName(menuTitle, cat);
     if (icon.size() > 0)
         hasIcon = true;
     stringTokens.insert(pair<string,string>("icon", icon));
@@ -435,6 +435,13 @@ bool cDisplayMenuSchedulesView::DrawHeader(void) {
         stringTokens.insert(pair<string,string>("channelid", *(channel->GetChannelID().ToString())));
         
     }
+    bool hasIcon = false;
+    string icon = imgCache->GetIconName(menuTitle, cat);
+    if (icon.size() > 0)
+        hasIcon = true;
+
+    stringTokens.insert(pair<string,string>("icon", icon));
+    intTokens.insert(pair<string,int>("hasicon", hasIcon));
     ClearViewElement(veHeader);
     DrawViewElement(veHeader, &stringTokens, &intTokens);
     return true;

@@ -13,10 +13,12 @@
     <!-- Available Variables header:
     {title}                   title of current menu
     {vdrversion}              running VDR Version
+    {icon}                    icon path
     -->
     <header>
         <area x="0" y="0" width="70%" height="7%" layer="2">
-            <drawtext x="10" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
+            <drawimage name="menuicon" imagetype="menuicon" path="{icon}" x="5" valign="center" width="{areaheight}*8/10" height="80%"/>
+            <drawtext x="{areaheight}" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
         </area>
     </header>
     <!-- Available Variables datetime:

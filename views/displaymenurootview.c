@@ -6,6 +6,7 @@
 #include "../libcore/helpers.h"
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
+    cat = mcUndefined;
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
@@ -81,6 +82,7 @@ bool cDisplayMenuRootView::createOsd(void) {
 
 void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
     eSubView newViewType = svUndefined;
+    cat = menuCat;
     bool isListView = true;
     switch (menuCat) {
         case mcMain:
@@ -157,7 +159,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
             default:
                 view = new cDisplayMenuView(subView, menuInit);
         }
-        
+        view->SetMenuCat(cat);
         //Cleanup root view
         ClearRootView();
 
@@ -408,7 +410,8 @@ void cDisplayMenuRootView::DrawHeader(void) {
 
     //check for standard menu entries
     bool hasIcon = false;
-    string icon = imgCache->GetIconName(menuTitle);
+
+    string icon = imgCache->GetIconName(menuTitle, cat);
     if (icon.size() > 0)
         hasIcon = true;
 

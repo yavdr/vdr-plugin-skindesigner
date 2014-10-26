@@ -199,7 +199,46 @@ cImage *cImageCache::GetIcon(eImageType type, string name, int width, int height
     return NULL;    
 }
 
-string cImageCache::GetIconName(string label) {
+string cImageCache::GetIconName(string label, eMenuCategory cat) {
+    //if cat is set, use standard menu entries
+    switch (cat) {
+        case mcSchedule:
+        case mcScheduleNow:
+        case mcScheduleNext:
+        case mcEvent:
+            return "standardicons/Schedule";
+        case mcChannel:
+        case mcChannelEdit:
+            return "standardicons/Channels";
+        case mcTimer:
+        case mcTimerEdit:
+            return "standardicons/Timers";
+        case mcRecording:
+        case mcRecordingInfo:
+        case mcSetupRecord:
+        case mcSetupReplay:
+            return "standardicons/Recordings";
+        case mcPlugin:
+        case mcPluginSetup:
+        case mcSetupPlugins:
+            return "standardicons/Plugins";
+        case mcSetup:
+            return "standardicons/Setup";
+        case mcSetupOsd:
+            return "standardicons/OSD";
+        case mcSetupEpg:
+            return "standardicons/EPG";
+        case mcSetupDvb:
+            return "standardicons/DVB";
+        case mcSetupLnb:
+            return "standardicons/LNB";
+        case mcSetupCam:
+            return "standardicons/CAM";
+        case mcSetupMisc:
+            return "standardicons/Miscellaneous";    
+        case mcCommand:
+            return "standardicons/Commands";
+    }
     //check for standard menu entries
     for (int i=0; i<16; i++) {
         string s = trVDR(items[i].c_str());
