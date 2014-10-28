@@ -3,10 +3,9 @@
 
 #define X_DISPLAY_MISSING
 
-#include <Magick++.h>
+#include <cairo.h>
 #include <vdr/osd.h>
 
-using namespace Magick;
 
 class cImageMagickWrapper {
 private:
@@ -14,7 +13,7 @@ public:
     cImageMagickWrapper();
     ~cImageMagickWrapper();
 protected:
-    Image buffer;
+    cairo_surface_t *image = NULL;
     cImage *CreateImage(int width, int height, bool preserveAspect = true);
     bool LoadImage(std::string FileName, std::string Path, std::string Extension);
     bool LoadImage(const char *fullpath);

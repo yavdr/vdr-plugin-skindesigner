@@ -55,6 +55,9 @@ else ifeq ($(IMAGELIB), graphicsmagick)
 	LIBS += $(shell pkg-config --libs GraphicsMagick++)
 endif
 
+INCLUDES += $(shell pkg-config --cflags cairo-png)
+LIBS += $(shell pkg-config --libs cairo-png)
+
 LIBS += $(shell xml2-config --libs)
 
 ### The object files:

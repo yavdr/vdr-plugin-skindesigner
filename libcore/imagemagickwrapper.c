@@ -12,64 +12,59 @@ cImageMagickWrapper::~cImageMagickWrapper() {
 }
 
 cImage *cImageMagickWrapper::CreateImage(int width, int height, bool preserveAspect) {
+    if (image == NULL) return NULL;
+
     int w, h;
-    w = buffer.columns();
-    h = buffer.rows();
+    w = cairo_image_surface_get_width(image);
+    h = cairo_image_surface_get_height(image);
     if (width == 0)
         width = w;
     if (height == 0)
         height = h;
+
+    cairo_surface_t *surface;
+    surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+
+    cairo_t *cr;
+    cr = cairo_create(surface);
+
+    double sx = width / w;
+    double sy = height / h;
     if (preserveAspect) {
-        unsigned scale_w = 1000 * width / w;
-        unsigned scale_h = 1000 * height / h;
-        if (scale_w > scale_h)
-          width = w * height / h;
-        else
-          height = h * width / w;
+        if (sx < sy)
+            sy = sx;
+        if (sy < sx)
+            sx = sy;
     }
-    const PixelPacket *pixels = buffer.getConstPixels(0, 0, w, h);
-    cImage *image = new cImage(cSize(width, height));
-    tColor *imgData = (tColor *)image->Data();
-    if (w != width || h != height) {
-        ImageScaler scaler;
-        scaler.SetImageParameters(imgData, width, width, height, w, h);
-        for (const void *pixels_end = &pixels[w*h]; pixels < pixels_end; ++pixels)
-            scaler.PutSourcePixel(pixels->blue / ((MaxRGB + 1) / 256),
-                                  pixels->green / ((MaxRGB + 1) / 256),
-                                  pixels->red / ((MaxRGB + 1) / 256),
-                                  ~((unsigned char)(pixels->opacity / ((MaxRGB + 1) / 256))));
-        return image;
-    }
-    for (const void *pixels_end = &pixels[width*height]; pixels < pixels_end; ++pixels)
-        *imgData++ = ((~int(pixels->opacity / ((MaxRGB + 1) / 256)) << 24) |
-                      (int(pixels->green / ((MaxRGB + 1) / 256)) << 8) |
-                      (int(pixels->red / ((MaxRGB + 1) / 256)) << 16) |
-                      (int(pixels->blue / ((MaxRGB + 1) / 256)) ));
-    return image;
+    cairo_scale(cr, sx, sy);
+
+    cairo_set_source_surface(cr, image, 0, 0);
+    cairo_paint(cr);
+
+    unsigned char *data = cairo_image_surface_get_data(surface);
+    cImage *cimage = new cImage(cSize(width, height), (tColor*)data);
+
+    cairo_destroy(cr);
+    cairo_surface_destroy(image);
+    image = NULL;
+
+    return cimage;
 }
 
 bool cImageMagickWrapper::LoadImage(const char *fullpath) {
     if ((fullpath == NULL) || (strlen(fullpath) < 5))
         return false;
-    try {
+
+    if (image != NULL) cairo_surface_destroy(image);
+
+    image = cairo_image_surface_create_from_png(fullpath);
+
+    if (cairo_surface_status(image)) {
         if (config.debugImageLoading)
-            dsyslog("skindesigner: trying to load: %s", fullpath);
-        buffer.read(fullpath);
-        if (config.debugImageLoading)
-            dsyslog("skindesigner: %s sucessfully loaded", fullpath);
-    } catch( Magick::Warning &warning ) {
-        if (config.debugImageLoading)
-            dsyslog("skindesigner: Magick Warning: %s", warning.what());
-        return true;
-    } catch( Magick::Error &error ) {
-        if (config.debugImageLoading)
-            dsyslog("skindesigner: Magick Error: %s", error.what());
-        return false;
-    } catch(...) {
-        if (config.debugImageLoading)
-            dsyslog("skindesigner: an unknown Magick error occured during image loading");
+            dsyslog("skindesigner: Cairo Error: %s", cairo_status_to_string(cairo_surface_status(image)));
         return false;
     }
+
     return true;
 }
 
