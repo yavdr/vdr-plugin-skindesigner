@@ -130,16 +130,25 @@
     {marks[position]}           frame of current mark
     {marks[endposition]}        frame where startmark ends
     {marks[total]}              total number of frames
+    {marks[active]}             true if current replay position hits exactly the mark
     {marks[startmark]}          true if mark is start mark
     -->
     <cutmarks>
         <area x="5%" y="89%" width="90%" height="3%" layer="3">
             <loop name="marks" x="0" y="0" orientation="absolute">
-                <drawrectangle x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="1" height="100%" color="{clrWhite}" />
-                <drawrectangle condition="{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="5" height="1" color="{clrWhite}" />
-                <drawrectangle condition="{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="{areaheight}-1" width="5" height="1" color="{clrWhite}" />
-                <drawrectangle condition="not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="0" width="5" height="1" color="{clrWhite}" />
-                <drawrectangle condition="not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="{areaheight}-1" width="5" height="1" color="{clrWhite}" />
+                <!-- draw mark -->
+                <drawrectangle condition="not{marks[active]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="1" height="100%" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="5" height="1" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="{areaheight}-1" width="5" height="1" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="0" width="5" height="1" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="{areaheight}-1" width="5" height="1" color="{clrWhite}" />
+                <!-- draw active mark -->
+                <drawrectangle condition="{marks[active]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="1" height="100%" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="5" height="1" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="{areaheight}-1" width="5" height="1" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="0" width="5" height="1" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="{areaheight}-1" width="5" height="1" color="{clrRed}" />
+                <!-- draw bar to next mark if mark is startmark-->                
                 <drawrectangle condition="{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="30%" width="{marks[endposition]}/{marks[total]}*{areawidth} - {marks[position]}/{marks[total]}*{areawidth}" height="40%" color="{clrWhite}" />
             </loop>
         </area>
@@ -221,6 +230,7 @@
     -->
     <message>
         <area x="10%" y="45%" width="80%" height="10%" layer="1">
+            <fill color="{clrTransBlack}" />
             <drawrectangle condition="{status}" x="20" y="0" width="20" height="100%" color="{clrGreen}" />
             <drawrectangle condition="{info}" x="20" y="0" width="20" height="100%" color="{clrBlue}" />
             <drawrectangle condition="{warning}" x="20" y="0" width="20" height="100%" color="{clrYellow}" />

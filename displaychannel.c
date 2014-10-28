@@ -159,6 +159,7 @@ void cSDDisplayChannel::SetMessage(eMessageType Type, const char *Text) {
     channelView->ClearSignalBackground();
     channelView->ClearScraperContent();
     channelView->ClearAudioInfo();
+    channelView->ClearBitrates();
     channelView->DisplayMessage(Type, Text);
     groupSep = true;
 }
