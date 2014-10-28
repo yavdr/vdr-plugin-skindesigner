@@ -46,7 +46,7 @@ void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     cString ChannelID("");
 
     if (Channel) {
-        ChannelName = Channel->Name();
+        ChannelName = Channel->Name() ? Channel->Name() : "";
         ChannelID = Channel->GetChannelID().ToString();
         if (!Channel->GroupSep()) {
             ChannelNumber = cString::sprintf("%d%s", Channel->Number(), Number ? "-" : "");
