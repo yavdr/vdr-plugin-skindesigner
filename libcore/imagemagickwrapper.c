@@ -28,8 +28,8 @@ cImage *cImageMagickWrapper::CreateImage(int width, int height, bool preserveAsp
     cairo_t *cr;
     cr = cairo_create(surface);
 
-    double sx = width / w;
-    double sy = height / h;
+    double sx = width / (double)w;
+    double sy = height / (double)h;
     if (preserveAspect) {
         if (sx < sy)
             sy = sx;
@@ -40,6 +40,10 @@ cImage *cImageMagickWrapper::CreateImage(int width, int height, bool preserveAsp
 
     cairo_set_source_surface(cr, image, 0, 0);
     cairo_paint(cr);
+
+    cairo_status_t status = cairo_status (cr);
+    if (status)
+        dsyslog("skindesigner: Cairo CreateImage Error %s", cairo_status_to_string(status));
 
     unsigned char *data = cairo_image_surface_get_data(surface);
     cImage *cimage = new cImage(cSize(width, height), (tColor*)data);
@@ -57,11 +61,15 @@ bool cImageMagickWrapper::LoadImage(const char *fullpath) {
 
     if (image != NULL) cairo_surface_destroy(image);
 
+    if (config.debugImageLoading)
+        dsyslog("skindesigner: trying to load: %s", fullpath);
+
     image = cairo_image_surface_create_from_png(fullpath);
 
     if (cairo_surface_status(image)) {
         if (config.debugImageLoading)
-            dsyslog("skindesigner: Cairo Error: %s", cairo_status_to_string(cairo_surface_status(image)));
+            dsyslog("skindesigner: Cairo LoadImage Error: %s", cairo_status_to_string(cairo_surface_status(image)));
+        image = NULL;
         return false;
     }
 
