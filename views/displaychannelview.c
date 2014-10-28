@@ -5,7 +5,6 @@
 #include "../libcore/timers.h"
 #include "../libcore/helpers.h"
 
-
 cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplView) {
     lastDate = "";
     lastScreenWidth = 0;
@@ -18,6 +17,7 @@ cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplVi
     lastTracDesc = "";
     lastTrackLang = "";
     InitDevices();
+    InitFemonReceiver();
     DeleteOsdOnExit();
     SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
@@ -422,6 +422,33 @@ void cDisplayChannelView::DrawDevices(bool initial) {
 
 void cDisplayChannelView::ClearDevices(void) {
     ClearViewElement(veDevices);
+}
+
+void cDisplayChannelView::DrawBitrates(void) {
+    if (!ViewElementImplemented(veBitRate)) {
+        return;
+    }
+    double bitrateVideo;
+    double bitrateAudio;
+    double bitrateDolby;
+
+    bool changed = GetBitrates(bitrateVideo, bitrateAudio, bitrateDolby);
+    if (!changed) {
+        return;
+    }
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    stringTokens.insert(pair<string,string>("bitratevideo", *cString::sprintf("%.2f", bitrateVideo)));
+    intTokens.insert(pair<string,int>("bitrateaudio", bitrateAudio));
+    intTokens.insert(pair<string,int>("bitratedolby", bitrateDolby));
+    intTokens.insert(pair<string,int>("isdolby", (bitrateDolby > 0) ? true : false));
+
+    ClearBitrates();
+    DrawViewElement(veBitRate, &stringTokens, &intTokens);
+}
+
+void cDisplayChannelView::ClearBitrates(void) {
+    ClearViewElement(veBitRate);
 }
 
 void cDisplayChannelView::DrawChannelGroups(const cChannel *Channel, cString ChannelName) {

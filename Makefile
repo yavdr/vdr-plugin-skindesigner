@@ -78,6 +78,7 @@ OBJS = $(PLUGIN).o \
        libcore/recfolderinfo.o \
        libcore/extrecinfo.o \
        libcore/timers.o \
+       libcore/femonreceiver.o \
        libtemplate/globals.o \
        libtemplate/parameter.o \
        libtemplate/template.o \

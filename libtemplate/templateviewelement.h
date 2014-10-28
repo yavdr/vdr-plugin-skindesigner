@@ -37,6 +37,7 @@ enum eViewElement {
     veScreenResolution,
     veSignalQuality,
     veSignalQualityBack,
+    veBitRate,
     veScraperContent,
     //DisplayMenu ViewElements
     veHeader,

@@ -47,6 +47,8 @@ public:
     void ClearSignalBackground(void);
     void DrawDevices(bool initial);
     void ClearDevices(void);
+    void DrawBitrates(void);
+    void ClearBitrates(void);
     void DrawChannelGroups(const cChannel *Channel, cString ChannelName);
     void ClearChannelGroups(void);
     void DisplayMessage(eMessageType Type, const char *Text);

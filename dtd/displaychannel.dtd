@@ -4,7 +4,7 @@
 
 <!ELEMENT displaychannel (background | channelinfo | epginfo | progressbar | progressbarback |  
                           statusinfo | audioinfo | screenresolution | channelgroup | 
-                          signalquality | signalqualityback | devices | scrapercontent |  
+                          signalquality | signalqualityback | devices | bitrate | scrapercontent |  
                           datetime | message | customtokens)* >
 <!ATTLIST displaychannel
   x CDATA #REQUIRED
@@ -75,6 +75,11 @@
 
 <!ELEMENT devices (area|areascroll)*>
 <!ATTLIST devices
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT bitrate (area|areascroll)*>
+<!ATTLIST bitrate
   debug CDATA #IMPLIED
 >
 

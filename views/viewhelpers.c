@@ -4,6 +4,8 @@
 
 cViewHelpers::cViewHelpers(void) {
     devicesInit = false;
+    femonReceiver = NULL;
+    bitrateVideoLast = bitrateAudioLast = bitrateDolbyLast = 0.0;
 }
 
 cViewHelpers::~cViewHelpers() {
@@ -11,6 +13,10 @@ cViewHelpers::~cViewHelpers() {
         delete[] lastSignalStrength;
         delete[] lastSignalQuality;
         delete[] recDevices;
+    }
+     if (femonReceiver) {
+        femonReceiver->Deactivate();
+        delete femonReceiver;
     }
 }
 
@@ -131,4 +137,70 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
     intTokens->insert(pair<string, int>("numdevices", actualNumDevices));
     
     return true;
+}
+
+void cViewHelpers::InitFemonReceiver(void) {
+    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
+    if (channel) {
+        femonReceiver = new cFemonReceiver(channel, 
+                                           IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, 
+                                           IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
+        cDevice::ActualDevice()->AttachReceiver(femonReceiver);
+    }
+}
+
+void cViewHelpers::ChannelSwitch(const cDevice * device, int channelNumber, bool liveView) {
+    if (!femonReceiver)
+        return;
+    bitrateVideoLast = bitrateAudioLast = bitrateDolbyLast = 0.0;
+    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
+    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+
+    if (!liveView || !channelNumber || !channel || channel->Number() != channelNumber)
+        return;
+
+    if (femonReceiver) {
+        femonReceiver->Deactivate();
+        delete femonReceiver;
+        femonReceiver = NULL;
+    }
+    if (channel) {
+        femonReceiver = new cFemonReceiver(channel, 
+                                           IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, 
+                                           IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
+        cDevice::ActualDevice()->AttachReceiver(femonReceiver);
+    }
+}
+
+void cViewHelpers::SetAudioTrack(int Index, const char * const *Tracks) {
+    if (!femonReceiver)
+        return;
+    bitrateVideoLast = bitrateAudioLast = bitrateDolbyLast = 0.0;
+    eTrackType track = cDevice::PrimaryDevice()->GetCurrentAudioTrack();
+    if (femonReceiver) {
+        femonReceiver->Deactivate();
+        delete femonReceiver;
+        femonReceiver = NULL;
+    }
+    const cChannel *channel = Channels.GetByNumber(cDevice::CurrentChannel());
+    if (channel) {
+        femonReceiver = new cFemonReceiver(channel, 
+                                           IS_AUDIO_TRACK(track) ? int(track - ttAudioFirst) : 0, 
+                                           IS_DOLBY_TRACK(track) ? int(track - ttDolbyFirst) : 0);
+        cDevice::ActualDevice()->AttachReceiver(femonReceiver);
+    }
+}
+
+bool cViewHelpers::GetBitrates(double &bitrateVideo, double &bitrateAudio, double &bitrateDolby) {
+    bitrateVideo = (int)(femonReceiver->VideoBitrate() / 1024 / 1024 * 100 + 0.5) / 100.0;
+    bitrateAudio = (int)(femonReceiver->AudioBitrate() / 1024 * 100 + 0.5) / 100.0;
+    bitrateDolby = (int)(femonReceiver->AC3Bitrate() / 1024 * 100 + 0.5) / 100.0;
+    if (bitrateVideo != bitrateVideoLast || bitrateAudio != bitrateAudioLast || bitrateDolby != bitrateDolbyLast) {
+        bitrateVideoLast = bitrateVideo;
+        bitrateAudioLast = bitrateAudio;
+        bitrateDolbyLast = bitrateDolby;
+        return true;
+    }
+    return false;
 }
