@@ -711,8 +711,10 @@ void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
             break; }
         case itImage: {
             cImageLoader imgLoader;
-            if (imgLoader.LoadImage(path.c_str(), width, height)) {
-                DrawImage(num, pos, imgLoader.GetImage());
+            if (imgLoader.LoadImage(path.c_str())) {
+                cImage *image = imgLoader.GetImage(width, height);
+                DrawImage(num, pos, *image);
+                delete(image);
             }
             break; }
         default:

@@ -14,16 +14,12 @@ cImageLoader::cImageLoader() : cImageMagickWrapper() {
 cImageLoader::~cImageLoader() {
 }
 
-cImage cImageLoader::GetImage() {
-    return CreateImageCopy();
+cImage *cImageLoader::GetImage(int width, int height) {
+  return CreateImage(width, height, false);
 }
 
-bool cImageLoader::LoadImage(const char *path, int width, int height) {
-    if (cImageMagickWrapper::LoadImage(path)) {
-        buffer.sample(Geometry(width, height));
-        return true;
-    }
-    return false;
+bool cImageLoader::LoadImage(const char *path) {
+    return cImageMagickWrapper::LoadImage(path);
 }
 
 void cImageLoader::DeterminateChannelLogoSize(int &width, int &height) {

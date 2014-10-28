@@ -14,8 +14,8 @@ class cImageLoader : public cImageMagickWrapper {
 public:
     cImageLoader();
     ~cImageLoader();
-    cImage GetImage();
-    bool LoadImage(const char *path, int width, int height);
+    cImage *GetImage(int width, int height);
+    bool LoadImage(const char *path);
     void DeterminateChannelLogoSize(int &width, int &height);
 private:
 };
