@@ -6,11 +6,17 @@
 
 cDisplayReplayView::cDisplayReplayView(cTemplateView *tmplView) : cView(tmplView) {
     lastDate = "";
+    numMarksLast = 0;
+    lastMarks = NULL;
+    markActive = -1;
     DeleteOsdOnExit();
     SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayReplayView::~cDisplayReplayView() {
+    if (lastMarks) {
+        delete[] lastMarks;
+    }
     CancelSave();
     FadeOut();
 }
@@ -189,10 +195,11 @@ void cDisplayReplayView::DrawProgressBar(int current, int total) {
     DrawViewElement(veRecProgressBar, &stringTokens, &intTokens);    
 }
 
-void cDisplayReplayView::DrawMarks(const cMarks *marks, int total) {
+void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) {
     if (!marks)
         return;
-
+    if (!MarksChanged(marks, current))
+        return;
     map < string, string > stringTokens;
     map < string, int > intTokens;
     map < string, vector< map< string, string > > > loopTokens;
@@ -208,6 +215,7 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int total) {
         markVals.insert(pair< string, string >("marks[position]", pos.str()));
         markVals.insert(pair< string, string >("marks[total]", tot.str()));
         markVals.insert(pair< string, string >("marks[startmark]", isStartMark ? "1" : "0"));
+        markVals.insert(pair< string, string >("marks[active]", (m->Position() == current) ? "1" : "0"));
         const cMark *m2 = marks->Next(m);
         if (m2) { 
             stringstream posNext;
@@ -326,6 +334,66 @@ void cDisplayReplayView::DrawMessage(eMessageType type, const char *text) {
     DrawViewElement(veMessage, &stringTokens, &intTokens);
 }
 
+/****************************************************************************************
+* Private Functions
+*****************************************************************************************/
+
+bool cDisplayReplayView::MarksChanged(const cMarks *marks, int current) {
+    if (!marks)
+        return false;
+
+    bool redraw = false;
+    //if mark was active, we redraw always
+    if (markActive >= 0) {
+        markActive = -1;
+        redraw = true;
+    }
+    //check if current position in recording hits mark exactly
+    for (const cMark *m = marks->First(); m; m = marks->Next(m)) {
+        if (m->Position() == current) {
+            markActive = current;
+            redraw = true;
+            break;
+        }
+    }
+    if (redraw)
+        return true;
+    //if number of marks has changed, redraw
+    int numMarks = marks->Count();
+    if (numMarks != numMarksLast) {
+        RememberMarks(marks);
+        return true;
+    }
+    if (!lastMarks)
+        return false;
+    //if position has changed, redraw
+    int i=0;
+    for (const cMark *m = marks->First(); m; m = marks->Next(m)) {
+        if (m->Position() != lastMarks[i]) {
+            RememberMarks(marks);
+            return true;
+        }
+        i++;
+    }
+    return false;
+}
+
+void cDisplayReplayView::RememberMarks(const cMarks *marks) {
+    if (!marks)
+        return;
+    numMarksLast = marks->Count();
+    if (numMarksLast < 1)
+        return;
+    if (lastMarks) {
+        delete[] lastMarks;
+    }
+    lastMarks = new int[numMarksLast];
+    int i=0;
+    for (const cMark *m = marks->First(); m; m = marks->Next(m)) {
+        lastMarks[i] = m->Position();
+        i++;
+    }
+}
 
 void cDisplayReplayView::Action(void) {
     SetInitFinished();

@@ -7,6 +7,11 @@
 class cDisplayReplayView : public cView {
 private:
     cString lastDate;
+    int numMarksLast;
+    int *lastMarks;
+    int markActive;
+    bool MarksChanged(const cMarks *marks, int current);
+    void RememberMarks(const cMarks *marks);
     virtual void Action(void);
 public:
     cDisplayReplayView(cTemplateView *tmplView);
@@ -20,7 +25,7 @@ public:
     void DrawCurrent(const char *current);
     void DrawTotal(const char *total);
     void DrawProgressBar(int current, int total);
-    void DrawMarks(const cMarks *marks, int total);
+    void DrawMarks(const cMarks *marks, int current, int total);
     void DrawControlIcons(bool play, bool forward, int speed, bool modeOnly);
     void DrawJump(const char *jump);
     void DrawMessage(eMessageType type, const char *text);

@@ -13,10 +13,6 @@ private:
     bool initial;
     bool doOutput;
     bool modeOnly;
-    int numMarksLast;
-    int *lastMarks;
-    bool MarksChanged(void);
-    void RememberMarks(void);
 public:
     cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly);
     virtual ~cSDDisplayReplay();

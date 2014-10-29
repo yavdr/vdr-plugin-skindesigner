@@ -76,6 +76,7 @@
     {marks[position]}           frame of current mark
     {marks[endposition]}        frame where startmark ends
     {marks[total]}              total number of frames
+    {marks[active]}             true if current replay position hits exactly the mark
     {marks[startmark]}          true if mark is start mark
     -->
     <cutmarks>
