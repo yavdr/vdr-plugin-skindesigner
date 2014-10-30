@@ -3,9 +3,6 @@
 #
 # $Id$ Makefile 1.0 2014/07/24 louis Exp $
 
-# External image lib to use: imagemagick, graphicsmagick
-IMAGELIB = imagemagick
-
 # The official name of this plugin.
 PLUGIN = skindesigner
 
@@ -47,14 +44,6 @@ DEFINES += $(shell xml2-config --cflags)
 
 INCLUDES += $(shell pkg-config --cflags freetype2 fontconfig)
 
-ifeq ($(IMAGELIB), imagemagick)
-	INCLUDES += $(shell pkg-config --cflags Magick++)
-	LIBS += $(shell pkg-config --libs Magick++)
-else ifeq ($(IMAGELIB), graphicsmagick)
-	INCLUDES += $(shell pkg-config --cflags GraphicsMagick++)
-	LIBS += $(shell pkg-config --libs GraphicsMagick++)
-endif
-
 INCLUDES += $(shell pkg-config --cflags cairo-png)
 LIBS += $(shell pkg-config --libs cairo-png)
 
@@ -74,8 +63,6 @@ OBJS = $(PLUGIN).o \
        libcore/pixmapcontainer.o \
        libcore/fontmanager.o \
        libcore/imagecache.o \
-       libcore/imagemagickwrapper.o \
-       libcore/imagescaler.o \
        libcore/helpers.o \
        libcore/imageloader.o \
        libcore/recfolderinfo.o \

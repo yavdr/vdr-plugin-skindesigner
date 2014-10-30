@@ -712,7 +712,7 @@ void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
         case itImage: {
             cImageLoader imgLoader;
             if (imgLoader.LoadImage(path.c_str())) {
-                cImage *image = imgLoader.GetImage(width, height);
+                cImage *image = imgLoader.CreateImage(width, height);
                 DrawImage(num, pos, *image);
                 delete(image);
             }

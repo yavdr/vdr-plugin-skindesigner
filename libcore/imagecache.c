@@ -7,14 +7,13 @@
 #include "../config.h"
 #include "helpers.h"
 
-using namespace Magick;
 
 cMutex cImageCache::mutex;
 
 string cImageCache::items[16] = { "Schedule", "Channels", "Timers", "Recordings", "Setup", "Commands",
                    "OSD", "EPG", "DVB", "LNB", "CAM", "Recording", "Replay", "Miscellaneous", "Plugins", "Restart"};
 
-cImageCache::cImageCache() : cImageMagickWrapper() {
+cImageCache::cImageCache() {
     tempStaticLogo = NULL;
 }
 

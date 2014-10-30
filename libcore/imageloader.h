@@ -3,21 +3,56 @@
 
 #define X_DISPLAY_MISSING
 
+#include <cairo.h>
 #include <vdr/osd.h>
-#include <vdr/skins.h>
-#include <Magick++.h>
-#include "imagemagickwrapper.h"
+#include <vdr/tools.h>
 
-using namespace Magick;
+//
+// Image importers
+//
+class cImageImporter {
+public:
+    cImageImporter() {};
+    virtual ~cImageImporter() {};
+    virtual bool LoadImage(const char *path) {};
+    virtual void DrawToCairo(cairo_t *cr) {};
+    virtual void GetImageSize(int &width, int &height) {};
+};
 
-class cImageLoader : public cImageMagickWrapper {
+// Image importer for PNG
+class cImageImporterPNG : public cImageImporter {
+public:
+    cImageImporterPNG();
+    ~cImageImporterPNG();
+    bool LoadImage(const char *path);
+    void DrawToCairo(cairo_t *cr);
+    void GetImageSize(int &width, int &height);
+private:
+    cairo_surface_t *surface;
+};
+
+// Image importer for SVG
+/*
+class cImageImporterSVG : public cImageImporter {
+public:
+    ~cImageImporterSVG();
+    bool LoadImage(const char *path);
+    bool RenderToCairo(cairo_t *cr);
+    void GetImageSize(int &width, int &height);
+private:
+    RsvgHandle *handle = NULL;
+}*/
+
+class cImageLoader {
+private:
+    cImageImporter *importer = NULL;
 public:
     cImageLoader();
-    ~cImageLoader();
-    cImage *GetImage(int width, int height);
-    bool LoadImage(const char *path);
+    virtual ~cImageLoader();
+    cImage *CreateImage(int width, int height, bool preserveAspect = true);
+    bool LoadImage(std::string FileName, std::string Path, std::string Extension);
+    bool LoadImage(const char *fullpath);
     void DeterminateChannelLogoSize(int &width, int &height);
-private:
 };
 
 #endif //__NOPACITY_IMAGELOADER_H
