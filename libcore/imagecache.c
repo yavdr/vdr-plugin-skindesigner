@@ -311,18 +311,17 @@ cImage *cImageCache::GetSkinpart(string name, int width, int height) {
 }
 
 bool cImageCache::LoadIcon(eImageType type, string name) {
-    bool success = false;
     cString subdir("");
     if (type == itMenuIcon)
         subdir = "menuicons";
     else if (type == itIcon)
         subdir = "icons";
     cString subIconPath = cString::sprintf("%s%s/", iconPath.c_str(), *subdir);
-    success = LoadImage(name, *subIconPath, "png");
-    if (success) {
-        return true;
-    }
-    return false;
+
+    if (FileExists(*subIconPath, name, "svg"))
+        return LoadImage(*subIconPath, name, "svg");
+    else
+        return LoadImage(*subIconPath, name, "png");
 }
 
 bool cImageCache::LoadLogo(const cChannel *channel) {
@@ -331,32 +330,27 @@ bool cImageCache::LoadLogo(const cChannel *channel) {
     string channelID = StrToLowerCase(*(channel->GetChannelID().ToString()));
     string logoLower = StrToLowerCase(channel->Name());
     bool success = false;
-    success = LoadImage(channelID.c_str(), logoPath.c_str(), *config.logoExtension);
-    if (success)
-        return true;
-    success = LoadImage(logoLower.c_str(), logoPath.c_str(), *config.logoExtension);
-    if (success)
-        return true;
+
+    if (FileExists(logoPath.c_str(), channelID.c_str(), *config.logoExtension))
+        return LoadImage(logoPath.c_str(), channelID.c_str(), *config.logoExtension);
+
+    if (FileExists(logoPath.c_str(), logoLower.c_str(), *config.logoExtension))
+        return LoadImage(logoPath.c_str(), logoLower.c_str(), *config.logoExtension);
+
     return false;
 }
 
 bool cImageCache::LoadSeparatorLogo(string name) {
     cString separatorPath = cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
-    bool success = false;
-    success = LoadImage(nameLower.c_str(), *separatorPath, *config.logoExtension);
-    if (success)
-        return true;
-    return false;    
+    return LoadImage(*separatorPath, nameLower.c_str(), *config.logoExtension);
 }
 
 bool cImageCache::LoadSkinpart(string name) {
-    bool success = false;
-    success = LoadImage(name, skinPartsPath.c_str(), "png");
-    if (success) {
-        return true;
-    }
-    return false;
+    if (FileExists(skinPartsPath.c_str(), name, "svg"))
+        return LoadImage(skinPartsPath.c_str(), name, "svg");
+    else
+        return LoadImage(skinPartsPath.c_str(), name, "png");
 }
 
 void cImageCache::Clear(void) {

@@ -4,6 +4,7 @@
 #define X_DISPLAY_MISSING
 
 #include <cairo.h>
+#include <librsvg/rsvg.h>
 #include <vdr/osd.h>
 #include <vdr/tools.h>
 
@@ -32,16 +33,17 @@ private:
 };
 
 // Image importer for SVG
-/*
 class cImageImporterSVG : public cImageImporter {
 public:
+    cImageImporterSVG();
     ~cImageImporterSVG();
     bool LoadImage(const char *path);
-    bool RenderToCairo(cairo_t *cr);
+    void DrawToCairo(cairo_t *cr);
     void GetImageSize(int &width, int &height);
 private:
-    RsvgHandle *handle = NULL;
-}*/
+    RsvgHandle *handle;
+};
+
 
 class cImageLoader {
 private:
@@ -50,7 +52,7 @@ public:
     cImageLoader();
     virtual ~cImageLoader();
     cImage *CreateImage(int width, int height, bool preserveAspect = true);
-    bool LoadImage(std::string FileName, std::string Path, std::string Extension);
+    bool LoadImage(std::string Path, std::string FileName, std::string Extension);
     bool LoadImage(const char *fullpath);
     void DeterminateChannelLogoSize(int &width, int &height);
 };

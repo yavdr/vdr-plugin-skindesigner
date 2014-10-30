@@ -41,7 +41,6 @@ cImage *cImageLoader::CreateImage(int width, int height, bool preserveAspect) {
     cairo_scale(cr, sx, sy);
 
     importer->DrawToCairo(cr);
-    cairo_paint(cr);
 
     cairo_status_t status = cairo_status(cr);
     if (status)
@@ -51,6 +50,7 @@ cImage *cImageLoader::CreateImage(int width, int height, bool preserveAspect) {
     cImage *image = new cImage(cSize(width, height), (tColor*)data);
 
     cairo_destroy(cr);
+    cairo_surface_destroy(surface);
 
     return image;
 }
@@ -67,6 +67,8 @@ bool cImageLoader::LoadImage(const char *fullpath) {
 
     if (endswith(fullpath, ".png"))
         importer = new cImageImporterPNG;
+    else if (endswith(fullpath, ".svg"))
+        importer = new cImageImporterSVG;
     else
         return false;
 
@@ -74,7 +76,7 @@ bool cImageLoader::LoadImage(const char *fullpath) {
 }
 
 // Just a different way to call LoadImage. Calls the above one.
-bool cImageLoader::LoadImage(std::string FileName, std::string Path, std::string Extension) {
+bool cImageLoader::LoadImage(std::string Path, std::string FileName, std::string Extension) {
     std::stringstream sstrImgFile;
     sstrImgFile << Path << FileName << "." << Extension;
     std::string imgFile = sstrImgFile.str();
@@ -147,13 +149,63 @@ bool cImageImporterPNG::LoadImage(const char *path) {
 }
 
 void cImageImporterPNG::DrawToCairo(cairo_t *cr) {
-    if (surface)
+    if (surface) {
         cairo_set_source_surface(cr, surface, 0, 0);
+        cairo_paint(cr);
+    }
 }
 
 void cImageImporterPNG::GetImageSize(int &width, int &height) {
     if (surface) {
         width = cairo_image_surface_get_width(surface);
         height = cairo_image_surface_get_height(surface);
+    }
+}
+
+//
+// Image importer for SVG
+//
+
+cImageImporterSVG::cImageImporterSVG() {
+    handle = NULL;
+}
+
+cImageImporterSVG::~cImageImporterSVG() {
+    if (handle) {
+        rsvg_handle_close(handle, NULL);
+        g_object_unref(handle);
+    }
+}
+
+bool cImageImporterSVG::LoadImage(const char *path) {
+    if (handle) {
+        rsvg_handle_close(handle, NULL);
+        g_object_unref(handle);
+    }
+
+    GError *error = NULL;
+    handle = rsvg_handle_new_from_file(path, &error);
+    if (!handle) {
+        if (config.debugImageLoading)
+            dsyslog("skindesigner: RSVG Error: %s", error->message);
+        return false;
+    }
+
+    rsvg_handle_set_dpi(handle, 90);
+
+    return true;
+}
+
+void cImageImporterSVG::DrawToCairo(cairo_t *cr) {
+    if (handle)
+        rsvg_handle_render_cairo(handle, cr);
+}
+
+void cImageImporterSVG::GetImageSize(int &width, int &height) {
+    if (handle) {
+        RsvgDimensionData dim;
+        rsvg_handle_get_dimensions(handle, &dim);
+        width = dim.width;
+        height = dim.height;
     }
 }
