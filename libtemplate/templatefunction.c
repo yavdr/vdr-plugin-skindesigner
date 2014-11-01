@@ -844,7 +844,9 @@ bool cTemplateFunction::SetTextTokens(string value) {
         //search for conditional token or normal token
         size_t tokenStart = value.find_first_of('{');
         size_t conditionStart = value.find_first_of('|');
+        size_t printfStart = value.find("{printf(");
         if (tokenStart == string::npos && conditionStart == string::npos) {
+        //find constant strings
             if (value.size() > 0) {
                 cTextToken token;
                 token.type = ttConstString;
@@ -855,12 +857,25 @@ bool cTemplateFunction::SetTextTokens(string value) {
             continue;
         } else if (tokenStart != string::npos && conditionStart == string::npos) {
             size_t tokenEnd = value.find_first_of('}');
-            ParseTextToken(value, tokenStart, tokenEnd);
+            if (printfStart != string::npos && printfStart <= tokenStart) {
+                //replace printf text token
+                ParsePrintfTextToken(value, printfStart, tokenEnd);
+            } else {
+                //replace normal text token
+                ParseTextToken(value, tokenStart, tokenEnd);
+            }
         } else if (tokenStart != string::npos && conditionStart != string::npos) {
             if (tokenStart < conditionStart) {
                 size_t tokenEnd = value.find_first_of('}');
-                ParseTextToken(value, tokenStart, tokenEnd);
+                if (printfStart != string::npos && printfStart <= tokenStart) {
+                    //replace printf text token
+                    ParsePrintfTextToken(value, printfStart, tokenEnd);
+                } else {
+                    //replace normal text token
+                    ParseTextToken(value, tokenStart, tokenEnd);
+                }
             } else {
+                //replace conditional text token
                 size_t conditionEnd = value.find_first_of('|', conditionStart+1);
                 ParseConditionalTextToken(value, conditionStart, conditionEnd);
             }
@@ -929,6 +944,26 @@ void cTemplateFunction::ParseConditionalTextToken(string &value, size_t start, s
         textTokens.push_back(token);
     }
 
+}
+
+void cTemplateFunction::ParsePrintfTextToken(string &value, size_t start, size_t end) {
+    cTextToken token;
+    token.type = ttPrintfToken;
+    //fetch parameter list from printf
+    string printfParams = value.substr(start + 8, end - start - 9);
+    value = value.replace(0, end - start + 1, "");
+    splitstring s(printfParams.c_str());
+    vector<string> flds = s.split(',', 1);
+
+    int numParams = flds.size();
+    if (numParams < 1)
+        return;
+    string formatString = trim(flds[0]);
+    token.value = formatString.substr(1, formatString.size() - 2);
+    for (int i=1; i < numParams; i++) {
+        token.parameters.push_back(trim(flds[i]));
+    }
+    textTokens.push_back(token);
 }
 
 bool cTemplateFunction::SetScrollMode(string value) {
@@ -1063,6 +1098,45 @@ void cTemplateFunction::ParseStringParameters(void) {
                     found = true;
                 }
             }
+        } else if ((*it).type == ttPrintfToken) {
+            cTextToken token = *it;
+            int paramCount = token.parameters.size();
+            string printfResult = "";
+            switch (paramCount) {
+                case 1: {
+                    int param1 = ReplaceIntToken(token.parameters[0]);
+                    printfResult = *cString::sprintf(token.value.c_str(), param1);
+                    break; }
+                case 2: {
+                    int param1 = ReplaceIntToken(token.parameters[0]);
+                    int param2 = ReplaceIntToken(token.parameters[1]);
+                    printfResult = *cString::sprintf(token.value.c_str(), param1, param2);
+                    break; }
+                case 3: {
+                    int param1 = ReplaceIntToken(token.parameters[0]);
+                    int param2 = ReplaceIntToken(token.parameters[1]);
+                    int param3 = ReplaceIntToken(token.parameters[2]);
+                    printfResult = *cString::sprintf(token.value.c_str(), param1, param2, param3);
+                    break; }
+                case 4: {
+                    int param1 = ReplaceIntToken(token.parameters[0]);
+                    int param2 = ReplaceIntToken(token.parameters[1]);
+                    int param3 = ReplaceIntToken(token.parameters[2]);
+                    int param4 = ReplaceIntToken(token.parameters[3]);
+                    printfResult = *cString::sprintf(token.value.c_str(), param1, param2, param3, param4);
+                    break; }
+                case 5: {
+                    int param1 = ReplaceIntToken(token.parameters[0]);
+                    int param2 = ReplaceIntToken(token.parameters[1]);
+                    int param3 = ReplaceIntToken(token.parameters[2]);
+                    int param4 = ReplaceIntToken(token.parameters[3]);
+                    int param5 = ReplaceIntToken(token.parameters[4]);
+                    printfResult = *cString::sprintf(token.value.c_str(), param1, param2, param3, param4, param5);
+                    break; }
+                default:
+                    break;
+            }
+            text << printfResult;
         }
     }
     parsedText = text.str();
@@ -1237,6 +1311,21 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
     int textLinesFull = wTextFull.Lines();
 
     return ((textLinesTall+textLinesFull) * fontHeight);
+}
+
+int cTemplateFunction::ReplaceIntToken(string intTok) {
+    if (intTokens) {
+        map<string,int>::iterator hit = intTokens->find(intTok);
+        if (hit != intTokens->end())
+            return hit->second;
+    }
+    if (stringTokens) {
+        map<string,string>::iterator hit = stringTokens->find(intTok);
+        if (hit != stringTokens->end()) {            
+            return atoi(hit->second.c_str());
+        }
+    }
+    return 0;
 }
 
 /*******************************************************************
