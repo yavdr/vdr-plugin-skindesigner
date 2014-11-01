@@ -81,17 +81,18 @@ bool cSDDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, 
         return false;
     if (config.blockFlush)
         rootView->LockFlush();
-    if (Current) {
-        if (Channel) {
-            rootView->SetChannel(Channel);
-        } else if (Event) {
-            rootView->SetChannel(Channels.GetByChannelID(Event->ChannelID()));
-        }
+    const cChannel *channel = Channel;
+    if (!channel) {
+        channel = rootView->GetChannel();
+    } 
+    if (!channel && Event) {
+        channel = Channels.GetByChannelID(Event->ChannelID());
+        rootView->SetChannel(channel);
     }
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
-    list->AddSchedulesMenuItem(Index, Event, Channel, TimerMatch, MenuCategory(), Current, Selectable);
+    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), Current, Selectable);
     if (state == vsIdle)
         state = vsMenuUpdate;
     return true;
