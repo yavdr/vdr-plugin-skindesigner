@@ -272,6 +272,36 @@ bool cTemplateFunction::CalculateParameters(void) {
     return paramsValid;
 }    
 
+bool cTemplateFunction::ReCalculateParameters(void) {
+    bool paramValid = true;
+    bool paramsValid = true;
+    for (map< eParamType, string >::iterator param = nativeParameters.begin(); param != nativeParameters.end(); param++) { 
+        paramValid = true;
+        eParamType type = param->first;
+        string value = param->second;
+        switch (type) {
+            case ptX:
+            case ptY:
+            case ptWidth:
+            case ptHeight:
+            case ptMenuItemWidth:
+            case ptFontSize:
+            case ptFloatWidth:
+            case ptFloatHeight:
+            case ptMaxLines:
+            case ptColumnWidth:
+            case ptRowHeight:
+                SetNumericParameter(type, value);
+                break;
+        }
+        if (!paramValid) {
+            paramsValid = false;
+            esyslog("skindesigner: %s: invalid parameter %d, value %s", GetFuncName().c_str(), type, value.c_str());
+        }
+    }
+    return paramsValid;
+}    
+
 void cTemplateFunction::CompleteParameters(void) {
     switch (type) {
         case ftDrawImage: {
@@ -733,8 +763,11 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
         if (this->type < ftLoop && type == ptY) {
             val += containerY;
         }
+        numericParameters.erase(type);
+        numericDynamicParameters.erase(type);
         numericParameters.insert(pair<eParamType, int>(type, val));
     } else {
+        numericDynamicParameters.erase(type);
         numericDynamicParameters.insert(pair<eParamType, string>(type, parsedValue));
     }
     return param.Valid();

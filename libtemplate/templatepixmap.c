@@ -78,11 +78,12 @@ void cTemplatePixmap::ParseDynamicParameters(map <string,int> *intTokens, bool i
 
     for (vector<cTemplateFunction*>::iterator func = functions.begin(); func != functions.end(); func++) {
         (*func)->SetContainer(x, y, width, height);
-        (*func)->CalculateParameters();
+        (*func)->ReCalculateParameters();
         (*func)->CompleteParameters();
         if ((*func)->GetType() == ftLoop) {
             cTemplateLoopFunction *loopFunc = dynamic_cast<cTemplateLoopFunction*>(*func);
             if (!loopFunc->Ready()) {
+                loopFunc->CalculateParameters();
                 loopFunc->SetIntTokens(intTokens);
                 loopFunc->ParseParameters();
                 loopFunc->UnsetIntTokens();
@@ -137,8 +138,6 @@ bool cTemplatePixmap::CalculateParameters(void) {
 
     for (vector<cTemplateFunction*>::iterator func = functions.begin(); func != functions.end(); func++) {
         (*func)->SetGlobals(globals);
-        if (!Ready())
-            continue;
         (*func)->SetContainer(0, 0, pixWidth, pixHeight);
         paramsValid = (*func)->CalculateParameters();
         (*func)->CompleteParameters();

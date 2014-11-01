@@ -172,6 +172,8 @@ public:
     void SetTranslatedText(string translation);
     //PreCache Parameters 
     bool CalculateParameters(void);
+    //Complete Parameters 
+    bool ReCalculateParameters(void);
     void CompleteParameters(void);
     //Set and Unset Dynamic Tokens from view
     void SetStringTokens(map < string, string > *tok) { stringTokens = tok; };

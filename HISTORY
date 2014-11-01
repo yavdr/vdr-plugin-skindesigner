@@ -50,5 +50,6 @@ Version 0.0.3
 - added {channelname}, {channelid}, {channellogoexists} for all schedules list and current views
 - added printf function for <drawtext>, see Wiki for documentation
 - removed code for displaying bitrates in displaychannel again because of incompatibility with dvbapi Plugin
+- optimized performance when creating a menu list
 
 
