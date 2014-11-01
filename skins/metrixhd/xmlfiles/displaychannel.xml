@@ -252,6 +252,7 @@
     -->
     <message>
         <area x="10%" y="45%" width="80%" height="10%" layer="1">
+            <fill color="{clrTransBlack}" />
             <drawrectangle condition="{status}" x="20" y="0" width="20" height="100%" color="{clrGreen}" />
             <drawrectangle condition="{info}" x="20" y="0" width="20" height="100%" color="{clrBlue}" />
             <drawrectangle condition="{warning}" x="20" y="0" width="20" height="100%" color="{clrYellow}" />

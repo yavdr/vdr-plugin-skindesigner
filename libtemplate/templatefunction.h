@@ -143,6 +143,7 @@ protected:
     bool SetTextTokens(string value);
     void ParseTextToken(string &value, size_t start, size_t end);
     void ParseConditionalTextToken(string &value, size_t start, size_t end);
+    void ParsePrintfTextToken(string &value, size_t start, size_t end);
     bool SetScrollMode(string value);
     bool SetScrollSpeed(string value);
     bool SetOrientation(string value);
@@ -152,6 +153,7 @@ protected:
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);
     int CalculateTextBoxHeight(void);
+    int ReplaceIntToken(string intTok);
 public:
     cTemplateFunction(eFuncType type);
     virtual ~cTemplateFunction(void);
@@ -170,6 +172,8 @@ public:
     void SetTranslatedText(string translation);
     //PreCache Parameters 
     bool CalculateParameters(void);
+    //Complete Parameters 
+    bool ReCalculateParameters(void);
     void CompleteParameters(void);
     //Set and Unset Dynamic Tokens from view
     void SetStringTokens(map < string, string > *tok) { stringTokens = tok; };

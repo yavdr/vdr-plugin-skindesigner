@@ -24,8 +24,10 @@ cGlobalSortedTimers::cGlobalSortedTimers(bool forceRefresh) : cVector<const cTim
         initial = false;
     }
 
-    for (cTimer *Timer = Timers.First(); Timer; Timer = Timers.Next(Timer)) 
-        Append(Timer);
+    for (cTimer *Timer = Timers.First(); Timer; Timer = Timers.Next(Timer)) {
+        if (Timer->HasFlags(tfActive))
+            Append(Timer);
+    }
 
     //if remotetimers plugin is available, take timers also from him
     if (pRemoteTimers) {

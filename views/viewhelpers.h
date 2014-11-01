@@ -8,11 +8,11 @@ private:
     int* lastSignalQuality;
     bool* recDevices;
 protected:
+    void InitDevices(void);
+    bool SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);
-    void InitDevices(void);
-    bool SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices);
 };
 
 #endif //__VIEWHELPERS_H

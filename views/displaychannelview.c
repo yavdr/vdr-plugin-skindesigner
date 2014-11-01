@@ -5,7 +5,6 @@
 #include "../libcore/timers.h"
 #include "../libcore/helpers.h"
 
-
 cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplView) {
     lastDate = "";
     lastScreenWidth = 0;

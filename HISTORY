@@ -42,6 +42,14 @@ Version 0.0.2
 
 Version 0.0.3
 
-
+- added tokens for current video and audio bitrate in displaychannel. Thx @rofafor for the original code 
+  in the femon plugin and _Martin_ for extracting the code in skinflatplus
+- changed skin metrixHD to display bitrate infos
+- added "active" Token for cutting marks so that a mark can be displayed in a dedicated way if current position
+  in replay exactly hits the mark
+- added {channelname}, {channelid}, {channellogoexists} for all schedules list and current views
+- added printf function for <drawtext>, see Wiki for documentation
+- removed code for displaying bitrates in displaychannel again because of incompatibility with dvbapi Plugin
+- optimized performance when creating a menu list
 
 

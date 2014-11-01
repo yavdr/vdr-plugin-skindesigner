@@ -362,6 +362,7 @@ void cTemplateView::PreCache(bool isSubview) {
         pixOffset += viewElement->GetNumPixmaps();
     }
 
+
     //Cache ViewLists
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
         cTemplateViewList *viewList = it->second;

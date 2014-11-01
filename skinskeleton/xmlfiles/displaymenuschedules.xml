@@ -34,8 +34,9 @@
         {durationminutes}         duration, rest of minutes
         {current}                 true if item is currently selected 
         {separator}               true if item is a list separator 
-        {channelname}             Channel Name (for what's on now and next)
-        {channelid}               ChannelID as path to display channel logo (for what's on now and next)
+        {channelname}             Channel Name
+        {channelid}               ChannelID as path to display channel logo
+        {channellogoexists}       true if a channel logo exists 
         {whatson}                 true if menu "What's on" is displayed
         {whatsonnow}              true if menu "What's on now" is displayed
         {whatsonnext}             true if menu "What's on next" is displayed
@@ -65,7 +66,9 @@
         {duration}                duration of event
         {durationhours}           duration, full hours
         {durationminutes}         duration, rest of minutes
+        {channelname}             Channel Name
         {channelid}               ChannelID as path to display channel logo
+        {channellogoexists}       true if a channel logo exists 
         {hasposter}               true if a scraped poster is available for this element
         {posterwidth}             width of scraped poster
         {posterheight}            height of scraped poster
