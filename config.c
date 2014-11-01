@@ -23,8 +23,6 @@ cDesignerConfig::cDesignerConfig() {
     //menu display style, display menu items 
     //one after each other or in one step
     blockFlush = 1;
-    //interval for femon receiver to recalculate bitrates in tenth of a second
-    bitrateCalcInterval = 10;
     //remember current skin and theme, osd size and osd fonts
     SetSkin();
     SetOSDSize();
