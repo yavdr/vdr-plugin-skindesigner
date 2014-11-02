@@ -981,20 +981,28 @@ void cTemplateFunction::ParseConditionalTextToken(string &value, size_t start, s
 
 void cTemplateFunction::ParsePrintfTextToken(string &value, size_t start, size_t end) {
     cTextToken token;
-    token.type = ttPrintfToken;
-    //fetch parameter list from printf
-    string printfParams = value.substr(start + 8, end - start - 9);
-    value = value.replace(0, end - start + 1, "");
-    splitstring s(printfParams.c_str());
-    vector<string> flds = s.split(',', 1);
+    if (start > 0) {
+        string constString = value.substr(0, start);
+        value = value.replace(0, start, "");
+        token.type = ttConstString;
+        token.value = constString;
+        textTokens.push_back(token);
+    } else {
+        token.type = ttPrintfToken;
+        //fetch parameter list from printf
+        string printfParams = value.substr(start + 8, end - start - 9);
+        value = value.replace(0, end - start + 1, "");
+        splitstring s(printfParams.c_str());
+        vector<string> flds = s.split(',', 1);
 
-    int numParams = flds.size();
-    if (numParams < 1)
-        return;
-    string formatString = trim(flds[0]);
-    token.value = formatString.substr(1, formatString.size() - 2);
-    for (int i=1; i < numParams; i++) {
-        token.parameters.push_back(trim(flds[i]));
+        int numParams = flds.size();
+        if (numParams < 1)
+            return;
+        string formatString = trim(flds[0]);
+        token.value = formatString.substr(1, formatString.size() - 2);
+        for (int i=1; i < numParams; i++) {
+            token.parameters.push_back(trim(flds[i]));
+        }
     }
     textTokens.push_back(token);
 }
@@ -1588,6 +1596,8 @@ void cTemplateFunction::Debug(void) {
                 tokType = "Token: ";
             else if (tokenType == ttConditionalToken)
                 tokType = "Conditional Token: ";
+            else if (tokenType == ttPrintfToken)
+                tokType = "PrintF Token: ";
             esyslog("skindesigner: %s %d = \"%s\"", tokType.c_str(), i++, (*it).value.c_str());
             if (tokenType == ttConditionalToken) {
                 for (vector<cTextToken>::iterator it2 = (*it).subTokens.begin(); it2 != (*it).subTokens.end(); it2++) {
@@ -1599,6 +1609,11 @@ void cTemplateFunction::Debug(void) {
                         tokTypeCond = "Token: ";
                     esyslog("skindesigner: %s \"%s\"", tokTypeCond.c_str(), (*it2).value.c_str());
                 }
+            }
+            if (tokenType == ttPrintfToken) {
+                for (vector<string>::iterator it2 = (*it).parameters.begin(); it2 != (*it).parameters.end(); it2++) {
+                    esyslog("skindesigner: Printf parameter: %s", (*it2).c_str());
+                }                
             }
         }
     }
