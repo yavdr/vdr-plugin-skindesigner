@@ -457,7 +457,7 @@ void cDisplayMenuItemCurrentTimerView::Render(void) {
         SetScraperPoster(event);
     } else {
         stringTokens.insert(pair<string,string>("eventtitle", ""));
-        stringTokens.insert(pair<string,string>("eventtitle", ""));
+        stringTokens.insert(pair<string,string>("eventstart", ""));
         stringTokens.insert(pair<string,string>("eventstop", ""));
         stringTokens.insert(pair<string,string>("eventshorttext", ""));
         stringTokens.insert(pair<string,string>("eventdescription", ""));

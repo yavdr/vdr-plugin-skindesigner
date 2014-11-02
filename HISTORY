@@ -51,5 +51,6 @@ Version 0.0.3
 - added printf function for <drawtext>, see Wiki for documentation
 - removed code for displaying bitrates in displaychannel again because of incompatibility with dvbapi Plugin
 - optimized performance when creating a menu list
-
+- fixed Bug that displaychannel was not shown after closing displaymenu with "backspace" (with active 
+  menuorg plugin)
 
