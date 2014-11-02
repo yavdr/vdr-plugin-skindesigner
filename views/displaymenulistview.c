@@ -95,6 +95,8 @@ void cDisplayMenuListView::Clear(void) {
 }
 
 void cDisplayMenuListView::AddDefaultMenuItem(int index, string *tabTexts, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         cDisplayMenuItemDefaultView *menuItem = dynamic_cast<cDisplayMenuItemDefaultView*>(menuItems[index]);
         if (!menuItem)
@@ -114,6 +116,8 @@ void cDisplayMenuListView::AddDefaultMenuItem(int index, string *tabTexts, bool 
 }
 
 void cDisplayMenuListView::AddMainMenuItem(int index, const char *itemText, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
@@ -123,6 +127,8 @@ void cDisplayMenuListView::AddMainMenuItem(int index, const char *itemText, bool
 }
 
 void cDisplayMenuListView::AddSetupMenuItem(int index, const char *itemText, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
@@ -133,6 +139,8 @@ void cDisplayMenuListView::AddSetupMenuItem(int index, const char *itemText, boo
 
 void cDisplayMenuListView::AddSchedulesMenuItem(int index, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, 
                                                 eMenuCategory cat, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
@@ -142,6 +150,8 @@ void cDisplayMenuListView::AddSchedulesMenuItem(int index, const cEvent *event, 
 }
 
 void cDisplayMenuListView::AddChannelsMenuItem(int index, const cChannel *channel, bool withProvider, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
@@ -151,6 +161,8 @@ void cDisplayMenuListView::AddChannelsMenuItem(int index, const cChannel *channe
 }
 
 void cDisplayMenuListView::AddTimersMenuItem(int index, const cTimer *timer, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
@@ -160,6 +172,8 @@ void cDisplayMenuListView::AddTimersMenuItem(int index, const cTimer *timer, boo
 }
 
 void cDisplayMenuListView::AddRecordingMenuItem(int index, const cRecording *recording, int level, int total, int isNew, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
@@ -169,6 +183,8 @@ void cDisplayMenuListView::AddRecordingMenuItem(int index, const cRecording *rec
 }
 
 void cDisplayMenuListView::AddTracksMenuItem(int index, const char *title, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
