@@ -44,8 +44,8 @@ DEFINES += $(shell xml2-config --cflags)
 
 INCLUDES += $(shell pkg-config --cflags freetype2 fontconfig)
 
-INCLUDES += $(shell pkg-config --cflags librsvg-2.0 cairo-png)
-LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png)
+INCLUDES += $(shell pkg-config --cflags librsvg-2.0 cairo-png) -ljpeg
+LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
