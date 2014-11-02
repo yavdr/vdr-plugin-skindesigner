@@ -53,4 +53,5 @@ Version 0.0.3
 - optimized performance when creating a menu list
 - fixed Bug that displaychannel was not shown after closing displaymenu with "backspace" (with active 
   menuorg plugin)
+- fixed Bug with menuselection Patch
 
