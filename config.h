@@ -61,7 +61,6 @@ public:
     int rerunDistance;
     int rerunMaxChannel;
     int blockFlush;
-    int bitrateCalcInterval;
 };
 
 #ifdef DEFINE_CONFIG

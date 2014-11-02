@@ -3,7 +3,7 @@
         <!-- Available Variables recordings menu listelement:
         {nummenuitem}           number of item in list, starts with 1
         {name}                  Name of recording
-        {date}                  Date of recording
+        {date}                  Date of recording (day dd.mm.yyyy)
         {time}                  Time of recording
         {daynumeric}            day as number
         {month}                 month as number
@@ -39,7 +39,7 @@
             </area>
             <!-- recording item -->
             <area condition="not{folder}" x="1%" width="58%" layer="2">
-                <drawtext x="10" valign="center" font="{light}" fontsize="85%" color="{clrWhite}" text="{date} {time}" />
+                <drawtext x="10" valign="center" font="{light}" fontsize="85%" color="{clrWhite}" text="{printf('%02d.%02d.%d', daynumeric, month, year)} {time}" />
                 <drawtext x="35%" width="60%" valign="center" font="{light}" fontsize="85%" color="{clrWhite}" text="{name}" />
                 <drawimage condition="{new}" name="new" imagetype="icon" path="ico_recnew" x="{areawidth} - {areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
                 <drawimage condition="{new}++{cutted}" imagetype="icon" path="ico_cutted" x="{areawidth} - 2*{areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />

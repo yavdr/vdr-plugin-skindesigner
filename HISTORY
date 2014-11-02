@@ -47,5 +47,11 @@ Version 0.0.3
 - changed skin metrixHD to display bitrate infos
 - added "active" Token for cutting marks so that a mark can be displayed in a dedicated way if current position
   in replay exactly hits the mark
-
+- added {channelname}, {channelid}, {channellogoexists} for all schedules list and current views
+- added printf function for <drawtext>, see Wiki for documentation
+- removed code for displaying bitrates in displaychannel again because of incompatibility with dvbapi Plugin
+- optimized performance when creating a menu list
+- fixed Bug that displaychannel was not shown after closing displaymenu with "backspace" (with active 
+  menuorg plugin)
+- fixed Bug with menuselection Patch
 

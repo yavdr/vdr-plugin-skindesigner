@@ -39,6 +39,7 @@ cPixmapContainer::~cPixmapContainer(void) {
         osd = NULL;
         mutex.Unlock();
     }
+    flushState = fsOpen;
 }
 
 bool cPixmapContainer::CreateOsd(int Left, int Top, int Width, int Height) {

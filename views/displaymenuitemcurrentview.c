@@ -165,7 +165,10 @@ void cDisplayMenuItemCurrentSchedulesView::Render(void) {
         SetScraperPoster(event);
     }
     if (channel) {
-        stringTokens.insert(pair<string,string>("channelid", *(channel->GetChannelID().ToString())));
+        stringTokens.insert(pair<string,string>("channelname", channel->Name() ? channel->Name() : ""));
+        string channelID = *(channel->GetChannelID().ToString());
+        stringTokens.insert(pair<string,string>("channelid", channelID));
+        intTokens.insert(pair<string, int>("channellogoexists", imgCache->LogoExists(channelID)));
     }
 
     vector< map<string,string> > schedulesTokens;
@@ -454,7 +457,7 @@ void cDisplayMenuItemCurrentTimerView::Render(void) {
         SetScraperPoster(event);
     } else {
         stringTokens.insert(pair<string,string>("eventtitle", ""));
-        stringTokens.insert(pair<string,string>("eventtitle", ""));
+        stringTokens.insert(pair<string,string>("eventstart", ""));
         stringTokens.insert(pair<string,string>("eventstop", ""));
         stringTokens.insert(pair<string,string>("eventshorttext", ""));
         stringTokens.insert(pair<string,string>("eventdescription", ""));

@@ -432,8 +432,9 @@ bool cDisplayMenuSchedulesView::DrawHeader(void) {
     if (channel) {
         stringTokens.insert(pair<string,string>("channelnumber", *cString::sprintf("%d", channel->Number())));
         stringTokens.insert(pair<string,string>("channelname", channel->Name()));
-        stringTokens.insert(pair<string,string>("channelid", *(channel->GetChannelID().ToString())));
-        
+        string channelID = *(channel->GetChannelID().ToString());
+        stringTokens.insert(pair<string,string>("channelid", channelID));
+        intTokens.insert(pair<string, int>("channellogoexists", imgCache->LogoExists(channelID)));
     }
     bool hasIcon = false;
     string icon = imgCache->GetIconName(menuTitle, cat);

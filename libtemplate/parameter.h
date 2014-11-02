@@ -83,13 +83,15 @@ public:
 enum eTextTokenType {
     ttConstString,
     ttToken,
-    ttConditionalToken
+    ttConditionalToken,
+    ttPrintfToken
 };
 
 class cTextToken {
 public:
     eTextTokenType type;
     string value;
+    vector<string> parameters;
     vector<cTextToken> subTokens;
 };
 

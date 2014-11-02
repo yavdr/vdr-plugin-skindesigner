@@ -17,6 +17,7 @@ public:
     void SetMenuCat(eMenuCategory newCat) { cat = newCat; };
     void SetTitle(const char *title) {menuTitle = title; };
     virtual void SetChannel(const cChannel *channel) {};
+    virtual const cChannel *GetChannel(void) { return NULL; };
     void SetButtonTexts(string *buttonTexts) { this->buttonTexts = buttonTexts; };
     bool DrawBackground(void);
     virtual bool DrawHeader(void);
@@ -51,6 +52,7 @@ public:
     cDisplayMenuSchedulesView(cTemplateView *tmplView, eMenuCategory menuCat, bool menuInit);
     virtual ~cDisplayMenuSchedulesView();
     void SetChannel(const cChannel *channel) { this->channel = channel; };
+    const cChannel *GetChannel(void) { return channel; };
     bool DrawHeader(void);
 };
 

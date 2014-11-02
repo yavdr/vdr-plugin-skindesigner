@@ -80,7 +80,7 @@
             <area x="32%" y="2%" width="67%" height="96%" layer="2">
                 <fill color="{clrTransBlack}" />
             </area>
-            <area x="32%" y="2%" width="67%" height="96%" layer="2">
+            <area condition="{flagactive}" x="32%" y="2%" width="67%" height="96%" layer="2">
                 <!-- title -->
                 <drawtext name="title" align="center" y="0" font="{vdrOsd}" width="{areawidth}-20" fontsize="8%" color="{clrWhite}" text="{eventtitle} - {eventshorttext}" />
                 <!-- start and stop if event is not running -->
@@ -90,6 +90,10 @@
                 <!-- description -->
                 <drawtextbox condition="{hasposter}" x="10" y="{posy(poster)}" width="99%" height="{areaheight} - {posy(poster)}" float="topright" floatwidth="{width(poster)} + 10" floatheight="{height(poster)} + 20" font="{vdrOsd}" fontsize="5%" color="{clrWhite}" text="{eventdescription}" />
                 <drawtextbox condition="not{hasposter}" x="10" y="{posy(poster)}" width="99%" height="{areaheight} - {posy(poster)}" font="{vdrOsd}" fontsize="5%" color="{clrWhite}" text="{eventdescription}" />
+            </area>
+            <area condition="not{flagactive}" x="32%" y="2%" width="67%" height="96%" layer="2">
+                <drawtext x="10" y="0" font="{vdrOsd}" fontsize="8%" color="{clrWhite}" text="{channelname}" />
+                <drawtext x="10" y="10%" font="{vdrOsd}" fontsize="6%" color="{clrWhite}" text="{timerstart} - {timerstop}" />
             </area>
         </currentelement>
         
