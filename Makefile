@@ -6,6 +6,9 @@
 # External image lib to use: imagemagick, graphicsmagick
 IMAGELIB = imagemagick
 
+# Config
+CONFIG := #-DDOPROFILE #           enable profiling code
+
 # The official name of this plugin.
 PLUGIN = skindesigner
 
@@ -42,7 +45,7 @@ PACKAGE = vdr-$(ARCHIVE)
 SOFILE = libvdr-$(PLUGIN).so
 
 ### Includes and Defines and Dependencies:
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' $(CONFIG)
 DEFINES += $(shell xml2-config --cflags)
 
 INCLUDES += $(shell pkg-config --cflags freetype2 fontconfig)

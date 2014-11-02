@@ -364,8 +364,18 @@ void cDisplayChannelView::DrawSignal(void) {
     }
     time_t Now = time(NULL);
     if (Now != lastSignalDisplay) {
+#ifdef DOPROFILE
+        cStopWatch watch("DrawSignal");
+#endif
         int SignalStrength = cDevice::ActualDevice()->SignalStrength();
+#ifdef DOPROFILE
+        watch.Report("SignalStrength");
+#endif
         int SignalQuality = cDevice::ActualDevice()->SignalQuality();
+#ifdef DOPROFILE
+        watch.Report("SignalQuality");
+        watch.Stop("DrawSignal");
+#endif
         if (SignalStrength < 0) SignalStrength = 0;
         if (SignalQuality < 0) SignalQuality = 0;
         if ((SignalStrength == 0)&&(SignalQuality==0))

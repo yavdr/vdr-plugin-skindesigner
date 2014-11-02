@@ -167,9 +167,12 @@ vector<string>& splitstring::split(char delim, int rep) {
     return flds;
 }
 
-cStopWatch::cStopWatch(void) {
+cStopWatch::cStopWatch(const char* message) {
     start = cTimeMs::Now();
     last = start;
+    if (message) {
+        dsyslog("skindesigner: Starting StopWatch %s", message);        
+    }
 }
 
 void cStopWatch::Report(const char* message) {

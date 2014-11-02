@@ -18,6 +18,7 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
     currentLast = 0;
     channelChange = false;
     initial = true;
+    devicesLast = cTimeMs::Now();
 
     channelView = new cDisplayChannelView(channelTemplate->GetRootView());
     if (!channelView->createOsd()) {
@@ -185,7 +186,10 @@ void cSDDisplayChannel::Flush(void) {
         channelView->DrawScreenResolution();
         channelView->DrawSignal();
         channelView->DrawAudioInfo();
-        channelView->DrawDevices(initial);
+        if (initial || cTimeMs::Now() - devicesLast  > 500) {
+            channelView->DrawDevices(initial);
+            devicesLast = cTimeMs::Now();
+        }
     } else {
         channelView->ClearStatusIcons();
         channelView->ClearScreenResolution();
