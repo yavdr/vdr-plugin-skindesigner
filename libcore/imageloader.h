@@ -49,9 +49,6 @@ private:
 #if BITS_IN_JSAMPLE != 8
   #error libjpeg-turbo has to be compiled with 8-bit samples!
 #endif
-#ifndef JCS_EXTENSIONS
-  #error libjpeg-turbo with JCS_EXTENSIONS required!
-#endif
 
 struct my_error_mgr {
   struct jpeg_error_mgr pub; // "public" fields

@@ -290,38 +290,56 @@ void cImageImporterJPG::DrawToCairo(cairo_t *cr) {
     }
 
     // Step 4: set parameters for decompression
-    cinfo->out_color_space = JCS_EXT_ARGB;
+    cinfo->out_color_space = JCS_RGB;
 
     // Step 5: Start decompressor
     (void) jpeg_start_decompress(cinfo);
 
-    // Bytes per row in output buffer
-    int row_stride = cinfo->output_width * cinfo->output_components;
-
-    // Allocate buffer
-    unsigned long bmp_size = row_stride * cinfo->output_height;
-    bmp_buffer = (unsigned char*)malloc(bmp_size);
+    // Allocate buffer. Directly allocate the space needed for ARGB
+    int width = cinfo->output_width;
+    int height = cinfo->output_height;
+    bmp_buffer = (unsigned char*)malloc(width * height * 4);
 
     // Step 6: while (scan lines remain to be read)
-    while (cinfo->output_scanline < cinfo->output_height) {
+    int jpg_stride = width * cinfo->output_components;
+    while (cinfo->output_scanline < height) {
         unsigned char *buffer_array[1];
-        buffer_array[0] = bmp_buffer + (cinfo->output_scanline) * row_stride;
+        buffer_array[0] = bmp_buffer + (cinfo->output_scanline) * jpg_stride;
         jpeg_read_scanlines(cinfo, buffer_array, 1);
     }
 
-    // Step 7: Finish decompression
+    // Step 7: Finish decompression. Free all libjpeg stuff and close file.
     (void)jpeg_finish_decompress(cinfo);
+
+    // Cleanup. In this "ImageImporter" we clean up everything in "DrawToCairo"
+    // as I'm not really sure whether we are able to draw a second time.
     fclose(infile);
+    jpeg_destroy_decompress(cinfo);
+    free(cinfo);
+    cinfo = NULL;
 
     // --> At this point we have raw RGB data in bmp_buffer
+
+    // Do some ugly byte shifting.
+    // Byte order in libjpeg: RGB
+    // Byte order in cairo and VDR: BGRA
+    for (int index = (width * height) - 1; index >= 0; index--) {
+        unsigned char temp[3];
+        unsigned char *target = bmp_buffer + (index * 4);
+        unsigned char *source = bmp_buffer + (index * 3);
+        memcpy(&temp[0], source + 2, 1);
+        memcpy(&temp[1], source + 1, 1);
+        memcpy(&temp[2], source, 1);
+        memcpy(target, &temp, 3);
+    }
 
     // Create new Cairo surface from our raw image data
     cairo_surface_t *surface;
     surface = cairo_image_surface_create_for_data(bmp_buffer,
-                                                  CAIRO_FORMAT_ARGB32,
-                                                  cinfo->output_width,
-                                                  cinfo->output_height,
-                                                  row_stride);
+                                                  CAIRO_FORMAT_RGB24,
+                                                  width,
+                                                  height,
+                                                  width * 4);
 
     // Draw surface to Cairo
     if (surface) {
@@ -330,12 +348,8 @@ void cImageImporterJPG::DrawToCairo(cairo_t *cr) {
         cairo_surface_destroy(surface);
     }
 
-    // Cleanup. In this "ImageImporter" we clean up everything in "DrawToCairo"
-    // as I'm not really sure whether we are able to draw a second time.
+    // Free our memory
     free(bmp_buffer);
-    jpeg_destroy_decompress(cinfo);
-    free(cinfo);
-    cinfo = NULL;
 }
 
 void cImageImporterJPG::GetImageSize(int &width, int &height) {
