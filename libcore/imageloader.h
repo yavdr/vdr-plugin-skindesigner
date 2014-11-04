@@ -15,7 +15,7 @@ class cImageImporter {
 public:
     cImageImporter() {};
     virtual ~cImageImporter() {};
-    virtual bool LoadImage(const char *path) {};
+    virtual bool LoadImage(const char *path) { return false; };
     virtual void DrawToCairo(cairo_t *cr) {};
     virtual void GetImageSize(int &width, int &height) {};
 };
@@ -47,12 +47,12 @@ private:
 // Image importer for JPG
 
 #if BITS_IN_JSAMPLE != 8
-  #error libjpeg-turbo has to be compiled with 8-bit samples!
+    #error libjpeg has to be compiled with 8-bit samples!
 #endif
 
 struct my_error_mgr {
-  struct jpeg_error_mgr pub; // "public" fields
-  jmp_buf setjmp_buffer;     // for return to caller
+    struct jpeg_error_mgr pub; // "public" fields
+    jmp_buf setjmp_buffer;     // for return to caller
 };
 
 METHODDEF(void)
@@ -61,7 +61,6 @@ my_error_exit(j_common_ptr cinfo) {
     my_error_mgr *myerr = (my_error_mgr*) cinfo->err;
 
     // Always display the message.
-    // We could postpone this until after returning, if we chose.
     (*cinfo->err->output_message) (cinfo);
 
     // Return control to the setjmp point
@@ -91,7 +90,7 @@ private:
 
 class cImageLoader {
 private:
-    cImageImporter *importer = NULL;
+    cImageImporter *importer;
 public:
     cImageLoader();
     virtual ~cImageLoader();

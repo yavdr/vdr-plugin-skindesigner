@@ -14,7 +14,8 @@ cImageLoader::~cImageLoader() {
 }
 
 cImage *cImageLoader::CreateImage(int width, int height, bool preserveAspect) {
-    if (!importer) return NULL;
+    if (!importer)
+        return NULL;
 
     int w, h;
     importer->GetImageSize(w, h);
@@ -87,18 +88,19 @@ bool cImageLoader::LoadImage(std::string Path, std::string FileName, std::string
 void cImageLoader::DeterminateChannelLogoSize(int &width, int &height) {
     cString logoPath;
     cString logoPathSkin = cString::sprintf("%s%s/themes/%s/logos/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
-    if (FolderExists(*logoPathSkin)) {
+
+    if (FolderExists(*logoPathSkin))
         logoPath = logoPathSkin;
-    } else {
+    else
         logoPath = config.logoPath;
-    }
+
     cString logoExt = config.logoExtension;
     DIR *folder = NULL;
     struct dirent *file;
     folder = opendir(logoPath);
-    if (!folder) {
+    if (!folder)
         return;
-    }
+
     while (file = readdir(folder)) {
         if (endswith(file->d_name, *logoExt)) {
             std::stringstream filePath;
@@ -192,6 +194,7 @@ bool cImageImporterSVG::LoadImage(const char *path) {
         return false;
     }
 
+    // 90 dpi is the hardcoded default setting of the Inkscape SVG editor
     rsvg_handle_set_dpi(handle, 90);
 
     return true;
@@ -242,9 +245,11 @@ bool cImageImporterJPG::LoadImage(const char *path) {
         return false;
     }
 
+    // Allocate space for our decompress struct
+    cinfo = (j_decompress_ptr)malloc(sizeof(struct jpeg_decompress_struct));
+
     // We set up the normal JPEG error routines, then override error_exit.
     struct my_error_mgr jerr;
-    cinfo = (j_decompress_ptr)malloc(sizeof(struct jpeg_decompress_struct));
     cinfo->err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
     jerr.pub.output_message = my_output_message;
@@ -275,7 +280,8 @@ void cImageImporterJPG::DrawToCairo(cairo_t *cr) {
 
     unsigned char *bmp_buffer = NULL;
 
-    // Re-establish error handling
+    // Re-establish error handling. We have to do this again as the saved
+    // calling environment of "LoadImage" is invalid if we reach here!
     struct my_error_mgr jerr;
     cinfo->err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
@@ -308,7 +314,7 @@ void cImageImporterJPG::DrawToCairo(cairo_t *cr) {
         jpeg_read_scanlines(cinfo, buffer_array, 1);
     }
 
-    // Step 7: Finish decompression. Free all libjpeg stuff and close file.
+    // Step 7: Finish decompression.
     (void)jpeg_finish_decompress(cinfo);
 
     // Cleanup. In this "ImageImporter" we clean up everything in "DrawToCairo"
@@ -323,8 +329,8 @@ void cImageImporterJPG::DrawToCairo(cairo_t *cr) {
     // Do some ugly byte shifting.
     // Byte order in libjpeg: RGB
     // Byte order in cairo and VDR: BGRA
+    unsigned char temp[3];
     for (int index = (width * height) - 1; index >= 0; index--) {
-        unsigned char temp[3];
         unsigned char *target = bmp_buffer + (index * 4);
         unsigned char *source = bmp_buffer + (index * 3);
         memcpy(&temp[0], source + 2, 1);
