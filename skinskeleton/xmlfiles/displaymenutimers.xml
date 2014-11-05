@@ -7,6 +7,9 @@
         {timerstop}         End Time of Timer in hh::mm
         {day}               Day (numerical)
         {dayname}           Day, for repeating timers days where timer is active
+        {month}             Month (two digits)
+        {monthname}         Month, three letter abbrevation
+        {year}              Year (4 digits)
         {channelname}       Name of channel which is set for the timer
         {channelid}         ID of channel which is set for the timer (for dispalying channel logo)
         {channelnumber}     Number of channel which is set for the timer
@@ -33,6 +36,9 @@
         {timerstop}         End Time of Timer in hh::mm
         {day}               Day (numerical)
         {dayname}           Day, for repeating timers days where timer is active
+        {month}             Month (two digits)
+        {monthname}         Month, three letter abbrevation
+        {year}              Year (4 digits)#
         {channelname}       Name of channel which is set for the timer
         {channelid}         ID of channel which is set for the timer (for dispalying channel logo)
         {channelnumber}     Number of channel which is set for the timer
