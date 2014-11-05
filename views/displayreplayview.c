@@ -141,18 +141,44 @@ void cDisplayReplayView::DrawScraperContent(const cRecording *recording) {
     if (pScraper->Service("GetPosterBannerV2", &call)) {
         int mediaWidth = 0;
         int mediaHeight = 0;
-        std::string mediaPath = "";
+        string mediaPath = "";
         bool isBanner = false;
+        int posterWidth = 0;
+        int posterHeight = 0;
+        string posterPath = "";
+        bool hasPoster = false;
+        int bannerWidth = 0;
+        int bannerHeight = 0;
+        string bannerPath = "";
+        bool hasBanner = false;
 
         if ((call.type == tSeries) && call.banner.path.size() > 0) {
             mediaWidth = call.banner.width;
             mediaHeight = call.banner.height;
             mediaPath = call.banner.path;
             isBanner = true;
+            bannerWidth = mediaWidth;
+            bannerHeight = mediaHeight;
+            bannerPath = mediaPath;
+            hasBanner = true;
+
+            ScraperGetPoster callPoster;
+            callPoster.event = NULL;
+            callPoster.recording = recording;
+            if (pScraper->Service("GetPoster", &callPoster)) {
+                posterWidth = callPoster.poster.width;
+                posterHeight = callPoster.poster.height;
+                posterPath = callPoster.poster.path;
+                hasPoster = true;
+            }
         } else if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) {
             mediaWidth = call.poster.width;
             mediaHeight = call.poster.height;
             mediaPath = call.poster.path;
+            posterWidth = call.poster.width;
+            posterHeight = call.poster.height;
+            posterPath = call.poster.path;
+            hasPoster = true;
         } else
             return;
 
@@ -162,6 +188,14 @@ void cDisplayReplayView::DrawScraperContent(const cRecording *recording) {
         intTokens.insert(pair<string,int>("mediaheight", mediaHeight));
         intTokens.insert(pair<string,int>("isbanner", isBanner));
         stringTokens.insert(pair<string,string>("mediapath", mediaPath));
+        intTokens.insert(pair<string,int>("posterwidth", posterWidth));
+        intTokens.insert(pair<string,int>("posterheight", posterHeight));
+        stringTokens.insert(pair<string,string>("posterpath", posterPath));
+        intTokens.insert(pair<string,int>("hasposter", hasPoster));
+        intTokens.insert(pair<string,int>("bannerwidth", bannerWidth));
+        intTokens.insert(pair<string,int>("bannerheight", bannerHeight));
+        stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
+        intTokens.insert(pair<string,int>("hasbanner", hasBanner));
         ClearViewElement(veScraperContent);
         DrawViewElement(veScraperContent, &stringTokens, &intTokens);
     }
