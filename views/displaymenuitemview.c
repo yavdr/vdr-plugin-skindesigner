@@ -537,8 +537,25 @@ void cDisplayMenuItemTimersView::SetTokens(void) {
         strftime(buffer, sizeof(buffer), "%Y%m%d", &tm_r);
         day = buffer;
     }
+    
+    struct tm tm_r;
+    time_t timerDate = timer->Day();
+    localtime_r(&timerDate, &tm_r);
+    char buffer[4];
+    strftime(buffer, sizeof(buffer), "%m", &tm_r);
+    int month = atoi(buffer);
+    char buffer2[6];
+    strftime(buffer2, sizeof(buffer2), "%b", &tm_r);
+    string monthName = buffer2;
+    char buffer3[6];
+    strftime(buffer3, sizeof(buffer3), "%Y", &tm_r);
+    int year = atoi(buffer3);
+
     stringTokens.insert(pair<string,string>("day", day));
     stringTokens.insert(pair<string,string>("dayname", dayName));
+    intTokens.insert(pair<string,int>("month", month));
+    stringTokens.insert(pair<string,string>("monthname", monthName));
+    intTokens.insert(pair<string,int>("year", year));
 
     const cChannel *channel = timer->Channel();
     if (channel) {

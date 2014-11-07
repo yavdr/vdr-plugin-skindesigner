@@ -54,4 +54,6 @@ Version 0.0.3
 - fixed Bug that displaychannel was not shown after closing displaymenu with "backspace" (with active 
   menuorg plugin)
 - fixed Bug with menuselection Patch
+- added tokens {month}, {monthname} and {year} in displaymenutimers listitem and currentitem
+- added dedicated tokens for posters and banners in <srapercontent> in displaychannel and displayreplay
 
