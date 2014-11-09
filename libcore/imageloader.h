@@ -3,6 +3,9 @@
 
 #include <cairo.h>
 #include <librsvg/rsvg.h>
+#ifndef LIBRSVG_VERSION // Workaround for librsvg < 2.36.2
+    #include <librsvg/rsvg-cairo.h>
+#endif
 #include <jpeglib.h>
 #include <setjmp.h>
 #include <vdr/osd.h>
