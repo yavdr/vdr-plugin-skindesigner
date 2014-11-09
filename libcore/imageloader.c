@@ -33,10 +33,17 @@ cImage *cImageLoader::CreateImage(int width, int height, bool preserveAspect) {
     double sx = width / (double)w;
     double sy = height / (double)h;
     if (preserveAspect) {
-        if (sx < sy)
+        double tx = 0;
+        double ty = 0;
+        if (sx < sy) {
             sy = sx;
-        if (sy < sx)
+            ty = (height - h * sy) / 2;
+        }
+        if (sy < sx) {
             sx = sy;
+            tx = (width - w * sx) / 2;
+        }
+        cairo_translate(cr, tx, ty);
     }
     cairo_scale(cr, sx, sy);
 
