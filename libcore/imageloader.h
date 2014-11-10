@@ -48,34 +48,9 @@ private:
 };
 
 // Image importer for JPG
-
 #if BITS_IN_JSAMPLE != 8
     #error libjpeg has to be compiled with 8-bit samples!
 #endif
-
-struct my_error_mgr {
-    struct jpeg_error_mgr pub; // "public" fields
-    jmp_buf setjmp_buffer;     // for return to caller
-};
-
-METHODDEF(void)
-my_error_exit(j_common_ptr cinfo) {
-    // cinfo->err really points to a my_error_mgr struct, so coerce pointer
-    my_error_mgr *myerr = (my_error_mgr*) cinfo->err;
-
-    // Always display the message.
-    (*cinfo->err->output_message) (cinfo);
-
-    // Return control to the setjmp point
-    longjmp(myerr->setjmp_buffer, 1);
-}
-
-METHODDEF(void)
-my_output_message(j_common_ptr cinfo) {
-    char buf[JMSG_LENGTH_MAX];
-    cinfo->err->format_message(cinfo, buf);
-    dsyslog("skindesigner: libjpeg error: %s", buf);
-}
 
 class cImageImporterJPG : public cImageImporter {
 public:
@@ -89,8 +64,9 @@ private:
     FILE *infile;
 };
 
-
-
+//
+// Image loader class
+//
 class cImageLoader {
 private:
     cImageImporter *importer;

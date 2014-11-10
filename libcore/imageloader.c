@@ -108,7 +108,7 @@ void cImageLoader::DeterminateChannelLogoSize(int &width, int &height) {
     if (!folder)
         return;
 
-    while (file = readdir(folder)) {
+    while ( (file = readdir(folder)) ) {
         if (endswith(file->d_name, *logoExt)) {
             std::stringstream filePath;
             filePath << *logoPath << file->d_name;
@@ -225,6 +225,30 @@ void cImageImporterSVG::GetImageSize(int &width, int &height) {
 // Image importer for JPG
 //
 
+struct my_error_mgr {
+    struct jpeg_error_mgr pub; // "public" fields
+    jmp_buf setjmp_buffer;     // for return to caller
+};
+
+METHODDEF(void)
+my_error_exit(j_common_ptr cinfo) {
+    // cinfo->err really points to a my_error_mgr struct, so coerce pointer
+    my_error_mgr *myerr = (my_error_mgr*) cinfo->err;
+
+    // Always display the message.
+    (*cinfo->err->output_message) (cinfo);
+
+    // Return control to the setjmp point
+    longjmp(myerr->setjmp_buffer, 1);
+}
+
+METHODDEF(void)
+my_output_message(j_common_ptr cinfo) {
+    char buf[JMSG_LENGTH_MAX];
+    cinfo->err->format_message(cinfo, buf);
+    dsyslog("skindesigner: libjpeg error: %s", buf);
+}
+
 cImageImporterJPG::cImageImporterJPG() {
     cinfo = NULL;
 }
@@ -255,7 +279,8 @@ bool cImageImporterJPG::LoadImage(const char *path) {
     // Allocate space for our decompress struct
     cinfo = (j_decompress_ptr)malloc(sizeof(struct jpeg_decompress_struct));
 
-    // We set up the normal JPEG error routines, then override error_exit.
+    // We set up the normal JPEG error routines, then override error_exit
+    // and output_message.
     struct my_error_mgr jerr;
     cinfo->err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
@@ -309,8 +334,8 @@ void cImageImporterJPG::DrawToCairo(cairo_t *cr) {
     (void) jpeg_start_decompress(cinfo);
 
     // Allocate buffer. Directly allocate the space needed for ARGB
-    int width = cinfo->output_width;
-    int height = cinfo->output_height;
+    unsigned int width = cinfo->output_width;
+    unsigned int height = cinfo->output_height;
     bmp_buffer = (unsigned char*)malloc(width * height * 4);
 
     // Step 6: while (scan lines remain to be read)
