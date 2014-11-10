@@ -50,7 +50,7 @@ cImage *cImageLoader::CreateImage(int width, int height, bool preserveAspect) {
     importer->DrawToCairo(cr);
 
     cairo_status_t status = cairo_status(cr);
-    if (status)
+    if (status && config.debugImageLoading)
         dsyslog("skindesigner: Cairo CreateImage Error %s", cairo_status_to_string(status));
 
     unsigned char *data = cairo_image_surface_get_data(surface);
@@ -246,7 +246,8 @@ METHODDEF(void)
 my_output_message(j_common_ptr cinfo) {
     char buf[JMSG_LENGTH_MAX];
     cinfo->err->format_message(cinfo, buf);
-    dsyslog("skindesigner: libjpeg error: %s", buf);
+    if (config.debugImageLoading)
+        dsyslog("skindesigner: libjpeg error: %s", buf);
 }
 
 cImageImporterJPG::cImageImporterJPG() {
