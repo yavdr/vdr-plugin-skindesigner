@@ -101,7 +101,6 @@ void cImageLoader::DeterminateChannelLogoSize(int &width, int &height) {
     else
         logoPath = config.logoPath;
 
-    cString logoExt = config.logoExtension;
     DIR *folder = NULL;
     struct dirent *file;
     folder = opendir(logoPath);
@@ -109,7 +108,8 @@ void cImageLoader::DeterminateChannelLogoSize(int &width, int &height) {
         return;
 
     while ( (file = readdir(folder)) ) {
-        if (endswith(file->d_name, *logoExt)) {
+        if (endswith(file->d_name, ".png") ||
+            endswith(file->d_name, ".svg")) {
             std::stringstream filePath;
             filePath << *logoPath << file->d_name;
             if (LoadImage(filePath.str().c_str())) {

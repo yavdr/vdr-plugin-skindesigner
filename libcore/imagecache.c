@@ -140,27 +140,18 @@ bool cImageCache::LogoExists(string channelID) {
     if (!channel)
         return false;
     string logoLower = StrToLowerCase(channel->Name());
-    string logoExt = *config.logoExtension;
-    bool logoExists = FileExists(logoPath.c_str(), logoLower, logoExt);
-    if (logoExists) {
-        return true;
-    }
-    logoExists = FileExists(logoPath.c_str(), channelID, logoExt);
-    if (logoExists) {
-        return true;
-    }
-    return false;    
+
+    return (FileExists(logoPath.c_str(), logoLower, "svg") ||
+            FileExists(logoPath.c_str(), logoLower, "png") ||
+            FileExists(logoPath.c_str(), channelID, "svg") ||
+            FileExists(logoPath.c_str(), channelID, "png"));
 }
 
 bool cImageCache::SeparatorLogoExists(string name) {
     string separatorPath = *cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
-    string logoExt = *config.logoExtension;
-    bool logoExists = FileExists(separatorPath, nameLower, logoExt);
-    if (logoExists) {
-        return true;
-    }
-    return false;    
+
+    return FileExists(separatorPath, nameLower, "png");
 }
 
 void cImageCache::CacheIcon(eImageType type, string name, int width, int height) {
@@ -329,21 +320,23 @@ bool cImageCache::LoadLogo(const cChannel *channel) {
         return false;
     string channelID = StrToLowerCase(*(channel->GetChannelID().ToString()));
     string logoLower = StrToLowerCase(channel->Name());
-    bool success = false;
 
-    if (FileExists(logoPath.c_str(), channelID.c_str(), *config.logoExtension))
-        return LoadImage(logoPath.c_str(), channelID.c_str(), *config.logoExtension);
-
-    if (FileExists(logoPath.c_str(), logoLower.c_str(), *config.logoExtension))
-        return LoadImage(logoPath.c_str(), logoLower.c_str(), *config.logoExtension);
+    if (FileExists(logoPath.c_str(), channelID.c_str(), "svg"))
+        return LoadImage(logoPath.c_str(), channelID.c_str(), "svg");
+    if (FileExists(logoPath.c_str(), channelID.c_str(), "png"))
+        return LoadImage(logoPath.c_str(), channelID.c_str(), "png");
+    if (FileExists(logoPath.c_str(), logoLower.c_str(), "svg"))
+        return LoadImage(logoPath.c_str(), logoLower.c_str(), "svg");
+    if (FileExists(logoPath.c_str(), logoLower.c_str(), "png"))
+        return LoadImage(logoPath.c_str(), logoLower.c_str(), "png");
 
     return false;
 }
 
 bool cImageCache::LoadSeparatorLogo(string name) {
-    cString separatorPath = cString::sprintf("%sseparatorlogos/", logoPath.c_str());
+    string separatorPath = *cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
-    return LoadImage(*separatorPath, nameLower.c_str(), *config.logoExtension);
+    return LoadImage(separatorPath, nameLower.c_str(), "png");
 }
 
 bool cImageCache::LoadSkinpart(string name) {
