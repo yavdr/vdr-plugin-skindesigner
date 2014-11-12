@@ -151,7 +151,8 @@ bool cImageCache::SeparatorLogoExists(string name) {
     string separatorPath = *cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
 
-    return FileExists(separatorPath, nameLower, "png");
+    return (FileExists(separatorPath, nameLower, "svg") ||
+            FileExists(separatorPath, nameLower, "png"));
 }
 
 void cImageCache::CacheIcon(eImageType type, string name, int width, int height) {
@@ -336,7 +337,10 @@ bool cImageCache::LoadLogo(const cChannel *channel) {
 bool cImageCache::LoadSeparatorLogo(string name) {
     string separatorPath = *cString::sprintf("%sseparatorlogos/", logoPath.c_str());
     string nameLower = StrToLowerCase(name.c_str());
-    return LoadImage(separatorPath, nameLower.c_str(), "png");
+    if (FileExists(separatorPath, nameLower.c_str(), "svg"))
+        return LoadImage(separatorPath, nameLower.c_str(), "svg");
+    else
+        return LoadImage(separatorPath, nameLower.c_str(), "png");
 }
 
 bool cImageCache::LoadSkinpart(string name) {
