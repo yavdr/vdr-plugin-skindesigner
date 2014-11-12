@@ -95,6 +95,7 @@ bool cPluginSkinDesigner::Initialize(void) {
 }
 
 bool cPluginSkinDesigner::Start(void) {
+    cXmlParser::InitLibXML();
     bool trueColorAvailable = true;
     if (!cOsdProvider::SupportsTrueColor()) {
         esyslog("skindesigner: No TrueColor OSD found! Using default Skin LCARS!");
@@ -121,6 +122,7 @@ bool cPluginSkinDesigner::Start(void) {
 void cPluginSkinDesigner::Stop(void) {
     delete imgCache;
     delete fontManager;
+    cXmlParser::CleanupLibXML();
 }
 
 void cPluginSkinDesigner::Housekeeping(void) {

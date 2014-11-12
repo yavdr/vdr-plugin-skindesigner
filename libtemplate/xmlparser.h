@@ -51,6 +51,8 @@ public:
     bool ParseView(void);
     bool ParseGlobals(void);
     void DeleteDocument(void);
+    static void InitLibXML();
+    static void CleanupLibXML();
 };
 
 #endif //__XMLPARSER_H
