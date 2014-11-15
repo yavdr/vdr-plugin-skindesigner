@@ -515,6 +515,7 @@ string cDisplayChannelView::GetChannelSep(const cChannel *channel, bool prev) {
 void cDisplayChannelView::DisplayMessage(eMessageType Type, const char *Text) {
     if (!Text) {
         ClearViewElement(veMessage);
+        return;
     }
     
     map < string, string > stringTokens;

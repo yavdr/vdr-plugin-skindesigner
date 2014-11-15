@@ -352,6 +352,7 @@ void cDisplayReplayView::DrawJump(const char *jump) {
 void cDisplayReplayView::DrawMessage(eMessageType type, const char *text) {
     if (!text) {
         ClearViewElement(veMessage);
+        return;
     }
     
     map < string, string > stringTokens;
