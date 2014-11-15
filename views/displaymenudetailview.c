@@ -8,6 +8,7 @@ cDisplayMenuDetailView::cDisplayMenuDetailView(cTemplateView *tmplDetailView) : 
     recording = NULL;
     text = NULL;
     detailViewInit = true;
+    isPluginTextView = false;
     currentTmplTab = NULL;
     tabView = NULL;
 }
@@ -16,6 +17,21 @@ cDisplayMenuDetailView::~cDisplayMenuDetailView() {
     CancelSave();
     if (tabView)
         delete tabView;
+}
+
+void cDisplayMenuDetailView::SetPluginTokens(map<string,string> *plugStringTokens, map<string,int> *plugIntTokens, map<string,vector<map<string,string> > > *plugLoopTokens) {
+    for (map<string,string>::iterator it = plugStringTokens->begin(); it != plugStringTokens->end(); it++) {
+        stringTokens.insert(pair<string,string>(it->first, it->second));
+    }
+
+    for (map<string,int>::iterator it = plugIntTokens->begin(); it != plugIntTokens->end(); it++) {
+        intTokens.insert(pair<string,int>(it->first, it->second));
+    }
+
+    for(map<string,vector<map<string,string> > >::iterator it = plugLoopTokens->begin(); it != plugLoopTokens->end(); it++) {
+        loopTokens.insert(pair<string,vector<map<string,string> > >(it->first, it->second));
+    }
+    isPluginTextView = true;
 }
 
 void cDisplayMenuDetailView::Clear(void) {
@@ -435,7 +451,7 @@ bool cDisplayMenuDetailView::LoadReruns(vector< map< string, string > > *reruns)
     int rerunNaxChannel = config.rerunMaxChannel;
 
     Epgsearch_searchresults_v1_0 data;
-    string strQuery = event->Title();
+    string strQuery = (event->Title()) ? event->Title() : "";
     data.query = (char *)strQuery.c_str();
     data.mode = 0;
     data.channelNr = 0;
@@ -879,6 +895,7 @@ void cDisplayMenuDetailView::DrawHeader(void) {
         }
 
         DrawViewElement(veDetailHeader, &headerStringTokens, &headerIntTokens);
+        return;
     } else if (recording) {
         string name = recording->Name() ? recording->Name() : "";
         headerStringTokens.insert(pair<string,string>("name", name));
@@ -937,6 +954,11 @@ void cDisplayMenuDetailView::DrawHeader(void) {
             headerStringTokens.insert(pair<string,string>("recimgpath", ""));            
         }
         DrawViewElement(veDetailHeader, &headerStringTokens, &headerIntTokens);
+        return;
+    }
+
+    if (isPluginTextView) {
+        DrawViewElement(veDetailHeader, &stringTokens, &intTokens);
     }
 }
 

@@ -16,6 +16,8 @@ cSkinDesigner::cSkinDesigner(string skin) : cSkin(skin.c_str(), &::Theme) {
     volumeTemplate = NULL;
     audiotracksTemplate = NULL;
 
+    currentMenu = NULL;
+
     dsyslog("skindesigner: skin %s started", skin.c_str());
 }
 
@@ -32,6 +34,7 @@ const char *cSkinDesigner::Description(void) {
 }
 
 cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
+    currentMenu = NULL;
     cSkinDisplayChannel *displayChannel = NULL;
     if (!useBackupSkin) {
         Init();
@@ -43,18 +46,22 @@ cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
 }
 
 cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
-    cSkinDisplayMenu *displayMenu = NULL;
     if (!useBackupSkin) {
+        cSDDisplayMenu *displayMenu = NULL;
         Init();
         firstDisplay = false;
         displayMenu = new cSDDisplayMenu(menuTemplate);
+        currentMenu = displayMenu;
+        return displayMenu;
     } else {
-        displayMenu = backupSkin->DisplayMenu();
+        cSkinDisplayMenu *displayMenu = backupSkin->DisplayMenu();
+        currentMenu = NULL;
+        return displayMenu;
     }
-    return displayMenu;
 }
 
 cSkinDisplayReplay *cSkinDesigner::DisplayReplay(bool ModeOnly) {
+    currentMenu = NULL;
     cSkinDisplayReplay *displayReplay = NULL;
     if (!useBackupSkin) {
         Init();
@@ -66,6 +73,7 @@ cSkinDisplayReplay *cSkinDesigner::DisplayReplay(bool ModeOnly) {
 }
 
 cSkinDisplayVolume *cSkinDesigner::DisplayVolume(void) {
+    currentMenu = NULL;
     cSkinDisplayVolume *displayVolume = NULL;
     if (!useBackupSkin) {
         Init();
@@ -77,6 +85,7 @@ cSkinDisplayVolume *cSkinDesigner::DisplayVolume(void) {
 }
 
 cSkinDisplayTracks *cSkinDesigner::DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks) {
+    currentMenu = NULL;
     cSkinDisplayTracks *displayTracks = NULL;
     if (!useBackupSkin) {
         Init();
@@ -88,6 +97,7 @@ cSkinDisplayTracks *cSkinDesigner::DisplayTracks(const char *Title, int NumTrack
 }
 
 cSkinDisplayMessage *cSkinDesigner::DisplayMessage(void) {
+    currentMenu = NULL;
     cSkinDisplayMessage *displayMessage = NULL;
     if (!useBackupSkin) {
         Init();

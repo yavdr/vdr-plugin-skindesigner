@@ -9,6 +9,7 @@
 class cDisplayMenuDetailView : public cView {
 private:
     bool detailViewInit;
+    bool isPluginTextView;
     const cEvent *event;
     const cRecording *recording;
     const char *text;
@@ -39,6 +40,7 @@ public:
     void SetEvent(const cEvent *event) { this->event = event; };
     void SetRecording(const cRecording *recording) { this->recording = recording; };
     void SetText(const char *text) { this->text = text; };
+    void SetPluginTokens(map<string,string> *plugStringTokens, map<string,int> *plugIntTokens, map<string,vector<map<string,string> > > *plugLoopTokens);
     void Clear(void);
     void Render(void);
     void KeyLeft(void);

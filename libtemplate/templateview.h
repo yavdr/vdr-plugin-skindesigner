@@ -32,7 +32,8 @@ enum eSubView {
     svMenuChannels,
     svMenuDetailedEpg,
     svMenuDetailedRecording,
-    svMenuDetailedText
+    svMenuDetailedText,
+    svMenuPlugin,
 };
 
 class cTemplateView {
@@ -51,6 +52,7 @@ protected:
     map < eViewList, cTemplateViewList* > viewLists;
     map < eSubView, cTemplateView* > subViews;
     vector< cTemplateViewTab* > viewTabs;
+    map < string, map< int, cTemplateView*> > pluginViews;
     //helpers to iterate data structures
     map < eViewElement, cTemplateViewElement* >::iterator veIt;
     map < eViewList, cTemplateViewList* >::iterator vlIt;
@@ -68,7 +70,8 @@ public:
     virtual string GetSubViewName(eSubView sv) { return ""; };
     virtual string GetViewElementName(eViewElement ve) { return ""; };
     virtual string GetViewListName(eViewList vl) { return ""; };
-    virtual void AddSubView(string sSubView, cTemplateView *subView) {};    
+    virtual void AddSubView(string sSubView, cTemplateView *subView) {};
+    virtual void AddPluginView(string plugName, int templNo, cTemplateView *plugView) {};
     virtual void AddPixmap(string sViewElement, cTemplatePixmap *pix, bool debugViewElement) {};
     virtual void AddViewList(string sViewList, cTemplateViewList *viewList) {};
     virtual void AddViewTab(cTemplateViewTab *viewTab) {};
@@ -84,6 +87,7 @@ public:
     cTemplateViewList *GetViewList(eViewList vl);
     void InitViewListIterator(void);
     cTemplateViewList *GetNextViewList(void);
+    bool IsListView(void) { return viewLists.size() > 0 ? true : false; };
     //access tabs
     void InitViewTabIterator(void);
     cTemplateViewTab *GetNextViewTab(void);
@@ -91,6 +95,8 @@ public:
     cTemplateView *GetSubView(eSubView sv);
     void InitSubViewIterator(void);
     cTemplateView *GetNextSubView(void);
+    //access plugin views
+    cTemplateView *GetPluginView(string pluginName, int pluginMenu);
     //Getter Functions
     const char *GetViewName(void) { return viewName.c_str(); };
     int GetNumericParameter(eParamType type);
@@ -140,6 +146,7 @@ public:
     string GetViewElementName(eViewElement ve);
     string GetViewListName(eViewList vl);
     void AddSubView(string sSubView, cTemplateView *subView);
+    void AddPluginView(string plugName, int templNo, cTemplateView *plugView);
     void AddPixmap(string viewElement, cTemplatePixmap *pix, bool debugViewElement);
     void AddViewList(string sViewList, cTemplateViewList *viewList);
     void AddViewTab(cTemplateViewTab *viewTab);

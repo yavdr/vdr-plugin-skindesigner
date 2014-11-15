@@ -668,3 +668,48 @@ void cDisplayMenuItemCurrentRecordingView::Action(void) {
         }
     }
 }
+
+/*************************************************************
+* cDisplayMenuItemCurrentPluginView
+*************************************************************/
+
+cDisplayMenuItemCurrentPluginView::cDisplayMenuItemCurrentPluginView(cTemplateViewElement *tmplCurrent, map <string,string> &plugStringTokens, 
+                                                                     map <string,int> &plugIntTokens, map<string,vector<map<string,string> > > &pluginLoopTokens)
+                         : cDisplayMenuItemCurrentView(tmplCurrent) {
+
+    stringTokens = plugStringTokens;
+    intTokens = plugIntTokens;
+    loopTokens = pluginLoopTokens;
+}
+
+cDisplayMenuItemCurrentPluginView::~cDisplayMenuItemCurrentPluginView() {
+}
+
+void cDisplayMenuItemCurrentPluginView::Prepare(void) {
+}
+
+
+void cDisplayMenuItemCurrentPluginView::Render(void) {
+    SetTokensPosMenuItem();
+    DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
+}
+
+void cDisplayMenuItemCurrentPluginView::Clear(void) {
+    
+}
+
+void cDisplayMenuItemCurrentPluginView::Action(void) {
+    SetInitFinished();
+    DoSleep(delay);
+    Render();
+    FadeIn();
+    DoFlush();
+    if (scrolling) {
+        DoSleep(scrollDelay);
+        if (scrollOrientation == orHorizontal) {
+            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
+        } else {
+            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
+        }
+    }
+}

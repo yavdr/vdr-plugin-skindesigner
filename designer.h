@@ -25,6 +25,7 @@ private:
     cTemplate *replayTemplate;
     cTemplate *volumeTemplate;
     cTemplate *audiotracksTemplate;
+    cSDDisplayMenu *currentMenu;
     void Init(void);
     void ReloadCaches(void);
     void DeleteTemplates(void);
@@ -45,6 +46,7 @@ public:
     void ListAvailableFonts(void);
     bool SetCustomToken(string option);
     void ListCustomTokens(void);
+    cSDDisplayMenu *GetDisplayMenu(void) { return currentMenu; };
 };
 
 #endif //__SKINDESIGNER_H

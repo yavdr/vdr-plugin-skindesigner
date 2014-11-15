@@ -27,6 +27,7 @@ public:
     void AddChannelsMenuItem(int index, const cChannel *channel, bool withProvider, bool current, bool selectable);
     void AddTimersMenuItem(int index, const cTimer *timer, bool current, bool selectable);
     void AddRecordingMenuItem(int index, const cRecording *recording, int level, int total, int isNew, bool current, bool selectable);
+    void AddPluginMenuItem(map<string,string> *stringTokens, map<string,int> *intTokens, map<string, vector<map<string,string> > > *loopTokens, int index, bool current, bool selectable);
     void AddTracksMenuItem(int index, const char *title, bool current, bool selectable);
     void Render(void);
     void Debug(void);

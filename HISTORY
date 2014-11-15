@@ -56,4 +56,5 @@ Version 0.0.3
 - fixed Bug with menuselection Patch
 - added tokens {month}, {monthname} and {year} in displaymenutimers listitem and currentitem
 - added dedicated tokens for posters and banners in <srapercontent> in displaychannel and displayreplay
+- added Plugin Interface
 

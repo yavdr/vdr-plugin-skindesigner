@@ -5,6 +5,9 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
     textAreaFont = NULL; 
     doOutput = true;
     state = vsInit;
+    pluginMenu = -1;
+    pluginName = "";
+    pluginMenuType = mtUnknown;
     if (!menuTemplate) {
         doOutput = false;
         esyslog("skindesigner: displayMenu no valid template - aborting");
@@ -51,6 +54,16 @@ void cSDDisplayMenu::SetMenuCategory(eMenuCategory MenuCat) {
     cSkinDisplayMenu::SetMenuCategory(MenuCat);
     if (state != vsInit)
         state = vsMenuInit;
+}
+
+void cSDDisplayMenu::SetPluginMenu(string name, int menu, int type, bool init) {
+    pluginName = name;
+    pluginMenu = menu;
+    pluginMenuType = (ePluginMenuType)type;
+    rootView->SetPluginMenu(pluginName, pluginMenu, pluginMenuType);
+    if (!init) {
+        rootView->SetMenu(mcPlugin, false);        
+    }
 }
 
 void cSDDisplayMenu::SetTitle(const char *Title) {
@@ -146,6 +159,22 @@ bool cSDDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, bo
     return true;
 }
 
+bool cSDDisplayMenu::SetItemPlugin(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens, int Index, bool Current, bool Selectable) {
+    if (!doOutput)
+        return true;
+    if (!rootView->SubViewAvailable())
+        return false;
+    if (config.blockFlush)
+        rootView->LockFlush();
+    cDisplayMenuListView *list = rootView->GetListView();
+    if (!list)
+        return false;
+    list->AddPluginMenuItem(stringTokens, intTokens, loopTokens, Index, Current, Selectable);
+    if (state == vsIdle)
+        state = vsMenuUpdate;
+    return true;
+}
+
 void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Selectable) {
     if (!doOutput)
         return;
@@ -220,6 +249,14 @@ void cSDDisplayMenu::SetText(const char *Text, bool FixedFont) {
         return;
     rootView->SetDetailedViewText(Text);
     state = vsMenuDetail;
+}
+
+bool cSDDisplayMenu::SetPluginText(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens) {
+    if (!doOutput)
+        return true;
+    bool tmplOk = rootView->SetDetailedViewPlugin(stringTokens, intTokens, loopTokens);
+    state = vsMenuDetail;
+    return tmplOk;
 }
 
 void cSDDisplayMenu::Flush(void) {

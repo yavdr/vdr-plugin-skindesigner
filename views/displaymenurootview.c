@@ -10,6 +10,10 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
+    pluginName = "";
+    pluginMenu = -1;
+    pluginMenuType = mtUnknown;
+    pluginMenuChanged = false;
     view = NULL;
     listView = NULL;
     detailView = NULL;
@@ -84,6 +88,12 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
     eSubView newViewType = svUndefined;
     cat = menuCat;
     bool isListView = true;
+    if (menuCat != mcPlugin) {
+        pluginName = "";
+        pluginMenu = -1;
+        pluginMenuType = mtUnknown;
+        pluginMenuChanged = false;
+    }
     switch (menuCat) {
         case mcMain:
             newViewType = svMenuMain;
@@ -119,17 +129,34 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
             newViewType = svMenuDetailedText;
             isListView = false;
             break;
+        case mcPlugin:
+            newViewType = svMenuPlugin;
+            isListView = ( pluginMenuType == mtList ) ? true : false;
+            break;
         default:
             newViewType = svMenuDefault;
             break;
     }
-    if (newViewType != viewType) {
-        subView = tmplView->GetSubView(newViewType);
-        if (!subView) {
-            subViewAvailable = false;
-            subView = tmplView->GetSubView(svMenuDefault);
+    if (newViewType != viewType || pluginMenuChanged) {
+        if (newViewType == svMenuPlugin) {
+            subView = tmplView->GetPluginView(pluginName, pluginMenu);
+            if (!subView) {
+                subViewAvailable = false;
+                if (isListView)
+                    subView = tmplView->GetSubView(svMenuDefault);
+                else
+                    subView = tmplView->GetSubView(svMenuDetailedText);
+            } else {
+                subViewAvailable = true;
+            }
         } else {
-            subViewAvailable = true;
+            subView = tmplView->GetSubView(newViewType);
+            if (!subView) {
+                subViewAvailable = false;
+                subView = tmplView->GetSubView(svMenuDefault);
+            } else {
+                subViewAvailable = true;
+            }
         }
         //Cleanup
         if (view) {
@@ -144,7 +171,6 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
             delete detailView;
             detailView = NULL;
         }
-        
         //Create new View
         switch (newViewType) {
             case svMenuMain:
@@ -162,7 +188,6 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
         view->SetMenuCat(cat);
         //Cleanup root view
         ClearRootView();
-
         if (isListView) {
             //Create menu item list
             cTemplateViewList *tmplMenuItems = subView->GetViewList(vlMenuItem);
@@ -175,6 +200,17 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
         }
         viewType = newViewType;
     }
+}
+
+void cDisplayMenuRootView::SetPluginMenu(string name, int menu, int type) { 
+    if (pluginName.compare(name) || menu != pluginMenu || type != pluginMenuType)
+        pluginMenuChanged = true;
+    else
+        pluginMenuChanged = false;
+
+    pluginName = name; 
+    pluginMenu = menu; 
+    pluginMenuType = (ePluginMenuType)type;
 }
 
 void cDisplayMenuRootView::SetTitle(const char *title) {
@@ -252,6 +288,16 @@ void cDisplayMenuRootView::SetDetailedViewText(const char *text) {
         }
     }
     detailView->SetText(text);
+}
+
+bool cDisplayMenuRootView::SetDetailedViewPlugin(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens) {
+    if (!detailView) {
+        SetMenu(mcPlugin, true);
+        if (!subViewAvailable)
+            return false;
+    }
+    detailView->SetPluginTokens(stringTokens, intTokens, loopTokens);
+    return true;
 }
 
 void cDisplayMenuRootView::KeyInput(bool up, bool page) {

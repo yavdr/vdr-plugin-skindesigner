@@ -765,6 +765,61 @@ void cDisplayMenuItemRecordingView::Debug(void) {
 }
 
 /*************************************************************
+* cDisplayMenuItemPluginView
+*************************************************************/
+
+cDisplayMenuItemPluginView::cDisplayMenuItemPluginView(cTemplateViewList *tmplList, map<string,string> *plugStringTokens, map<string,int> *plugIntTokens, 
+                                                       map<string,vector<map<string,string> > > *pluginLoopTokens, int index, bool current, bool selectable) 
+                                                       : cDisplayMenuItemView(tmplList, current, selectable) {
+
+    for (map<string,string>::iterator it = plugStringTokens->begin(); it != plugStringTokens->end(); it++) {
+        stringTokens.insert(pair<string,string>(it->first, it->second));
+    }
+
+    for (map<string,int>::iterator it = plugIntTokens->begin(); it != plugIntTokens->end(); it++) {
+        intTokens.insert(pair<string,int>(it->first, it->second));
+    }
+
+    for(map<string,vector<map<string,string> > >::iterator it = pluginLoopTokens->begin(); it != pluginLoopTokens->end(); it++) {
+        loopTokens.insert(pair<string,vector<map<string,string> > >(it->first, it->second));
+    }
+}
+
+cDisplayMenuItemPluginView::~cDisplayMenuItemPluginView() {
+}
+
+void cDisplayMenuItemPluginView::SetTokens(void) {
+    if (!itemInit) return;
+    itemInit = false;
+    intTokens.insert(pair<string,int>("current", current));
+}
+
+
+void cDisplayMenuItemPluginView::Prepare(void) {
+    ArrangeContainer();
+}
+
+void cDisplayMenuItemPluginView::Render(void) {
+    
+    DrawListItem(&stringTokens, &intTokens);
+    
+    if (current) {
+        cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
+        if (tmplCurrent) {
+            currentView = new cDisplayMenuItemCurrentPluginView(tmplCurrent, stringTokens, intTokens, loopTokens);
+            currentView->Start();
+        }
+    }
+    
+    dirty = false;
+}
+
+void cDisplayMenuItemPluginView::Debug(void) {
+    esyslog("skindesigner: Plugin Menu Item ---------------");
+    cDisplayMenuItemView::Debug();
+}
+
+/*************************************************************
 * cDisplayMenuItemTrackView
 *************************************************************/
 
