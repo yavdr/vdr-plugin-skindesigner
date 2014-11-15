@@ -856,6 +856,14 @@ void cDisplayMenuDetailView::DrawHeader(void) {
         headerIntTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
         headerIntTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
 
+        const cChannel *channel = Channels.GetByChannelID(event->ChannelID());
+        if (channel) {
+            headerStringTokens.insert(pair<string,string>("channelname", channel->Name() ? channel->Name() : ""));
+            headerIntTokens.insert(pair<string, int>("channelnumber", channel->Number()));
+        } else {
+            headerStringTokens.insert(pair<string,string>("channelname", ""));            
+            headerIntTokens.insert(pair<string, int>("channelnumber", 0));
+        }
         headerStringTokens.insert(pair<string,string>("channelid", *(event->ChannelID().ToString())));
 
         bool isRunning = false;

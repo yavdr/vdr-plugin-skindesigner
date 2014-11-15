@@ -67,8 +67,10 @@ Version 0.0.3
 - fixed Bug that displaychannel was not shown after closing displaymenu with
   "backspace" (with active menuorg plugin)
 - fixed Bug with menuselection Patch
-- added tokens {month}, {monthname} and {year} in displaymenutimers listitem and currentitem
-- added dedicated tokens for posters and banners in <srapercontent> in displaychannel and displayreplay
+- added tokens {month}, {monthname} and {year} in displaymenutimers listitem and 
+  currentitem
+- added dedicated tokens for posters and banners in <srapercontent> in 
+  displaychannel and displayreplay
 - added Plugin Interface
 - fixed crash when clearing a message in displaychannel and displayreplay
 - fixed positioning of scaled video window if borders are configured
@@ -78,3 +80,6 @@ Version 0.0.4
 - added SVG Support - thanks to Manuel Reimer!
 
 Version 0.0.5
+
+- added {channelnumber} and {channelname} Tokens in displaymenudetailepg 
+  detailheader
