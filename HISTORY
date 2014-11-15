@@ -58,4 +58,5 @@ Version 0.0.3
 - added dedicated tokens for posters and banners in <srapercontent> in displaychannel and displayreplay
 - added Plugin Interface
 - fixed crash when clearing a message in displaychannel and displayreplay
+- fixed positioning of scaled video window if borders are configured
 

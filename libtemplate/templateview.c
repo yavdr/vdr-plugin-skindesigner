@@ -192,8 +192,8 @@ bool cTemplateView::GetScalingWindow(cRect &scalingWindow) {
     if (!parameters)
         return false;
     bool doScale = false;
-    int scaleX = parameters->GetNumericParameter(ptScaleTvX);
-    int scaleY = parameters->GetNumericParameter(ptScaleTvY);
+    int scaleX = parameters->GetNumericParameter(ptScaleTvX) + cOsd::OsdLeft();
+    int scaleY = parameters->GetNumericParameter(ptScaleTvY) + cOsd::OsdTop();
     int scaleWidth = parameters->GetNumericParameter(ptScaleTvWidth);
     int scaleHeight = parameters->GetNumericParameter(ptScaleTvHeight);
     if (scaleX > -1 && scaleY > -1 && scaleWidth > -1 && scaleHeight > -1) {
