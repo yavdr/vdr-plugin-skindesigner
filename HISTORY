@@ -83,3 +83,4 @@ Version 0.0.5
 
 - added {channelnumber} and {channelname} Tokens in displaymenudetailepg 
   detailheader
+- fixed {hasicon} Token in displaymenu header

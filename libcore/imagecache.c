@@ -267,6 +267,17 @@ string cImageCache::GetIconName(string label, eMenuCategory cat) {
     return *cString::sprintf("customicons/%s", label.c_str());
 }
 
+bool cImageCache::MenuIconExists(string name) {
+    cString iconFullPath = cString::sprintf("%smenuicons/", iconPath.c_str());
+    if (FileExists(*iconFullPath, name, "svg")) {
+        return true;
+    }
+    if (FileExists(*iconFullPath, name, "png")) {
+        return true;
+    }
+    return false;
+}
+
 void cImageCache::CacheSkinpart(string name, int width, int height) {
     if (width < 1 || width > 1920 || height < 1 || height > 1080)
         return;
