@@ -13,7 +13,6 @@ cXmlParser::cXmlParser(void) {
     root = NULL;
     ctxt = NULL;
 
-    xmlInitParser();
     initGenericErrorDefaultFunc(NULL);
     xmlSetStructuredErrorFunc(NULL, SkinDesignerXMLErrorHandler);
     ctxt = xmlNewParserCtxt();
@@ -22,7 +21,6 @@ cXmlParser::cXmlParser(void) {
 cXmlParser::~cXmlParser() {
     DeleteDocument();
     xmlFreeParserCtxt(ctxt);
-    xmlCleanupParser();
 }
 
 /*********************************************************************
@@ -800,4 +798,12 @@ bool cXmlParser::DebugViewElement(xmlNodePtr node) {
             return true;
     }
     return false;
+}
+
+void cXmlParser::InitLibXML() {
+    xmlInitParser();
+}
+
+void cXmlParser::CleanupLibXML() {
+    xmlCleanupParser();
 }

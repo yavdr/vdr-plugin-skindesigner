@@ -53,6 +53,8 @@ public:
     bool ParsePluginView(string plugName, int templateNumber);
     bool ParseGlobals(void);
     void DeleteDocument(void);
+    static void InitLibXML();
+    static void CleanupLibXML();
 };
 
 #endif //__XMLPARSER_H

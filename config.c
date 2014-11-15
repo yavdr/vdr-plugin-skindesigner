@@ -7,7 +7,6 @@ cDesignerConfig::cDesignerConfig() {
     skinPathSet = false;
     logoPathSet = false;
     //Common
-    logoExtension = "png";
     numLogosPerSizeInitial = 30;
     limitLogoCache = 1;
     numLogosMax = 200;

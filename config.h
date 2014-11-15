@@ -48,7 +48,6 @@ public:
     void AddPlugin(string name, map < int, string > &menus);
     void InitPluginIterator(void);
     map <int,string> *GetPluginTemplates(string &name);
-    cString logoExtension;
     cString skinPath;
     cString logoPath;
     cString epgImagePath;

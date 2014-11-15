@@ -5,14 +5,11 @@
 
 #include <vdr/osd.h>
 #include <vdr/skins.h>
-#include <Magick++.h>
 #include <vector>
-#include "imagemagickwrapper.h"
+#include "imageloader.h"
 #include "../libtemplate/templatefunction.h"
 
-using namespace Magick;
-
-class cImageCache : public cImageMagickWrapper {
+class cImageCache : public cImageLoader {
 public:
     cImageCache();
     ~cImageCache();
