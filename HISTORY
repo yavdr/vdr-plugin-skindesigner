@@ -60,3 +60,5 @@ Version 0.0.3
 - fixed crash when clearing a message in displaychannel and displayreplay
 - fixed positioning of scaled video window if borders are configured
 
+Version 0.0.4
+
