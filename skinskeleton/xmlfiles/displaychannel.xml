@@ -57,6 +57,7 @@
     {isDolby}                          true if a dolby audio track is available
     {isEncrypted}                      true if channel is encrypted
     {isRecording}                      true if currently a recording is running on this channel
+    {newmails}                         true if mailbox plugin is installed and new mails are available
     -->
     <statusinfo>
     </statusinfo>

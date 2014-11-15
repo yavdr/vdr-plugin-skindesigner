@@ -84,3 +84,5 @@ Version 0.0.5
 - added {channelnumber} and {channelname} Tokens in displaymenudetailepg 
   detailheader
 - fixed {hasicon} Token in displaymenu header
+- added {newmails} Token in displaychannel statusinfo, mailbox plugin
+  has to be installed

@@ -212,6 +212,7 @@ void cDisplayChannelView::DrawStatusIcons(const cChannel *Channel) {
     intTokens.insert(pair<string,int>("isDolby", isDolby));
     intTokens.insert(pair<string,int>("isEncrypted", isEncrypted));
     intTokens.insert(pair<string,int>("isRecording", isRecording));
+    intTokens.insert(pair<string,int>("newmails", CheckNewMails()));
 
     DrawViewElement(veStatusInfo, &stringTokens, &intTokens);
 }

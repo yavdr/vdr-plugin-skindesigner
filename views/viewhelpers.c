@@ -155,3 +155,16 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
 #endif
     return true;
 }
+
+bool cViewHelpers::CheckNewMails(void) {
+    static cPlugin *pMailbox = cPluginManager::GetPlugin("mailbox");
+    if (!pMailbox) {
+        return false;
+    }
+    bool newMail = false;
+    if (pMailbox->Service("MailBox-HasNewMail-1.0", &newMail)) {
+        return newMail;
+    }
+    return false;
+}
+
