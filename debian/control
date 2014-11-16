@@ -3,7 +3,7 @@ Section: video
 Priority: extra
 Maintainer: Lars Hanisch <dvb@flensrocker.de>
 Uploaders: Lars Hanisch <dvb@flensrocker.de>
-Build-Depends: debhelper (>= 9), vdr-dev (>= 2.0.0), pkg-config, gettext, libmagick++-dev, libpng12-dev
+Build-Depends: debhelper (>= 9), vdr-dev (>= 2.0.0), pkg-config, gettext, libjpeg-dev, librsvg2-dev, libcairo2-dev, libxml2-dev
 Standards-Version: 3.9.3
 Homepage: http://projects.vdr-developer.org/projects/plg-skindesigner
 
