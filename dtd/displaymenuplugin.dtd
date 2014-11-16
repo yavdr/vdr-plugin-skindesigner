@@ -1,0 +1,96 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY % functions SYSTEM "functions.dtd">
+
+<!ELEMENT menuplugin (background|header|datetime|message|colorbuttons|scrollbar|detailheader|menuitems|tab|tablabels)*>
+<!ATTLIST menuplugin
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT background (area)*>
+<!ATTLIST background
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT header (area|areascroll)*>
+<!ATTLIST header
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT datetime (area|areascroll)*>
+<!ATTLIST datetime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT message (area|areascroll)*>
+<!ATTLIST message
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT colorbuttons (area|areascroll)*>
+<!ATTLIST colorbuttons
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT scrollbar (area|areascroll)*>
+<!ATTLIST scrollbar
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT detailheader (area|areascroll)*>
+<!ATTLIST detailheader
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT tablabels (area|areascroll)*>
+<!ATTLIST tablabels
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT menuitems (listelement,currentelement?)>
+<!ATTLIST menuitems
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  align (left|top|center|bottom|right) #IMPLIED
+  menuitemwidth CDATA #IMPLIED
+  numlistelements CDATA #REQUIRED
+  orientation (horizontal|vertical) #REQUIRED
+>
+
+<!ELEMENT listelement (area|areascroll)*>
+<!ATTLIST listelement
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT currentelement (area|areascroll)*>
+<!ATTLIST currentelement
+  delay CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT tab (loop|fill|drawtext|drawtextbox|drawimage|drawrectangle|drawellipse)*>
+<!ATTLIST tab
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  layer CDATA #REQUIRED
+  name CDATA #REQUIRED
+  scrollheight CDATA #REQUIRED
+  transparency CDATA #IMPLIED
+  condition CDATA #IMPLIED
+  debug (true|false) #IMPLIED
+>
+
+%functions;

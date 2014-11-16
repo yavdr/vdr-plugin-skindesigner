@@ -90,6 +90,7 @@
     {isDolby}                          true if a dolby audio track is available
     {isEncrypted}                      true if channel is encrypted
     {isRecording}                      true if currently a recording is running on this channel
+    {newmails}                         true if mailbox plugin is installed and new mails are available
     -->
     <statusinfo>
         <area x="22%" y="94%" width="76%" height="6%" layer="2">
@@ -209,6 +210,16 @@
     </devices>
 
     <!-- Available Variables scrapercontent:
+    {posterpath}                        Full Path of Poster to use in image path attribute
+    {posterwidth}                       width of poster in pixel
+    {posterheight}                      height of poster in pixel
+    {hasPoster}                         true if poster is available
+    {bannerpath}                        Full Path of banner to use in image path attribute
+    {bannerwidth}                       width of banner in pixel
+    {bannerheight}                      height of banner in pixel
+    {hasBanner}                         true if banner is available
+
+    Use this tokens if you want to display a banner for series and a poster for movies:
     {mediapath}                         Full Path of Poster or Banner to use in image path attribute
     {mediawidth}                        width of image in pixel
     {mediaheight}                       height of image in pixel

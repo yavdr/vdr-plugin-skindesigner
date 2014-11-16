@@ -125,6 +125,18 @@ public:
     void Debug(void);
 };
 
+class cDisplayMenuItemPluginView: public cDisplayMenuItemView {
+private:
+    map<string,vector<map<string,string> > > loopTokens;
+public:
+    cDisplayMenuItemPluginView(cTemplateViewList *tmplList, map<string,string> *plugStringTokens, map<string,int> *plugIntTokens, map<string,vector<map<string,string> > > *pluginLoopTokens, int index, bool current, bool selectable);
+    virtual ~cDisplayMenuItemPluginView();
+    void SetTokens(void);
+    void Prepare(void);
+    void Render(void);
+    void Debug(void);
+};
+
 class cDisplayMenuItemTrackView: public cDisplayMenuItemView {
 private:
     const char *title;

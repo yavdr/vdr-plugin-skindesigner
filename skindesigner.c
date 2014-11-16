@@ -12,14 +12,14 @@
 #include "config.h"
 #include "designer.h"
 #include "setup.h"
-
+#include "services.h"
 
 #if defined(APIVERSNUM) && APIVERSNUM < 20000 
 #error "VDR-2.0.0 API version or greater is required!"
 #endif
 
 
-static const char *VERSION        = "0.0.4dev";
+static const char *VERSION        = "0.0.5";
 static const char *DESCRIPTION    = "SkinDesigner";
 static const char *MAINMENUENTRY  = "Skin Designer";
 
@@ -95,6 +95,7 @@ bool cPluginSkinDesigner::Initialize(void) {
 }
 
 bool cPluginSkinDesigner::Start(void) {
+    cXmlParser::InitLibXML();
     bool trueColorAvailable = true;
     if (!cOsdProvider::SupportsTrueColor()) {
         esyslog("skindesigner: No TrueColor OSD found! Using default Skin LCARS!");
@@ -121,6 +122,7 @@ bool cPluginSkinDesigner::Start(void) {
 void cPluginSkinDesigner::Stop(void) {
     delete imgCache;
     delete fontManager;
+    cXmlParser::CleanupLibXML();
 }
 
 void cPluginSkinDesigner::Housekeeping(void) {
@@ -150,6 +152,34 @@ bool cPluginSkinDesigner::SetupParse(const char *Name, const char *Value) {
 }
 
 bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
+    if (Data == NULL)
+        return false;
+
+    if (strcmp(Id, "RegisterPlugin") == 0) {
+        RegisterPlugin* call = (RegisterPlugin*) Data;
+        if (call->menus.size() < 1) {
+            esyslog("skindesigner: error - plugin without menus registered");
+            return false;
+        }
+        config.AddPlugin(call->name, call->menus);
+        dsyslog("skindesigner: plugin %s has registered %d templates", call->name.c_str(), call->menus.size());
+        return true;
+    } else if (strcmp(Id, "GetDisplayMenu") == 0) {
+        GetDisplayMenu* call = (GetDisplayMenu*) Data;
+        cSkin *current = Skins.Current();
+        for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
+            if (*skin == current) {
+                cSDDisplayMenu *displayMenu = (*skin)->GetDisplayMenu();
+                if (displayMenu) {
+                    call->displayMenu = displayMenu;
+                    return true;
+                } else
+                    return false;
+            }
+        }
+        return false;
+    }
+
     return false;
 }
 

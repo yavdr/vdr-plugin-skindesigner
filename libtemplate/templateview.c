@@ -26,6 +26,17 @@ cTemplateView::~cTemplateView() {
         delete *it;
     }
 
+    for (map < eSubView, cTemplateView* >::iterator it = subViews.begin(); it != subViews.end(); it++) {
+        delete it->second;
+    }
+
+    for (map < string, map< int, cTemplateView*> >::iterator it = pluginViews.begin(); it != pluginViews.end(); it++) {
+        map< int, cTemplateView*> plugViews = it->second;
+        for (map< int, cTemplateView*>::iterator it2 = plugViews.begin(); it2 != plugViews.end(); it2++) {
+            delete it2->second;
+        }
+    }
+
     if (parameters)
         delete parameters;
 
@@ -92,6 +103,22 @@ cTemplateView *cTemplateView::GetSubView(eSubView sv) {
         return NULL;
     return hit->second;
 }
+
+cTemplateView *cTemplateView::GetPluginView(string pluginName, int pluginMenu) {
+    map < string, map< int, cTemplateView*> >::iterator hit = pluginViews.find(pluginName);
+
+    if (hit == pluginViews.end())
+       return NULL;
+
+    map< int, cTemplateView*> plugViews = hit->second;
+    map< int, cTemplateView*>::iterator hit2 = plugViews.find(pluginMenu);
+
+    if (hit2 == plugViews.end())
+        return NULL;
+
+    return hit2->second;
+}
+
 
 void cTemplateView::InitViewTabIterator(void) {
     vtIt = viewTabs.begin();
@@ -165,8 +192,8 @@ bool cTemplateView::GetScalingWindow(cRect &scalingWindow) {
     if (!parameters)
         return false;
     bool doScale = false;
-    int scaleX = parameters->GetNumericParameter(ptScaleTvX);
-    int scaleY = parameters->GetNumericParameter(ptScaleTvY);
+    int scaleX = parameters->GetNumericParameter(ptScaleTvX) + cOsd::OsdLeft();
+    int scaleY = parameters->GetNumericParameter(ptScaleTvY) + cOsd::OsdTop();
     int scaleWidth = parameters->GetNumericParameter(ptScaleTvWidth);
     int scaleHeight = parameters->GetNumericParameter(ptScaleTvHeight);
     if (scaleX > -1 && scaleY > -1 && scaleWidth > -1 && scaleHeight > -1) {
@@ -388,6 +415,15 @@ void cTemplateView::PreCache(bool isSubview) {
         subView->PreCache(true);
     }
 
+    //Cache Plugin Subviews
+    for (map < string, map< int, cTemplateView*> >::iterator it = pluginViews.begin(); it != pluginViews.end(); it++) {
+        map< int, cTemplateView*> plugViews = it->second;
+        for (map< int, cTemplateView*>::iterator it2 = plugViews.begin(); it2 != plugViews.end(); it2++) {
+            cTemplateView *plugView = it2->second;
+            plugView->SetContainer(0, 0, osdWidth, osdHeight);
+            plugView->PreCache(true);
+        }
+    }
 }
 
 void cTemplateView::Debug(void) {
@@ -417,6 +453,15 @@ void cTemplateView::Debug(void) {
         esyslog("skindesigner: ++++++++ SubView: %s", GetSubViewName(it->first).c_str());
         cTemplateView *subView = it->second;
         subView->Debug();       
+    }
+    
+    for (map < string, map< int, cTemplateView*> >::iterator it = pluginViews.begin(); it!= pluginViews.end(); it++) {
+        esyslog("skindesigner: ++++++++ Plugin: %s", it->first.c_str());
+        map< int, cTemplateView*> plugViews = it->second;
+        for (map< int, cTemplateView*>::iterator it2 = plugViews.begin(); it2 != plugViews.end(); it2++) {
+            esyslog("skindesigner: Tmpl %d", it2->first);
+            ((cTemplateView*)it2->second)->Debug();
+        }
     }
 
 }
@@ -934,6 +979,19 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scrollheight");
     funcsAllowed.insert(pair< string, set<string> >("tab", attributes));
 
+    //definition of allowed parameters for plugin menus
+    attributes.clear();
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("fadetime");
+    attributes.insert("scaletvx");
+    attributes.insert("scaletvy");
+    attributes.insert("scaletvwidth");
+    attributes.insert("scaletvheight");
+    funcsAllowed.insert(pair< string, set<string> >("menuplugin", attributes));
+
     SetSubViews();
     SetViewElements();
     SetViewLists();
@@ -1118,6 +1176,20 @@ void cTemplateViewMenu::AddSubView(string sSubView, cTemplateView *subView) {
     }
     subView->SetGlobals(globals);
     subViews.insert(pair<eSubView, cTemplateView*>(sv, subView));
+}
+
+void cTemplateViewMenu::AddPluginView(string plugName, int templNo, cTemplateView *plugView) {
+    plugView->SetGlobals(globals);
+
+    map < string, map< int, cTemplateView*> >::iterator hit = pluginViews.find(plugName);
+
+    if (hit == pluginViews.end()) {
+        map< int, cTemplateView*> plugTemplates;
+        plugTemplates.insert(pair<int, cTemplateView*>(templNo, plugView));
+        pluginViews.insert(pair< string, map< int, cTemplateView*> >(plugName, plugTemplates));
+    } else {
+        hit->second.insert(pair<int, cTemplateView*>(templNo, plugView));
+    }
 }
 
 void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, bool debugViewElement) {

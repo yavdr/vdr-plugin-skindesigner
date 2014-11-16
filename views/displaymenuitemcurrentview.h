@@ -91,4 +91,17 @@ public:
     void Render(void);
     void Clear(void);
 };
+
+class cDisplayMenuItemCurrentPluginView: public cDisplayMenuItemCurrentView {
+private:
+    map<string,vector<map<string,string> > > loopTokens;
+    void Action(void);
+public:
+    cDisplayMenuItemCurrentPluginView(cTemplateViewElement *tmplCurrent, map <string,string> &plugStringTokens, map <string,int> &plugIntTokens, map<string,vector<map<string,string> > > &pluginLoopTokens);
+    virtual ~cDisplayMenuItemCurrentPluginView();
+    void Prepare(void);
+    void Render(void);
+    void Clear(void);
+};
+
 #endif //__DISPLAYMENUITEMCURRENTVIEW_H

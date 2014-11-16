@@ -1,5 +1,6 @@
 #include "xmlparser.h"
 #include "../config.h"
+#include "../libcore/helpers.h"
 
 using namespace std;
 
@@ -12,7 +13,6 @@ cXmlParser::cXmlParser(void) {
     root = NULL;
     ctxt = NULL;
 
-    xmlInitParser();
     initGenericErrorDefaultFunc(NULL);
     xmlSetStructuredErrorFunc(NULL, SkinDesignerXMLErrorHandler);
     ctxt = xmlNewParserCtxt();
@@ -21,7 +21,6 @@ cXmlParser::cXmlParser(void) {
 cXmlParser::~cXmlParser() {
     DeleteDocument();
     xmlFreeParserCtxt(ctxt);
-    xmlCleanupParser();
 }
 
 /*********************************************************************
@@ -58,6 +57,33 @@ bool cXmlParser::ReadView(cTemplateView *view, string xmlFile) {
     if (xmlStrcmp(root->name, (const xmlChar *) view->GetViewName())) {
         return false;
     }
+    return true;
+}
+
+bool cXmlParser::ReadPluginView(string plugName, int templateNumber, string templateName) {
+
+    string xmlPath = GetPath(templateName);
+
+    if (!FileExists(xmlPath) || ctxt == NULL) {
+        return false;
+    }
+    DeleteDocument();
+    doc = xmlCtxtReadFile(ctxt, xmlPath.c_str(), NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
+    
+    if (doc == NULL) {
+        return false;
+    }
+    if (ctxt->valid == 0) {
+        esyslog("skindesigner: Failed to validate %s", xmlPath.c_str());
+        return false;
+    }
+
+    root = xmlDocGetRootElement(doc);
+
+    if (root == NULL) {
+        return false;
+    }
+
     return true;
 }
 
@@ -130,6 +156,42 @@ bool cXmlParser::ParseView(void) {
 
     return true;
     
+}
+
+bool cXmlParser::ParsePluginView(string plugName, int templateNumber) {
+
+    cTemplateView *plugView = new cTemplateViewMenu();
+    view->AddPluginView(plugName, templateNumber, plugView);
+
+    vector<pair<string, string> > attribs;
+    ParseAttributes(root->properties, root, attribs);
+
+    plugView->SetParameters(attribs);
+
+    xmlNodePtr childNode = root->xmlChildrenNode;
+
+    while (childNode != NULL) {
+
+        if (childNode->type != XML_ELEMENT_NODE) {
+            childNode = childNode->next;
+            continue;
+        }
+
+        if (plugView->ValidViewElement((const char*)childNode->name)) {
+            bool debugViewElement = DebugViewElement(childNode);
+            ParseViewElement(childNode->name, childNode->xmlChildrenNode, debugViewElement, plugView);
+        } else if (plugView->ValidViewList((const char*)childNode->name)) {
+            ParseViewList(childNode, plugView);
+        } else if (!xmlStrcmp(childNode->name, (const xmlChar *) "tab")) {
+            ParseViewTab(childNode, plugView);           
+        } else {
+            return false;
+        }
+
+        childNode = childNode->next;
+    }
+
+    return true;
 }
 
 bool cXmlParser::ParseGlobals(void) {
@@ -736,4 +798,12 @@ bool cXmlParser::DebugViewElement(xmlNodePtr node) {
             return true;
     }
     return false;
+}
+
+void cXmlParser::InitLibXML() {
+    xmlInitParser();
+}
+
+void cXmlParser::CleanupLibXML() {
+    xmlCleanupParser();
 }

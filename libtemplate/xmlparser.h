@@ -47,10 +47,14 @@ public:
     cXmlParser(void);
     virtual ~cXmlParser(void);
     bool ReadView(cTemplateView *view, string xmlFile);
+    bool ReadPluginView(string plugName, int templateNumber, string templateName);
     bool ReadGlobals(cGlobals *globals, string xmlFile);
     bool ParseView(void);
+    bool ParsePluginView(string plugName, int templateNumber);
     bool ParseGlobals(void);
     void DeleteDocument(void);
+    static void InitLibXML();
+    static void CleanupLibXML();
 };
 
 #endif //__XMLPARSER_H

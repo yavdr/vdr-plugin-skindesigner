@@ -182,6 +182,17 @@ void cDisplayMenuListView::AddRecordingMenuItem(int index, const cRecording *rec
     menuItems[index] = item;            
 }
 
+void cDisplayMenuListView::AddPluginMenuItem(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens, int index, bool current, bool selectable) {
+    if (index >= itemCount)
+        return;
+    if (menuItems[index]) {
+        menuItems[index]->SetCurrent(current);
+        return;
+    }
+    cDisplayMenuItemView *item = new cDisplayMenuItemPluginView(tmplList, stringTokens, intTokens, loopTokens, index, current, selectable);
+    menuItems[index] = item;
+}
+
 void cDisplayMenuListView::AddTracksMenuItem(int index, const char *title, bool current, bool selectable) {
     if (index >= itemCount)
         return;

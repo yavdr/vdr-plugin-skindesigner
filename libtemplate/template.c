@@ -53,7 +53,24 @@ bool cTemplate::ReadFromXML(void) {
     if (!parser.ParseView()) {
         return false;
     }
-    return true;
+    //read additional plugin templates
+    bool ok = true;
+    if (viewType == vtDisplayMenu) {
+        config.InitPluginIterator();
+        map <int,string> *plugTemplates = NULL;
+        string plugName;
+        while ( plugTemplates = config.GetPluginTemplates(plugName) ) {
+            for (map <int,string>::iterator it = plugTemplates->begin(); it != plugTemplates->end(); it++) {
+                int templateNumber = it->first;
+                stringstream templateName;
+                templateName << "plug-" << plugName << "-" << it->second.c_str();
+                if (parser.ReadPluginView(plugName, templateNumber, templateName.str())) {
+                    ok = parser.ParsePluginView(plugName, templateNumber);
+                }
+            }
+        }
+    }
+    return ok;
 }
 
 void cTemplate::SetGlobals(cGlobals *globals) { 

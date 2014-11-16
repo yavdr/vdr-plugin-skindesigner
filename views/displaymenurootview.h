@@ -6,12 +6,22 @@
 #include "displaymenulistview.h"
 #include "displaymenudetailview.h"
 
+enum ePluginMenuType {
+    mtList,
+    mtText,
+    mtUnknown
+};
+
 class cDisplayMenuRootView : public cView {
 private:
     eMenuCategory cat;
     eSubView viewType;
     cTemplateView *subView;
     bool subViewAvailable;
+    string pluginName;
+    int pluginMenu;
+    ePluginMenuType pluginMenuType;
+    bool pluginMenuChanged;
     cDisplayMenuView *view;
     cDisplayMenuListView *listView;
     cDisplayMenuDetailView *detailView;
@@ -34,6 +44,7 @@ public:
     virtual ~cDisplayMenuRootView();
     bool createOsd(void);
     void SetMenu(eMenuCategory menuCat, bool menuInit);
+    void SetPluginMenu(string name, int menu, int type);
     void SetTitle(const char *title);
     void SetChannel(const cChannel *channel) { view->SetChannel(channel); };
     const cChannel *GetChannel(void) { return view->GetChannel(); };
@@ -43,6 +54,7 @@ public:
     void SetDetailedViewEvent(const cEvent *event);
     void SetDetailedViewRecording(const cRecording *recording);
     void SetDetailedViewText(const char *text);
+    bool SetDetailedViewPlugin(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens);
     void KeyInput(bool up, bool page);
     void Clear(void);
     int GetMaxItems(void);

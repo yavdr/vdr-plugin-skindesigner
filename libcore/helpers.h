@@ -33,7 +33,7 @@ private:
 	uint64_t start;
 	uint64_t last;
 public:
-	cStopWatch(void);
+	cStopWatch(const char* message = NULL);
 	~cStopWatch(void) {};
 	void Report(const char* message);
 	void Stop(const char* message);

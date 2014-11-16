@@ -7,7 +7,6 @@ cDesignerConfig::cDesignerConfig() {
     skinPathSet = false;
     logoPathSet = false;
     //Common
-    logoExtension = "png";
     numLogosPerSizeInitial = 30;
     limitLogoCache = 1;
     numLogosMax = 200;
@@ -169,6 +168,23 @@ bool cDesignerConfig::OsdFontsChanged(void) {
 
 cString cDesignerConfig::GetSkinRessourcePath(void) {
     return cString::sprintf("%s%s", *skinPath, osdSkin.c_str());
+}
+
+void cDesignerConfig::AddPlugin(string name, map < int, string > &menus) {
+    plugins.insert(pair< string, map < int, string > >(name, menus));
+}
+
+void cDesignerConfig::InitPluginIterator(void) {
+    plugIt = plugins.begin();
+}
+
+map <int,string> *cDesignerConfig::GetPluginTemplates(string &name) {
+    if (plugIt == plugins.end())
+        return NULL;
+    name = plugIt->first;
+    map <int,string> *templates = &plugIt->second;
+    plugIt++;
+    return templates; 
 }
 
 cString cDesignerConfig::CheckSlashAtEnd(std::string path) {

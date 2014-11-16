@@ -3,8 +3,8 @@
 #
 # $Id$ Makefile 1.0 2014/07/24 louis Exp $
 
-# External image lib to use: imagemagick, graphicsmagick
-IMAGELIB = imagemagick
+# Config
+CONFIG := #-DDOPROFILE #           enable profiling code
 
 # The official name of this plugin.
 PLUGIN = skindesigner
@@ -42,18 +42,13 @@ PACKAGE = vdr-$(ARCHIVE)
 SOFILE = libvdr-$(PLUGIN).so
 
 ### Includes and Defines and Dependencies:
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' $(CONFIG)
 DEFINES += $(shell xml2-config --cflags)
 
 INCLUDES += $(shell pkg-config --cflags freetype2 fontconfig)
 
-ifeq ($(IMAGELIB), imagemagick)
-	INCLUDES += $(shell pkg-config --cflags Magick++)
-	LIBS += $(shell pkg-config --libs Magick++)
-else ifeq ($(IMAGELIB), graphicsmagick)
-	INCLUDES += $(shell pkg-config --cflags GraphicsMagick++)
-	LIBS += $(shell pkg-config --libs GraphicsMagick++)
-endif
+INCLUDES += $(shell pkg-config --cflags librsvg-2.0 cairo-png) -ljpeg
+LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
@@ -71,8 +66,6 @@ OBJS = $(PLUGIN).o \
        libcore/pixmapcontainer.o \
        libcore/fontmanager.o \
        libcore/imagecache.o \
-       libcore/imagemagickwrapper.o \
-       libcore/imagescaler.o \
        libcore/helpers.o \
        libcore/imageloader.o \
        libcore/recfolderinfo.o \

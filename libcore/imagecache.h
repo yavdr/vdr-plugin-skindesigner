@@ -5,14 +5,11 @@
 
 #include <vdr/osd.h>
 #include <vdr/skins.h>
-#include <Magick++.h>
 #include <vector>
-#include "imagemagickwrapper.h"
+#include "imageloader.h"
 #include "../libtemplate/templatefunction.h"
 
-using namespace Magick;
-
-class cImageCache : public cImageMagickWrapper {
+class cImageCache : public cImageLoader {
 public:
     cImageCache();
     ~cImageCache();
@@ -29,6 +26,7 @@ public:
     void CacheIcon(eImageType type, string path, int width, int height);
     cImage *GetIcon(eImageType type, string name, int width, int height);
     string GetIconName(string label, eMenuCategory cat = mcUndefined);
+    bool MenuIconExists(string name);
     //skinparts
     void CacheSkinpart(string path, int width, int height);
     cImage *GetSkinpart(string name, int width, int height);

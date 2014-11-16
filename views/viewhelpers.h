@@ -10,6 +10,7 @@ private:
 protected:
     void InitDevices(void);
     bool SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices);
+    bool CheckNewMails(void);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);

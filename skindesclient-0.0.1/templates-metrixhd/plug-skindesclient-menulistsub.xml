@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menuplugin SYSTEM "../../../dtd/displaymenuplugin.dtd">
+
+<menuplugin x="0" y="0" width="100%" height="100%" fadetime="0">
+    <!-- Available Variables header:
+    {title}                         title of current menu
+    {vdrversion}                    running VDR Version
+    {hasicon}                       true if a menu icon is available
+    {icon}                          path of menu icon
+    -->
+    <header>
+    </header>
+
+    <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="12">
+        <!-- Available Variables schedules menu listelement:
+        {nummenuitem}             number of item in list, starts with 1
+        {current}
+        {separator}
+        {itemnumber}
+        {menuitemtext}
+        {currentitemtext}
+        -->
+        <listelement>
+            <!-- Background -->
+            <area x="1%" width="58%" layer="2">
+                <fill condition="not{current}" color="{clrTransparent}" />
+                <fill condition="{current}" color="{clrTransBlueLight}" />
+            </area>
+            <area x="1%" width="58%" layer="3">
+                <drawtext x="10" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{itemnumber} {menuitemtext}" />
+            </area>
+        </listelement>
+        <!-- additional element which is drawn for current element -->
+        <!-- Available Variables schedules menu currentelement:
+        {itemnumber}
+        {menuitemtext}
+        {currentitemtext}
+        {loop1[]}           test array
+        {loop1[col0]}       test array first col
+        ...
+        {loop1[col2]}       test array third col
+        -->
+        <currentelement delay="500" fadetime="0">
+            <area x="63%" y="0" width="36%" height="85%" layer="3">
+                <drawtext align="center" y="0" font="{semibold}" width="{areawidth}-20" fontsize="15%" color="{clrWhite}" text="{itemnumber}" />
+                <drawtext align="center" y="15%" font="{semibold}" width="{areawidth}-20" fontsize="8%" color="{clrWhite}" text="{menuitemtext}" />
+                <drawtextbox x="10" y="{areaheight}/3" width="{areawidth}-20" font="{light}" fontsize="{areaheight}/15" color="{clrWhite}" text="{currentitemtext}" />
+            </area>
+            <areascroll mode="carriagereturn" orientation="vertical" delay="1000" scrollspeed="medium" x="63%" y="85%" width="36%" height="15%" layer="3">
+                <loop name="loop1" x="0" y="0" orientation="vertical">
+                    <drawtext x="10" font="{light}" width="{areawidth}-20" fontsize="20%" color="{clrWhite}" text="{loop1[col0]} {loop1[col1]} {loop1[col2]}" />
+                </loop>
+            </areascroll>
+        </currentelement>
+    </menuitems>
+    <!-- Available Variables scrollbar:
+    {height}                  height in one-tenth of a percent of total height
+    {offset}                  offset from top in one-tenth of a percent of total height
+    -->
+    <scrollbar>
+        <area x="60%" y="10%" width="2%" height="82%" layer="3">
+            <fill color="{clrWhite}" />
+            <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
+            <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
+        </area>
+    </scrollbar>
+</menuplugin>

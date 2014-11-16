@@ -13,7 +13,7 @@
 
 class cDesignerConfig {
 private:
-    cString CheckSlashAtEnd(std::string path);
+    cString CheckSlashAtEnd(string path);
     bool epgImagePathSet;
     bool skinPathSet;
     bool logoPathSet;
@@ -23,6 +23,8 @@ private:
     string fontFix;
     string fontOsd;
     string fontSml;
+    map < string, map < int, string > > plugins;
+    map < string, map < int, string > >::iterator plugIt;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
@@ -43,7 +45,9 @@ public:
     void SetOSDFonts(void);
     bool OsdFontsChanged(void);
     cString GetSkinRessourcePath(void);
-    cString logoExtension;
+    void AddPlugin(string name, map < int, string > &menus);
+    void InitPluginIterator(void);
+    map <int,string> *GetPluginTemplates(string &name);
     cString skinPath;
     cString logoPath;
     cString epgImagePath;
