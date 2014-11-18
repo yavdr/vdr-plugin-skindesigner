@@ -41,6 +41,10 @@ void cDisplayMessageView::DrawMessage(eMessageType type, const char *text) {
     DrawViewElement(veMessage, &stringTokens, &intTokens);
 }
 
+void cDisplayMessageView::ClearMessage(void) {
+    ClearViewElement(veMessage);
+}
+
 void cDisplayMessageView::Action(void) {
     SetInitFinished();
     FadeIn();
