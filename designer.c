@@ -177,7 +177,6 @@ void cSkinDesigner::Init(void) {
         }
         dsyslog("skindesigner: initializing skin %s", skin.c_str());
         
-        config.SetChannelLogoSize();
         config.CheckDecimalPoint();
         
         if (fontManager)

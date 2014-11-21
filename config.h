@@ -36,7 +36,6 @@ public:
     void ReadSkins(void);
     void InitSkinIterator(void) { skinIterator = skins.begin(); };
     bool GetSkin(string &skin);
-    void SetChannelLogoSize(void);
     void CheckDecimalPoint(void);
     void SetSkin(void);
     bool SkinChanged(void);
@@ -55,8 +54,6 @@ public:
     int limitLogoCache;
     int numLogosMax;
     int debugImageLoading;
-    int logoWidth;
-    int logoHeight;
     bool replaceDecPoint;
     char decPoint;
     vector<string> skins;
