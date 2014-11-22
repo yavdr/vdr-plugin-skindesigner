@@ -88,3 +88,6 @@ Version 0.0.5
   has to be installed
 - clearing displaymessage if it is called without text
 - changed handling of channel logos, width and height are now mandatory
+
+Version 0.0.6
+
