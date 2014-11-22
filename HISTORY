@@ -91,3 +91,5 @@ Version 0.0.5
 
 Version 0.0.6
 
+- fixed Bug that channel info was not shown when displaying reruns with
+  epgsearch
