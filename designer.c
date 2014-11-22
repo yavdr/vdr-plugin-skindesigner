@@ -168,7 +168,7 @@ void cSkinDesigner::ListCustomTokens(void) {
 * PRIVATE FUNCTIONS
 *********************************************************************************/    
 void cSkinDesigner::Init(void) {
-    if (init || config.OsdSizeChanged() || config.SkinChanged()) {
+    if (init || config.OsdSizeChanged() || config.SkinChanged() || config.OsdLanguageChanged()) {
         
         if (init) {
             config.SetSkin();

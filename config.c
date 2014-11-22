@@ -23,6 +23,7 @@ cDesignerConfig::cDesignerConfig() {
     SetSkin();
     SetOSDSize();
     SetOSDFonts();
+    osdLanguage = Setup.OSDLanguage;
 }
 
 cDesignerConfig::~cDesignerConfig() {
@@ -155,6 +156,14 @@ bool cDesignerConfig::OsdFontsChanged(void) {
     if (changed)
         SetOSDFonts();
     return changed;
+}
+
+bool cDesignerConfig::OsdLanguageChanged(void) {
+    if (osdLanguage.compare(Setup.OSDLanguage)) {
+        osdLanguage = Setup.OSDLanguage;
+        return true;
+    }
+    return false;
 }
 
 cString cDesignerConfig::GetSkinRessourcePath(void) {

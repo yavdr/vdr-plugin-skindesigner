@@ -23,6 +23,7 @@ private:
     string fontFix;
     string fontOsd;
     string fontSml;
+    string osdLanguage;
     map < string, map < int, string > > plugins;
     map < string, map < int, string > >::iterator plugIt;
 public:
@@ -43,6 +44,7 @@ public:
     bool OsdSizeChanged(void);
     void SetOSDFonts(void);
     bool OsdFontsChanged(void);
+    bool OsdLanguageChanged(void);
     cString GetSkinRessourcePath(void);
     void AddPlugin(string name, map < int, string > &menus);
     void InitPluginIterator(void);
