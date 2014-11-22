@@ -139,6 +139,7 @@ void cImageImporterPNG::GetImageSize(int &width, int &height) {
 //
 
 cImageImporterSVG::cImageImporterSVG() {
+    g_type_init();
     handle = NULL;
 }
 
