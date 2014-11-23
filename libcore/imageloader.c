@@ -139,7 +139,6 @@ void cImageImporterPNG::GetImageSize(int &width, int &height) {
 //
 
 cImageImporterSVG::cImageImporterSVG() {
-    g_type_init();
     handle = NULL;
 }
 
@@ -183,6 +182,12 @@ void cImageImporterSVG::GetImageSize(int &width, int &height) {
         width = dim.width;
         height = dim.height;
     }
+}
+
+void cImageImporterSVG::InitLibRSVG() {
+    #if !GLIB_CHECK_VERSION(2, 35, 0)
+        g_type_init();
+    #endif
 }
 
 //
