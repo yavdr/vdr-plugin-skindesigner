@@ -1,3 +1,9 @@
+vdr-plugin-skindesigner (0.0.6-2-ga3d636c-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream version
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Sun, 23 Nov 2014 14:38:39 +0100
+
 vdr-plugin-skindesigner (0.0.5-3-g5d715ed-1yavdr0~trusty) trusty; urgency=medium
 
   * refactor dependencies, links and dirs
