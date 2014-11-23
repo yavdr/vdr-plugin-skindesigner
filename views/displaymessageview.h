@@ -13,6 +13,7 @@ public:
     bool createOsd(void);
     void DrawBackground(void);
     void DrawMessage(eMessageType type, const char *text);
+    void ClearMessage(void);
     void DoFadeIn(void) { Start(); };
     void Flush(void) { DoFlush(); };
 };
