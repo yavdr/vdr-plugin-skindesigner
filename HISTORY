@@ -94,3 +94,4 @@ Version 0.0.6
 - fixed Bug that channel info was not shown when displaying reruns with
   epgsearch
 - using VDRs OSD Language instead of system language
+- added compatibility to librsvg >= 2.36.1
