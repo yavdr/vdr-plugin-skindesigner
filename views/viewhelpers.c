@@ -133,12 +133,15 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
             strChanNum << channel->Number();
             deviceVals.insert(pair< string, string >("devices[channelnumber]", strChanNum.str()));
             deviceVals.insert(pair< string, string >("devices[channelname]", channel->Name()));
-            deviceVals.insert(pair< string, string >("devices[channelid]", *(channel->GetChannelID().ToString())));
+            string channelID = *(channel->GetChannelID().ToString());
+            deviceVals.insert(pair< string, string >("devices[channelid]", channelID));
+            deviceVals.insert(pair< string, string >("devices[channellogoexists]", imgCache->LogoExists(channelID) ? "1" : "0"));
             deviceVals.insert(pair< string, string >("devices[istuned]", "1"));
         } else {
             deviceVals.insert(pair< string, string >("devices[channelnumber]", "0"));
             deviceVals.insert(pair< string, string >("devices[channelname]", ""));
             deviceVals.insert(pair< string, string >("devices[channelid]", ""));
+            deviceVals.insert(pair< string, string >("devices[channellogoexists]", "0"));
             deviceVals.insert(pair< string, string >("devices[istuned]", "0"));
         }
     

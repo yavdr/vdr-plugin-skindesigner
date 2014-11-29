@@ -127,7 +127,9 @@ void cDisplayMenuDetailView::SetTokens(void) {
         intTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));
         intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
 
-        stringTokens.insert(pair<string,string>("channelid", *(event->ChannelID().ToString())));
+        string channelID = *(event->ChannelID().ToString());
+        stringTokens.insert(pair<string,string>("channelid", channelID));
+        intTokens.insert(pair<string, int>("channellogoexists", imgCache->LogoExists(channelID)));
 
         bool isRunning = false;
         time_t now = time(NULL);
@@ -658,7 +660,9 @@ void cDisplayMenuDetailView::DrawHeader(void) {
             headerStringTokens.insert(pair<string,string>("channelname", ""));            
             headerIntTokens.insert(pair<string, int>("channelnumber", 0));
         }
-        headerStringTokens.insert(pair<string,string>("channelid", *(event->ChannelID().ToString())));
+        string channelID = *(channel->GetChannelID().ToString());
+        headerStringTokens.insert(pair<string,string>("channelid", channelID));
+        headerIntTokens.insert(pair<string, int>("channellogoexists", imgCache->LogoExists(channelID)));
 
         bool isRunning = false;
         time_t now = time(NULL);
