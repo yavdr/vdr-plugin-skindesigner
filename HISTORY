@@ -97,3 +97,6 @@ Version 0.0.6
 - added compatibility to librsvg >= 2.36.1
 - added onpause and onpausemodeonly in displayreplay
 - added {channellogoexists} Token everywhere where {channelid} is available
+
+Version 0.0.7
+
