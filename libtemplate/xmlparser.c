@@ -145,11 +145,6 @@ bool cXmlParser::ParseView(void) {
             xmlAttrPtr attr = node->properties;
             vector<pair<string, string> > attribs;
             ParseAttributes(attr, node, attribs);
-            /*
-            for (vector<pair<string, string> >::iterator it = attribs.begin(); it != attribs.end(); it++) {
-                esyslog("skindesigner: attribute %s value %s", (it->first).c_str(), (it->second).c_str());
-            }
-            */
             ParseViewElement(node->name, node->xmlChildrenNode, attribs);
         } else if (view->ValidViewList((const char*)node->name)) {
             ParseViewList(node);
@@ -360,6 +355,11 @@ void cXmlParser::InsertVariable(string name, string type, string value) {
         int val = atoi(value.c_str());
         globals->intVars.insert(pair<string, int>(name, val));
     } else if (!type.compare("double")) {
+        if (config.replaceDecPoint) {
+            if (value.find_first_of('.') != string::npos) {
+                std::replace( value.begin(), value.end(), '.', config.decPoint);
+            }
+        }
         double val = atof(value.c_str());
         globals->doubleVars.insert(pair<string, double>(name, val));
     } else if (!type.compare("string")) {

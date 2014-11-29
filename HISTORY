@@ -100,3 +100,5 @@ Version 0.0.6
 
 Version 0.0.7
 
+- fixed bug that global double vars are not working
+
