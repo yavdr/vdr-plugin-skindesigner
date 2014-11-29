@@ -95,3 +95,4 @@ Version 0.0.6
   epgsearch
 - using VDRs OSD Language instead of system language
 - added compatibility to librsvg >= 2.36.1
+- added onpause and onpausemodeonly in displayreplay
