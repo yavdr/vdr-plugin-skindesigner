@@ -94,6 +94,7 @@ OBJS = $(PLUGIN).o \
        views/displaymenutabview.o \
        views/displaymessageview.o \
        views/displayreplayview.o \
+       views/displayreplayonpauseview.o \
        views/displayvolumeview.o \
        views/displayaudiotracksview.o
 

@@ -19,7 +19,7 @@
 #endif
 
 
-static const char *VERSION        = "0.0.6";
+static const char *VERSION        = "0.0.8";
 static const char *DESCRIPTION    = "SkinDesigner";
 static const char *MAINMENUENTRY  = "Skin Designer";
 
@@ -96,6 +96,7 @@ bool cPluginSkinDesigner::Initialize(void) {
 
 bool cPluginSkinDesigner::Start(void) {
     cXmlParser::InitLibXML();
+    cImageImporterSVG::InitLibRSVG();
     bool trueColorAvailable = true;
     if (!cOsdProvider::SupportsTrueColor()) {
         esyslog("skindesigner: No TrueColor OSD found! Using default Skin LCARS!");
