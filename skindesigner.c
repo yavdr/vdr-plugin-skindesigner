@@ -163,7 +163,7 @@ bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
             return false;
         }
         config.AddPlugin(call->name, call->menus);
-        dsyslog("skindesigner: plugin %s has registered %d templates", call->name.c_str(), call->menus.size());
+        dsyslog("skindesigner: plugin %s has registered %ld templates", call->name.c_str(), call->menus.size());
         return true;
     } else if (strcmp(Id, "GetDisplayMenu") == 0) {
         GetDisplayMenu* call = (GetDisplayMenu*) Data;
