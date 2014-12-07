@@ -187,6 +187,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
                 view = new cDisplayMenuView(subView, menuInit);
         }
         view->SetMenuCat(cat);
+        view->SetButtonTexts(buttonTexts);
         //Cleanup root view
         ClearRootView();
         if (isListView) {
