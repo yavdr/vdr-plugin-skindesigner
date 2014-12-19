@@ -115,3 +115,5 @@ Version 0.1.0
 - added currentschedule viewelement in displaymenumain
 - fixed bug that wrong channel was shown in header of whatson
   if entering from whatsonnow
+- added customtokens view element in displaymenumain
+- added automatic determination of custom int tokens

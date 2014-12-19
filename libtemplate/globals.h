@@ -31,7 +31,8 @@ public:
     map <string, string> stringVars;
     map <string, string> fonts;
     map <string, map< string, string > > translations;
-    map <string, string> customTokens;
+    map <string, string> customStringTokens;
+    map <string, int> customIntTokens;
     bool ReadFromXML(void);
     bool Translate(string text, string &translation);
     void Debug(void);

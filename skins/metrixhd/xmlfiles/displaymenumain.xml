@@ -233,6 +233,14 @@
         </area>
     </systemload>
 
+    <!-- Available Variables customtokens:
+    all custom tokens set by the svdrp command SCTK are available in this viewelement
+    For instance, use an appropriate script which runs periodically as cronjob and
+    sets these custom tokens with svdrpsend or dbus2vdr
+    --> 
+    <customtokens>
+    </customtokens>
+
     <menuitems x="0" y="7%" orientation="vertical" width="70%" height="56%" align="center" numlistelements="8">
         <!-- Available Variables main menu listelement:
         {nummenuitem}             number of item in list, starts with 1

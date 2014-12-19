@@ -539,8 +539,8 @@ void cDisplayChannelView::DrawCustomTokens(void) {
     }
     if (!tmplView)
         return;
-    map < string, string > stringTokens = tmplView->GetCustomTokens();
-    map < string, int > intTokens;
+    map < string, string > stringTokens = tmplView->GetCustomStringTokens();
+    map < string, int > intTokens = tmplView->GetCustomIntTokens();
     DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
 }
 
