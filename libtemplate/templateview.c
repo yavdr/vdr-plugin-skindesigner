@@ -1031,6 +1031,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("timers");
     viewElementsAllowed.insert("devices");
     viewElementsAllowed.insert("currentschedule");
+    viewElementsAllowed.insert("customtokens");
     viewElementsAllowed.insert("scrollbar");
     viewElementsAllowed.insert("detailheader");
     viewElementsAllowed.insert("tablabels");
@@ -1111,6 +1112,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
             break;
         case veCurrentSchedule:
             name = "Current Schedule";
+            break;
+       case veCustomTokens:
+            name = "Custom Tokens";
             break;
         case veDevices:
             name = "Devices";
@@ -1223,6 +1227,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veTimers;
     } else if (!sViewElement.compare("currentschedule")) {
         ve = veCurrentSchedule;
+    } else if (!sViewElement.compare("customtokens")) {
+        ve = veCustomTokens;
     } else if (!sViewElement.compare("devices")) {
         ve = veDevices;
     } else if (!sViewElement.compare("scrollbar")) {
