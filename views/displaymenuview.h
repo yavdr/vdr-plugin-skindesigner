@@ -39,6 +39,7 @@ private:
     bool DrawLoad(void);
     bool DrawDevices(void);
     void DrawCurrentSchedule(void);
+    void DrawCustomTokens(void);
 public:
     cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit);
     virtual ~cDisplayMenuMainView();
@@ -52,7 +53,7 @@ private:
 public:
     cDisplayMenuSchedulesView(cTemplateView *tmplView, eMenuCategory menuCat, bool menuInit);
     virtual ~cDisplayMenuSchedulesView();
-    void SetChannel(const cChannel *channel) { if (!this->channel) this->channel = channel; };
+    void SetChannel(const cChannel *channel) { if (channel) this->channel = channel; };
     const cChannel *GetChannel(void) { return channel; };
     bool DrawHeader(void);
 };

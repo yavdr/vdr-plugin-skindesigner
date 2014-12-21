@@ -230,6 +230,7 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
     DrawTimers();
     DrawDiscUsage();
     DrawCurrentSchedule();
+    DrawCustomTokens();
 }
 
 bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
@@ -499,6 +500,17 @@ void cDisplayMenuMainView::DrawCurrentSchedule(void) {
 
     ClearViewElement(veCurrentSchedule);
     DrawViewElement(veCurrentSchedule, &stringTokens, &intTokens);
+}
+
+void cDisplayMenuMainView::DrawCustomTokens(void) {
+    if (!ViewElementImplemented(veCustomTokens)) {
+        return;
+    }
+    if (!tmplView)
+        return;
+    map < string, string > stringTokens = tmplView->GetCustomStringTokens();
+    map < string, int > intTokens = tmplView->GetCustomIntTokens();
+    DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
 }
 
 /************************************************************************

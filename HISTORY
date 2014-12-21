@@ -113,3 +113,9 @@ Version 0.1.0
 - fixed display of color buttons in detailed views
 - fixed possible Nullpointer access in displaymenurootview 
 - added currentschedule viewelement in displaymenumain
+- fixed bug that wrong channel was shown in header of whatson
+  if entering from whatsonnow
+- added customtokens view element in displaymenumain
+- added automatic determination of custom int tokens
+
+Version 0.1.1

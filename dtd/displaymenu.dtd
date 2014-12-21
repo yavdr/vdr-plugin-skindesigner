@@ -65,6 +65,11 @@
   debug CDATA #IMPLIED
 >
 
+<!ELEMENT customtokens (area|areascroll)*>
+<!ATTLIST customtokens
+  debug CDATA #IMPLIED
+>
+
 <!ELEMENT scrollbar (area|areascroll)*>
 <!ATTLIST scrollbar
   debug CDATA #IMPLIED
@@ -94,7 +99,7 @@
 >
 
 <!ELEMENT menumain (background | header | datetime | colorbuttons | scrollbar | timers | 
-                    discusage | devices | systemload | currentschedule | menuitems)*>
+                    discusage | devices | systemload | currentschedule | customtokens | menuitems)*>
 <!ATTLIST menumain
   x CDATA #REQUIRED
   y CDATA #REQUIRED
