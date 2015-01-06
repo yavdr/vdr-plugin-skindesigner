@@ -423,6 +423,5 @@ bool cViewHelpers::SetDate(map < string, string > &stringTokens, map < string, i
     stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
     stringTokens.insert(pair<string,string>("time", *TimeString(t)));
 
-    lastMinute = min;
     return true;
 }

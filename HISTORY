@@ -133,5 +133,6 @@ Version 0.1.1
 - fixed some minor bugs
 - added skin "blackhole"
 - added customtokens view element in displayreplay
-
+- optimised some settings in skin blackhole
+ 
 Version 0.1.2

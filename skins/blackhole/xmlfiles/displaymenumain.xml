@@ -22,17 +22,21 @@
         <area x="55%" y="51%" width="44%" height="19%" layer="2">
             <drawimage imagetype="skinpart" path="tachos_back" x="0" y="0" width="100%" height="100%"/>
         </area>
+        <!-- tacho disc usage -->
         <area x="55%" y="51%" width="44%" height="19%" layer="3">
-            <drawimage imagetype="skinpart" path="tacho_percent_back" x="{areawidth}*0.005" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage imagetype="skinpart" path="tacho_percent_back" x="{areawidth}*0.025" y="5%" width="20%" height="{areawidth}*0.2"/>
         </area>
+        <!-- tacho load -->
         <area x="55%" y="51%" width="44%" height="19%" layer="3">
-            <drawimage imagetype="skinpart" path="tacho_load_back" x="{areawidth}*0.255" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage imagetype="skinpart" path="tacho_load_back" x="{areawidth}*0.28" y="5%" width="20%" height="{areawidth}*0.20"/>
         </area>
+        <!-- tacho cpu temp -->
         <area x="55%" y="51%" width="44%" height="19%" layer="3">
-            <drawimage imagetype="skinpart" path="tacho_temp_back" x="{areawidth}*0.505" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage imagetype="skinpart" path="tacho_temp_back" x="{areawidth}*0.530" y="5%" width="20%" height="{areawidth}*0.20"/>
         </area>
+        <!-- tacho gpu temp -->
         <area x="55%" y="51%" width="44%" height="19%" layer="3">
-            <drawimage imagetype="skinpart" path="tacho_temp_back" x="{areawidth}*0.755" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage imagetype="skinpart" path="tacho_temp_back" x="{areawidth}*0.78" y="5%" width="20%" height="{areawidth}*0.20"/>
         </area>
         <area x="55%" y="71%" width="44%" height="19%" layer="2">
             <drawimage imagetype="skinpart" path="tachos_back" x="0" y="0" width="100%" height="100%"/>
@@ -88,10 +92,10 @@
     -->
     <discusage>
         <area x="55%" y="51%" width="44%" height="19%" layer="5">
-            <drawimage imagetype="skinpart" path="tachohands/perc_{usedpercent}" x="{areawidth}*0.005" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage imagetype="skinpart" path="tachohands/perc_{usedpercent}" x="{areawidth}*0.025" y="5%" width="20%" height="{areawidth}*0.20"/>
         </area>
         <area x="55%" y="51%" width="11%" height="19%" layer="4">
-            <drawtext align="center" y="80%" font="{regular}" fontsize="14%" color="{clrWhite}" text="Disc Usage: {usedpercent}%" />
+            <drawtext align="center" y="85%" font="{regular}" fontsize="15%" color="{clrWhite}" text="Disc Usage: {usedpercent}%" />
         </area>
     </discusage>
 
@@ -122,10 +126,10 @@
     -->
     <systemload>
         <area x="55%" y="51%" width="44%" height="19%" layer="5">
-            <drawimage imagetype="skinpart" path="tachohands/load_{loadhand}" x="{areawidth}*0.255" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage imagetype="skinpart" path="tachohands/load_{loadhand}" x="{areawidth}*0.28" y="5%" width="20%" height="{areawidth}*0.20"/>
         </area>
         <area x="66%" y="51%" width="11%" height="19%" layer="4">
-            <drawtext align="center" y="80%" font="{regular}" fontsize="14%" color="{clrWhite}" text="Load: {load}" />
+            <drawtext align="center" y="85%" font="{regular}" fontsize="15%" color="{clrWhite}" text="Load: {load}" />
         </area>
     </systemload>
 
@@ -135,16 +139,16 @@
     -->
     <temperatures>
         <area x="55%" y="51%" width="44%" height="19%" layer="5">
-            <drawimage condition="gt({cputemp}, 80)" imagetype="skinpart" path="tachohands/temp_81"        x="{areawidth}*0.505" y="5%" width="24%" height="{areawidth}*0.24"/>
-            <drawimage condition="lt({cputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{cputemp}" x="{areawidth}*0.505" y="5%" width="24%" height="{areawidth}*0.24"/>
-            <drawimage condition="gt({gputemp}, 80)" imagetype="skinpart" path="tachohands/temp_81"        x="{areawidth}*0.755" y="5%" width="24%" height="{areawidth}*0.24"/>
-            <drawimage condition="lt({cputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{gputemp}" x="{areawidth}*0.755" y="5%" width="24%" height="{areawidth}*0.24"/>
+            <drawimage condition="gt({cputemp}, 80)" imagetype="skinpart" path="tachohands/temp_81"        x="{areawidth}*0.53" y="5%" width="20%" height="{areawidth}*0.2"/>
+            <drawimage condition="lt({cputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{cputemp}" x="{areawidth}*0.53" y="5%" width="20%" height="{areawidth}*0.2"/>
+            <drawimage condition="gt({gputemp}, 80)" imagetype="skinpart" path="tachohands/temp_81"        x="{areawidth}*0.78" y="5%" width="20%" height="{areawidth}*0.2"/>
+            <drawimage condition="lt({cputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{gputemp}" x="{areawidth}*0.78" y="5%" width="20%" height="{areawidth}*0.2"/>
         </area>
         <area x="77%" y="51%" width="11%" height="19%" layer="4">
-            <drawtext align="center" y="80%" font="{regular}" fontsize="14%" color="{clrWhite}" text="CPU Temp: {cputemp}°C" />
+            <drawtext align="center" y="85%" font="{regular}" fontsize="15%" color="{clrWhite}" text="CPU Temp: {cputemp}°C" />
         </area>
         <area x="88%" y="51%" width="11%" height="19%" layer="4">
-            <drawtext align="center" y="80%" font="{regular}" fontsize="14%" color="{clrWhite}" text="GPU Temp: {gputemp}°C" />
+            <drawtext align="center" y="85%" font="{regular}" fontsize="15%" color="{clrWhite}" text="GPU Temp: {gputemp}°C" />
         </area>
     </temperatures>
 
