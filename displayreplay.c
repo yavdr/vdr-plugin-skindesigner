@@ -81,7 +81,9 @@ void cSDDisplayReplay::Flush(void) {
         replayView->DrawDate();
         replayView->DrawTime();
     }
+
     if (initial) {
+        replayView->DrawCustomTokens();
         replayView->DoFadeIn();
         initial = false;
     } else {

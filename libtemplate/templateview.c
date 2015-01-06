@@ -1429,6 +1429,7 @@ void cTemplateViewReplay::SetViewElements(void) {
     viewElementsAllowed.insert("message");
     viewElementsAllowed.insert("onpause");
     viewElementsAllowed.insert("onpausemodeonly");
+    viewElementsAllowed.insert("customtokens");
 }
 
 string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
@@ -1482,6 +1483,9 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
         case veOnPauseModeOnly:
             name = "On Pause Mode Only";
             break;
+        case veCustomTokens:
+            name = "Custom Tokens";
+            break;
         default:
             name = "Unknown";
             break;
@@ -1526,6 +1530,8 @@ void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmap *pix, v
         ve = veOnPause;
     } else if (!sViewElement.compare("onpausemodeonly")) {
         ve = veOnPauseModeOnly;
+    } else if (!sViewElement.compare("customtokens")) {
+        ve = veCustomTokens;
     }
 
     if (ve == veUndefined) {

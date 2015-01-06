@@ -5,7 +5,8 @@
 <!ELEMENT displayreplay (background | backgroundmodeonly |datetime | time | 
                          scrapercontent | rectitle | recinfo | currenttime | 
                          totaltime | progressbar | cutmarks | controlicons | 
-                         controliconsmodeonly | jump | message | onpause | onpausemodeonly)*>
+                         controliconsmodeonly | jump | message | onpause | 
+                         onpausemodeonly | customtokens)*>
 <!ATTLIST displayreplay
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -105,6 +106,11 @@
   debug CDATA #IMPLIED
   delay CDATA #REQUIRED
   fadetime CDATA #IMPLIED
+>
+
+<!ELEMENT customtokens (area|areascroll)*>
+<!ATTLIST customtokens
+  debug CDATA #IMPLIED
 >
 
 %functions;

@@ -379,6 +379,17 @@ void cDisplayReplayView::ClearOnPause(void) {
     }
 }
 
+void cDisplayReplayView::DrawCustomTokens(void) {
+    if (!ViewElementImplemented(veCustomTokens)) {
+        return;
+    }
+    if (!tmplView)
+        return;
+    map < string, string > stringTokens = tmplView->GetCustomStringTokens();
+    map < string, int > intTokens = tmplView->GetCustomIntTokens();
+    DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
+}
+
 /****************************************************************************************
 * Private Functions
 *****************************************************************************************/

@@ -241,4 +241,12 @@
     <onpausemodeonly delay="30" fadetime="0">
     </onpausemodeonly>
 
+    <!-- Available Variables customtokens:
+    all custom tokens set by the svdrp command SCTK are available in this viewelement
+    For instance, use an appropriate script which runs periodically as cronjob and
+    sets these custom tokens with svdrpsend or dbus2vdr
+    --> 
+    <customtokens>
+    </customtokens>
+    
 </displayreplay>

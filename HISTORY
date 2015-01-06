@@ -122,7 +122,8 @@ Version 0.1.1
 
 - added "temperatures" view element in displaymenumainview to display
   cpu and gpu temperature in main menu (scripts to get temperatures
-  borrowed from skinflatplus)
+  borrowed from skinflatplus). scripts to get temperatures have to be
+  adapted according the system setup.
 - added "time" view element in displaychannelview, displayreplay view
   and displaymenuviews to display current time with seconds precision
 - added {currenttab}, {prevtab}, {nexttab} Tokens in <tablabels> view
@@ -131,5 +132,6 @@ Version 0.1.1
   correctly
 - fixed some minor bugs
 - added skin "blackhole"
+- added customtokens view element in displayreplay
 
 Version 0.1.2
