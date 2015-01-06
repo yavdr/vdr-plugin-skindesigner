@@ -47,6 +47,14 @@
     -->
     <datetime>
     </datetime>
+    <!-- Available Variables time:
+    {sec}                    current seconds
+    {min}                    current minutes
+    {hour}                   current hours
+    {hmins}                  current "hourminutes" to display an hour hand
+    -->
+    <time>
+    </time>
     <!-- Available Variables message:
     {text}                    message text
     {status}                  true if message is an status message

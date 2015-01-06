@@ -8,7 +8,7 @@
 
     <!-- Available Variables volume:
     {volume}                            current volume, range from 0 to 255
-    {volumepercent}                     current volume in %
+    {volpercent}                        current volume in %
     {maxvolume}                         maximal volume
     {mute}                              true if volume is muted
     -->

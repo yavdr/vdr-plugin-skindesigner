@@ -11,6 +11,8 @@
 #include "libcore/imagecache.h"
 #include "libcore/recfolderinfo.h"
 
+#define SCRIPTOUTPUTPATH "/tmp/skindesigner"
+
 class cDesignerConfig {
 private:
     cString CheckSlashAtEnd(string path);

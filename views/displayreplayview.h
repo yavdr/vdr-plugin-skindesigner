@@ -5,10 +5,9 @@
 #include "view.h"
 #include "displayreplayonpauseview.h"
 
-class cDisplayReplayView : public cView {
+class cDisplayReplayView : public cView, public cViewHelpers {
 private:
     cDisplayReplayOnPauseView *onPauseView;
-    cString lastDate;
     int numMarksLast;
     int *lastMarks;
     int markActive;
@@ -20,7 +19,8 @@ public:
     virtual ~cDisplayReplayView();
     bool createOsd(void);
     void DrawBackground(bool modeOnly);
-    void DrawDate(bool modeOnly);
+    void DrawDate(void);
+    void DrawTime(void);
     void DrawTitle(const cRecording *recording);
     void DrawRecordingInformation(const cRecording *recording);
     void DrawScraperContent(const cRecording *recording);

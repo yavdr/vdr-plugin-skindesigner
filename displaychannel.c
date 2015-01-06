@@ -175,6 +175,7 @@ void cSDDisplayChannel::Flush(void) {
     if (initial || channelChange) {
         channelView->DrawDate();
     }
+    channelView->DrawTime();
 
     if (present) {
         SetProgressBar(present);

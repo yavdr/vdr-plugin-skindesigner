@@ -394,8 +394,11 @@ void cTemplateView::PreCache(bool isSubview) {
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
         cTemplateViewList *viewList = it->second;
         viewList->SetGlobals(globals);
-        //viewlists are only in subviews
-        viewList->SetContainer(osdX, osdY, osdWidth, osdHeight);
+        //viewlists in subviews need complete container information
+        if (isSubview)
+            viewList->SetContainer(osdX, osdY, osdWidth, osdHeight);
+        else
+            viewList->SetContainer(0, 0, osdWidth, osdHeight);
         viewList->CalculateParameters();
         viewList->CalculateListParameters();
     }
@@ -668,6 +671,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("devices");
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("datetime");
+    viewElementsAllowed.insert("time");
     viewElementsAllowed.insert("message");
     viewElementsAllowed.insert("customtokens");
 }
@@ -717,6 +721,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
         case veDateTime:
             name = "DateTime";
             break;
+        case veTime:
+            name = "Time";
+            break;
         case veMessage:
             name = "Message";
             break;
@@ -761,6 +768,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veScraperContent;
     } else if (!sViewElement.compare("datetime")) {
         ve = veDateTime;
+    } else if (!sViewElement.compare("time")) {
+        ve = veTime;
     } else if (!sViewElement.compare("message")) {
         ve = veMessage;
     } else if (!sViewElement.compare("customtokens")) {
@@ -1023,11 +1032,13 @@ void cTemplateViewMenu::SetSubViews(void) {
 void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("background");
     viewElementsAllowed.insert("datetime");
+    viewElementsAllowed.insert("time");
     viewElementsAllowed.insert("header");
     viewElementsAllowed.insert("colorbuttons");
     viewElementsAllowed.insert("message");
     viewElementsAllowed.insert("discusage");
     viewElementsAllowed.insert("systemload");
+    viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
     viewElementsAllowed.insert("devices");
     viewElementsAllowed.insert("currentschedule");
@@ -1092,6 +1103,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
         case veDateTime:
             name = "DateTime";
             break;
+        case veTime:
+            name = "Time";
+            break;
         case veHeader:
             name = "Header";
             break;
@@ -1104,8 +1118,11 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
         case veDiscUsage:
             name = "Disc Usage";
             break;
-         case veSystemLoad:
+        case veSystemLoad:
             name = "System Load";
+            break;
+        case veTemperatures:
+            name = "Temperatures";
             break;
         case veTimers:
             name = "Timers";
@@ -1213,6 +1230,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veBackground;
     } else if (!sViewElement.compare("datetime")) {
         ve = veDateTime;
+    } else if (!sViewElement.compare("time")) {
+        ve = veTime;
     } else if (!sViewElement.compare("header")) {
         ve = veHeader;
     } else if (!sViewElement.compare("colorbuttons")) {
@@ -1223,6 +1242,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veDiscUsage;
     } else if (!sViewElement.compare("systemload")) {
         ve = veSystemLoad;
+    } else if (!sViewElement.compare("temperatures")) {
+        ve = veTemperatures;
     } else if (!sViewElement.compare("timers")) {
         ve = veTimers;
     } else if (!sViewElement.compare("currentschedule")) {
@@ -1394,6 +1415,7 @@ void cTemplateViewReplay::SetViewElements(void) {
     viewElementsAllowed.insert("background");
     viewElementsAllowed.insert("backgroundmodeonly");
     viewElementsAllowed.insert("datetime");
+    viewElementsAllowed.insert("time");
     viewElementsAllowed.insert("rectitle");
     viewElementsAllowed.insert("recinfo");
     viewElementsAllowed.insert("scrapercontent");
@@ -1416,6 +1438,9 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
             name = "Background";
             break;
         case veDateTime:
+            name = "DateTime";
+            break;
+        case veTime:
             name = "DateTime";
             break;
         case veRecTitle:
@@ -1471,6 +1496,8 @@ void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmap *pix, v
         ve = veBackground;
     } else if (!sViewElement.compare("datetime")) {
         ve = veDateTime;
+    } else if (!sViewElement.compare("time")) {
+        ve = veTime;
     } else if (!sViewElement.compare("rectitle")) {
         ve = veRecTitle;
     } else if (!sViewElement.compare("recinfo")) {

@@ -77,7 +77,10 @@ void cSDDisplayReplay::SetMessage(eMessageType Type, const char *Text) {
 void cSDDisplayReplay::Flush(void) {
     if (!doOutput)
         return;
-    replayView->DrawDate(modeOnly);
+    if (!modeOnly) {
+        replayView->DrawDate();
+        replayView->DrawTime();
+    }
     if (initial) {
         replayView->DoFadeIn();
         initial = false;

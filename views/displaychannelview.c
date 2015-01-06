@@ -6,7 +6,6 @@
 #include "../libcore/helpers.h"
 
 cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplView) {
-    lastDate = "";
     lastScreenWidth = 0;
     lastScreenHeight = 0;
     lastSignalDisplay = 0;
@@ -64,35 +63,31 @@ void cDisplayChannelView::DrawDate(void) {
     if (!ViewElementImplemented(veDateTime)) {
         return;
     }
-    cString curDate = DayDateTime();
-    if (strcmp(curDate, lastDate)) {
-        map < string, string > stringTokens;
-        map < string, int > intTokens;
-        
-        time_t t = time(0);   // get time now
-        struct tm * now = localtime(&t);
-        
-        intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
-        intTokens.insert(pair<string, int>("day", now->tm_mday));
 
-        char monthname[20];
-        char monthshort[10];
-        strftime(monthshort, sizeof(monthshort), "%b", now);
-        strftime(monthname, sizeof(monthname), "%B", now);
-
-        stringTokens.insert(pair<string,string>("monthname", monthname));
-        stringTokens.insert(pair<string,string>("monthnameshort", monthshort));
-        stringTokens.insert(pair<string,string>("month", *cString::sprintf("%02d", now->tm_mon + 1)));
-        stringTokens.insert(pair<string,string>("dayleadingzero", *cString::sprintf("%02d", now->tm_mday)));
-        stringTokens.insert(pair<string,string>("dayname", *WeekDayNameFull(now->tm_wday)));
-        stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
-        stringTokens.insert(pair<string,string>("time", *TimeString(t)));
-
-        ClearViewElement(veDateTime);
-        DrawViewElement(veDateTime, &stringTokens, &intTokens);
-
-        lastDate = curDate;
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    
+    if (!SetDate(stringTokens, intTokens)) {
+        return;
     }
+
+    ClearViewElement(veDateTime);
+    DrawViewElement(veDateTime, &stringTokens, &intTokens);
+}
+
+void cDisplayChannelView::DrawTime(void) {
+    if (!ViewElementImplemented(veTime)) {
+        return;
+    }
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    if (!SetTime(stringTokens, intTokens)) {
+        return;
+    }    
+    ClearViewElement(veTime);
+    DrawViewElement(veTime, &stringTokens, &intTokens);
 }
 
 void cDisplayChannelView::DrawProgressBar(cString &start, cString &stop, int Current, int Total) {

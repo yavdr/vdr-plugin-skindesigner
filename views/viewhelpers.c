@@ -6,6 +6,8 @@
 
 cViewHelpers::cViewHelpers(void) {
     devicesInit = false;
+    lastSecond = -1;
+    lastMinute = -1;
 }
 
 cViewHelpers::~cViewHelpers() {
@@ -376,4 +378,51 @@ void cViewHelpers::SetScraperTokens(const cEvent *event, const cRecording *recor
         intTokens.insert(pair<string,int>("isseries", false));
     }
 
+}
+
+bool cViewHelpers::SetTime(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    time_t t = time(0);   // get time now
+    struct tm * now = localtime(&t);
+    int sec = now->tm_sec;
+    if (sec == lastSecond)
+        return false;
+
+    int min = now->tm_min;
+    int hour = now->tm_hour;
+    int hourMinutes = hour%12 * 5 + min / 12;
+
+    intTokens.insert(pair<string, int>("sec", sec));
+    intTokens.insert(pair<string, int>("min", min));
+    intTokens.insert(pair<string, int>("hour", hour));
+    intTokens.insert(pair<string, int>("hmins", hourMinutes));
+    
+    lastSecond = sec;
+    return true;
+}
+
+bool cViewHelpers::SetDate(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    time_t t = time(0);   // get time now
+    struct tm * now = localtime(&t);
+    int min = now->tm_min;
+    if (min == lastMinute)
+        return false;
+
+    intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
+    intTokens.insert(pair<string, int>("day", now->tm_mday));
+
+    char monthname[20];
+    char monthshort[10];
+    strftime(monthshort, sizeof(monthshort), "%b", now);
+    strftime(monthname, sizeof(monthname), "%B", now);
+
+    stringTokens.insert(pair<string,string>("monthname", monthname));
+    stringTokens.insert(pair<string,string>("monthnameshort", monthshort));
+    stringTokens.insert(pair<string,string>("month", *cString::sprintf("%02d", now->tm_mon + 1)));
+    stringTokens.insert(pair<string,string>("dayleadingzero", *cString::sprintf("%02d", now->tm_mday)));
+    stringTokens.insert(pair<string,string>("dayname", *WeekDayNameFull(now->tm_wday)));
+    stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
+    stringTokens.insert(pair<string,string>("time", *TimeString(t)));
+
+    lastMinute = min;
+    return true;
 }

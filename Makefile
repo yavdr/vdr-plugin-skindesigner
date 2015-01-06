@@ -22,6 +22,7 @@ PLGCFG  = $(call PKGCFG,plgcfg)
 VDRCONFDIR = $(call PKGCFG,configdir)
 PLGRESDIR = $(call PKGCFG,resdir)/plugins/$(PLUGIN)
 TMPDIR ?= /tmp
+SKINDESIGNER_SCRIPTDIR ?= $(LIBDIR)/$(PLUGIN)/scripts
 
 ### The compiler options:
 export CFLAGS   = $(call PKGCFG,cflags)
@@ -44,6 +45,7 @@ SOFILE = libvdr-$(PLUGIN).so
 ### Includes and Defines and Dependencies:
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"' $(CONFIG)
 DEFINES += $(shell xml2-config --cflags)
+DEFINES += -DSCRIPTFOLDER='"$(SKINDESIGNER_SCRIPTDIR)"'
 
 INCLUDES += $(shell pkg-config --cflags freetype2 fontconfig)
 
@@ -160,7 +162,11 @@ install-skins:
 	mkdir -p $(DESTDIR)$(PLGRESDIR)/dtd
 	cp -r dtd/* $(DESTDIR)$(PLGRESDIR)/dtd
 
-install: install-lib install-i18n install-themes install-skins
+install-scripts:
+	mkdir -p $(DESTDIR)$(SKINDESIGNER_SCRIPTDIR)
+	cp -r scripts/* $(DESTDIR)$(SKINDESIGNER_SCRIPTDIR)
+
+install: install-lib install-i18n install-themes install-skins install-scripts
 
 dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)

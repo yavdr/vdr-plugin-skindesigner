@@ -12,7 +12,7 @@ enum ePluginMenuType {
     mtUnknown
 };
 
-class cDisplayMenuRootView : public cView {
+class cDisplayMenuRootView : public cView, public cViewHelpers  {
 private:
     eMenuCategory cat;
     eSubView viewType;
@@ -35,6 +35,7 @@ private:
     void DrawBackground(void);
     void DrawHeader(void);
     void DrawDateTime(void);
+    bool DrawTime(void);
     void DrawColorButtons(void);
     void DrawMessage(eMessageType type, const char *text);
     void ClearRootView(void);

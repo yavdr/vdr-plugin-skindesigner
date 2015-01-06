@@ -2,7 +2,7 @@
 
 <!ENTITY % functions SYSTEM "functions.dtd">
 
-<!ELEMENT displayreplay (background | backgroundmodeonly |datetime |
+<!ELEMENT displayreplay (background | backgroundmodeonly |datetime | time | 
                          scrapercontent | rectitle | recinfo | currenttime | 
                          totaltime | progressbar | cutmarks | controlicons | 
                          controliconsmodeonly | jump | message | onpause | onpausemodeonly)*>
@@ -30,6 +30,11 @@
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT time (area|areascroll)*>
+<!ATTLIST time
   debug CDATA #IMPLIED
 >
 
