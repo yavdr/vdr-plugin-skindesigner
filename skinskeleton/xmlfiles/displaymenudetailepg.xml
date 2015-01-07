@@ -172,6 +172,9 @@
     </tab>
 
     <!-- Available Variables tablabels:
+    {currenttab}            name of currently active tab
+    {prevtab}               name of prev tab
+    {nexttab}               name of next tab
     {tabs[]}                array with available tab labels
     {tabs[title]}           title of tab
     {tabs[current]}         true if tab is displayed currently

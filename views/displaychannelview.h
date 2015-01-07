@@ -7,7 +7,6 @@
 
 class cDisplayChannelView : public cView, public cViewHelpers {
 private:
-    cString lastDate;
     int lastScreenWidth;
     int lastScreenHeight;
     int lastSignalDisplay;
@@ -27,6 +26,7 @@ public:
     void DrawChannel(cString &number, cString &name, cString &id, bool switching);
     void ClearChannel(void);
     void DrawDate(void);
+    void DrawTime(void);
     void DrawProgressBar(cString &start, cString &stop, int Current, int Total);
     void ClearProgressBar(void);
     void DrawProgressBarBack(void);

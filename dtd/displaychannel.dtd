@@ -5,7 +5,7 @@
 <!ELEMENT displaychannel (background | channelinfo | epginfo | progressbar | progressbarback |  
                           statusinfo | audioinfo | screenresolution | channelgroup | 
                           signalquality | signalqualityback | devices | scrapercontent |  
-                          datetime | message | customtokens)* >
+                          datetime | time | message | customtokens)* >
 <!ATTLIST displaychannel
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -85,6 +85,11 @@
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT time (area|areascroll)*>
+<!ATTLIST time
   debug CDATA #IMPLIED
 >
 

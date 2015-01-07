@@ -57,6 +57,13 @@
     <systemload>
     </systemload>
 
+    <!-- Available Variables tempreatures:
+    {cputemp}                  current cpu temperature in °C
+    {gputemp}                  current gpu temperature in °C
+    -->
+    <temperatures>
+    </temperatures>
+
     <!-- Available Variables currentschedule:
     {title}                     Title of the current Schedule
     {subtitle}                  Subtitle of the current Schedule

@@ -393,10 +393,8 @@ void cDisplayMenuRootView::Render(void) {
     if (!view)
         return;
     if (!view->DrawBackground()) {
-        if (!defaultBackgroundDrawn) {
-            defaultBackgroundDrawn = true;
-            DrawBackground();
-        }
+        defaultBackgroundDrawn = true;
+        DrawBackground();
     } else {
         defaultBackgroundDrawn = false;
     }
@@ -413,13 +411,6 @@ void cDisplayMenuRootView::Render(void) {
         DrawColorButtons();
     } else {
         defaultButtonsDrawn = false;
-    }
-
-    if (!view->DrawDateTime()) {
-        defaultDateTimeDrawn = true;
-        DrawDateTime();
-    } else {
-        defaultDateTimeDrawn = false;
     }
 
     view->DrawStaticViewElements();
@@ -443,7 +434,26 @@ void cDisplayMenuRootView::RenderMenuScrollBar(int Total, int Offset) {
 }
 
 bool cDisplayMenuRootView::RenderDynamicElements(void) {
-    return view->DrawDynamicViewElements();
+    if (!view)
+        return false;
+    bool updated = false;
+    if (view->DrawTime()) {
+        updated = true;
+    } else if (DrawTime()) {
+        updated = true;
+    }
+    if (view->DrawDynamicViewElements()){
+        updated = true;
+    }
+
+    if (!view->DrawDateTime()) {
+        defaultDateTimeDrawn = true;
+        DrawDateTime();
+    } else {
+        defaultDateTimeDrawn = false;
+    }
+
+    return updated;
 }
 
 /*******************************************************************
@@ -451,7 +461,9 @@ bool cDisplayMenuRootView::RenderDynamicElements(void) {
 *******************************************************************/
 
 void cDisplayMenuRootView::DrawBackground(void) {
-    DrawViewElement(veBackground);
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    DrawViewElement(veBackground, &stringTokens, &intTokens);
 }
 void cDisplayMenuRootView::DrawHeader(void) {
     if (!ViewElementImplemented(veHeader)) {
@@ -500,28 +512,29 @@ void cDisplayMenuRootView::DrawDateTime(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
     
-    time_t t = time(0);   // get time now
-    struct tm * now = localtime(&t);
-    
-    intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
-    intTokens.insert(pair<string, int>("day", now->tm_mday));
-
-    char monthname[20];
-    char monthshort[10];
-    strftime(monthshort, sizeof(monthshort), "%b", now);
-    strftime(monthname, sizeof(monthname), "%B", now);
-
-    stringTokens.insert(pair<string,string>("monthname", monthname));
-    stringTokens.insert(pair<string,string>("monthnameshort", monthshort));
-    stringTokens.insert(pair<string,string>("month", *cString::sprintf("%02d", now->tm_mon + 1)));
-    stringTokens.insert(pair<string,string>("dayleadingzero", *cString::sprintf("%02d", now->tm_mday)));
-    stringTokens.insert(pair<string,string>("dayname", *WeekDayNameFull(now->tm_wday)));
-    stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
-    stringTokens.insert(pair<string,string>("time", *TimeString(t)));
+    if (!SetDate(stringTokens, intTokens)) {
+        return;
+    }
 
     ClearViewElement(veDateTime);
     DrawViewElement(veDateTime, &stringTokens, &intTokens);
+}
 
+bool cDisplayMenuRootView::DrawTime(void) {
+    if (!ViewElementImplemented(veTime)) {
+        return false;
+    }
+    
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    if (!SetTime(stringTokens, intTokens)) {
+        return false;
+    }
+
+    ClearViewElement(veTime);
+    DrawViewElement(veTime, &stringTokens, &intTokens);
+    return true;
 }
 
 
@@ -595,6 +608,8 @@ void cDisplayMenuRootView::DrawMessage(eMessageType type, const char *text) {
 }
 
 void cDisplayMenuRootView::Action(void) {
+    if (!view)
+        return;
     SetInitFinished();
     Render();
     view->Start();

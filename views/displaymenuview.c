@@ -1,4 +1,6 @@
 #define __STL_CONFIG_H
+#include <fstream>
+#include <iostream>
 #include <vdr/menu.h>
 #include <vdr/videodir.h>
 #include "displaymenuview.h"
@@ -25,7 +27,10 @@ bool cDisplayMenuView::DrawBackground(void) {
     if (!ViewElementImplemented(veBackground)) {
         return false;
     }
-    DrawViewElement(veBackground);
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    DrawViewElement(veBackground, &stringTokens, &intTokens);
     return true;
 }
 
@@ -72,32 +77,33 @@ bool cDisplayMenuView::DrawDateTime(void) {
         return false;
     }
 
-    cString curDate = DayDateTime();
-
     map < string, string > stringTokens;
     map < string, int > intTokens;
     
-    time_t t = time(0);   // get time now
-    struct tm * now = localtime(&t);
-    
-    intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
-    intTokens.insert(pair<string, int>("day", now->tm_mday));
-
-    char monthname[20];
-    char monthshort[10];
-    strftime(monthshort, sizeof(monthshort), "%b", now);
-    strftime(monthname, sizeof(monthname), "%B", now);
-
-    stringTokens.insert(pair<string,string>("monthname", monthname));
-    stringTokens.insert(pair<string,string>("monthnameshort", monthshort));
-    stringTokens.insert(pair<string,string>("month", *cString::sprintf("%02d", now->tm_mon + 1)));
-    stringTokens.insert(pair<string,string>("dayleadingzero", *cString::sprintf("%02d", now->tm_mday)));
-    stringTokens.insert(pair<string,string>("dayname", *WeekDayNameFull(now->tm_wday)));
-    stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
-    stringTokens.insert(pair<string,string>("time", *TimeString(t)));
+    if (!SetDate(stringTokens, intTokens)) {
+        return false;
+    }
 
     ClearViewElement(veDateTime);
     DrawViewElement(veDateTime, &stringTokens, &intTokens);
+    return true;
+}
+
+bool cDisplayMenuView::DrawTime(void) {
+    if (!ViewElementImplemented(veTime)) {
+        return false;
+    }
+    
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    if (!SetTime(stringTokens, intTokens)) {
+        return false;
+    }    
+
+    ClearViewElement(veTime);
+    DrawViewElement(veTime, &stringTokens, &intTokens);
+
     return true;
 }
 
@@ -229,6 +235,7 @@ cDisplayMenuMainView::~cDisplayMenuMainView() {
 void cDisplayMenuMainView::DrawStaticViewElements(void) {
     DrawTimers();
     DrawDiscUsage();
+    DrawTemperatures();
     DrawCurrentSchedule();
     DrawCustomTokens();
 }
@@ -374,7 +381,30 @@ bool cDisplayMenuMainView::DrawLoad(void) {
             return false;
         }
         string load = *cString::sprintf("%.2f", systemLoad);
+        int loadHand = systemLoad * 1000;
+        int loadHandValue = 0;
+        if (loadHand > 2500)
+            loadHandValue = 2525;
+        else {
+
+            int loadHandDec = loadHand - (loadHand / 100) * 100;
+
+            if (loadHandDec <= 12)
+                loadHandDec = 0;
+            else if (loadHandDec <= 37)
+                loadHandDec = 25;
+            else if (loadHandDec <= 62)
+                loadHandDec = 50;
+            else if (loadHandDec <= 87)
+                loadHandDec = 75;
+            else
+                loadHandDec = 0;
+
+            loadHandValue = loadHand / 100 * 100 + loadHandDec;
+        }
+
         stringTokens.insert(pair<string,string>("load", load));
+        intTokens.insert(pair<string,int>("loadhand", loadHandValue));
         lastSystemLoad = systemLoad;
     }
 
@@ -382,6 +412,55 @@ bool cDisplayMenuMainView::DrawLoad(void) {
     DrawViewElement(veSystemLoad, &stringTokens, &intTokens);
 
     return true;
+}
+
+void cDisplayMenuMainView::DrawTemperatures(void) {
+    if (!ViewElementImplemented(veTemperatures)) {
+        return;
+    }
+
+    cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
+    system(*execCommand);
+
+    string tempCPU, tempGPU;
+    int cpu, gpu;
+
+    cString itemFilename = cString::sprintf("%s/cpu", SCRIPTOUTPUTPATH );
+    ifstream file(*itemFilename, ifstream::in);
+    if( file.is_open() ) {
+        std::getline(file, tempCPU);
+        if (tempCPU.size() > 2) {
+            cpu = atoi(tempCPU.substr(0,2).c_str());
+        } else
+            cpu = 0;
+        file.close();
+    } else {
+        tempCPU = "0°C";
+        cpu = 0;
+    }
+
+    itemFilename = cString::sprintf("%s/gpu", SCRIPTOUTPUTPATH );
+    ifstream file2(*itemFilename, ifstream::in);
+    if( file2.is_open() ) {
+        std::getline(file2, tempGPU);
+        if (tempGPU.size() > 2) {
+            gpu = atoi(tempGPU.substr(0,2).c_str());
+        } else
+            gpu = 0;
+        file2.close();
+    } else {
+        tempGPU = "0°C";
+        gpu = 0;
+    }
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    intTokens.insert(pair<string,int>("cputemp", cpu));
+    intTokens.insert(pair<string,int>("gputemp", gpu));
+
+    ClearViewElement(veTemperatures);
+    DrawViewElement(veTemperatures, &stringTokens, &intTokens);
 }
 
 bool cDisplayMenuMainView::DrawDevices(void) {

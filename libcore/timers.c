@@ -34,7 +34,8 @@ cGlobalSortedTimers::cGlobalSortedTimers(bool forceRefresh) : cVector<const cTim
         cTimer* remoteTimer = NULL;
         while (pRemoteTimers->Service("RemoteTimers::ForEach-v1.0", &remoteTimer) && remoteTimer != NULL) {
             remoteTimer->SetEventFromSchedule(Schedules); // make sure the event is current
-            Append(remoteTimer);
+            if (remoteTimer->HasFlags(tfActive))
+                Append(remoteTimer);
         }
     }
   

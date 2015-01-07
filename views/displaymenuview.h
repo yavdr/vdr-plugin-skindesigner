@@ -5,7 +5,7 @@
 #include "viewhelpers.h"
 #include "displaymenulistview.h"
 
-class cDisplayMenuView : public cView {
+class cDisplayMenuView : public cView, public cViewHelpers {
 protected:
     eMenuCategory cat;
     string menuTitle;
@@ -22,6 +22,7 @@ public:
     bool DrawBackground(void);
     virtual bool DrawHeader(void);
     bool DrawDateTime(void);
+    bool DrawTime(void);
     bool DrawColorButtons(void);
     bool DrawMessage(eMessageType type, const char *text);
     void DrawScrollbar(int numMax, int numDisplayed, int offset);
@@ -30,13 +31,14 @@ public:
     bool BackgroundImplemented(void);
 };
 
-class cDisplayMenuMainView : public cDisplayMenuView, public cViewHelpers {
+class cDisplayMenuMainView : public cDisplayMenuView {
 private:
     bool initial;
     double lastSystemLoad;
     void DrawTimers(void);
     void DrawDiscUsage(void);
     bool DrawLoad(void);
+    void DrawTemperatures(void);
     bool DrawDevices(void);
     void DrawCurrentSchedule(void);
     void DrawCustomTokens(void);

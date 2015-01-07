@@ -263,6 +263,7 @@ bool cSDDisplayMenu::SetPluginText(map<string,string> *stringTokens, map<string,
 void cSDDisplayMenu::Flush(void) {
     if (!doOutput)
         return;
+
     bool doFlush = false;
     if (state == vsInit) {
         rootView->Start();
@@ -281,11 +282,12 @@ void cSDDisplayMenu::Flush(void) {
         rootView->DoFlush();
         rootView->RenderDetailView();
         rootView->DoFlush();
-    } else {
-        if (rootView->RenderDynamicElements()) {
-            doFlush = true;
-        }
     }
+
+    if (rootView->RenderDynamicElements()) {
+        doFlush = true;
+    }
+
     if (doFlush) {
         if (config.blockFlush)
             rootView->OpenFlush();

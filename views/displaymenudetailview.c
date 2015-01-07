@@ -790,18 +790,42 @@ void cDisplayMenuDetailView::DrawTabLabels(void) {
     map < string, int > labelIntTokens;
     map < string, vector< map< string, string > > > labelLoopTokens;
 
+    string labelPrev = "";
+    string labelPrevTemp = "";
+    string labelCurrent = "";
+    string labelNext = "";
+    bool wasCurrent = false;
     vector< map< string, string > > tabLabels;
     for (list<cTemplateViewTab*>::iterator it = activeTabs.begin(); it != activeTabs.end(); it++) {
         cTemplateViewTab *tab = *it;
         map< string, string > tabLabel;
         tabLabel.insert(pair< string, string >("tabs[title]", tab->GetName()));
+        if (wasCurrent) {
+            labelNext = tab->GetName();
+        }
         if (tab == currentTmplTab) {
+            wasCurrent = true;
+            labelCurrent = tab->GetName();
+            labelPrev = labelPrevTemp;
             tabLabel.insert(pair< string, string >("tabs[current]", "1"));
         } else {
+            wasCurrent = false;
             tabLabel.insert(pair< string, string >("tabs[current]", "0"));            
         }
+        labelPrevTemp = tab->GetName();
         tabLabels.push_back(tabLabel);
     }
+    if (labelNext.size() == 0 && activeTabs.size() > 0) {
+        cTemplateViewTab *firstTab = activeTabs.front();
+        labelNext = firstTab->GetName();
+    }
+    if (labelPrev.size() == 0 && activeTabs.size() > 0) {
+        cTemplateViewTab *lastTab = activeTabs.back();
+        labelPrev = lastTab->GetName();
+    }
+    labelStringTokens.insert(pair< string, string >("currenttab", labelCurrent));
+    labelStringTokens.insert(pair< string, string >("nexttab", labelNext));
+    labelStringTokens.insert(pair< string, string >("prevtab", labelPrev));
     labelLoopTokens.insert(pair< string, vector< map< string, string > > >("tabs", tabLabels));
 
     ClearViewElement(veTabLabels);

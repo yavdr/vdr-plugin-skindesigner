@@ -119,3 +119,24 @@ Version 0.1.0
 - added automatic determination of custom int tokens
 
 Version 0.1.1
+
+- added "temperatures" view element in displaymenumainview to display
+  cpu and gpu temperature in main menu (scripts to get temperatures
+  borrowed from skinflatplus). scripts to get temperatures have to be
+  adapted according the system setup.
+- added "time" view element in displaychannelview, displayreplay view
+  and displaymenuviews to display current time with seconds precision
+- added {currenttab}, {prevtab}, {nexttab} Tokens in <tablabels> view
+  elements
+- fixed bug that in displaytracks the audio tracks are not positioned
+  correctly
+- fixed some minor bugs
+- added skin "blackhole"
+- added customtokens view element in displayreplay
+- optimised some settings in skin blackhole
+
+
+Version 0.1.2
+
+- display only active remote timers in main menu
+- fixed two possible null pointer accesses in displaymenurootview

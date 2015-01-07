@@ -1186,6 +1186,19 @@ void cTemplateFunction::ParseStringParameters(void) {
                 break;
             }
         }
+        for (map < string, int >::iterator it = intTokens->begin(); it != intTokens->end(); it++) {
+            size_t found = path.find(it->first);
+            if (found != string::npos) {
+                updated = true;
+                imgPath = path;
+                if (found > 0 && ((it->first).size() + 2 <= imgPath.size())) {
+                    stringstream intVal;
+                    intVal << it->second;
+                    imgPath.replace(found-1, (it->first).size() + 2, intVal.str());
+                }
+                break;
+            }
+        }
     }
 }
 
