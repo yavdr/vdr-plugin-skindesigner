@@ -434,6 +434,8 @@ void cDisplayMenuRootView::RenderMenuScrollBar(int Total, int Offset) {
 }
 
 bool cDisplayMenuRootView::RenderDynamicElements(void) {
+    if (!view)
+        return false;
     bool updated = false;
     if (view->DrawTime()) {
         updated = true;
@@ -606,6 +608,8 @@ void cDisplayMenuRootView::DrawMessage(eMessageType type, const char *text) {
 }
 
 void cDisplayMenuRootView::Action(void) {
+    if (!view)
+        return;
     SetInitFinished();
     Render();
     view->Start();
