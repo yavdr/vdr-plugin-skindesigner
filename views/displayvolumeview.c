@@ -40,7 +40,7 @@ void cDisplayVolumeView::DrawVolume(int current, int total, bool mute) {
 
     intTokens.insert(pair<string,int>("volume", current));
     intTokens.insert(pair<string,int>("maxvolume", total));
-    intTokens.insert(pair<string,int>("volpercent", (double)current *100 / (double)total));
+    intTokens.insert(pair<string,int>("volumepercent", (double)current *100 / (double)total));
     intTokens.insert(pair<string,int>("mute", mute));
 
     ClearViewElement(veVolume);
