@@ -23,7 +23,7 @@
             <drawtext align="center" valign="center" color="{clrWhite}" font="{semibold}" fontsize="80%" text="{volume} / {maxvolume}" />
         </area>
         <area x="0" y="0" width="100%" height="100%" layer="5">
-            <drawimage imagetype="skinpart" path="tachohands/perc_{volumepercent}" x="{areawidth}*0.059" y="{areawidth}*0.059" width="{areawidth}*0.882" height="{areawidth}*0.882"/>
+            <drawimage imagetype="skinpart" path="tachohands/perc_{volpercent}" x="{areawidth}*0.059" y="{areawidth}*0.059" width="{areawidth}*0.882" height="{areawidth}*0.882"/>
         </area>
         <area x="0" y="80%" width="20%" height="20%" layer="5">
             <drawimage condition="gt({volpercent}, 74)" imagetype="icon" path="ico_volume_full" align="center" valign="center" width="90%" height="90%"/>
