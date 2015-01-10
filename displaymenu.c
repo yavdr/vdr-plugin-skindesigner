@@ -94,6 +94,11 @@ bool cSDDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, 
         return false;
     if (config.blockFlush)
         rootView->LockFlush();
+    bool isFav = false;
+    if (MenuCategory() == mcSchedule && Channel) {
+        isFav = true;
+        rootView->SetEpgSearchFavorite();
+    }
     const cChannel *channel = Channel;
     if (!channel) {
         channel = rootView->GetChannel();
@@ -102,10 +107,11 @@ bool cSDDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, 
         channel = Channels.GetByChannelID(Event->ChannelID());
     }
     rootView->SetChannel(channel);
+
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
-    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), Current, Selectable);
+    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), isFav, Current, Selectable);
     if (state == vsIdle)
         state = vsMenuUpdate;
     return true;

@@ -599,6 +599,7 @@ void cDisplayMenuMainView::DrawCustomTokens(void) {
 cDisplayMenuSchedulesView::cDisplayMenuSchedulesView(cTemplateView *tmplView, eMenuCategory menuCat, bool menuInit) : cDisplayMenuView(tmplView, menuInit) {
     cat = menuCat;
     channel = NULL;
+    isEpgSearchFavoritesMenu = false;
 }
 
 cDisplayMenuSchedulesView::~cDisplayMenuSchedulesView() {
@@ -614,9 +615,10 @@ bool cDisplayMenuSchedulesView::DrawHeader(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
 
-    intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule) ? true: false));
+    intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule)&&(!isEpgSearchFavoritesMenu) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnow", (cat == mcScheduleNow) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnext", (cat == mcScheduleNext) ? true: false));
+    intTokens.insert(pair<string,int>("whatsonfavorites", isEpgSearchFavoritesMenu ? true: false));
 
     stringTokens.insert(pair<string,string>("title", menuTitle));
     stringTokens.insert(pair<string,string>("vdrversion", VDRVERSION));

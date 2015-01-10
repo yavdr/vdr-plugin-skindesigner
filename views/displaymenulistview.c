@@ -138,14 +138,14 @@ void cDisplayMenuListView::AddSetupMenuItem(int index, const char *itemText, boo
 }
 
 void cDisplayMenuListView::AddSchedulesMenuItem(int index, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, 
-                                                eMenuCategory cat, bool current, bool selectable) {
+                                                eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable) {
     if (index >= itemCount)
         return;
     if (menuItems[index]) {
         menuItems[index]->SetCurrent(current);
         return;
     }
-    cDisplayMenuItemView *item = new cDisplayMenuItemSchedulesView(tmplList, event, channel, timerMatch, cat, current, selectable);
+    cDisplayMenuItemView *item = new cDisplayMenuItemSchedulesView(tmplList, event, channel, timerMatch, cat, isEpgSearchFav, current, selectable);
     menuItems[index] = item;
 }
 

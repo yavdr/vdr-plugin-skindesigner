@@ -18,6 +18,7 @@ public:
     void SetTitle(const char *title) {menuTitle = title; };
     virtual void SetChannel(const cChannel *channel) {};
     virtual const cChannel *GetChannel(void) { return NULL; };
+    virtual void SetEpgSearchFavorite(void) {};
     void SetButtonTexts(string *buttonTexts) { this->buttonTexts = buttonTexts; };
     bool DrawBackground(void);
     virtual bool DrawHeader(void);
@@ -52,11 +53,13 @@ public:
 class cDisplayMenuSchedulesView : public cDisplayMenuView {
 private:
     const cChannel *channel;
+    bool isEpgSearchFavoritesMenu;
 public:
     cDisplayMenuSchedulesView(cTemplateView *tmplView, eMenuCategory menuCat, bool menuInit);
     virtual ~cDisplayMenuSchedulesView();
     void SetChannel(const cChannel *channel) { if (channel) this->channel = channel; };
     const cChannel *GetChannel(void) { return channel; };
+    void SetEpgSearchFavorite(void) { isEpgSearchFavoritesMenu = true; };
     bool DrawHeader(void);
 };
 

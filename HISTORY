@@ -140,4 +140,6 @@ Version 0.1.2
 
 - display only active remote timers in main menu
 - fixed two possible null pointer accesses in displaymenurootview
-- fixed bug in displayvolumeview
+- fixed bug that EPGSearch Favorites Menu was not displayed correctly,
+  introduced "whatsonfavorites" Token in displaymenuschedules
+

@@ -42,10 +42,11 @@ private:
     const cChannel *channel;
     eTimerMatch timerMatch;
     eMenuCategory cat;
+    bool isEpgSearchFav; 
     void Action(void);
     void ReadSchedules(vector< map<string,string> > *schedulesTokens);
 public:
-    cDisplayMenuItemCurrentSchedulesView(cTemplateViewElement *tmplCurrent, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat);
+    cDisplayMenuItemCurrentSchedulesView(cTemplateViewElement *tmplCurrent, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat, bool isEpgSearchFav);
     virtual ~cDisplayMenuItemCurrentSchedulesView();
     void Prepare(void);
     void Render(void);
