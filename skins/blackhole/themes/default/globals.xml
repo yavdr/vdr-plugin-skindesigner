@@ -40,6 +40,10 @@
             <trans lang="en_EN">Schedule</trans>
             <trans lang="de_DE">Programm</trans>
         </token>
+        <token name="tr(since)">
+            <trans lang="en_EN">since</trans>
+            <trans lang="de_DE">Seit</trans>
+        </token>
         <token name="tr(reruns)">
             <trans lang="en_EN">Reruns</trans>
             <trans lang="de_DE">Wiederholungen</trans>

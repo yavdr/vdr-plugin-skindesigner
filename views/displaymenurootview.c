@@ -324,6 +324,10 @@ void cDisplayMenuRootView::KeyInput(bool up, bool page) {
 }
 
 void cDisplayMenuRootView::Clear(void) {
+    if (view) {
+        view->ClearChannel();
+        view->ClearEpgSearchFavorite();
+    }
     if (listView) {
         listView->Clear();
     }

@@ -110,7 +110,9 @@
             </area>
             <areascroll mode="forthandback" orientation="vertical" delay="1000" scrollspeed="medium" x="55%" y="52%" width="45%" height="48%" layer="4">
                 <drawtext x="10" y="0" font="{semibold}" fontsize="15%" color="{clrWhite}" text="{tr(schedule)}:" />
-                <loop name="schedule" x="0" y="16%" orientation="vertical">
+                <drawtext x="10" y="16%" font="{regular}" width="{areawidth}-20" fontsize="12%" color="{clrWhite}" text="{tr(since)} {presenteventstart} - {presenteventtitle}" />
+                <drawtext x="10" y="26%" font="{regular}" width="{areawidth}-20" fontsize="12%" color="{clrWhite}" text="{nexteventstart} - {nexteventtitle}" />
+                <loop name="schedule" x="0" y="36%" orientation="vertical">
                     <drawtext x="10" font="{regular}" width="{areawidth}-20" fontsize="12%" color="{clrWhite}" text="{schedule[start]} - {schedule[title]}" />
                 </loop>
             </areascroll>
