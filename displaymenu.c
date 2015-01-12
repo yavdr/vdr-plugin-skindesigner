@@ -203,7 +203,10 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
         for (int i=0; i<MaxTabs; i++) {
             const char *s = GetTabbedText(Text, i);
             if (s) {
-                tabTexts[i] = s;
+                if (strlen(s) == 0)
+                    tabTexts[i] = " ";
+                else
+                    tabTexts[i] = s;
             } else {
                 tabTexts[i] = "";
             }

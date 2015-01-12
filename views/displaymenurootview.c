@@ -205,7 +205,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
 }
 
 void cDisplayMenuRootView::CorrectDefaultMenu(void) {
-    if (viewType > svMenuDefault) {
+    if (viewType > svMenuDefault && viewType != svMenuPlugin) {
         SetMenu(mcUnknown, true);
     }
 }
