@@ -74,10 +74,11 @@ private:
     const cChannel *channel;
     eTimerMatch timerMatch;
     eMenuCategory cat;
+    bool isEpgSearchFav;
     string ParseSeparator(string sep);
 public:
     cDisplayMenuItemSchedulesView(cTemplateViewList *tmplList, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, 
-                                  eMenuCategory cat, bool current, bool selectable);
+                                  eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable);
     virtual ~cDisplayMenuItemSchedulesView();
     void SetTokens(void);
     void Prepare(void);

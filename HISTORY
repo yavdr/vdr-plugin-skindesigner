@@ -140,3 +140,8 @@ Version 0.1.2
 
 - display only active remote timers in main menu
 - fixed two possible null pointer accesses in displaymenurootview
+- fixed bug that EPGSearch Favorites Menu was not displayed correctly,
+  introduced "whatsonfavorites" Token in displaymenuschedules
+- fixed again display of channel in schedules header
+- added now and next in blackhole channels menu
+- fixed bug that epg quicksearch menu was not displayed properly

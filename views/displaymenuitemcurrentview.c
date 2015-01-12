@@ -104,12 +104,13 @@ void cDisplayMenuItemCurrentMainView::Action(void) {
 * cDisplayMenuItemCurrentSchedulesView
 *************************************************************/
 
-cDisplayMenuItemCurrentSchedulesView::cDisplayMenuItemCurrentSchedulesView(cTemplateViewElement *tmplCurrent, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat) 
+cDisplayMenuItemCurrentSchedulesView::cDisplayMenuItemCurrentSchedulesView(cTemplateViewElement *tmplCurrent, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat, bool isEpgSearchFav) 
                          : cDisplayMenuItemCurrentView(tmplCurrent) {
     this->event = event;
     this->channel = channel;
     this->timerMatch = timerMatch;
     this->cat = cat;
+    this->isEpgSearchFav = isEpgSearchFav;
 }
 
 cDisplayMenuItemCurrentSchedulesView::~cDisplayMenuItemCurrentSchedulesView() {
@@ -120,9 +121,10 @@ void cDisplayMenuItemCurrentSchedulesView::Prepare(void) {
 
 
 void cDisplayMenuItemCurrentSchedulesView::Render(void) {
-    intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule) ? true: false));
+    intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule)&&(!isEpgSearchFav) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnow", (cat == mcScheduleNow) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnext", (cat == mcScheduleNext) ? true: false));
+    intTokens.insert(pair<string,int>("whatsonfavorites", isEpgSearchFav ? true: false));
     if (timerMatch == tmFull) {
         intTokens.insert(pair<string,int>("timerpartitial", false));
         intTokens.insert(pair<string,int>("timerfull", true));

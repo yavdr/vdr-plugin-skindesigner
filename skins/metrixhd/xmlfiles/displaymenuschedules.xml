@@ -11,11 +11,12 @@
     {whatson}                       true if menu "What's on" is displayed
     {whatsonnow}                    true if menu "What's on now" is displayed
     {whatsonnext}                   true if menu "What's on next" is displayed
+    {whatsonfavorites}              true if EPGSearch Favorites menu is displayed
     -->
     <header>
         <area x="0" y="0" width="38%" height="10%" layer="2">
-            <drawimage condition="{whatsonnow}||{whatsonnext}" name="menuicon" imagetype="menuicon" path="{icon}" x="5" valign="center" width="{areaheight}*8/10" height="80%"/>
-            <drawtext condition="{whatsonnow}||{whatsonnext}" x="{width(menuicon)} + 15" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
+            <drawimage condition="{whatsonnow}||{whatsonnext}||{whatsonfavorites}" name="menuicon" imagetype="menuicon" path="{icon}" x="5" valign="center" width="{areaheight}*8/10" height="80%"/>
+            <drawtext condition="{whatsonnow}||{whatsonnext}||{whatsonfavorites}" x="{width(menuicon)} + 15" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
             <drawimage name="logo" condition="{whatson}" imagetype="channellogo" path="{channelid}" x="0" width="15%" height="100%" align="left" valign="center" />
             <drawtext condition="{whatson}" x="{width(logo)}+20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{channelnumber} - {channelname}" />
         </area>
@@ -47,6 +48,7 @@
         {whatson}                 true if menu "What's on" is displayed
         {whatsonnow}              true if menu "What's on now" is displayed
         {whatsonnext}             true if menu "What's on next" is displayed
+        {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
         {timerpartitial}          true if partitial timer is set for the event
         {timerfull}               true if full timer is set for the event
         {hasVPS}                  true if event has VPS information
@@ -102,6 +104,19 @@
                 <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.5*{areaheight} - 10" width="0.5*{areaheight}" height="0.5*{areaheight}" valign="center" />
             </area>
             <areascroll condition="not{separator}++{whatsonnext}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="7%" width="52%" layer="4">
+                <drawtext name="menutext" x="10" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{start} {title}" />
+            </areascroll>
+            <!-- WHATSONFAVORITES -->
+            <area condition="not{separator}++{whatsonfavorites}" x="1%" width="6%" layer="3">
+                <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="0" width="100%" height="100%" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonfavorites}++{timerfull}" x="53%" width="6%" layer="4">
+                <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.9*{areaheight} - 10" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonfavorites}++{timerpartitial}" x="53%" width="6%" layer="5">
+                <drawimage imagetype="icon" path="ico_activetimer" x="{areawidth} - 0.5*{areaheight} - 10" width="0.5*{areaheight}" height="0.5*{areaheight}" valign="center" />
+            </area>
+            <areascroll condition="not{separator}++{whatsonfavorites}" scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="7%" width="52%" layer="4">
                 <drawtext name="menutext" x="10" valign="center" font="{light}" fontsize="95%" color="{clrWhite}" text="{start} {title}" />
             </areascroll>
             <!-- Separator -->

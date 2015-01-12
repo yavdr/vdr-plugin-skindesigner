@@ -50,6 +50,7 @@ public:
     void SetTitle(const char *title);
     void SetChannel(const cChannel *channel) { view->SetChannel(channel); };
     const cChannel *GetChannel(void) { return view->GetChannel(); };
+    void SetEpgSearchFavorite(void) { if (view) view->SetEpgSearchFavorite(); };
     void SetButtonTexts(const char *Red, const char *Green, const char *Yellow, const char *Blue);
     void SetTabs(int tab1, int tab2, int tab3, int tab4, int tab5);
     void SetMessage(eMessageType type, const char *text);

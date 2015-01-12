@@ -11,6 +11,7 @@
     {whatson}                       true if menu "What's on" is displayed
     {whatsonnow}                    true if menu "What's on now" is displayed
     {whatsonnext}                   true if menu "What's on next" is displayed
+    {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
     -->
     <header>
     </header>
@@ -41,6 +42,7 @@
         {whatson}                 true if menu "What's on" is displayed
         {whatsonnow}              true if menu "What's on now" is displayed
         {whatsonnext}             true if menu "What's on next" is displayed
+        {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
         {timerpartitial}          true if partitial timer is set for the event
         {timerfull}               true if full timer is set for the event
         {hasVPS}                  true if event has VPS information
@@ -80,6 +82,7 @@
         {whatson}                 true if menu "What's on" is displayed
         {whatsonnow}              true if menu "What's on now" is displayed
         {whatsonnext}             true if menu "What's on next" is displayed
+        {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
         {schedule[]}              array with next 10 schedules, only for whatsonnow and whatsonnext
         {schedule[title]}         title of event
         {schedule[shorttext]}     shorttext of event

@@ -267,12 +267,13 @@ void cDisplayMenuItemMainView::SplitMenuText(void) {
 
 cDisplayMenuItemSchedulesView::cDisplayMenuItemSchedulesView(cTemplateViewList *tmplList, const cEvent *event, 
                                                              const cChannel *channel, eTimerMatch timerMatch, 
-                                                             eMenuCategory cat, bool current, bool selectable) 
+                                                             eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable) 
                                                             : cDisplayMenuItemView(tmplList, current, selectable) {
     this->event = event;
     this->channel = channel;
     this->timerMatch = timerMatch;
     this->cat = cat;
+    this->isEpgSearchFav = isEpgSearchFav;
 }
 
 cDisplayMenuItemSchedulesView::~cDisplayMenuItemSchedulesView() {
@@ -285,9 +286,10 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
     intTokens.insert(pair<string,int>("nummenuitem", num+1));
-    intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule) ? true: false));
+    intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule)&&(!isEpgSearchFav) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnow", (cat == mcScheduleNow) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnext", (cat == mcScheduleNext) ? true: false));
+    intTokens.insert(pair<string,int>("whatsonfavorites", isEpgSearchFav ? true: false));
     if (timerMatch == tmFull) {
         intTokens.insert(pair<string,int>("timerpartitial", false));
         intTokens.insert(pair<string,int>("timerfull", true));
@@ -360,7 +362,7 @@ void cDisplayMenuItemSchedulesView::Render(void) {
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
         if (tmplCurrent) {
-            currentView = new cDisplayMenuItemCurrentSchedulesView(tmplCurrent, event, channel, timerMatch, cat);
+            currentView = new cDisplayMenuItemCurrentSchedulesView(tmplCurrent, event, channel, timerMatch, cat, isEpgSearchFav);
             currentView->Start();
         }
     }

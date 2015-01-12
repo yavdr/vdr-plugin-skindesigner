@@ -9,10 +9,11 @@
     {whatson}                       true if menu "What's on" is displayed
     {whatsonnow}                    true if menu "What's on now" is displayed
     {whatsonnext}                   true if menu "What's on next" is displayed
+    {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
     -->
     <header>
         <area x="1%" y="0" width="64%" height="10%" layer="2">
-            <drawtext condition="{whatsonnow}||{whatsonnext}" x="5" valign="center" font="{vdrOsd}" fontsize="80%" color="{clrWhite}" text="{title}" />
+            <drawtext condition="{whatsonnow}||{whatsonnext}||{whatsonfavorites}" x="5" valign="center" font="{vdrOsd}" fontsize="80%" color="{clrWhite}" text="{title}" />
             <drawimage name="logo" condition="{whatson}" imagetype="channellogo" path="{channelid}" x="0" width="15%" height="100%" align="left" valign="center" />
             <drawtext condition="{whatson}" x="{width(logo)}+20" valign="center" font="{vdrOsd}" fontsize="50%" color="{clrWhite}" text="{channelnumber} - {channelname}" />
         </area>
@@ -45,6 +46,7 @@
         {whatson}                 true if menu "What's on" is displayed
         {whatsonnow}              true if menu "What's on now" is displayed
         {whatsonnext}             true if menu "What's on next" is displayed
+        {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
         {timerpartitial}          true if partitial timer is set for the event
         {timerfull}               true if full timer is set for the event
         {hasVPS}                  true if event has VPS information
@@ -123,7 +125,27 @@
             <areascroll scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium"  condition="not{separator}++{whatsonnext}++{current}" x="9%" width="18%" layer="3">
                 <drawtext name="menutext" x="0" y="40%" font="{vdrOsd}" fontsize="55%" color="{clrFontMenuItemSelected}" text="{title}" />
             </areascroll>
-            <!-- day or channel separator -->
+            <!-- element whatsonfavorites -->
+            <area condition="not{separator}++{whatsonfavorites}" x="5" width="8%" layer="3">
+                <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="0" width="100%" height="94%" valign="center" />
+            </area>
+            <area condition="not{separator}++{whatsonfavorites}++not{current}" x="9%" width="18%" layer="3">
+                <drawtext x="0" y="5%" font="{vdrOsd}" fontsize="40%" color="{clrFontMenuItem}" text="{start} - {stop}" />
+                <drawimage condition="{timerfull}" imagetype="icon" path="ico_activetimer" x="{areawidth} - {areaheight}*5/10 - 10" y="10" width="{areaheight}*5/10" height="{areaheight}*5/10" />
+                <drawimage condition="{timerpartitial}" imagetype="icon" path="ico_activetimer" x="{areawidth} - {areaheight}*3/10 - 10" y="10" width="{areaheight}*3/10" height="{areaheight}*3/10" />
+            </area>
+            <areascroll scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium"  condition="not{separator}++{whatsonfavorites}++not{current}" x="9%" width="18%" layer="3">
+                <drawtext name="menutext" x="0" y="40%" font="{vdrOsd}" fontsize="55%" color="{clrFontMenuItem}" text="{title}" />
+            </areascroll>
+            <!-- current element whatsonfavorites -->
+            <area condition="not{separator}++{whatsonfavorites}++{current}" x="9%" width="18%" layer="3">
+                <drawtext x="0" y="5%" font="{vdrOsd}" fontsize="40%" color="{clrFontMenuItemSelected}" text="{start} - {stop}" />
+                <drawimage condition="{timerfull}" imagetype="icon" path="ico_activetimer" x="{areawidth} - {areaheight}*5/10 - 10" y="10" width="{areaheight}*5/10" height="{areaheight}*5/10" />
+                <drawimage condition="{timerpartitial}" imagetype="icon" path="ico_activetimer" x="{areawidth} - {areaheight}*3/10 - 10" y="10" width="{areaheight}*3/10" height="{areaheight}*3/10" />
+            </area>
+            <areascroll scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium"  condition="not{separator}++{whatsonfavorites}++{current}" x="9%" width="18%" layer="3">
+                <drawtext name="menutext" x="0" y="40%" font="{vdrOsd}" fontsize="55%" color="{clrFontMenuItemSelected}" text="{title}" />
+            </areascroll>            <!-- day or channel separator -->
             <area condition="{separator}" x="0" width="28%" layer="3">
                 <drawimage name="sep" imagetype="icon" path="ico_daydelimiter" x="10" valign="center" width="{areaheight}-10" height="{areaheight}-10"/>
                 <drawtext x="{width(sep)} + 20" valign="center" font="{vdrOsd}" fontsize="60%" color="{clrFontInactive}" text="{title}" />

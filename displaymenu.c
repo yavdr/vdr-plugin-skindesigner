@@ -94,18 +94,26 @@ bool cSDDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, 
         return false;
     if (config.blockFlush)
         rootView->LockFlush();
-    const cChannel *channel = Channel;
-    if (!channel) {
-        channel = rootView->GetChannel();
-    } 
-    if (!channel && Event) {
-        channel = Channels.GetByChannelID(Event->ChannelID());
+    bool isFav = false;
+    if (MenuCategory() == mcSchedule && Channel) {
+        isFav = true;
+        rootView->SetEpgSearchFavorite();
     }
-    rootView->SetChannel(channel);
+    const cChannel *channel = Channel;
+    if (MenuCategory() == mcSchedule) {
+        if (!channel) {
+            channel = rootView->GetChannel();
+        } 
+        if (!channel && Event) {
+            channel = Channels.GetByChannelID(Event->ChannelID());
+        }
+        rootView->SetChannel(channel);
+    }
+
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
-    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), Current, Selectable);
+    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), isFav, Current, Selectable);
     if (state == vsIdle)
         state = vsMenuUpdate;
     return true;
@@ -195,7 +203,10 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
         for (int i=0; i<MaxTabs; i++) {
             const char *s = GetTabbedText(Text, i);
             if (s) {
-                tabTexts[i] = s;
+                if (strlen(s) == 0)
+                    tabTexts[i] = " ";
+                else
+                    tabTexts[i] = s;
             } else {
                 tabTexts[i] = "";
             }
