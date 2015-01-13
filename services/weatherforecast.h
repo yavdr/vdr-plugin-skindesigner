@@ -8,6 +8,8 @@ public:
 	cServiceCurrentWeather(void) {
 	    timeStamp = "";
 	    temperature = "";
+        minTemperature = "";
+        maxTemperature = "";
 	    apparentTemperature = "";
 	    summary = "";
 	    icon = "";
@@ -26,6 +28,8 @@ public:
     std::string timeStamp;
     std::string temperature;
     std::string apparentTemperature;
+    std::string minTemperature;
+    std::string maxTemperature;
     std::string summary;
     std::string icon;
     std::string precipitationIntensity;

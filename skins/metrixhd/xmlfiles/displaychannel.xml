@@ -218,6 +218,8 @@
     {timestamp}                 timestamp of forecast in dd.mm hh:mm
     {temperature}               current temperature in °C
     {apparenttemperature}       apparent (feeled) temperature
+    {mintemperature}            minimum temperature this day
+    {maxtemperature}            maximum temperature this day
     {summary}                   short weather summary
     {icon}                      weather icon 
     {precipitationintensity}    precipitation intensity in l/m2
@@ -233,11 +235,15 @@
     {ozone}                     ozone value in DU
     -->
     <currentweather>
-        <area x="70%" y="15%" width="13%" height="13%" layer="1">
+        <area x="70%" y="15%" width="13%" height="13%" layer="2">
             <drawimage imagetype="icon" path="{icon}" align="center" valign="center" width="{areaheight}*0.8" height="{areaheight}*0.8"/>
         </area>
-       <area x="85%" y="15%" width="13%" height="13%" layer="1">
-            <drawtext align="center" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{temperature}°C" />
+        <area x="85%" y="15%" width="13%" height="13%" layer="2">
+            <drawtext x="0" y="0" font="{light}" fontsize="25%" color="{clrWhite}" text="{mintemperature}°C" />
+            <drawtext x="0" y="75%" font="{light}" fontsize="25%" color="{clrWhite}" text="{maxtemperature}°C" />
+        </area>
+        <area x="85%" y="15%" width="13%" height="13%" layer="3">
+            <drawtext align="right" valign="center" font="{light}" fontsize="60%" color="{clrWhite}" text="{temperature}°C" />
         </area>
     </currentweather>
 

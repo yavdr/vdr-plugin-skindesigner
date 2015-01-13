@@ -435,10 +435,11 @@ void cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens,
     if (!pWeatherForecast->Service("GetCurrentWeather", &currentWeather)) {
         return;
     }
-esyslog("skindesigner: service call successfull");
     stringTokens.insert(pair<string,string>("timestamp", currentWeather.timeStamp));
     stringTokens.insert(pair<string,string>("temperature", currentWeather.temperature));
     stringTokens.insert(pair<string,string>("apparenttemperature", currentWeather.apparentTemperature));
+    stringTokens.insert(pair<string,string>("mintemperature", currentWeather.minTemperature));
+    stringTokens.insert(pair<string,string>("maxtemperature", currentWeather.maxTemperature));
     stringTokens.insert(pair<string,string>("summary", currentWeather.summary));
     stringTokens.insert(pair<string,string>("icon", currentWeather.icon));
     stringTokens.insert(pair<string,string>("precipitationintensity", currentWeather.precipitationIntensity));
