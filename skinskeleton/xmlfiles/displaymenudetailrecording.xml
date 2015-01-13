@@ -25,6 +25,9 @@
     {bannerpath}              path of banner
     {recimgavailable}         true if a recording image is available in the recording path
     {recimgpath}              path of rec image
+    {recchannelname}          name of channel from which was recorded
+    {recchannelid}            id of channel from which was recorded
+    {recchannelnumber}        number of channel from which was recorded
     -->
     <detailheader>
     </detailheader>
@@ -51,6 +54,9 @@
     {recordingbitrate}        bitrate of recording (in MBit/s)
     {recordingformat}         format of recording (TS / PS)
     {searchtimer}             name of accordign searchtimer (if available)
+    {recchannelname}          name of channel from which was recorded
+    {recchannelid}            id of channel from which was recorded
+    {recchannelnumber}        number of channel from which was recorded
     
     {recimg1avaialble}        true if first recording image is available
     {recimg2avaialble}        true if first recording image is available
