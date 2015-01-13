@@ -169,6 +169,7 @@ void cSDDisplayChannel::Flush(void) {
         return;
 
     if (initial) {
+        channelView->DrawCurrentWeather();
         channelView->DrawCustomTokens();
     }
 

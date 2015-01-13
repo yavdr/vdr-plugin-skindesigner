@@ -669,6 +669,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("signalquality");
     viewElementsAllowed.insert("signalqualityback");
     viewElementsAllowed.insert("devices");
+    viewElementsAllowed.insert("currentweather");
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("datetime");
     viewElementsAllowed.insert("time");
@@ -714,6 +715,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
             break;
         case veDevices:
             name = "Devices";
+            break;
+        case veCurrentWeather:
+            name = "Current Weather";
             break;
         case veScraperContent:
             name = "Scraper Content";
@@ -764,6 +768,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veSignalQualityBack;
     } else if (!sViewElement.compare("devices")) {
         ve = veDevices;
+    } else if (!sViewElement.compare("currentweather")) {
+        ve = veCurrentWeather;
     } else if (!sViewElement.compare("scrapercontent")) {
         ve = veScraperContent;
     } else if (!sViewElement.compare("datetime")) {
@@ -1041,6 +1047,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
     viewElementsAllowed.insert("devices");
+    viewElementsAllowed.insert("currentweather");
     viewElementsAllowed.insert("currentschedule");
     viewElementsAllowed.insert("customtokens");
     viewElementsAllowed.insert("scrollbar");
@@ -1252,6 +1259,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veCustomTokens;
     } else if (!sViewElement.compare("devices")) {
         ve = veDevices;
+    } else if (!sViewElement.compare("currentweather")) {
+        ve = veCurrentWeather;
     } else if (!sViewElement.compare("scrollbar")) {
         ve = veScrollbar;
     } else if (!sViewElement.compare("detailheader")) {

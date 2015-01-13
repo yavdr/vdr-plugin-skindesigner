@@ -1,5 +1,6 @@
 #include <vdr/menu.h>
 #include "../services/scraper2vdr.h"
+#include "../services/weatherforecast.h"
 #include "../config.h"
 #include "../libcore/helpers.h"
 #include "viewhelpers.h"
@@ -424,4 +425,31 @@ bool cViewHelpers::SetDate(map < string, string > &stringTokens, map < string, i
     stringTokens.insert(pair<string,string>("time", *TimeString(t)));
 
     return true;
+}
+
+void cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    static cPlugin *pWeatherForecast = cPluginManager::GetPlugin("weatherforecast");
+    if (!pWeatherForecast)
+        return;
+    cServiceCurrentWeather currentWeather;
+    if (!pWeatherForecast->Service("GetCurrentWeather", &currentWeather)) {
+        return;
+    }
+esyslog("skindesigner: service call successfull");
+    stringTokens.insert(pair<string,string>("timestamp", currentWeather.timeStamp));
+    stringTokens.insert(pair<string,string>("temperature", currentWeather.temperature));
+    stringTokens.insert(pair<string,string>("apparenttemperature", currentWeather.apparentTemperature));
+    stringTokens.insert(pair<string,string>("summary", currentWeather.summary));
+    stringTokens.insert(pair<string,string>("icon", currentWeather.icon));
+    stringTokens.insert(pair<string,string>("precipitationintensity", currentWeather.precipitationIntensity));
+    intTokens.insert(pair<string,int>("precipitationprobability", currentWeather.precipitationProbability));
+    stringTokens.insert(pair<string,string>("precipitationtype", currentWeather.precipitationType));
+    intTokens.insert(pair<string,int>("humidity", currentWeather.humidity));
+    stringTokens.insert(pair<string,string>("windspeed", currentWeather.windSpeed));
+    intTokens.insert(pair<string,int>("windbearing", currentWeather.windBearing));
+    stringTokens.insert(pair<string,string>("windbearingstring", currentWeather.windBearingString));
+    stringTokens.insert(pair<string,string>("visibility", currentWeather.visibility));
+    intTokens.insert(pair<string,int>("cloudcover", currentWeather.cloudCover));
+    stringTokens.insert(pair<string,string>("pressure", currentWeather.pressure));
+    stringTokens.insert(pair<string,string>("ozone", currentWeather.ozone));
 }

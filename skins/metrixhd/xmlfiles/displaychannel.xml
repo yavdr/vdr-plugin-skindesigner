@@ -12,6 +12,11 @@
             <fill color="{clrTransBlack}" />
             <drawrectangle x="0" y="0" width="45%" height="100%" color="{clrTransBlueLight}" />
         </area>
+        <!-- background weather -->
+        <area x="70%" y="15%" width="30%" height="13%" layer="1">
+            <fill color="{clrTransBlack}" />
+            <drawrectangle x="0" y="0" width="45%" height="100%" color="{clrTransBlueLight}" />
+        </area>
         <!-- background channellogo -->
         <area x="0" y="80%" width="20%" height="20%" layer="2">
             <fill color="{clrTransBlueLight}" />
@@ -192,10 +197,10 @@
     {devices[source]}           source of the currently tuned channel
     -->
     <devices>
-        <area x="70%" y="15%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
+        <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
-        <area x="70%" y="15%" width="30%" height="{areaheight}/12 * {numdevices}" layer="2">
+        <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="2">
             <loop name="devices" x="0" y="0" orientation="vertical" columnwidth="{areawidth}" rowheight="{areaheight} / {numdevices}" overflow="cut">
                 <drawtext name="label" x="5" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
                 <drawtext condition="{devices[hascam]}" x="{width(label)} + 15" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="(CAM {devices[cam]})" />
@@ -208,6 +213,33 @@
             </loop>
         </area>
     </devices>
+
+    <!-- Available Variables currentweather:
+    {timestamp}                 timestamp of forecast in dd.mm hh:mm
+    {temperature}               current temperature in °C
+    {apparenttemperature}       apparent (feeled) temperature
+    {summary}                   short weather summary
+    {icon}                      weather icon 
+    {precipitationintensity}    precipitation intensity in l/m2
+    {precipitationprobability}  precipitation probability in %
+    {precipitationtype}         precipitation type
+    {humidity}                  humidity in %
+    {windspeed}                 windspeed in km/h
+    {windbearing}               wind bearing in °
+    {windbearingstring}         wind bearing (N, NE, ...)
+    {visibility}                visibility in km
+    {cloudcover}                cloud cover in %
+    {pressure}                  pressure in HPo
+    {ozone}                     ozone value in DU
+    -->
+    <currentweather>
+        <area x="70%" y="15%" width="13%" height="13%" layer="1">
+            <drawimage imagetype="icon" path="{icon}" align="center" valign="center" width="{areaheight}*0.8" height="{areaheight}*0.8"/>
+        </area>
+       <area x="85%" y="15%" width="13%" height="13%" layer="1">
+            <drawtext align="center" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{temperature}°C" />
+        </area>
+    </currentweather>
 
     <!-- Available Variables scrapercontent:
     {posterpath}                        Full Path of Poster to use in image path attribute

@@ -539,6 +539,19 @@ void cDisplayChannelView::DrawCustomTokens(void) {
     DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
 }
 
+void cDisplayChannelView::DrawCurrentWeather(void) {
+    if (!ViewElementImplemented(veCurrentWeather)) {
+        return;
+    }
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    SetCurrentWeatherTokens(stringTokens, intTokens);
+    
+    ClearViewElement(veCurrentWeather);
+    DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
+}
+
+
 void cDisplayChannelView::Action(void) {
     SetInitFinished();
     FadeIn();
