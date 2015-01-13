@@ -4,6 +4,7 @@
 using namespace std;
 
 #include <string>
+#include <vector>
 #include <map>
 
 enum eMenuType {
@@ -13,6 +14,7 @@ enum eMenuType {
 
 class cSDDisplayMenu : public cSkinDisplayMenu {
 public:
+    virtual void SetTitle(const char *Title);
     virtual void SetPluginMenu(string name, int menu, int type, bool init);
     virtual bool SetItemPlugin(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens, int Index, bool Current, bool Selectable);
     virtual bool SetPluginText(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens);

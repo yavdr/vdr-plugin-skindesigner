@@ -142,27 +142,30 @@ void cSkindesignerOsdMenu::TextKeyDown(void) {
 void cSkindesignerOsdMenu::Display(void) {
     if (displayText) {
         if (sdDisplayMenu) {
+            sdDisplayMenu->SetTitle(Title());
             if (sdDisplayMenu->SetPluginText(&stringTokens, &intTokens, &loopTokens)) {
-                esyslog("skindesclient: template found");
                 sdDisplayMenu->Flush();
             } else {
-                esyslog("skindesclient: no template found, drawing default");
                 DisplayMenu()->Clear();
+                DisplayMenu()->SetTitle(Title());
                 DisplayMenu()->SetText(text.c_str(), false);
                 DisplayMenu()->Flush();
             }
         } else {
             DisplayMenu()->Clear();
+            DisplayMenu()->SetTitle(Title());
             DisplayMenu()->SetText(text.c_str(), false);
             DisplayMenu()->Flush();
         }
         return;
     }
     if (sdDisplayMenu) {
+        sdDisplayMenu->SetTitle(Title());
         for (cOsdItem *item = First(); item; item = Next(item)) {
             cSkindesignerOsdItem *sdItem = dynamic_cast<cSkindesignerOsdItem*>(item);
-            if (sdItem)
+            if (sdItem) {
                 sdItem->SetDisplayMenu(sdDisplayMenu);
+            }
         }
     }
     cOsdMenu::Display();

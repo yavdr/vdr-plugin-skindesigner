@@ -210,12 +210,11 @@ void cDisplayMenuRootView::CorrectDefaultMenu(void) {
     }
 }
 
-void cDisplayMenuRootView::SetPluginMenu(string name, int menu, int type) { 
+void cDisplayMenuRootView::SetPluginMenu(string name, int menu, int type) {
     if (pluginName.compare(name) || menu != pluginMenu || type != pluginMenuType)
         pluginMenuChanged = true;
     else
         pluginMenuChanged = false;
-
     pluginName = name; 
     pluginMenu = menu; 
     pluginMenuType = (ePluginMenuType)type;
@@ -301,9 +300,9 @@ void cDisplayMenuRootView::SetDetailedViewText(const char *text) {
 bool cDisplayMenuRootView::SetDetailedViewPlugin(map<string,string> *stringTokens, map<string,int> *intTokens, map<string,vector<map<string,string> > > *loopTokens) {
     if (!detailView) {
         SetMenu(mcPlugin, true);
-        if (!subViewAvailable)
-            return false;
     }
+    if (!subViewAvailable)
+        return false;
     detailView->SetPluginTokens(stringTokens, intTokens, loopTokens);
     return true;
 }
