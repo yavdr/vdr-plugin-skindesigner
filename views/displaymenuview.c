@@ -237,6 +237,7 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
     DrawDiscUsage();
     DrawTemperatures();
     DrawCurrentSchedule();
+    DrawCurrentWeather();
     DrawCustomTokens();
 }
 
@@ -579,6 +580,21 @@ void cDisplayMenuMainView::DrawCurrentSchedule(void) {
 
     ClearViewElement(veCurrentSchedule);
     DrawViewElement(veCurrentSchedule, &stringTokens, &intTokens);
+}
+
+void cDisplayMenuMainView::DrawCurrentWeather(void) {
+    if (!ViewElementImplemented(veCurrentWeather)) {
+        return;
+    }
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
+        ClearViewElement(veCurrentWeather);
+        return;
+    }
+    
+    ClearViewElement(veCurrentWeather);
+    DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
 }
 
 void cDisplayMenuMainView::DrawCustomTokens(void) {

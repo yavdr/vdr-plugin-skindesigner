@@ -44,6 +44,7 @@ private:
     void DrawTemperatures(void);
     bool DrawDevices(void);
     void DrawCurrentSchedule(void);
+    void DrawCurrentWeather(void);
     void DrawCustomTokens(void);
 public:
     cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit);

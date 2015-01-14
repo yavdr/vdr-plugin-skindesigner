@@ -86,6 +86,27 @@
     <currentschedule>
     </currentschedule>
 
+    <!-- Available Variables currentweather:
+    {timestamp}                 timestamp of forecast in dd.mm hh:mm
+    {temperature}               current temperature in °C
+    {apparenttemperature}       apparent (feeled) temperature
+    {summary}                   short weather summary
+    {icon}                      weather icon 
+    {precipitationintensity}    precipitation intensity in l/m2
+    {precipitationprobability}  precipitation probability in %
+    {precipitationtype}         precipitation type
+    {humidity}                  humidity in %
+    {windspeed}                 windspeed in km/h
+    {windbearing}               wind bearing in °
+    {windbearingstring}         wind bearing (N, NE, ...)
+    {visibility}                visibility in km
+    {cloudcover}                cloud cover in %
+    {pressure}                  pressure in HPo
+    {ozone}                     ozone value in DU
+    -->
+    <currentweather>
+    </currentweather>
+    
     <!-- Available Variables customtokens:
     all custom tokens set by the svdrp command SCTK are available in this viewelement
     For instance, use an appropriate script which runs periodically as cronjob and

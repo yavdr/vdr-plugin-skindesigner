@@ -35,6 +35,9 @@
     </scrollbar>
     <!-- Available Variables in detailheader and tab:
     {menuheader}                        "Current Weather"
+    {city}                              configured city to display weather for
+    {latitude}                          latitude
+    {longitude}                         longitude
     {timestamp}                         timestamp in hh:mm dd.mm of current forecast
     {temperature}                       current temperature in °C
     {apparenttemperature}               apparent (felt) temperature in °C
@@ -70,17 +73,18 @@
     </detailheader>
 
     <tab name="current" x="2%" y="20%" width="94%" height="65%" layer="2" scrollheight="{areaheight}/4">
-        <drawtext x="0" y="0" font="{semibold}" fontsize="10%" color="{clrWhite}" text="{tr(conditions)}: {summary}" />
-        <drawtext x="0" y="10%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(temp)}: {temperature}°C" />
-        <drawtext x="0" y="20%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(apparenttemp)}: {apparenttemperature}°C" />
-        <drawtext x="0" y="30%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(todaymin)}: {mintemperature}°C, {tr(todaymax)}: {maxtemperature}°C" />
-        <drawtext x="0" y="40%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(precipitationprobability)}: {precipitationprobability} %" />
-        <drawtext x="0" y="50%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(precipitationintensity)}: {precipitationintensity} l/qm" />
-        <drawtext x="0" y="60%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(humidity)}: {humidity} %" />
-        <drawtext x="0" y="70%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(windspeed)}: {windspeed} km/h aus {windbearingstring}" />
-        <drawtext x="0" y="80%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(visibility)}: {visibility} km" />
-        <drawtext x="0" y="90%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(cloudcover)}: {cloudcover} %" />
-        <drawtext x="0" y="100%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(pressure)}: {pressure} HPa" />
-        <drawtext x="0" y="110%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(ozone)}: {ozone} DU" />
+        <drawtext x="0" y="0" font="{semibold}" fontsize="10%" color="{clrWhite}" text="{tr(conditions)} {tr(for)} {city} ({latitude}, {longitude}):" />
+        <drawtext x="0" y="10%" font="{semibold}" fontsize="10%" color="{clrWhite}" text="{summary}" />
+        <drawtext x="0" y="25%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(temp)}: {temperature}°C" />
+        <drawtext x="0" y="35%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(apparenttemp)}: {apparenttemperature}°C" />
+        <drawtext x="0" y="45%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(todaymin)}: {mintemperature}°C, {tr(todaymax)}: {maxtemperature}°C" />
+        <drawtext x="0" y="55%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(precipitationprobability)}: {precipitationprobability} %" />
+        <drawtext x="0" y="65%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(precipitationintensity)}: {precipitationintensity} l/qm" />
+        <drawtext x="0" y="75%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(humidity)}: {humidity} %" />
+        <drawtext x="0" y="85%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(windspeed)}: {windspeed} km/h aus {windbearingstring}" />
+        <drawtext x="0" y="95%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(visibility)}: {visibility} km" />
+        <drawtext x="0" y="105%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(cloudcover)}: {cloudcover} %" />
+        <drawtext x="0" y="115%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(pressure)}: {pressure} HPa" />
+        <drawtext x="0" y="125%" font="{light}" fontsize="10%" color="{clrWhite}" text="{tr(ozone)}: {ozone} DU" />
     </tab>
 </menuplugin>

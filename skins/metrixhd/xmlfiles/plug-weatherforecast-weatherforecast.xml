@@ -45,6 +45,9 @@
         {iscurrent}                         true if item is "Current Weather"
         {ishourly}                          true if item is "Next 48 hours"
         {isdaily}                           true if item is "Next 7 days"
+        {city}                              configured city to display weather for
+        {latitude}                          latitude
+        {longitude}                         longitude
         
         If {iscurrent} is true, the following tokens are set:
         {timestamp}                         timestamp in hh:mm dd.mm of current forecast
@@ -125,20 +128,18 @@
         <!-- All Tokens from listelement are available -->
         <currentelement delay="100" fadetime="0">
             <area condition="{iscurrent}" x="51%" y="0" width="48%" height="100%" layer="3">
-                <drawimage name="weathericon" imagetype="icon" path="{icon}" x="2%" y="0" width="{areawidth}*0.3" height="{areawidth}*0.3"/>
-                <drawtext align="right" y="0" font="{light}" fontsize="8%" color="{clrWhite}" text="{timestamp}" />
-                <drawtext align="right" y="6%" font="{light}" fontsize="16%" color="{clrWhite}" text="{temperature}°C" />
-                <drawtext align="right" y="20%" font="{light}" fontsize="8%" color="{clrWhite}" text="{summary}" />
-                <drawtext x="0" y="34%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(apparenttemp)}: {apparenttemperature} °C" />
-                <drawtext x="0" y="40%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(precipitationprobability)}: {precipitationprobability} %" />
-                <drawtext x="0" y="46%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(precipitationintensity)}: {precipitationintensity} l/qm" />
-                <drawtext x="0" y="52%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(humidity)}: {humidity} %" />
-                <drawtext x="0" y="58%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(apparenttemp)}: {windspeed} km/h" />
-                <drawtext x="0" y="64%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(windbearing)}: {windbearingstring}  ({windbearing} °)" />
-                <drawtext x="0" y="70%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(cloudcover)}: {cloudcover} %" />
-                <drawtext x="0" y="76%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(pressure)}: {pressure} HPa" />
-                <drawtext x="0" y="82%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(ozone)}: {ozone} DU" />
-                <drawtext x="0" y="88%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(visibility)}: {visibility} km" />
+                <drawimage name="weathericon" imagetype="icon" path="{icon}" x="2%" y="0" width="{areawidth}*0.4" height="{areawidth}*0.4"/>
+                <drawtext align="right" y="0" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{city}" />
+                <drawtext align="right" y="7%" font="{light}" fontsize="8%" color="{clrWhite}" text="{timestamp}" />
+                <drawtext align="right" y="13%" font="{light}" fontsize="18%" color="{clrWhite}" text="{temperature}°C" />
+                <drawtext align="right" y="28%" font="{light}" fontsize="8%" color="{clrWhite}" text="{summary}" />
+                <drawtext x="0" y="40%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(apparenttemp)}: {apparenttemperature} °C" />
+                <drawtext x="0" y="46%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(precipitationprobability)}: {precipitationprobability} %" />
+                <drawtext x="0" y="52%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(precipitationintensity)}: {precipitationintensity} l/qm" />
+                <drawtext x="0" y="58%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(humidity)}: {humidity} %" />
+                <drawtext x="0" y="64%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(windspeed)}: {windspeed} km/h" />
+                <drawtext x="0" y="70%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(windbearing)}: {windbearingstring}  ({windbearing} °)" />
+                <drawtext x="0" y="76%" font="{light}" fontsize="6%" color="{clrWhite}" text="{tr(cloudcover)}: {cloudcover} %" />
             </area>
             <area condition="{ishourly}" x="51%" y="0" width="48%" height="100%" layer="3">
                 <loop name="hourly" x="0" y="0" orientation="vertical" columnwidth="{areawidth}" rowheight="{areaheight}/12" overflow="cut">

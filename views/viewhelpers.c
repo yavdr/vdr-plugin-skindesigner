@@ -427,13 +427,13 @@ bool cViewHelpers::SetDate(map < string, string > &stringTokens, map < string, i
     return true;
 }
 
-void cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens) {
+bool cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens) {
     static cPlugin *pWeatherForecast = cPluginManager::GetPlugin("weatherforecast");
     if (!pWeatherForecast)
-        return;
+        return false;
     cServiceCurrentWeather currentWeather;
     if (!pWeatherForecast->Service("GetCurrentWeather", &currentWeather)) {
-        return;
+        return false;
     }
     stringTokens.insert(pair<string,string>("timestamp", currentWeather.timeStamp));
     stringTokens.insert(pair<string,string>("temperature", currentWeather.temperature));
@@ -453,4 +453,5 @@ void cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens,
     intTokens.insert(pair<string,int>("cloudcover", currentWeather.cloudCover));
     stringTokens.insert(pair<string,string>("pressure", currentWeather.pressure));
     stringTokens.insert(pair<string,string>("ozone", currentWeather.ozone));
+    return true;
 }

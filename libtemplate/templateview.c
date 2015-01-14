@@ -381,10 +381,8 @@ void cTemplateView::Translate(void) {
 
     //Translate Plugin Views
     for (map < string, map< int, cTemplateView*> >::iterator it = pluginViews.begin(); it != pluginViews.end(); it++) {
-        esyslog("skindesigner: translating plugin %s", (it->first).c_str());
         map< int, cTemplateView*> plugViews = it->second;
         for (map< int, cTemplateView*>::iterator it2 = plugViews.begin(); it2 != plugViews.end(); it2++) {
-            esyslog("skindesigner: translating view %d", (int)it2->first);
             cTemplateView *pluginView = it2->second;
             pluginView->Translate();
         }
@@ -1177,6 +1175,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
             break;
         case veCurrentSchedule:
             name = "Current Schedule";
+            break;
+        case veCurrentWeather:
+            name = "Current Weather";
             break;
        case veCustomTokens:
             name = "Custom Tokens";

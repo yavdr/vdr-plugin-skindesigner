@@ -37,6 +37,9 @@
     <!-- Available Variables in detailheader and tab:
     {summary}                           short summary of weather
     {icon}                              path to use in <drawimage> to display appropriate weather icon
+    {city}                              configured city to display weather for
+    {latitude}                          latitude
+    {longitude}                         longitude
 
     {daily[day]}                        day of forecast in dd.mm
     {daily[dayname]}                    three letter abbrivated day name

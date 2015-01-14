@@ -545,7 +545,10 @@ void cDisplayChannelView::DrawCurrentWeather(void) {
     }
     map < string, string > stringTokens;
     map < string, int > intTokens;
-    SetCurrentWeatherTokens(stringTokens, intTokens);
+    if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
+        ClearViewElement(veCurrentWeather);
+        return;
+    }
     
     ClearViewElement(veCurrentWeather);
     DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);

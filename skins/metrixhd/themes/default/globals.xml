@@ -270,6 +270,10 @@
             <trans lang="en_EN">max</trans>
             <trans lang="de_DE">max</trans>
         </token>
+       <token name="tr(for)">
+            <trans lang="en_EN">for</trans>
+            <trans lang="de_DE">für</trans>
+        </token>
     </translations>
     <!--
     The three Fonts FontOSD, FontFix and FontSml configured in VDR

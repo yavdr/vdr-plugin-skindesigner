@@ -37,6 +37,9 @@
     <!-- Available Variables in detailheader and tab:
     {summary}                           short summary of weather
     {icon}                              path to use in <drawimage> to display appropriate weather icon
+    {city}                              configured city to display weather for
+    {latitude}                          latitude
+    {longitude}                         longitude
 
     {hourly[]}                          array with up to 48 hourly forecasts
     {hourly[num]}                       number of forecast, starting at 1
