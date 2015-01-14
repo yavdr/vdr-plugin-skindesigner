@@ -265,6 +265,21 @@ void cTemplateView::Translate(void) {
                         func->SetTranslatedText(translation);
                     }
                 }
+                if (func->GetType() == ftLoop) {
+                    cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                    funcsLoop->InitIterator();
+                    cTemplateFunction *loopFunc = NULL;
+                    while(loopFunc = funcsLoop->GetNextFunction()) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                            string text = loopFunc->GetParameter(ptText);
+                            string translation;
+                            bool translated = globals->Translate(text, translation);
+                            if (translated) {
+                                loopFunc->SetTranslatedText(translation);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -346,6 +361,32 @@ void cTemplateView::Translate(void) {
                     func->SetTranslatedText(translation);
                 }
             }
+            if (func->GetType() == ftLoop) {
+                cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                funcsLoop->InitIterator();
+                cTemplateFunction *loopFunc = NULL;
+                while(loopFunc = funcsLoop->GetNextFunction()) {
+                    if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                        string text = loopFunc->GetParameter(ptText);
+                        string translation;
+                        bool translated = globals->Translate(text, translation);
+                        if (translated) {
+                            loopFunc->SetTranslatedText(translation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Translate Plugin Views
+    for (map < string, map< int, cTemplateView*> >::iterator it = pluginViews.begin(); it != pluginViews.end(); it++) {
+        esyslog("skindesigner: translating plugin %s", (it->first).c_str());
+        map< int, cTemplateView*> plugViews = it->second;
+        for (map< int, cTemplateView*>::iterator it2 = plugViews.begin(); it2 != plugViews.end(); it2++) {
+            esyslog("skindesigner: translating view %d", (int)it2->first);
+            cTemplateView *pluginView = it2->second;
+            pluginView->Translate();
         }
     }
 
