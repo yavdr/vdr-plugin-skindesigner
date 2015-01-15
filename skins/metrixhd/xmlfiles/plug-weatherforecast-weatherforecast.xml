@@ -128,7 +128,7 @@
         <!-- All Tokens from listelement are available -->
         <currentelement delay="100" fadetime="0">
             <area condition="{iscurrent}" x="51%" y="0" width="48%" height="100%" layer="3">
-                <drawimage name="weathericon" imagetype="icon" path="{icon}" x="2%" y="0" width="{areawidth}*0.4" height="{areawidth}*0.4"/>
+                <drawimage name="weathericon" imagetype="icon" path="{icon}" x="2%" y="0" width="{areawidth}*0.3" height="{areawidth}*0.3"/>
                 <drawtext align="right" y="0" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{city}" />
                 <drawtext align="right" y="7%" font="{light}" fontsize="8%" color="{clrWhite}" text="{timestamp}" />
                 <drawtext align="right" y="13%" font="{light}" fontsize="18%" color="{clrWhite}" text="{temperature}°C" />

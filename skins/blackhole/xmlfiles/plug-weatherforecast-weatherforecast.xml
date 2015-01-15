@@ -109,8 +109,8 @@
                 <loop name="hourly" x="0" y="0" orientation="horizontal" columnwidth="{areawidth}/8" rowheight="{areaheight}" overflow="cut">
                     <drawtext align="center" y="0" font="{semibold}" fontsize="15%"  color="{clrWhite}" text="{hourly[timestamp]}" />
                     <drawimage imagetype="icon" path="{hourly[icon]}" align="center" y="15%" width="{columnwidth}*0.8" height="{columnwidth}*0.8"/>
-                    <drawtext align="center" y="{columnwidth}*0.8 + {rowheight}*0.2" font="{regular}" fontsize="15%" color="{clrWhite}" text="{hourly[temperature]}°C" />
-                    <drawtextbox x="0" y="{columnwidth}*0.8 + {rowheight}*0.4" width="{columnwidth}" maxlines="2" align="center" font="{regular}" fontsize="10%" color="{clrWhite}" text="{hourly[summary]}" />
+                    <drawtext align="center" y="{columnwidth}*0.8 + {rowheight}*0.15" font="{regular}" fontsize="15%" color="{clrWhite}" text="{hourly[temperature]}°C" />
+                    <drawtextbox x="0" y="{columnwidth}*0.8 + {rowheight}*0.3" width="{columnwidth}" maxlines="2" align="center" font="{regular}" fontsize="10%" color="{clrWhite}" text="{hourly[summary]}" />
                     <drawimage imagetype="skinpart" path="line_vertical" x="{columnwidth}" y="0" width="2" height="{rowheight}"/>
                 </loop>
             </area>
@@ -118,8 +118,8 @@
                 <loop name="daily" x="0" y="0" orientation="horizontal" columnwidth="{areawidth}/7" rowheight="{areaheight}" overflow="cut">
                     <drawtext align="center" y="0" font="{semibold}" fontsize="14%"  color="{clrWhite}" text="{daily[dayname]}" />
                     <drawtext align="center" y="10%" font="{semibold}" fontsize="14%"  color="{clrWhite}" text="{daily[day]}" />
-                    <drawimage imagetype="icon" path="{daily[icon]}" align="center" y="25%" width="{columnwidth}*0.8" height="{columnwidth}*0.8"/>
-                    <drawtext align="center" y="{rowheight}*0.65" font="{regular}" fontsize="11%" color="{clrWhite}" text="{daily[temperaturemin]}°C - {daily[temperaturemax]}°C" />
+                    <drawimage imagetype="icon" path="{daily[icon]}" align="center" y="25%" width="{columnwidth}*0.6" height="{columnwidth}*0.6"/>
+                    <drawtext align="center" y="{rowheight}*0.65" font="{regular}" fontsize="13%" color="{clrWhite}" text="{daily[temperaturemin]}°C - {daily[temperaturemax]}°C" />
                     <drawtextbox x="{columnwidth}*0.02" y="{rowheight}*0.80" width="{columnwidth}*0.96" maxlines="2" align="center" font="{regular}" fontsize="8%" color="{clrWhite}" text="{daily[summary]}" />
                     <drawimage imagetype="skinpart" path="line_vertical" x="{columnwidth}" y="0" width="2" height="{rowheight}"/>
                 </loop>

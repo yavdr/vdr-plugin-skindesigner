@@ -106,7 +106,7 @@
                 <fill color="{clrTransBlack}" />
             </area>
             <area condition="{iscurrent}" x="32%" y="2%" width="67%" height="96%" layer="3">
-                <drawimage name="weathericon" imagetype="icon" path="{icon}" x="2%" y="0" width="{areawidth}*0.3" height="{areawidth}*0.3"/>
+                <drawimage name="weathericon" imagetype="icon" path="{icon}" x="2%" y="0" width="{areawidth}*0.2" height="{areawidth}*0.2"/>
                 <drawtext align="right" y="2%" font="{semibold}" fontsize="6%" color="{clrWhite}" text="{city}" />
                 <drawtext align="right" y="8%" font="{vdrOsd}" fontsize="6%" color="{clrWhite}" text="{timestamp}" />
                 <drawtext align="right" y="14%" font="{vdrOsd}" fontsize="12%" color="{clrWhite}" text="{temperature}°C" />
