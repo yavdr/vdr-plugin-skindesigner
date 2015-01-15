@@ -239,6 +239,13 @@
         </area>
     </time>
 
+    <currentweather>
+        <area x="0" y="0" width="11%" height="16%" layer="3">
+            <drawimage name="weathericon" imagetype="icon" path="{icon}" x="{areawidth}/2 + {width(temperature)}/2 - {width(weathericon)}/2 + 5" valign="center" width="{areaheight}*0.8" height="{areaheight}*0.8"/>
+            <drawtext name="temperature" x="{areawidth}/2 - {width(temperature)}/2 - {width(weathericon)}/2" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{temperature}°C" />
+        </area>
+    </currentweather>
+
     <!-- Available Variables message:
     {text}                     message text
     {status}                   true if message is a status message

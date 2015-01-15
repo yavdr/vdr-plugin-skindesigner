@@ -64,7 +64,7 @@
         <area x="81%" y="0" width="7%" height="5%" layer="5">
             <drawtext x="0" valign="center" font="{digital}" fontsize="90%" color="{clrWhite}" text="{time}" />
         </area>
-        <area x="40%" y="0" width="37%" height="8%" layer="3">
+        <area x="50%" y="0" width="27%" height="8%" layer="3">
             <drawtext align="right" valign="center" font="{semibold}" fontsize="90%" color="{clrWhite}" text="{daynameshort} {day}.{month}" />
         </area>
     </datetime>
