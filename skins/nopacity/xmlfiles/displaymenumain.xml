@@ -75,6 +75,20 @@
         </area>        
     </discusage>
 
+    <currentweather>
+        <area x="63%" y="11%" width="25%" height="16%" layer="1">
+            <fill color="{clrBackground}"/>
+        </area>
+        <area x="63%" y="11%" width="25%" height="16%" layer="2">
+            <drawimage name="weathericon" imagetype="icon" path="{icon}" x="5" valign="center" width="{areaheight}*0.7" height="{areaheight}*0.7"/>
+        </area>
+        <area x="75%" y="11%" width="12%" height="16%" layer="2">
+            <drawtext align="right" valign="center" font="{vdrOsd}" fontsize="40%" color="{clrWhite}" text="{temperature}°C" />
+            <drawtext x="0" y="5" font="{vdrOsd}" fontsize="18%" color="{clrWhite}" text="{mintemperature}°C - {maxtemperature}°C" />
+            <drawtext x="0" y="82%" font="{vdrOsd}" width="100%" fontsize="15%" color="{clrWhite}" text="{summary}" />
+        </area>
+    </currentweather>
+
     <!-- Available Variables devices:
     {numdevices}                number of available devices
     {devices[]}                 array with available devices

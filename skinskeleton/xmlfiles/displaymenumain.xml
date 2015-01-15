@@ -90,6 +90,8 @@
     {timestamp}                 timestamp of forecast in dd.mm hh:mm
     {temperature}               current temperature in °C
     {apparenttemperature}       apparent (feeled) temperature
+    {mintemperature}            minimum daily temperature in °C
+    {maxtemperature}            maximum daily temperature in °C
     {summary}                   short weather summary
     {icon}                      weather icon 
     {precipitationintensity}    precipitation intensity in l/m2
