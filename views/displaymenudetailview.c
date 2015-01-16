@@ -161,9 +161,11 @@ void cDisplayMenuDetailView::SetTokens(void) {
     } else if (recording) {
         string name = recording->Name() ? recording->Name() : "";
         stringTokens.insert(pair<string,string>("name", name));
+        intTokens.insert(pair<string,int>("cutted", recording->IsEdited()));
 
         const cRecordingInfo *info = recording->Info();
         if (info) {
+            stringTokens.insert(pair<string,string>("epgname", info->Title() ? info->Title() : name));
             stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
             stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
             const cEvent *event = info->GetEvent();
@@ -193,6 +195,7 @@ void cDisplayMenuDetailView::SetTokens(void) {
                 stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
             }
         } else {
+            stringTokens.insert(pair<string,string>("epgname", ""));
             stringTokens.insert(pair<string,string>("shorttext", ""));
             stringTokens.insert(pair<string,string>("description", ""));            
             int recDuration = recording->LengthInSeconds();
@@ -713,6 +716,7 @@ void cDisplayMenuDetailView::DrawHeader(void) {
 
         const cRecordingInfo *info = recording->Info();
         if (info) {
+            headerStringTokens.insert(pair<string,string>("epgname", info->Title() ? info->Title() : name));
             headerStringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
             const cEvent *event = info->GetEvent();
             if (event) {

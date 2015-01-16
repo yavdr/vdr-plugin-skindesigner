@@ -622,6 +622,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     }
     intTokens.insert(pair<string,int>("extrecinfoavailable", extRecinfoAvailable));
 
+    stringTokens.insert(pair<string,string>("epgname", info->Title() ? info->Title() : buffer));
     stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
     stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
     

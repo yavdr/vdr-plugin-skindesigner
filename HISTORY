@@ -149,4 +149,5 @@ Version 0.1.2
 - some fixes for plugins which use skindesigner template interface
 
 Version 0.1.3
- 
+
+- added {epgname} token for recordings in currentview and detailedview.
