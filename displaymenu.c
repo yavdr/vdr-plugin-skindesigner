@@ -2,7 +2,8 @@
 #include "libcore/helpers.h"
 
 cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
-    textAreaFont = NULL; 
+    textAreaFont = NULL;
+    rootView = NULL;
     doOutput = true;
     state = vsInit;
     pluginMenu = -1;
@@ -21,9 +22,8 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
-    if (!doOutput)
-        return;
-    delete rootView;
+    if (rootView)
+        delete rootView;
     if (textAreaFont)
         delete textAreaFont;
 }

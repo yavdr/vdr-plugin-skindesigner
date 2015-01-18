@@ -2,6 +2,7 @@
 #include "libcore/timers.h"
 
 cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) {
+    channelView = NULL;
     if (firstDisplay) {
         firstDisplay = false;
         doOutput = false;
@@ -30,9 +31,8 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
 }
 
 cSDDisplayChannel::~cSDDisplayChannel() {
-    if (!doOutput)
-        return;
-    delete channelView;
+    if (channelView)
+        delete channelView;
 }
 
 void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
