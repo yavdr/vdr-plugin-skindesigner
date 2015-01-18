@@ -295,6 +295,19 @@ bool cConditionalParameter::Evaluate(map < string, int > *intTokens, map < strin
                         tokenTrue = true;
                 }
             }
+        } else if (cond->type == ctStringEmpty) {
+            if (stringTokens) {
+                map < string, string >::iterator hit = stringTokens->find(cond->tokenName);
+                if (hit != stringTokens->end()) {
+                    string value = hit->second;
+                    if (value.size() == 0)
+                        tokenTrue = true;
+                } else {
+                    tokenTrue = true;
+                }
+            } else {
+                tokenTrue = true;
+            }
         } else {
             int tokenValue = EvaluateParameter(cond->tokenName, intTokens, stringTokens);
             if (cond->type == ctBool) {
@@ -387,6 +400,8 @@ void cConditionalParameter::InsertCondition(string cond) {
         sCond.isNegated = true;
     } else if (!rest.compare("isset")) {
         sCond.type = ctStringSet;
+    } else if (!rest.compare("empty")) {
+        sCond.type = ctStringEmpty;
     } else if (startswith(rest.c_str(), "gt(")) {
         string compVal = rest.substr(4, rest.size() - 5);
         sCond.compareValue = atoi(compVal.c_str());

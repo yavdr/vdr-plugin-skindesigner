@@ -109,6 +109,7 @@ enum eCondType {
     ctEquals,
     ctBool,
     ctStringSet,
+    ctStringEmpty,
     ctNone
 };
 

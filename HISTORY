@@ -156,3 +156,5 @@ Version 0.1.3
 Version 0.1.4
 
 - fixed token volpercent in nopacity and metrixhd
+- added "empty" operator additionally to "isset" to check in a condition
+  if a string token is set
