@@ -152,3 +152,5 @@ Version 0.1.3
 
 - added {epgname} token for recordings in currentview and detailedview.
 - fixed crash when start recording with extrecmenu or remotetimers
+
+Version 0.1.4
