@@ -11,7 +11,7 @@ cGlobals::cGlobals(void) {
 }
 
 bool cGlobals::ReadFromXML(void) {
-    std::string xmlFile = "globals.xml";
+    string xmlFile = "globals.xml";
     cXmlParser parser;
     if (!parser.ReadGlobals(this, xmlFile))
         return false;

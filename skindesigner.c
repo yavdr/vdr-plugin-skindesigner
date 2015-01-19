@@ -108,6 +108,7 @@ bool cPluginSkinDesigner::Start(void) {
     config.InitSkinIterator();
     string skin = "";
     while (config.GetSkin(skin)) {
+        config.ReadSkinSetup(skin);
         cSkinDesigner *newSkin = new cSkinDesigner(skin);
         skins.push_back(newSkin);
         if (!trueColorAvailable) {

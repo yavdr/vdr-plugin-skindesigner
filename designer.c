@@ -263,6 +263,14 @@ bool cSkinDesigner::LoadTemplates(void) {
         return false;
     }
 
+/*
+    cSkinSetup *skinSetups = new cSkinSetup();
+    config.InitSkinIterator();
+    string skin = "";
+    while (config.GetSkin(skin)) {
+        skinSetups->ReadFromXML(skin);
+    }
+*/
     DeleteTemplates();
 
     channelTemplate = new cTemplate(vtDisplayChannel);

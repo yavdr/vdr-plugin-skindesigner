@@ -10,6 +10,7 @@
 #include "libcore/fontmanager.h"
 #include "libcore/imagecache.h"
 #include "libcore/recfolderinfo.h"
+#include "libcore/skinsetup.h"
 
 #define SCRIPTOUTPUTPATH "/tmp/skindesigner"
 
@@ -37,6 +38,7 @@ public:
     void SetLogoPath(cString path);
     void SetEpgImagePath(cString path);
     void ReadSkins(void);
+    void ReadSkinSetup(string skin);
     void InitSkinIterator(void) { skinIterator = skins.begin(); };
     bool GetSkin(string &skin);
     void CheckDecimalPoint(void);

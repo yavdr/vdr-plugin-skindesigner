@@ -27,6 +27,7 @@ cDesignerConfig::cDesignerConfig() {
 }
 
 cDesignerConfig::~cDesignerConfig() {
+    esyslog("skindesigner: config destruktor");
 }
 
 void cDesignerConfig::SetPathes(void) {
@@ -73,6 +74,12 @@ void cDesignerConfig::ReadSkins(void) {
         skins.push_back(dirEntryName);
     }
     dsyslog("skindesigner %ld skins found in %s", skins.size(), *skinPath);
+}
+
+void cDesignerConfig::ReadSkinSetup(string skin) {
+    cSkinSetup *skinSetup = new cSkinSetup(skin);
+    skinSetup->ReadFromXML();
+    skinSetup->Debug();
 }
 
 bool cDesignerConfig::GetSkin(string &skin) {
