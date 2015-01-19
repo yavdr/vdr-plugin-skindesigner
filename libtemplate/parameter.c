@@ -342,20 +342,24 @@ int cConditionalParameter::EvaluateParameter(string token, map < string, int > *
     map < string, int >::iterator hitGlobals = globals->intVars.find(token);
     if (hitGlobals != globals->intVars.end()) {
         return hitGlobals->second;
-    } else {
-        //then check tokens
-        if (intTokens) {
-            map < string, int >::iterator hit = intTokens->find(token);
-            if (hit != intTokens->end()) {
-                return hit->second;
-            }
+    }
+    //then check custom tokens
+    map < string, int >::iterator hitCustomTokens = globals->customIntTokens.find(token);
+    if (hitCustomTokens != globals->customIntTokens.end()) {
+        return hitCustomTokens->second;
+    }
+    //then check tokens
+    if (intTokens) {
+        map < string, int >::iterator hit = intTokens->find(token);
+        if (hit != intTokens->end()) {
+            return hit->second;
         }
-        if (stringTokens) {
-            map < string, string >::iterator hit = stringTokens->find(token);
-            if (hit != stringTokens->end()) {
-                string value = hit->second;
-                return atoi(value.c_str());
-            }
+    }
+    if (stringTokens) {
+        map < string, string >::iterator hit = stringTokens->find(token);
+        if (hit != stringTokens->end()) {
+            string value = hit->second;
+            return atoi(value.c_str());
         }
     }
     return 0;
