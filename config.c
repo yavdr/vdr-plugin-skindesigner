@@ -27,7 +27,9 @@ cDesignerConfig::cDesignerConfig() {
 }
 
 cDesignerConfig::~cDesignerConfig() {
-    esyslog("skindesigner: config destruktor");
+    for (map < string, cSkinSetup* >::iterator it = skinSetups.begin(); it != skinSetups.end(); it++) {
+        delete it->second;
+    }
 }
 
 void cDesignerConfig::SetPathes(void) {
@@ -78,8 +80,10 @@ void cDesignerConfig::ReadSkins(void) {
 
 void cDesignerConfig::ReadSkinSetup(string skin) {
     cSkinSetup *skinSetup = new cSkinSetup(skin);
-    skinSetup->ReadFromXML();
-    skinSetup->Debug();
+    if (skinSetup->ReadFromXML()) {
+        //skinSetup->Debug();
+        skinSetups.insert(pair<string, cSkinSetup* >(skin, skinSetup));
+    }
 }
 
 bool cDesignerConfig::GetSkin(string &skin) {
@@ -90,6 +94,15 @@ bool cDesignerConfig::GetSkin(string &skin) {
     skinIterator++;
     return true;
 }
+
+cSkinSetup* cDesignerConfig::GetSkinSetup(string &skin) {
+    map< string, cSkinSetup* >::iterator hit = skinSetups.find(skin);
+    if (hit != skinSetups.end()) {
+        return hit->second;
+    }
+    return NULL;
+}
+
 
 void cDesignerConfig::CheckDecimalPoint(void) {
     struct lconv *pLocInfo;

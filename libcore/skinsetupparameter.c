@@ -10,15 +10,12 @@ cSkinSetupParameter::cSkinSetupParameter(void) {
 }
 
 void cSkinSetupParameter::Debug(void) {
+	string sType = "unknown";
 	if (type == sptBool)
-		dsyslog("skindesigner: type bool");
+		sType = "bool";
 	else if (type == sptInt)
-		dsyslog("skindesigner: type integer");
-	else
-		dsyslog("skindesigner: type UNKNOWN");
-	dsyslog("skindesigner: name %s", name.c_str());
-	dsyslog("skindesigner: displayText %s", displayText.c_str());
+		sType = "int";
+	dsyslog("skindesigner: name \"%s\", type %s, displayText \"%s\", Value %d", name.c_str(), sType.c_str(), displayText.c_str(), value);
 	if (type == sptInt)
 		dsyslog("skindesigner: min %d, max %d", min, max);
-	dsyslog("skindesigner: Value %d", value);
 }

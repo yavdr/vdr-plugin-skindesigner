@@ -128,11 +128,8 @@ bool cXmlParser::ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFil
     this->skinSetup = skinSetup;
     string xmlPath = *cString::sprintf("%s%s/%s", *config.skinPath, skin.c_str(), xmlFile.c_str());
 
-    esyslog("skindesigner: reading skin setup %s", xmlPath.c_str());
-    
     if (!FileExists(xmlPath))
         return false;
-
     if (ctxt == NULL) {
         esyslog("skindesigner: Failed to allocate parser context");
         return false;
@@ -151,12 +148,9 @@ bool cXmlParser::ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFil
         esyslog("skindesigner: Failed to validate %s", xmlPath.c_str());
         return false;
     }
-
     if (root == NULL) {
-        esyslog("skindesigner: ERROR: Skin Setup %s is empty", xmlPath.c_str());
         return false;
     }
-
     if (xmlStrcmp(root->name, (const xmlChar *) "setup")) {
         return false;
     }
@@ -271,8 +265,6 @@ bool cXmlParser::ParseGlobals(void) {
 }
 
 bool cXmlParser::ParseSkinSetup(string skin) {
-    esyslog("skindesigner: parsing skinsetup from %s", skin.c_str());
-
     xmlNodePtr node = root->xmlChildrenNode;
 
     while (node != NULL) {
@@ -282,6 +274,10 @@ bool cXmlParser::ParseSkinSetup(string skin) {
         }
         if (!xmlStrcmp(node->name, (const xmlChar *) "parameters")) {
             ParseSetupParameter(node->xmlChildrenNode);
+            node = node->next;
+            continue;
+        } else if (!xmlStrcmp(node->name, (const xmlChar *) "translations")) {
+            ParseTranslations(node->xmlChildrenNode);
             node = node->next;
             continue;
         }
@@ -610,7 +606,11 @@ void cXmlParser::ParseTranslations(xmlNodePtr node) {
                 xmlFree(value);
             nodeTrans = nodeTrans->next;
         }
-        globals->translations.insert(pair<string, map < string, string > >((const char*)tokenName, tokenTranslations));
+        if (globals) {
+            globals->translations.insert(pair<string, map < string, string > >((const char*)tokenName, tokenTranslations));
+        } else if (skinSetup) {
+            skinSetup->SetTranslation((const char*)tokenName, tokenTranslations);
+        }
         xmlFree(tokenName);
         node = node->next;
     }

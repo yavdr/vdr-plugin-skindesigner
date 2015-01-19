@@ -29,6 +29,7 @@ private:
     string osdLanguage;
     map < string, map < int, string > > plugins;
     map < string, map < int, string > >::iterator plugIt;
+    map< string, cSkinSetup* > skinSetups;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
@@ -41,6 +42,7 @@ public:
     void ReadSkinSetup(string skin);
     void InitSkinIterator(void) { skinIterator = skins.begin(); };
     bool GetSkin(string &skin);
+    cSkinSetup* GetSkinSetup(string &skin);
     void CheckDecimalPoint(void);
     void SetSkin(void);
     bool SkinChanged(void);

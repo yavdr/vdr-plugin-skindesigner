@@ -12,8 +12,26 @@
     "displayname" is used to display the option in the setup menu.
     -->
     <parameters>
-        <parameter type="bool" name="showsignal" displaytext="Show Signalstrength and -quality when switching channel">0</parameter>
-        <parameter type="bool" name="showposter" displaytext="Show Poster when switching channel">1</parameter>
-        <parameter type="int" name="fadetime" min="0" max="1000" displaytext="Fade In and Out time in ms">300</parameter>
+        <parameter type="bool" name="showsignal" displaytext="tr(showsignaltext)">0</parameter>
+        <parameter type="bool" name="showposter" displaytext="tr(showpostertext)">1</parameter>
+        <parameter type="int" name="fadetime" min="0" max="1000" displaytext="tr(fadetext)">300</parameter>
     </parameters>
+
+    <!--
+    translations of displaytexts
+    -->
+    <translations>
+        <token name="tr(showsignaltext)">
+            <trans lang="en_EN">Show Signalstrength and -quality when switching channel</trans>
+            <trans lang="de_DE">Signalstärke und -qualität beim Umschalten anzeigen</trans>
+        </token>
+        <token name="tr(showpostertext)">
+            <trans lang="en_EN">Show Poster when switching channel</trans>
+            <trans lang="de_DE">Poster beim Umschalten anzeigen</trans>
+        </token>
+        <token name="tr(fadetext)">
+            <trans lang="en_EN">Fade In and Out time in ms</trans>
+            <trans lang="de_DE">Fade In and Out Zeit in ms</trans>
+        </token>
+    </translations>
 </setup>

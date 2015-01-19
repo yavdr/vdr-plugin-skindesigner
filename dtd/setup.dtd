@@ -1,7 +1,8 @@
 <?xml encoding="UTF-8"?>
 
-<!ELEMENT setup (parameters)>
+<!ELEMENT setup (parameters,translations)>
 <!ELEMENT parameters (parameter)*>
+<!ELEMENT translations (token)*>
 
 <!ELEMENT parameter (#PCDATA)>
 <!ATTLIST parameter
@@ -12,3 +13,10 @@
   displaytext CDATA #REQUIRED
   >
 
+<!ELEMENT token (trans)+>
+<!ATTLIST token
+  name CDATA #REQUIRED>
+
+<!ELEMENT trans (#PCDATA)>
+<!ATTLIST trans
+  lang NMTOKEN #REQUIRED>
