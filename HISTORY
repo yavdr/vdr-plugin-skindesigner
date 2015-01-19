@@ -159,4 +159,4 @@ Version 0.1.4
 - added "empty" operator additionally to "isset" to check in a condition
   if a string token is set
 - added token {nummenuitem} for plugin menu lists
-
+- fixed bug that custom int tokens were not considered in conditions
