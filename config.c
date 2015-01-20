@@ -187,7 +187,6 @@ void cDesignerConfig::UpdateGlobals(void) {
     if (skinSetupActiveSkin && tmplGlobals) {
         dsyslog("skindesigner: globals for skin %s adapted to skin setup", activeSkin.c_str());
         skinSetupActiveSkin->AddToGlobals(tmplGlobals);
-        tmplGlobals->Debug();
     }
 }
 

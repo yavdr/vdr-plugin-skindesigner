@@ -163,3 +163,6 @@ Version 0.1.4
 - added possibility for skinners to define a skin setup, skin setup can
   be done in plugin setup menu
 - made skin blackhole configurable, adapted xml files
+
+Version 0.1.5
+

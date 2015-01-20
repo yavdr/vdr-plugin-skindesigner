@@ -19,7 +19,7 @@
 #endif
 
 
-static const char *VERSION        = "0.1.4";
+static const char *VERSION        = "0.1.5";
 static const char *DESCRIPTION    = "SkinDesigner";
 static const char *MAINMENUENTRY  = "Skin Designer";
 
@@ -118,7 +118,6 @@ bool cPluginSkinDesigner::Start(void) {
     }
     config.TranslateSetup();
     config.SetSkinSetupParameters();
-    config.DebugSkinSetups();
 
     if (skins.size() == 0) {
         esyslog("skindesigner: no skins found! Using default Skin LCARS!");

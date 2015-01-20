@@ -19,7 +19,6 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         doOutput = false;
         return;
     }
-    esyslog("skindesigner: menu opened");
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
@@ -27,7 +26,6 @@ cSDDisplayMenu::~cSDDisplayMenu() {
         delete rootView;
     if (textAreaFont)
         delete textAreaFont;
-    esyslog("skindesigner: menu closed");
 }
 
 void cSDDisplayMenu::Scroll(bool Up, bool Page) {
