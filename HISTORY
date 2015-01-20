@@ -160,3 +160,6 @@ Version 0.1.4
   if a string token is set
 - added token {nummenuitem} for plugin menu lists
 - fixed bug that custom int tokens were not considered in conditions
+- added possibility for skinners to define a skin setup, skin setup can
+  be done in plugin setup menu
+- made skin blackhole configurable, adapted xml files

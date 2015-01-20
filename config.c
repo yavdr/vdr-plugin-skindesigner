@@ -81,6 +81,23 @@ void cDesignerConfig::ClearSkinSetups(void) {
     for (map < string, cSkinSetup* >::iterator it = skinSetups.begin(); it != skinSetups.end(); it++) {
         delete it->second;
     }
+    skinSetups.clear();
+}
+
+void cDesignerConfig::DebugSkinSetups(void) {
+    dsyslog("skindesigner: skin setups:");
+    InitSetupIterator();
+    cSkinSetup *skinSetup = NULL;
+    while (skinSetup = GetSkinSetup()) {
+        skinSetup->Debug();
+    }    
+}
+
+void cDesignerConfig::DebugSkinSetupParameters(void) {
+    dsyslog("skindesigner: skin setup parameters:");
+    for (vector<pair<string, int> >::iterator it = skinSetupParameters.begin(); it != skinSetupParameters.end(); it++) {
+        dsyslog("skindesigner: parameter %s value %d", (*it).first.c_str(), (*it).second);
+    }
 }
 
 void cDesignerConfig::ReadSkinSetup(string skin) {
@@ -123,8 +140,19 @@ void cDesignerConfig::TranslateSetup(void) {
     }
 }
 
-void cDesignerConfig::CheckUnknownSetupParameters(void) {
-    for (vector < pair <string, int> >::iterator it = unknownSetupParameters.begin(); it != unknownSetupParameters.end(); it++) {
+void cDesignerConfig::UpdateSkinSetupParameter(string name, int value) {
+    vector<pair<string,int> >::iterator hit;
+    for (hit = skinSetupParameters.begin(); hit != skinSetupParameters.end(); hit++) {
+        if (!name.compare((*hit).first)) {
+            skinSetupParameters.erase(hit);
+            break;
+        }
+    }
+    skinSetupParameters.push_back(pair<string,int>(name, value));
+}
+
+void cDesignerConfig::SetSkinSetupParameters(void) {
+    for (vector < pair <string, int> >::iterator it = skinSetupParameters.begin(); it != skinSetupParameters.end(); it++) {
         string name = (*it).first;
         int value = (*it).second;
 
@@ -159,6 +187,7 @@ void cDesignerConfig::UpdateGlobals(void) {
     if (skinSetupActiveSkin && tmplGlobals) {
         dsyslog("skindesigner: globals for skin %s adapted to skin setup", activeSkin.c_str());
         skinSetupActiveSkin->AddToGlobals(tmplGlobals);
+        tmplGlobals->Debug();
     }
 }
 
@@ -286,7 +315,7 @@ bool cDesignerConfig::SetupParse(const char *Name, const char *Value) {
     else pluginSetupParam = false;
 
     if (!pluginSetupParam) {
-        unknownSetupParameters.push_back(pair <string, int>(Name, atoi(Value)));
+        skinSetupParameters.push_back(pair <string, int>(Name, atoi(Value)));
     }
 
     return true;

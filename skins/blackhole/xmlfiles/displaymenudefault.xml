@@ -26,7 +26,7 @@
     <!-- IMPORTANT: menuitemwidth and determinatefont have to be defined here. menuitemwidth defines the total width of the 
     default menu items, determinatefont the function which sets the actual font to use. With that it is possible to determinate
     the correct column widths -->
-    <menuitems x="1%" y="10%" orientation="vertical" width="95%" height="80%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="16">
+    <menuitems x="1%" y="10%" orientation="vertical" width="95%" height="80%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="{nummenuitemsdefault}">
         <!-- Available Variables default menu listelement:
         {nummenuitem}               number of item in list, starts with 1
         {column1}                   text of column1

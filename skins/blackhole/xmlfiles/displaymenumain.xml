@@ -189,7 +189,7 @@
     <customtokens>
     </customtokens>
 
-    <menuitems x="1%" y="10%" orientation="vertical" width="50%" height="80%" align="center" numlistelements="10">
+    <menuitems x="1%" y="10%" orientation="vertical" width="50%" height="80%" align="center" numlistelements="{nummenuitemsmain}">
         <!-- Available Variables main menu listelement:
         {nummenuitem}             number of item in list, starts with 1
         {label}                   label of menu item
@@ -203,9 +203,16 @@
                 <drawimage condition="not{current}" imagetype="skinpart" path="menubutton" x="0" y="0" width="100%" height="100%"/>
                 <drawimage condition="{current}" imagetype="skinpart" path="menubuttonactive" x="0" y="0" width="100%" height="100%"/>
             </area>
-           <area x="0" width="100%" layer="3">
+            <area condition="{showmainmenuicons}" x="1%" width="20%" layer="3">
+                <drawimage imagetype="menuicon" path="{icon}" x="1%" valign="center" width="{areaheight}*0.8" height="{areaheight}*0.8"/>
+            </area>
+            <area condition="not{showmainmenuicons}" x="0" width="100%" layer="3">
                 <drawtext condition="not{current}" x="1%" width="98%" valign="center" font="{regular}" fontsize="80%" color="{clrGray}" text="{number} {label} " />
                 <drawtext condition="{current}" x="1%" width="98%" valign="center" font="{regular}" fontsize="80%" color="{clrWhite}" text="{number} {label} " />
+            </area>
+            <area condition="{showmainmenuicons}" x="0" width="100%" layer="3">
+                <drawtext condition="not{current}" x="{areaheight} + {areawidth}*0.02" width="{areawidth} - {areaheight}" valign="center" font="{regular}" fontsize="80%" color="{clrGray}" text="{number} {label} " />
+                <drawtext condition="{current}" x="{areaheight} + {areawidth}*0.02" width="{areawidth} - {areaheight}" valign="center" font="{regular}" fontsize="80%" color="{clrWhite}" text="{number} {label} " />
             </area>
         </listelement>
         <!-- additional element which is drawn for current element -->

@@ -14,7 +14,7 @@
    height="30"
    id="svg4191"
    version="1.1"
-   inkscape:version="0.91pre3 r13670"
+   inkscape:version="0.48.5 r10040"
    viewBox="0 0 15 30"
    sodipodi:docname="progressbarend.svg">
   <defs
@@ -47,15 +47,14 @@
        id="linearGradient4225"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(-585.00008,-3.4468423e-5)"
-       x1="592.67389"
-       y1="1053.8467"
-       x2="592.67389"
-       y2="1018.0886" />
+       x1="592.52893"
+       y1="1055.7797"
+       x2="592.62555"
+       y2="1017.992" />
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient5627">
       <stop
-         style="stop-color:#000000;stop-opacity:1"
+         style="stop-color:#323232;stop-opacity:1;"
          offset="0"
          id="stop5629" />
       <stop
@@ -73,15 +72,15 @@
      inkscape:pageshadow="2"
      inkscape:zoom="20.693842"
      inkscape:cx="-0.27737725"
-     inkscape:cy="14.43038"
+     inkscape:cy="14.527028"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
-     inkscape:window-width="1531"
-     inkscape:window-height="878"
-     inkscape:window-x="61"
-     inkscape:window-y="-8"
+     inkscape:window-width="1600"
+     inkscape:window-height="1153"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata4196">
@@ -101,7 +100,7 @@
      id="layer1"
      transform="translate(0,-1022.3622)">
     <path
-       style="opacity:1;fill:url(#linearGradient4223);fill-opacity:1;stroke:url(#linearGradient4225);stroke-width:1.98086679;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:url(#linearGradient4223);fill-opacity:1;stroke:url(#linearGradient4225);stroke-width:1.98086679000000010;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path4221"
        sodipodi:type="arc"
        sodipodi:cx="1.0436943"
@@ -110,7 +109,7 @@
        sodipodi:ry="14.009566"
        sodipodi:start="4.7114391"
        sodipodi:end="1.5745921"
-       d="m 1.0313805,1023.3526 a 12.963513,14.009566 0 0 1 11.2431395,7.0125 12.963513,14.009566 0 0 1 -0.01847,14.0287 12.963513,14.009566 0 0 1 -11.26156118,6.9778"
+       d="m 1.0313805,1023.3526 c 7.1595475,-0.01 12.9690205,6.259 12.9758215,13.9963 0.0068,7.7372 -5.7916464,14.0155 -12.951194,14.0228 -0.020507,10e-5 -0.041014,0 -0.0615202,-10e-5"
        sodipodi:open="true" />
   </g>
 </svg>

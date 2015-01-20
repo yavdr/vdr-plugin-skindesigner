@@ -80,6 +80,7 @@ void cGlobals::Debug(void) {
     for (map <string, string>::iterator font = fonts.begin(); font != fonts.end(); font++) {
         dsyslog("skindesigner: Font \"%s\": \"%s\"", (font->first).c_str(), (font->second).c_str());
     }
+    /*
     for (map <string, map< string, string > >::iterator trans = translations.begin(); trans != translations.end(); trans++) {
         dsyslog("skindesigner: Translation Token %s", (trans->first).c_str());
         map< string, string > tokenTrans = trans->second;
@@ -87,4 +88,5 @@ void cGlobals::Debug(void) {
             dsyslog("skindesigner: language %s, translation %s", (transTok->first).c_str(), (transTok->second).c_str());
         }
     }
+    */
 }

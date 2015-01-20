@@ -117,7 +117,8 @@ bool cPluginSkinDesigner::Start(void) {
         }
     }
     config.TranslateSetup();
-    config.CheckUnknownSetupParameters();
+    config.SetSkinSetupParameters();
+    config.DebugSkinSetups();
 
     if (skins.size() == 0) {
         esyslog("skindesigner: no skins found! Using default Skin LCARS!");
@@ -229,7 +230,7 @@ cString cPluginSkinDesigner::SVDRPCommand(const char *Command, const char *Optio
             config.ReadSkinSetup(skin);
         }
         config.TranslateSetup();
-        config.CheckUnknownSetupParameters();
+        config.SetSkinSetupParameters();
         activeSkin->Reload();
         ReplyCode = 250;
         return "SKINDESIGNER reload of templates and caches forced.";

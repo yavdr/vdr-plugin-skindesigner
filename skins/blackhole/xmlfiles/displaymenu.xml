@@ -129,103 +129,103 @@
     -->
     <colorbuttons>
         <area condition="{red1}" x="0" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{red1}" x="0" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{red}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{red}" />
         </area>
         <area condition="{green1}" x="0" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{green1}" x="0" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{green}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{green}" />
         </area>
         <area condition="{yellow1}" x="0" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{yellow1}" x="0" y="90%" width="25%" height="10%" layer="4">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{yellow}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{yellow}" />
         </area>
         <area condition="{blue1}" x="0" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{blue1}" x="0" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{blue}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{blue}" />
         </area>
 
         <area condition="{red2}" x="25%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{red2}" x="25%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{red}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{red}" />
         </area>
         <area condition="{green2}" x="25%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{green2}" x="25%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{green}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{green}" />
         </area>
         <area condition="{yellow2}" x="25%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{yellow2}" x="25%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{yellow}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{yellow}" />
         </area>
         <area condition="{blue2}" x="25%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{blue2}" x="25%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{blue}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{blue}" />
         </area>
         
         <area condition="{red3}" x="50%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{red3}" x="50%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{red}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{red}" />
         </area>
         <area condition="{green3}" x="50%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{green3}" x="50%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{green}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{green}" />
         </area>
         <area condition="{yellow3}" x="50%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{yellow3}" x="50%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{yellow}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{yellow}" />
         </area>
         <area condition="{blue3}" x="50%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{blue3}" x="50%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{blue}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{blue}" />
         </area>
         
         <area condition="{red4}" x="75%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonred" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{red4}" x="75%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{red}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{red}" />
         </area>
         <area condition="{green4}" x="75%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttongreen" align="center" valign="center" width="90%" height="60%"/>
         </area>
-        <area condition="{green4}" x="75%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{green}" />
+        <area condition="{green4}" x="60%" y="90%" width="25%" height="10%" layer="3">
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{green}" />
         </area>
         <area condition="{yellow4}" x="75%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonyellow" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{yellow4}" x="75%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{yellow}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{yellow}" />
         </area>
         <area condition="{blue4}" x="75%" y="90%" width="25%" height="10%" layer="2">
-            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="75%"/>
+            <drawimage imagetype="skinpart" path="buttonblue" align="center" valign="center" width="90%" height="60%"/>
         </area>
         <area condition="{blue4}" x="75%" y="90%" width="25%" height="10%" layer="3">
-            <drawtext align="center" valign="center" font="{regular}" fontsize="70%" color="{clrWhite}" text="{blue}" />
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{blue}" />
         </area>
     </colorbuttons>
     &displaymenudefault;

@@ -9,7 +9,7 @@
         </area>
     </scrollbar>
 
-    <menuitems x="1%" y="10%" orientation="vertical" width="98%" height="80%" align="center" numlistelements="10">
+    <menuitems x="1%" y="10%" orientation="vertical" width="98%" height="80%" align="center" numlistelements="{nummenuitemsmain}">
         <!-- Available Variables setup menu listelement:
         {nummenuitem}             number of item in list, starts with 1
         {label}                   label of menu item

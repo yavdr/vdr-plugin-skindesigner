@@ -14,16 +14,15 @@
    height="90"
    id="svg5061"
    version="1.1"
-   inkscape:version="0.91pre2 r13516"
+   inkscape:version="0.48.5 r10040"
    viewBox="0 0 1250 90"
    sodipodi:docname="progressbarback_replay.svg">
   <defs
      id="defs5063">
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient5627">
       <stop
-         style="stop-color:#000000;stop-opacity:1"
+         style="stop-color:#323232;stop-opacity:1;"
          offset="0"
          id="stop5629" />
       <stop
@@ -32,10 +31,9 @@
          id="stop5631" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient5619">
       <stop
-         style="stop-color:#000000;stop-opacity:1;"
+         style="stop-color:#323232;stop-opacity:1;"
          offset="0"
          id="stop5621" />
       <stop
@@ -71,17 +69,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.7554841"
-     inkscape:cx="106.52332"
-     inkscape:cy="11.991057"
+     inkscape:zoom="0.87774205"
+     inkscape:cx="570.58359"
+     inkscape:cy="78.787158"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
-     inkscape:window-width="1846"
-     inkscape:window-height="1058"
-     inkscape:window-x="66"
-     inkscape:window-y="-8"
+     inkscape:window-width="1600"
+     inkscape:window-height="1153"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata5066">

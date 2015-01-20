@@ -32,7 +32,7 @@ private:
     map < string, map < int, string > >::iterator plugIt;
     map < string, cSkinSetup* > skinSetups;
     map < string, cSkinSetup* >::iterator setupIt;
-    vector < pair <string, int> > unknownSetupParameters;
+    vector < pair <string, int> > skinSetupParameters;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
@@ -46,11 +46,14 @@ public:
     void InitSkinIterator(void) { skinIterator = skins.begin(); };
     bool GetSkin(string &skin);
     void ClearSkinSetups(void);
+    void DebugSkinSetups(void);
+    void DebugSkinSetupParameters(void);
     cSkinSetup* GetSkinSetup(string &skin);
     cSkinSetup* GetSkinSetup(void);
     void InitSetupIterator(void) { setupIt = skinSetups.begin(); };
     void TranslateSetup(void);
-    void CheckUnknownSetupParameters(void);
+    void SetSkinSetupParameters(void);
+    void UpdateSkinSetupParameter(string name, int value);
     void SetGlobals(cGlobals *globals) { tmplGlobals = globals; };
     void UpdateGlobals(void);
     void CheckDecimalPoint(void);

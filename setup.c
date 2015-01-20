@@ -34,7 +34,7 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
     bool hadSubMenu = HasSubMenu();
     eOSState state = cMenuSetupPage::ProcessKey(Key);
     if (hadSubMenu && Key == kOk) {
-        esyslog("skindesigner: store submenu");
+        Store();
     }
     if (!hadSubMenu && (state == osUnknown || Key == kOk)) {
         if ((Key == kOk && !hadSubMenu)) {
@@ -72,7 +72,9 @@ void cSkinDesignerSetup::Store(void) {
         skinSetup->InitParameterIterator();
         cSkinSetupParameter *param = NULL;
         while (param = skinSetup->GetParameter()) {
-            SetupStore(*cString::sprintf("%s.%s", skin.c_str(), param->name.c_str()), param->value);
+            cString paramName = cString::sprintf("%s.%s", skin.c_str(), param->name.c_str());
+            SetupStore(*paramName, param->value);
+            config.UpdateSkinSetupParameter(*paramName, param->value);
         }
     }
     config.UpdateGlobals();
