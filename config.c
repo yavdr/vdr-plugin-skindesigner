@@ -3,6 +3,7 @@
 #include "libcore/imageloader.h"
 
 cDesignerConfig::cDesignerConfig() {
+    tmplGlobals = NULL;
     epgImagePathSet = false;
     skinPathSet = false;
     logoPathSet = false;
@@ -27,9 +28,7 @@ cDesignerConfig::cDesignerConfig() {
 }
 
 cDesignerConfig::~cDesignerConfig() {
-    for (map < string, cSkinSetup* >::iterator it = skinSetups.begin(); it != skinSetups.end(); it++) {
-        delete it->second;
-    }
+    ClearSkinSetups();
 }
 
 void cDesignerConfig::SetPathes(void) {
@@ -78,6 +77,12 @@ void cDesignerConfig::ReadSkins(void) {
     dsyslog("skindesigner %ld skins found in %s", skins.size(), *skinPath);
 }
 
+void cDesignerConfig::ClearSkinSetups(void) {
+    for (map < string, cSkinSetup* >::iterator it = skinSetups.begin(); it != skinSetups.end(); it++) {
+        delete it->second;
+    }
+}
+
 void cDesignerConfig::ReadSkinSetup(string skin) {
     cSkinSetup *skinSetup = new cSkinSetup(skin);
     if (skinSetup->ReadFromXML()) {
@@ -103,6 +108,59 @@ cSkinSetup* cDesignerConfig::GetSkinSetup(string &skin) {
     return NULL;
 }
 
+cSkinSetup* cDesignerConfig::GetSkinSetup(void) {
+    if (setupIt == skinSetups.end()) {
+        return NULL;
+    }
+    cSkinSetup* skinSetup = setupIt->second;
+    setupIt++;
+    return skinSetup;
+}
+
+void cDesignerConfig::TranslateSetup(void) {
+    for (map< string, cSkinSetup* >::iterator it = skinSetups.begin(); it != skinSetups.end(); it++) {
+        (it->second)->TranslateSetup();
+    }
+}
+
+void cDesignerConfig::CheckUnknownSetupParameters(void) {
+    for (vector < pair <string, int> >::iterator it = unknownSetupParameters.begin(); it != unknownSetupParameters.end(); it++) {
+        string name = (*it).first;
+        int value = (*it).second;
+
+        InitSkinIterator();
+        string activeSkin = "";
+        bool skinFound = false;
+        while (GetSkin(activeSkin)) {
+            size_t hit = name.find(activeSkin);
+            if (hit != 0)
+                continue;
+            skinFound = true;
+            break;
+        }
+        if (skinFound) {
+            cSkinSetup* skinSetup = GetSkinSetup(activeSkin);
+            if (skinSetup != NULL) {
+                string paramName = name.substr(activeSkin.size()+1);
+                cSkinSetupParameter *skinSetupParam = skinSetup->GetParameter(paramName);
+                if (skinSetupParam) {
+                    skinSetupParam->value = value;
+                    continue;
+                }
+            }
+        }
+        esyslog("skindesigner: ERROR Unknown Setup Parameter %s", name.c_str());
+    }
+}
+
+void cDesignerConfig::UpdateGlobals(void) {
+    string activeSkin = Setup.OSDSkin;
+    cSkinSetup *skinSetupActiveSkin = GetSkinSetup(activeSkin);
+    if (skinSetupActiveSkin && tmplGlobals) {
+        dsyslog("skindesigner: globals for skin %s adapted to skin setup", activeSkin.c_str());
+        skinSetupActiveSkin->AddToGlobals(tmplGlobals);
+    }
+}
 
 void cDesignerConfig::CheckDecimalPoint(void) {
     struct lconv *pLocInfo;
@@ -216,6 +274,7 @@ cString cDesignerConfig::CheckSlashAtEnd(std::string path) {
 }
 
 bool cDesignerConfig::SetupParse(const char *Name, const char *Value) {
+    bool pluginSetupParam = true;
     if      (!strcasecmp(Name, "DebugImageLoading"))       debugImageLoading = atoi(Value);
     else if (!strcasecmp(Name, "LimitChannelLogoCache"))   limitLogoCache = atoi(Value);
     else if (!strcasecmp(Name, "NumberLogosInitially"))    numLogosPerSizeInitial = atoi(Value);
@@ -224,6 +283,11 @@ bool cDesignerConfig::SetupParse(const char *Name, const char *Value) {
     else if (!strcasecmp(Name, "RerunDistance"))           rerunDistance = atoi(Value);
     else if (!strcasecmp(Name, "RerunMaxChannel"))         rerunMaxChannel = atoi(Value);
     else if (!strcasecmp(Name, "BlockFlush"))              blockFlush = atoi(Value);
-    else return false;
+    else pluginSetupParam = false;
+
+    if (!pluginSetupParam) {
+        unknownSetupParameters.push_back(pair <string, int>(Name, atoi(Value)));
+    }
+
     return true;
 }

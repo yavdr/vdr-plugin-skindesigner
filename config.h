@@ -27,9 +27,12 @@ private:
     string fontOsd;
     string fontSml;
     string osdLanguage;
+    cGlobals *tmplGlobals;
     map < string, map < int, string > > plugins;
     map < string, map < int, string > >::iterator plugIt;
-    map< string, cSkinSetup* > skinSetups;
+    map < string, cSkinSetup* > skinSetups;
+    map < string, cSkinSetup* >::iterator setupIt;
+    vector < pair <string, int> > unknownSetupParameters;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
@@ -42,7 +45,14 @@ public:
     void ReadSkinSetup(string skin);
     void InitSkinIterator(void) { skinIterator = skins.begin(); };
     bool GetSkin(string &skin);
+    void ClearSkinSetups(void);
     cSkinSetup* GetSkinSetup(string &skin);
+    cSkinSetup* GetSkinSetup(void);
+    void InitSetupIterator(void) { setupIt = skinSetups.begin(); };
+    void TranslateSetup(void);
+    void CheckUnknownSetupParameters(void);
+    void SetGlobals(cGlobals *globals) { tmplGlobals = globals; };
+    void UpdateGlobals(void);
     void CheckDecimalPoint(void);
     void SetSkin(void);
     bool SkinChanged(void);
@@ -58,14 +68,15 @@ public:
     cString skinPath;
     cString logoPath;
     cString epgImagePath;
+    vector<string> skins;
+    vector<string>::iterator skinIterator;
+    bool replaceDecPoint;
+    char decPoint;
+    //Setup Parameter
     int numLogosPerSizeInitial;
     int limitLogoCache;
     int numLogosMax;
     int debugImageLoading;
-    bool replaceDecPoint;
-    char decPoint;
-    vector<string> skins;
-    vector<string>::iterator skinIterator;
     int rerunAmount;
     int rerunDistance;
     int rerunMaxChannel;

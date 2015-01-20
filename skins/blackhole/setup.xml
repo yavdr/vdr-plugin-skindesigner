@@ -12,9 +12,9 @@
     "displayname" is used to display the option in the setup menu.
     -->
     <parameters>
-        <parameter type="bool" name="showsignal" displaytext="tr(showsignaltext)">0</parameter>
-        <parameter type="bool" name="showposter" displaytext="tr(showpostertext)">1</parameter>
-        <parameter type="int" name="fadetime" min="0" max="1000" displaytext="tr(fadetext)">300</parameter>
+        <parameter type="bool" name="showsignal" displaytext="{tr(showsignaltext)}">0</parameter>
+        <parameter type="bool" name="showposter" displaytext="{tr(showpostertext)}">1</parameter>
+        <parameter type="int" name="fadetime" min="0" max="1000" displaytext="{tr(fadetext)}">300</parameter>
     </parameters>
 
     <!--

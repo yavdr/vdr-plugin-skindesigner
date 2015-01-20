@@ -98,6 +98,7 @@ bool cPluginSkinDesigner::Start(void) {
     cXmlParser::InitLibXML();
     cImageImporterSVG::InitLibRSVG();
     bool trueColorAvailable = true;
+    
     if (!cOsdProvider::SupportsTrueColor()) {
         esyslog("skindesigner: No TrueColor OSD found! Using default Skin LCARS!");
         trueColorAvailable = false;
@@ -115,6 +116,9 @@ bool cPluginSkinDesigner::Start(void) {
             newSkin->ActivateBackupSkin();
         }
     }
+    config.TranslateSetup();
+    config.CheckUnknownSetupParameters();
+
     if (skins.size() == 0) {
         esyslog("skindesigner: no skins found! Using default Skin LCARS!");
     }
@@ -218,6 +222,14 @@ cString cPluginSkinDesigner::SVDRPCommand(const char *Command, const char *Optio
     }
 
     if (strcasecmp(Command, "RELD") == 0) {
+        config.ClearSkinSetups();
+        config.InitSkinIterator();
+        string skin = "";
+        while (config.GetSkin(skin)) {
+            config.ReadSkinSetup(skin);
+        }
+        config.TranslateSetup();
+        config.CheckUnknownSetupParameters();
         activeSkin->Reload();
         ReplyCode = 250;
         return "SKINDESIGNER reload of templates and caches forced.";

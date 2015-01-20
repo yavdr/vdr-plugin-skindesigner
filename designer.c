@@ -262,6 +262,7 @@ bool cSkinDesigner::LoadTemplates(void) {
         esyslog("skindesigner: error parsing globals, aborting");
         return false;
     }
+    config.SetGlobals(globals);
 
     cSkinSetup *skinSetup = config.GetSkinSetup(skin);
     if (skinSetup) {

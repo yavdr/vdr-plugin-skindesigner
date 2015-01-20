@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2014-10-18 07:30+0200\n"
+"POT-Creation-Date: 2015-01-19 17:09+0100\n"
 "PO-Revision-Date: 2014-09-27 11:02+0200\n"
 "Last-Translator: Louis Braun <louis.braun@gmx.de>\n"
 "Language-Team: \n"
@@ -21,11 +21,11 @@ msgstr "eines nach dem anderen"
 msgid "at one go"
 msgstr "alle auf einmal"
 
+msgid "Skin"
+msgstr ""
+
 msgid "Menu Item display method"
 msgstr "Art der Ausgabe der Menüelemente"
-
-msgid "Reruns"
-msgstr "Wiederholungen"
 
 msgid "Maximum number of reruns to display"
 msgstr "Anzahl anzuzeigender Wiederholungen"
@@ -35,9 +35,6 @@ msgstr "Zeitl. Abstand der Wiederholung (in h)"
 
 msgid "Limit Channel Numbers (0 = no limit)"
 msgstr "Kanalnummern begrenzen (0 = unbegrenzt)"
-
-msgid "Image Loading"
-msgstr "Bilder"
 
 msgid "Debug Image Loading"
 msgstr "Debugausgabe für das Laden der Bilder"
@@ -51,8 +48,8 @@ msgstr "Anzahl der initial zu cachenden Logos"
 msgid "Number to cache in maximum"
 msgstr "Maximale Anzahl zu cachender Logos"
 
-msgid "Cache Statistics"
-msgstr "Cache Statistik"
+msgid "has no setup"
+msgstr ""
 
 msgid "cached"
 msgstr "cached"
@@ -71,3 +68,12 @@ msgstr "Logos"
 
 msgid "skinparts"
 msgstr "Skinparts"
+
+#~ msgid "Reruns"
+#~ msgstr "Wiederholungen"
+
+#~ msgid "Image Loading"
+#~ msgstr "Bilder"
+
+#~ msgid "Cache Statistics"
+#~ msgstr "Cache Statistik"

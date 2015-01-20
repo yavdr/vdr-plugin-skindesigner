@@ -307,8 +307,9 @@ void cDisplayChannelView::ClearScreenResolution(void) {
 }
 
 void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
-    if (!event)
+    if (!event) {
         return;
+    }
 
     if (!ViewElementImplemented(veScraperContent)) {
         return;

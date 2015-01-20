@@ -19,6 +19,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         doOutput = false;
         return;
     }
+    esyslog("skindesigner: menu opened");
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
@@ -26,6 +27,7 @@ cSDDisplayMenu::~cSDDisplayMenu() {
         delete rootView;
     if (textAreaFont)
         delete textAreaFont;
+    esyslog("skindesigner: menu closed");
 }
 
 void cSDDisplayMenu::Scroll(bool Up, bool Page) {
@@ -69,6 +71,7 @@ void cSDDisplayMenu::SetPluginMenu(string name, int menu, int type, bool init) {
 void cSDDisplayMenu::SetTitle(const char *Title) {
     if (!doOutput)
         return;
+    esyslog("skindesigner: --------------- Set Title %s", Title);
     rootView->SetTitle(Title);
 }
 
@@ -184,6 +187,7 @@ bool cSDDisplayMenu::SetItemPlugin(map<string,string> *stringTokens, map<string,
 }
 
 void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Selectable) {
+    esyslog("skindesigner: %d: %s %s", Index, Current ? "<---Active--->" : "", Text);
     if (!doOutput)
         return;
     cDisplayMenuListView *list = rootView->GetListView();
