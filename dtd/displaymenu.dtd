@@ -75,6 +75,11 @@
   debug CDATA #IMPLIED
 >
 
+<!ELEMENT currentweather (area|areascroll)*>
+<!ATTLIST currentweather
+  debug CDATA #IMPLIED
+>
+
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
   debug CDATA #IMPLIED
@@ -109,7 +114,7 @@
 >
 
 <!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | timers | 
-                    discusage | devices | systemload | temperatures | currentschedule | customtokens | menuitems)*>
+                    discusage | devices | systemload | temperatures | currentschedule | currentweather | customtokens | menuitems)*>
 <!ATTLIST menumain
   x CDATA #REQUIRED
   y CDATA #REQUIRED

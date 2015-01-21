@@ -4,6 +4,7 @@
 cSDDisplayTracks::cSDDisplayTracks(cTemplate *audiotracksTemplate, const char *Title, int NumTracks, const char * const *Tracks) {
     initial = true;
     numTracks = NumTracks;
+    tracksView = NULL;
     doOutput = true;
     currentTrack = 0;
     menuTitle = Title;
@@ -28,9 +29,8 @@ cSDDisplayTracks::cSDDisplayTracks(cTemplate *audiotracksTemplate, const char *T
 }
 
 cSDDisplayTracks::~cSDDisplayTracks() {
-    if (!doOutput)
-        return;
-    delete tracksView;
+    if (tracksView)
+        delete tracksView;
 }
 
 void cSDDisplayTracks::SetTrack(int Index, const char * const *Tracks) {

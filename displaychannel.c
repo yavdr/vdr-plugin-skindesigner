@@ -2,12 +2,9 @@
 #include "libcore/timers.h"
 
 cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) {
-    if (firstDisplay) {
-        firstDisplay = false;
-        doOutput = false;
-        return;
-    } else if (!channelTemplate) {
-        esyslog("skindesigner: displayChannel no valid template - aborting");
+    channelView = NULL;
+
+    if (!channelTemplate) {
         doOutput = false;
         return;
     } else {
@@ -30,9 +27,8 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
 }
 
 cSDDisplayChannel::~cSDDisplayChannel() {
-    if (!doOutput)
-        return;
-    delete channelView;
+    if (channelView)
+        delete channelView;
 }
 
 void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
@@ -169,6 +165,7 @@ void cSDDisplayChannel::Flush(void) {
         return;
 
     if (initial) {
+        channelView->DrawCurrentWeather();
         channelView->DrawCustomTokens();
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE displayreplay SYSTEM "../../../dtd/displayreplay.dtd">
 
-<displayreplay  x="0" y="70%" width="100%" height="30%" fadetime="{fadeTime}">
+<displayreplay  x="0" y="70%" width="100%" height="30%" fadetime="{fadetime}">
 
     <background>
        <!-- global background -->
@@ -237,13 +237,13 @@
     {error}                    true if message is a error message
     -->
     <message>
-        <area x="5%" y="80%" width="90%" height="15%" layer="6">
+        <area x="5%" y="25%" width="90%" height="50%" layer="6">
             <drawimage condition="{status}" imagetype="skinpart" path="messageblue" x="0" y="0" width="100%" height="100%" />
             <drawimage condition="{info}" imagetype="skinpart" path="messagegreen" x="0" y="0" width="100%" height="100%" />
             <drawimage condition="{warning}" imagetype="skinpart" path="messageyellow" x="0" y="0" width="100%" height="100%" />
             <drawimage condition="{error}" imagetype="skinpart" path="messagered" x="0" y="0" width="100%" height="100%" />
         </area>
-        <area x="5%" y="80%" width="90%" height="15%" layer="7">
+        <area x="5%" y="25%" width="90%" height="50%" layer="7">
             <drawtext align="center" valign="center" font="{regular}" fontsize="40%" color="{clrWhite}" text="{text}" />
         </area>
     </message>

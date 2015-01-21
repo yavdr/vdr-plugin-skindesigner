@@ -16,7 +16,8 @@
         </area>
     </scrollbar>
     <!-- Available Variables in detailheader elements:
-    {name}                    name of recording
+    {name}                    full name of recording (including folders)
+    {epgname}                 Name of recording (Name from EPG)
     {shorttext}               shorttext of recording
     {date}                    date of recording in dd.mm.yy
     {time}                    time of current event in hh:mm
@@ -43,13 +44,14 @@
             <drawimage condition="{isseries}++{banneravailable}++not{recimgavailable}" imagetype="image" path="{bannerpath}" x="{areawidth} - {areawidth}/3 - 10" valign="center" width="{areawidth}/3" height="{areawidth}/3 * {bannerheight} / {bannerwidth}"/>
             <drawimage condition="{ismovie}++{posteravailable}++not{recimgavailable}" imagetype="image" path="{posterpath}" x="{areawidth} - {areaheight}*8/10" valign="center" width="{areaheight}*8 / 10 * {posterheight} / {posterwidth}" height="{areaheight}*8 / 10"/>
             <drawimage condition="{recimgavailable}" imagetype="image" path="{recimgpath}" x="{areawidth} - {areaheight}*8/10 * 174 / 130" valign="center" width="{areaheight}*8/10 * 174 / 130" height="{areaheight}*8 / 10"/>
-            <drawtext name="title" x="20" valign="center" font="{vdrOsd}" fontsize="35%" color="{clrWhite}" text="{name}" />
+            <drawtext name="title" x="20" valign="center" font="{vdrOsd}" fontsize="35%" color="{clrWhite}" text="{epgname}" />
             <drawtext name="datetime" x="20" y="{posy(title)} - {height(datetime)}" font="{vdrOsd}" fontsize="25%" color="{clrWhite}" text="{date} {time} ({duration} mins)" />
             <drawtext name="shorttext" x="20" y="{posy(title)} + {height(title)}" font="{vdrOsd}" fontsize="25%" color="{clrWhite}" text="{shorttext}" />
         </area>
     </detailheader>
     <!-- Available Variables in tab elements:
-    {name}                    title of recording
+    {name}                    full name of recording (including folders)
+    {epgname}                 Name of recording (Name from EPG)
     {shorttext}               shorttext of recording
     {description}             description of recording
     {date}                    date of recording in dd.mm.yy

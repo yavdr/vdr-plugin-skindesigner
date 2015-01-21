@@ -1,6 +1,7 @@
 #include "displaymessage.h"
 
 cSDDisplayMessage::cSDDisplayMessage(cTemplate *messageTemplate) {
+    messageView = NULL;
     doOutput = true;
     initial = true;
     if (!messageTemplate) {
@@ -17,9 +18,8 @@ cSDDisplayMessage::cSDDisplayMessage(cTemplate *messageTemplate) {
 }
 
 cSDDisplayMessage::~cSDDisplayMessage() {
-    if (!doOutput)
-        return;
-    delete messageView;
+    if (messageView)
+        delete messageView;
 }
 
 void cSDDisplayMessage::SetMessage(eMessageType Type, const char *Text) {

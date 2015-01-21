@@ -175,16 +175,53 @@
     {vdrusagestring}          localized VDR internal usage string
     -->
     <discusage>
-        <area x="75%" y="15%" width="25%" height="10%" layer="1">
+        <area x="75%" y="26%" width="25%" height="10%" layer="1">
             <fill condition="not{discalert}" color="{clrTransBlack}"/>
             <fill condition="{discalert}" color="{clrRed}"/>
         </area>
-        <area x="75%" y="15%" width="25%" height="10%" layer="2">
+        <area x="75%" y="26%" width="25%" height="10%" layer="2">
             <drawimage imagetype="icon" path="ico_discusage" x="1%" valign="center" width="{areaheight}*0.9" height="{areaheight}*0.9"/>
             <drawtext x="{areaheight}+10" y="0" font="{light}" fontsize="55%" color="{clrWhite}" text="{tr(disc)}: {freepercent}% {tr(free)}" />
             <drawtext x="{areaheight}+10" y="45%" font="{light}" fontsize="55%" color="{clrWhite}" text="{freetime} {tr(hours)}" />
         </area>
     </discusage>
+
+    <!-- Available Variables currentweather:
+    {timestamp}                 timestamp of forecast in dd.mm hh:mm
+    {temperature}               current temperature in °C
+    {apparenttemperature}       apparent (feeled) temperature
+    {mintemperature}            minimum daily temperature in °C
+    {maxtemperature}            maximum daily temperature in °C
+    {summary}                   short weather summary
+    {icon}                      weather icon 
+    {precipitationintensity}    precipitation intensity in l/m2
+    {precipitationprobability}  precipitation probability in %
+    {precipitationtype}         precipitation type
+    {humidity}                  humidity in %
+    {windspeed}                 windspeed in km/h
+    {windbearing}               wind bearing in °
+    {windbearingstring}         wind bearing (N, NE, ...)
+    {visibility}                visibility in km
+    {cloudcover}                cloud cover in %
+    {pressure}                  pressure in HPo
+    {ozone}                     ozone value in DU
+    -->
+    <currentweather>
+        <area x="75%" y="13%" width="25%" height="10%" layer="2">
+            <drawrectangle x="0" y="0" width="53%" height="100%" color="{clrTransBlueLight}" />
+            <drawrectangle x="53%" y="0" width="47%" height="100%" color="{clrTransBlack}" />
+        </area>
+        <area x="75%" y="13%" width="12%" height="10%" layer="2">
+            <drawimage imagetype="icon" path="{icon}" align="center" valign="center" width="{areaheight}*0.9" height="{areaheight}*0.9"/>
+        </area>
+        <area x="89%" y="13%" width="10%" height="10%" layer="2">
+            <drawtext x="0" y="0" font="{light}" fontsize="25%" color="{clrWhite}" text="{mintemperature}°C" />
+            <drawtext x="0" y="75%" font="{light}" fontsize="25%" color="{clrWhite}" text="{maxtemperature}°C" />
+        </area>
+        <area x="89%" y="13%" width="10%" height="10%" layer="3">
+            <drawtext align="right" valign="center" font="{light}" fontsize="60%" color="{clrWhite}" text="{temperature}°C" />
+        </area>
+    </currentweather>
 
     <!-- Available Variables devices:
     {numdevices}                number of available devices
@@ -204,10 +241,10 @@
     {devices[source]}           source of the currently tuned channel
     -->
     <devices>
-        <area x="75%" y="40%" width="25%" height="{areaheight}/12 * {numdevices}" layer="1">
+        <area x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
-        <area x="75%" y="40%" width="25%" height="{areaheight}/12 * {numdevices}" layer="2">
+        <area x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="2">
             <loop name="devices" x="0" y="0" orientation="vertical" columnwidth="{areawidth}" rowheight="{areaheight} / {numdevices}" overflow="cut">
                 <drawtext name="label" x="5" y="0" font="{light}" fontsize="{rowheight}*0.4" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
                 <drawtext condition="{devices[hascam]}" x="{width(label)} + 15" y="0" font="{light}" fontsize="{rowheight}*0.40" color="{clrWhite}" text="(CAM {devices[cam]})" />
@@ -225,10 +262,10 @@
     {load}                      current system load
     -->
     <systemload>
-        <area x="75%" y="30%" width="25%" height="5%" layer="1">
+        <area x="75%" y="40%" width="25%" height="5%" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
-        <area x="75%" y="30%" width="25%" height="5%" layer="2">
+        <area x="75%" y="40%" width="25%" height="5%" layer="2">
             <drawtext x="5" valign="center" font="{light}" fontsize="100%" color="{clrWhite}" text="System Load: {load}" />
         </area>
     </systemload>

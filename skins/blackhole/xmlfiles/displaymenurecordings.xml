@@ -9,7 +9,7 @@
         </area>
     </scrollbar>
 
-    <menuitems x="1%" y="10%" orientation="vertical" width="98%" height="80%" align="center" numlistelements="10">
+    <menuitems x="1%" y="10%" orientation="vertical" width="98%" height="80%" align="center" numlistelements="{nummenuitems}">
         <!-- Available Variables recordings menu listelement:
         {nummenuitem}           number of item in list, starts with 1
         {name}                  Name of recording
@@ -67,7 +67,8 @@
         {menuitemy}             y position of according menu item
         {menuitemwidth}         width of according menu item
         {menuitemheight}        height of according menu item
-        {name}                  Name of recording
+        {name}                  Real Name of recording (Name of Recording Folder)
+        {epgname}               Name of recording (Name from EPG)
         {shorttext}             Short Text of recording
         {description}           Descrption of recording        
         {date}                  Date of recording
@@ -100,7 +101,7 @@
             </area>
             <areascroll condition="not{folder}++not{hasposter}" orientation="vertical" mode="forthandback" delay="1000" scrollspeed="medium" x="56%" y="53%" width="43%" height="46%" layer="3">
                 <drawtext x="0" y="0" font="{semibold}" width="100%" fontsize="10%" color="{clrWhite}" text="{date} - {time}, {duration} min" />
-                <drawtext x="0" y="10%" font="{semibold}" width="100%" fontsize="12%" color="{clrWhite}" text="{name}" />
+                <drawtext x="0" y="10%" font="{semibold}" width="100%" fontsize="12%" color="{clrWhite}" text="{epgname}" />
                 <drawtextbox name="shorttext" x="0" y="21%" width="100%" font="{regular}" fontsize="9%" color="{clrWhite}" text="{shorttext}" />
                 <drawtextbox x="0" y="{posy(shorttext)} + {height(shorttext)}" width="100%" font="{regular}" fontsize="8%" color="{clrWhite}" text="{description}" />
             </areascroll>
@@ -109,7 +110,7 @@
             </area>
             <areascroll condition="not{folder}++{hasposter}" orientation="vertical" mode="forthandback" delay="1000" scrollspeed="medium" x="72%" y="53%" width="27%" height="46%" layer="3">
                 <drawtext x="0" y="0" font="{semibold}" width="100%" fontsize="10%" color="{clrWhite}" text="{date} - {time}, {duration} min" />
-                <drawtext x="0" y="10%" font="{semibold}" width="100%" fontsize="12%" color="{clrWhite}" text="{name}" />
+                <drawtext x="0" y="10%" font="{semibold}" width="100%" fontsize="12%" color="{clrWhite}" text="{epgname}" />
                 <drawtextbox name="shorttext" x="0" y="21%" width="100%" font="{regular}" fontsize="9%" color="{clrWhite}" text="{shorttext}" />
                 <drawtextbox x="0" y="{posy(shorttext)} + {height(shorttext)}" width="100%" font="{regular}" fontsize="8%" color="{clrWhite}" text="{description}" />
             </areascroll>

@@ -12,6 +12,8 @@ cXmlParser::cXmlParser(void) {
     doc = NULL;
     root = NULL;
     ctxt = NULL;
+    globals = NULL;
+    skinSetup = NULL;
 
     initGenericErrorDefaultFunc(NULL);
     xmlSetStructuredErrorFunc(NULL, SkinDesignerXMLErrorHandler);
@@ -122,6 +124,41 @@ bool cXmlParser::ReadGlobals(cGlobals *globals, string xmlFile) {
     return true;
 }
 
+bool cXmlParser::ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFile) {
+    this->skinSetup = skinSetup;
+    string xmlPath = *cString::sprintf("%s%s/%s", *config.skinPath, skin.c_str(), xmlFile.c_str());
+
+    if (!FileExists(xmlPath))
+        return false;
+    if (ctxt == NULL) {
+        esyslog("skindesigner: Failed to allocate parser context");
+        return false;
+    }
+    
+    doc = xmlCtxtReadFile(ctxt, xmlPath.c_str(), NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
+
+    if (doc == NULL ) {
+        esyslog("skindesigner: ERROR: skin setup %s not parsed successfully.", xmlPath.c_str());
+        return false;
+    }
+
+    root = xmlDocGetRootElement(doc);
+
+    if (ctxt->valid == 0) {
+        esyslog("skindesigner: Failed to validate %s", xmlPath.c_str());
+        return false;
+    }
+    if (root == NULL) {
+        return false;
+    }
+    if (xmlStrcmp(root->name, (const xmlChar *) "setup")) {
+        return false;
+    }
+    
+    return true;
+}
+
+
 bool cXmlParser::ParseView(void) {
     vector<pair<string, string> > rootAttribs;
     ParseAttributes(root->properties, root, rootAttribs);
@@ -227,6 +264,30 @@ bool cXmlParser::ParseGlobals(void) {
 
 }
 
+bool cXmlParser::ParseSkinSetup(string skin) {
+    xmlNodePtr node = root->xmlChildrenNode;
+
+    while (node != NULL) {
+        if (node->type != XML_ELEMENT_NODE) {
+            node = node->next;
+            continue;
+        }
+        if (!xmlStrcmp(node->name, (const xmlChar *) "parameters")) {
+            ParseSetupParameter(node->xmlChildrenNode);
+            node = node->next;
+            continue;
+        } else if (!xmlStrcmp(node->name, (const xmlChar *) "translations")) {
+            ParseTranslations(node->xmlChildrenNode);
+            node = node->next;
+            continue;
+        }
+        node = node->next;
+    }
+
+    return true;
+
+}
+
 void cXmlParser::DeleteDocument(void) {
     if (doc) {
         xmlFreeDoc(doc);
@@ -244,10 +305,72 @@ string cXmlParser::GetPath(string xmlFile) {
     string path = "";
     if (!xmlFile.compare("globals.xml")) {
         path = *cString::sprintf("%s%s/themes/%s/%s", *config.skinPath, activeSkin.c_str(), activeTheme.c_str(), xmlFile.c_str());
+    } else if (!xmlFile.compare("setup.xml")) {
+        path = *cString::sprintf("%s%s/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
     } else {
         path = *cString::sprintf("%s%s/xmlfiles/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
     }
     return path;
+}
+
+void cXmlParser::ParseSetupParameter(xmlNodePtr node) {
+    if (!node)
+        return;
+    if (!skinSetup)
+        return;
+
+    while (node != NULL) {
+
+        if (node->type != XML_ELEMENT_NODE) {
+            node = node->next;
+            continue;
+        }
+        if (xmlStrcmp(node->name, (const xmlChar *) "parameter")) {
+            node = node->next;
+            continue;
+        }
+        xmlAttrPtr attr = node->properties;
+        if (attr == NULL) {
+            node = node->next;
+            continue;
+        }
+        xmlChar *paramType = NULL;
+        xmlChar *paramName = NULL;
+        xmlChar *paramDisplayText = NULL;
+        xmlChar *paramMin = NULL;
+        xmlChar *paramMax = NULL;
+        xmlChar *paramValue = NULL;
+        while (NULL != attr) {
+            if (!xmlStrcmp(attr->name, (const xmlChar *) "type")) {
+                paramType = xmlGetProp(node, attr->name);
+            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "name")) {
+                paramName = xmlGetProp(node, attr->name);
+            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "displaytext")) {
+                paramDisplayText = xmlGetProp(node, attr->name);
+            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "min")) {
+                paramMin = xmlGetProp(node, attr->name);
+            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "max")) {
+                paramMax = xmlGetProp(node, attr->name);
+            }
+            attr = attr->next;
+        }
+        paramValue = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
+        skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramMin, paramMax, paramValue);
+
+        if (paramType)
+            xmlFree(paramType);
+        if (paramName)
+            xmlFree(paramName);
+        if (paramDisplayText)
+            xmlFree(paramDisplayText);
+        if (paramMin)
+            xmlFree(paramMin);
+        if (paramMax)
+            xmlFree(paramMax);
+        if (paramValue)
+            xmlFree(paramValue);
+        node = node->next;
+    }
 }
 
 void cXmlParser::ParseGlobalColors(xmlNodePtr node) {
@@ -483,7 +606,11 @@ void cXmlParser::ParseTranslations(xmlNodePtr node) {
                 xmlFree(value);
             nodeTrans = nodeTrans->next;
         }
-        globals->translations.insert(pair<string, map < string, string > >((const char*)tokenName, tokenTranslations));
+        if (globals) {
+            globals->translations.insert(pair<string, map < string, string > >((const char*)tokenName, tokenTranslations));
+        } else if (skinSetup) {
+            skinSetup->SetTranslation((const char*)tokenName, tokenTranslations);
+        }
         xmlFree(tokenName);
         node = node->next;
     }

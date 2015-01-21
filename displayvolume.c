@@ -4,6 +4,7 @@
 #include "libcore/helpers.h"
 
 cSDDisplayVolume::cSDDisplayVolume(cTemplate *volumeTemplate) {
+    volumeView = NULL;
     doOutput = true;
     initial = true;
     if (!volumeTemplate) {
@@ -20,9 +21,8 @@ cSDDisplayVolume::cSDDisplayVolume(cTemplate *volumeTemplate) {
 }
 
 cSDDisplayVolume::~cSDDisplayVolume() {
-    if (!doOutput)
-        return;
-    delete volumeView;
+    if (volumeView)
+        delete volumeView;
 }
 
 void cSDDisplayVolume::SetVolume(int Current, int Total, bool Mute) {

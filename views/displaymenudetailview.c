@@ -161,9 +161,11 @@ void cDisplayMenuDetailView::SetTokens(void) {
     } else if (recording) {
         string name = recording->Name() ? recording->Name() : "";
         stringTokens.insert(pair<string,string>("name", name));
+        intTokens.insert(pair<string,int>("cutted", recording->IsEdited()));
 
         const cRecordingInfo *info = recording->Info();
         if (info) {
+            stringTokens.insert(pair<string,string>("epgname", info->Title() ? info->Title() : name));
             stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
             stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
             const cEvent *event = info->GetEvent();
@@ -193,6 +195,7 @@ void cDisplayMenuDetailView::SetTokens(void) {
                 stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
             }
         } else {
+            stringTokens.insert(pair<string,string>("epgname", ""));
             stringTokens.insert(pair<string,string>("shorttext", ""));
             stringTokens.insert(pair<string,string>("description", ""));            
             int recDuration = recording->LengthInSeconds();
@@ -413,7 +416,12 @@ void cDisplayMenuDetailView::LoadRecordingInformation(void) {
     cChannel *channel = Channels.GetByChannelID(Info->ChannelID());
     if (channel) {
         stringTokens.insert(pair<string,string>("recchannelname", channel->Name()));
+        stringTokens.insert(pair<string,string>("recchannelid", *channel->GetChannelID().ToString()));
         intTokens.insert(pair<string,int>("recchannelnumber", channel->Number()));
+    } else {
+        stringTokens.insert(pair<string,string>("recchannelname", ""));
+        stringTokens.insert(pair<string,string>("recchannelid", ""));
+        intTokens.insert(pair<string,int>("recchannelnumber", 0));
     }
 
     if (index) {
@@ -708,6 +716,7 @@ void cDisplayMenuDetailView::DrawHeader(void) {
 
         const cRecordingInfo *info = recording->Info();
         if (info) {
+            headerStringTokens.insert(pair<string,string>("epgname", info->Title() ? info->Title() : name));
             headerStringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
             const cEvent *event = info->GetEvent();
             if (event) {
@@ -735,6 +744,16 @@ void cDisplayMenuDetailView::DrawHeader(void) {
                 headerIntTokens.insert(pair<string,int>("durationeventhours", duration / 60));
                 headerStringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
             }
+            cChannel *channel = Channels.GetByChannelID(info->ChannelID());
+            if (channel) {
+                headerStringTokens.insert(pair<string,string>("recchannelname", channel->Name()));
+                headerStringTokens.insert(pair<string,string>("recchannelid", *channel->GetChannelID().ToString()));
+                headerIntTokens.insert(pair<string,int>("recchannelnumber", channel->Number()));
+            } else {
+                headerStringTokens.insert(pair<string,string>("recchannelname", ""));
+                headerStringTokens.insert(pair<string,string>("recchannelid", ""));
+                headerIntTokens.insert(pair<string,int>("recchannelnumber", 0));
+            }
         } else {
             headerStringTokens.insert(pair<string,string>("shorttext", ""));
             int recDuration = recording->LengthInSeconds();
@@ -747,6 +766,9 @@ void cDisplayMenuDetailView::DrawHeader(void) {
             headerIntTokens.insert(pair<string,int>("durationevent", 0));
             headerIntTokens.insert(pair<string,int>("durationeventhours", 0));
             headerStringTokens.insert(pair<string,string>("durationeventminutes", ""));
+            headerStringTokens.insert(pair<string,string>("recchannelname", ""));
+            headerStringTokens.insert(pair<string,string>("recchannelid", ""));
+            headerIntTokens.insert(pair<string,int>("recchannelnumber", 0));
         }
 
         string recImage = "";

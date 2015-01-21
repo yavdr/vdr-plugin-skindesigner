@@ -265,6 +265,21 @@ void cTemplateView::Translate(void) {
                         func->SetTranslatedText(translation);
                     }
                 }
+                if (func->GetType() == ftLoop) {
+                    cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                    funcsLoop->InitIterator();
+                    cTemplateFunction *loopFunc = NULL;
+                    while(loopFunc = funcsLoop->GetNextFunction()) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                            string text = loopFunc->GetParameter(ptText);
+                            string translation;
+                            bool translated = globals->Translate(text, translation);
+                            if (translated) {
+                                loopFunc->SetTranslatedText(translation);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -346,6 +361,30 @@ void cTemplateView::Translate(void) {
                     func->SetTranslatedText(translation);
                 }
             }
+            if (func->GetType() == ftLoop) {
+                cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                funcsLoop->InitIterator();
+                cTemplateFunction *loopFunc = NULL;
+                while(loopFunc = funcsLoop->GetNextFunction()) {
+                    if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                        string text = loopFunc->GetParameter(ptText);
+                        string translation;
+                        bool translated = globals->Translate(text, translation);
+                        if (translated) {
+                            loopFunc->SetTranslatedText(translation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Translate Plugin Views
+    for (map < string, map< int, cTemplateView*> >::iterator it = pluginViews.begin(); it != pluginViews.end(); it++) {
+        map< int, cTemplateView*> plugViews = it->second;
+        for (map< int, cTemplateView*>::iterator it2 = plugViews.begin(); it2 != plugViews.end(); it2++) {
+            cTemplateView *pluginView = it2->second;
+            pluginView->Translate();
         }
     }
 
@@ -669,6 +708,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("signalquality");
     viewElementsAllowed.insert("signalqualityback");
     viewElementsAllowed.insert("devices");
+    viewElementsAllowed.insert("currentweather");
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("datetime");
     viewElementsAllowed.insert("time");
@@ -714,6 +754,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
             break;
         case veDevices:
             name = "Devices";
+            break;
+        case veCurrentWeather:
+            name = "Current Weather";
             break;
         case veScraperContent:
             name = "Scraper Content";
@@ -764,6 +807,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veSignalQualityBack;
     } else if (!sViewElement.compare("devices")) {
         ve = veDevices;
+    } else if (!sViewElement.compare("currentweather")) {
+        ve = veCurrentWeather;
     } else if (!sViewElement.compare("scrapercontent")) {
         ve = veScraperContent;
     } else if (!sViewElement.compare("datetime")) {
@@ -1041,6 +1086,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
     viewElementsAllowed.insert("devices");
+    viewElementsAllowed.insert("currentweather");
     viewElementsAllowed.insert("currentschedule");
     viewElementsAllowed.insert("customtokens");
     viewElementsAllowed.insert("scrollbar");
@@ -1129,6 +1175,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
             break;
         case veCurrentSchedule:
             name = "Current Schedule";
+            break;
+        case veCurrentWeather:
+            name = "Current Weather";
             break;
        case veCustomTokens:
             name = "Custom Tokens";
@@ -1252,6 +1301,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veCustomTokens;
     } else if (!sViewElement.compare("devices")) {
         ve = veDevices;
+    } else if (!sViewElement.compare("currentweather")) {
+        ve = veCurrentWeather;
     } else if (!sViewElement.compare("scrollbar")) {
         ve = veScrollbar;
     } else if (!sViewElement.compare("detailheader")) {

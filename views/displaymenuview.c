@@ -237,6 +237,7 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
     DrawDiscUsage();
     DrawTemperatures();
     DrawCurrentSchedule();
+    DrawCurrentWeather();
     DrawCustomTokens();
 }
 
@@ -581,6 +582,21 @@ void cDisplayMenuMainView::DrawCurrentSchedule(void) {
     DrawViewElement(veCurrentSchedule, &stringTokens, &intTokens);
 }
 
+void cDisplayMenuMainView::DrawCurrentWeather(void) {
+    if (!ViewElementImplemented(veCurrentWeather)) {
+        return;
+    }
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
+        ClearViewElement(veCurrentWeather);
+        return;
+    }
+    
+    ClearViewElement(veCurrentWeather);
+    DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
+}
+
 void cDisplayMenuMainView::DrawCustomTokens(void) {
     if (!ViewElementImplemented(veCustomTokens)) {
         return;
@@ -628,6 +644,11 @@ bool cDisplayMenuSchedulesView::DrawHeader(void) {
         string channelID = *(channel->GetChannelID().ToString());
         stringTokens.insert(pair<string,string>("channelid", channelID));
         intTokens.insert(pair<string, int>("channellogoexists", imgCache->LogoExists(channelID)));
+    } else {
+        stringTokens.insert(pair<string,string>("channelnumber", ""));
+        stringTokens.insert(pair<string,string>("channelname", ""));
+        stringTokens.insert(pair<string,string>("channelid", ""));
+        intTokens.insert(pair<string, int>("channellogoexists", 0));        
     }
     bool hasIcon = false;
     string icon = imgCache->GetIconName(menuTitle, cat);

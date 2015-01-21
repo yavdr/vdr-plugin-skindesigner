@@ -44,7 +44,7 @@ cPixmapContainer::~cPixmapContainer(void) {
 
 bool cPixmapContainer::CreateOsd(int Left, int Top, int Width, int Height) {
     if (osd) {
-        return true;
+        return false;
     }
     cOsd *newOsd = cOsdProvider::NewOsd(Left, Top);
     if (newOsd) {

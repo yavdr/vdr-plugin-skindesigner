@@ -1,6 +1,7 @@
 <menudetailedrecording x="0" y="0" width="100%" height="100%" fadetime="0">
     <!-- Available Variables in detailheader elements:
-    {name}                    name of recording
+    {name}                    full name of recording (including folders)
+    {epgname}                 name of recording (name from EPG)
     {shorttext}               shorttext of recording
     {date}                    date of recording in dd.mm.yy
     {time}                    time of current recording in hh:mm
@@ -25,11 +26,15 @@
     {bannerpath}              path of banner
     {recimgavailable}         true if a recording image is available in the recording path
     {recimgpath}              path of rec image
+    {recchannelname}          name of channel from which was recorded
+    {recchannelid}            id of channel from which was recorded
+    {recchannelnumber}        number of channel from which was recorded
     -->
     <detailheader>
     </detailheader>
     <!-- Available Variables in tab elements:
-    {name}                    title of recording
+    {name}                    full name of recording (including folders)
+    {epgname}                 name of recording (name from EPG)
     {shorttext}               shorttext of recording
     {description}             description of recording
     {date}                    date of recording in dd.mm.yy
@@ -43,6 +48,7 @@
     {durationevent}           duration of corresponding event in minutes
     {durationeventhours}      event duration, full hours
     {durationeventminutes}    event duration, rest of minutes
+    {cutted}                  true if recording is cutted
 
     {recordingsize}           size of recording (automatically in GB / MB)
     {recordingsizecutted}     size of cutted recording (automatically in GB / MB)
@@ -51,6 +57,9 @@
     {recordingbitrate}        bitrate of recording (in MBit/s)
     {recordingformat}         format of recording (TS / PS)
     {searchtimer}             name of accordign searchtimer (if available)
+    {recchannelname}          name of channel from which was recorded
+    {recchannelid}            id of channel from which was recorded
+    {recchannelnumber}        number of channel from which was recorded
     
     {recimg1avaialble}        true if first recording image is available
     {recimg2avaialble}        true if first recording image is available

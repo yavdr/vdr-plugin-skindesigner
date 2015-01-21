@@ -49,7 +49,6 @@ cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
     if (!useBackupSkin) {
         cSDDisplayMenu *displayMenu = NULL;
         Init();
-        firstDisplay = false;
         displayMenu = new cSDDisplayMenu(menuTemplate);
         currentMenu = displayMenu;
         return displayMenu;
@@ -261,6 +260,12 @@ bool cSkinDesigner::LoadTemplates(void) {
     if (!ok) {
         esyslog("skindesigner: error parsing globals, aborting");
         return false;
+    }
+    config.SetGlobals(globals);
+
+    cSkinSetup *skinSetup = config.GetSkinSetup(skin);
+    if (skinSetup) {
+        skinSetup->AddToGlobals(globals);
     }
 
     DeleteTemplates();

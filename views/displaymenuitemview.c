@@ -801,6 +801,7 @@ void cDisplayMenuItemPluginView::SetTokens(void) {
     if (!itemInit) return;
     itemInit = false;
     intTokens.insert(pair<string,int>("current", current));
+    intTokens.insert(pair<string,int>("nummenuitem", num+1));
 }
 
 

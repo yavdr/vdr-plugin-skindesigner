@@ -1,0 +1,22 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT setup (parameters,translations)>
+<!ELEMENT parameters (parameter)*>
+<!ELEMENT translations (token)*>
+
+<!ELEMENT parameter (#PCDATA)>
+<!ATTLIST parameter
+  name NMTOKEN #REQUIRED
+  type (int|bool) #REQUIRED
+  min NMTOKEN #IMPLIED
+  max NMTOKEN #IMPLIED
+  displaytext CDATA #REQUIRED
+  >
+
+<!ELEMENT token (trans)+>
+<!ATTLIST token
+  name CDATA #REQUIRED>
+
+<!ELEMENT trans (#PCDATA)>
+<!ATTLIST trans
+  lang NMTOKEN #REQUIRED>

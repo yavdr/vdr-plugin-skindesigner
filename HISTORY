@@ -145,3 +145,26 @@ Version 0.1.2
 - fixed again display of channel in schedules header
 - added now and next in blackhole channels menu
 - fixed bug that epg quicksearch menu was not displayed properly
+- added weatherforecast templates
+- some fixes for plugins which use skindesigner template interface
+
+Version 0.1.3
+
+- added {epgname} token for recordings in currentview and detailedview.
+- fixed crash when start recording with extrecmenu or remotetimers
+
+Version 0.1.4
+
+- fixed token volpercent in nopacity and metrixhd
+- added "empty" operator additionally to "isset" to check in a condition
+  if a string token is set
+- added token {nummenuitem} for plugin menu lists
+- fixed bug that custom int tokens were not considered in conditions
+- added possibility for skinners to define a skin setup, skin setup can
+  be done in plugin setup menu
+- made skin blackhole configurable, adapted xml files
+
+Version 0.1.5
+
+- removed suppression of first DisplayChannel call after VDR start
+

@@ -1,7 +1,14 @@
 #include "setup.h"
 
 cSkinDesignerSetup::cSkinDesignerSetup() {
-    data = config;
+    numLogosPerSizeInitial = config.numLogosPerSizeInitial;
+    limitLogoCache = config.limitLogoCache;
+    numLogosMax = config.numLogosMax;
+    debugImageLoading = config.debugImageLoading;
+    rerunAmount = config.rerunAmount;
+    rerunDistance = config.rerunDistance;
+    rerunMaxChannel = config.rerunMaxChannel;
+    blockFlush = config.blockFlush;
     menuDisplayStyle[0] = tr("after one another");
     menuDisplayStyle[1] = tr("at one go");
     Setup();
@@ -15,36 +22,119 @@ void cSkinDesignerSetup::Setup(void) {
     int current = Current();
     Clear();
 
-    Add(new cMenuEditStraItem(tr("Menu Item display method"), &data.blockFlush, 2, menuDisplayStyle));
+    SkinSetup();
+    PluginSetup();
+    ImageCacheStatistics();
 
-    cString message = cString::sprintf("---------------- %s ----------------", tr("Reruns"));
-    Add(new cOsdItem(*message));
-    cList<cOsdItem>::Last()->SetSelectable(false);
+    SetCurrent(Get(current));
+    Display();
+}
 
-    Add(new cMenuEditIntItem(tr("Maximum number of reruns to display"), &data.rerunAmount, 1, 100));
-    Add(new cMenuEditIntItem(tr("Minimum timely distance of rerun (in hours)"), &data.rerunDistance, 0, 1000));
-    Add(new cMenuEditIntItem(tr("Limit Channel Numbers (0 = no limit)"), &data.rerunMaxChannel, 0, 1000));
+eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
+    bool hadSubMenu = HasSubMenu();
+    eOSState state = cMenuSetupPage::ProcessKey(Key);
+    if (hadSubMenu && Key == kOk) {
+        Store();
+    }
+    if (!hadSubMenu && (state == osUnknown || Key == kOk)) {
+        if ((Key == kOk && !hadSubMenu)) {
+            switch (Key) {
+                case kOk: {
+                    string itemText = Get(Current())->Text();
+                    size_t hit = itemText.find(tr("Skin"));
+                    if (hit == 0) {
+                        string skin = itemText.substr(strlen(tr("Skin"))+1);
+                        state = AddSubMenu(new cSkindesignerSkinSetup(skin));
+                    }
+                    break;
+                } default:
+                    break;
+            }
+        }
+    }
+    return state;
+}
 
-    message = cString::sprintf("---------------- %s ----------------", tr("Image Loading"));
-    Add(new cOsdItem(*message));
-    cList<cOsdItem>::Last()->SetSelectable(false);
+void cSkinDesignerSetup::Store(void) {
+    config.numLogosPerSizeInitial = numLogosPerSizeInitial;
+    config.limitLogoCache = limitLogoCache;
+    config.numLogosMax = numLogosMax;
+    config.debugImageLoading = debugImageLoading;
+    config.rerunAmount = rerunAmount;
+    config.rerunDistance = rerunDistance;
+    config.rerunMaxChannel = rerunMaxChannel;
+    config.blockFlush = blockFlush;
 
-    Add(new cMenuEditBoolItem(tr("Debug Image Loading"), &data.debugImageLoading));
+    config.InitSetupIterator();
+    cSkinSetup *skinSetup = NULL;
+    while (skinSetup = config.GetSkinSetup()) {
+        string skin = skinSetup->GetSkin();
+        skinSetup->InitParameterIterator();
+        cSkinSetupParameter *param = NULL;
+        while (param = skinSetup->GetParameter()) {
+            cString paramName = cString::sprintf("%s.%s", skin.c_str(), param->name.c_str());
+            SetupStore(*paramName, param->value);
+            config.UpdateSkinSetupParameter(*paramName, param->value);
+        }
+    }
+    config.UpdateGlobals();
 
-    Add(new cMenuEditBoolItem(tr("Limit Channel Logo Cache"), &data.limitLogoCache));
-    Add(new cMenuEditIntItem(tr("Number to cache initially (per size)"), &data.numLogosPerSizeInitial, 0, 1000));
-    Add(new cMenuEditIntItem(tr("Number to cache in maximum"), &data.numLogosMax, 0, 1000));
+    SetupStore("DebugImageLoading", debugImageLoading);
+    SetupStore("LimitChannelLogoCache", limitLogoCache);
+    SetupStore("NumberLogosInitially", numLogosPerSizeInitial);
+    SetupStore("NumberLogosMax", numLogosMax);
+    SetupStore("RerunAmount", rerunAmount);
+    SetupStore("RerunDistance", rerunDistance);
+    SetupStore("RerunMaxChannel", rerunMaxChannel);
+    SetupStore("BlockFlush", blockFlush);
+}
 
+cOsdItem *cSkinDesignerSetup::InfoItem(const char *label) {
+    cOsdItem *item;
+    item = new cOsdItem(cString::sprintf("---------------- %s ----------------", tr(label)));
+    item->SetSelectable(false);
+    return item;
+}
+
+void cSkinDesignerSetup::PluginSetup(void) {
+    Add(InfoItem("Plugin Setup"));
+
+    Add(new cMenuEditStraItem(tr("Menu Item display method"), &blockFlush, 2, menuDisplayStyle));
+
+    Add(InfoItem("Reruns"));
+    Add(new cMenuEditIntItem(tr("Maximum number of reruns to display"), &rerunAmount, 1, 100));
+    Add(new cMenuEditIntItem(tr("Minimum timely distance of rerun (in hours)"), &rerunDistance, 0, 1000));
+    Add(new cMenuEditIntItem(tr("Limit Channel Numbers (0 = no limit)"), &rerunMaxChannel, 0, 1000));
+
+    Add(InfoItem("Image Loading"));
+    Add(new cMenuEditBoolItem(tr("Debug Image Loading"), &debugImageLoading));
+    Add(new cMenuEditBoolItem(tr("Limit Channel Logo Cache"), &limitLogoCache));
+    Add(new cMenuEditIntItem(tr("Number to cache initially (per size)"), &numLogosPerSizeInitial, 0, 1000));
+    Add(new cMenuEditIntItem(tr("Number to cache in maximum"), &numLogosMax, 0, 1000));
+}
+
+void cSkinDesignerSetup::SkinSetup(void) {
+    Add(InfoItem("Skin Setup"));
+
+    config.InitSkinIterator();
+    string skin = "";
+    while (config.GetSkin(skin)) {
+        cSkinSetup *skinSetup = config.GetSkinSetup(skin);
+        if (!skinSetup) {
+            Add(new cOsdItem(cString::sprintf("%s %s %s", tr("Skin"), skin.c_str(), tr("has no setup"))));
+            cList<cOsdItem>::Last()->SetSelectable(false);
+        } else {
+            Add(new cOsdItem(cString::sprintf("%s %s", tr("Skin"), skin.c_str())));
+        }
+    }
+}
+
+void cSkinDesignerSetup::ImageCacheStatistics(void) {
     if (!imgCache) {
-        SetCurrent(Get(current));
-        Display();
         return;
     }
 
-    message = cString::sprintf("---------------- %s ----------------", tr("Cache Statistics"));
-    Add(new cOsdItem(*message));
-    cList<cOsdItem>::Last()->SetSelectable(false);
-
+    Add(InfoItem("Cache Statistics"));
     int sizeIconCache = 0;
     int numIcons = 0;
     imgCache->GetIconCacheSize(numIcons, sizeIconCache);
@@ -65,35 +155,44 @@ void cSkinDesignerSetup::Setup(void) {
     cString skinpartCacheInfo = cString::sprintf("%s %d %s - %s %d %s", tr("cached"), numSkinparts, tr("skinparts"), tr("size"), sizeSkinpartCache, tr("byte"));
     Add(new cOsdItem(*skinpartCacheInfo));
     cList<cOsdItem>::Last()->SetSelectable(false);
-
-    SetCurrent(Get(current));
-    Display();
 }
 
-eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
-    eOSState state = cMenuSetupPage::ProcessKey(Key);
-    switch (state) {
-        case osContinue: {
-            if (NORMALKEY(Key) == kUp || NORMALKEY(Key) == kDown) {
-                cOsdItem* item = Get(Current());
-                if (item)
-                    item->ProcessKey(kNone);
-            }
-            break; }
-        default: break;
+// --- cSkindesignerSkinSetup -----------------------------------------------------------
+
+cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin)  : cOsdMenu(*cString::sprintf("%s: %s \"%s\"", trVDR("Setup"), tr("Skin"), skin.c_str()), 30) {
+    this->skin = skin;
+    Set();
+}
+
+cSkindesignerSkinSetup::~cSkindesignerSkinSetup() {
+}
+
+eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
+    eOSState state = cOsdMenu::ProcessKey(Key);
+    if (state == osUnknown) {
+        switch (Key) {
+            case kOk:
+                return osBack;
+            default:
+                break;
+        }
     }
     return state;
 }
 
-void cSkinDesignerSetup::Store(void) {
-    config = data;
+void cSkindesignerSkinSetup::Set(void) {
+    cSkinSetup *skinSetup = config.GetSkinSetup(skin);
+    if (!skinSetup)
+        return;
 
-    SetupStore("DebugImageLoading", config.debugImageLoading);
-    SetupStore("LimitChannelLogoCache", config.limitLogoCache);
-    SetupStore("NumberLogosInitially", config.numLogosPerSizeInitial);
-    SetupStore("NumberLogosMax", config.numLogosMax);
-    SetupStore("RerunAmount", config.rerunAmount);
-    SetupStore("RerunDistance", config.rerunDistance);
-    SetupStore("RerunMaxChannel", config.rerunMaxChannel);
-    SetupStore("BlockFlush", config.blockFlush);
+    skinSetup->InitParameterIterator();
+    cSkinSetupParameter *param = NULL;
+    while (param = skinSetup->GetParameter()) {
+        if (param->type == sptInt) {
+            Add(new cMenuEditIntItem(param->displayText.c_str(), &param->value, param->min, param->max));
+        } else if (param->type == sptBool) {
+            Add(new cMenuEditBoolItem(param->displayText.c_str(), &param->value));
+        }
+    }
+
 }

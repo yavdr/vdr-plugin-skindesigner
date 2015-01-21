@@ -2,7 +2,8 @@
     <menuitems x="0" y="0" orientation="vertical" width="100%" height="100%" align="center" numlistelements="16">
         <!-- Available Variables recordings menu listelement:
         {nummenuitem}           number of item in list, starts with 1
-        {name}                  Name of recording
+        {name}                  Real Name of recording (Name of Recording Folder)
+        {epgname}               Name of recording (Name from EPG)
         {date}                  Date of recording
         {time}                  Time of recording
         {daynumeric}            day as number
@@ -33,7 +34,8 @@
         {menuitemy}             y position of according menu item
         {menuitemwidth}         width of according menu item
         {menuitemheight}        height of according menu item
-        {name}                  Name of recording
+        {name}                  Real Name of recording (Name of Recording Folder)
+        {epgname}               Name of recording (Name from EPG)
         {shorttext}             Short Text of recording
         {description}           Descrption of recording        
         {date}                  Date of recording

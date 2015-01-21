@@ -16,6 +16,7 @@
 #include "templateview.h"
 #include "templateviewlist.h"
 #include "templateviewtab.h"
+#include "../libcore/skinsetup.h"
 
 using namespace std;
 
@@ -25,10 +26,12 @@ class cXmlParser {
 private:
     cTemplateView *view;
     cGlobals *globals;
+    cSkinSetup *skinSetup;
     xmlParserCtxtPtr ctxt;
     xmlDocPtr doc;
     xmlNodePtr root;
     string GetPath(string xmlFile);
+    void ParseSetupParameter(xmlNodePtr node);
     void ParseGlobalColors(xmlNodePtr node);
     void InsertColor(string name, string value);
     void ParseGlobalVariables(xmlNodePtr node);
@@ -48,9 +51,11 @@ public:
     bool ReadView(cTemplateView *view, string xmlFile);
     bool ReadPluginView(string plugName, int templateNumber, string templateName);
     bool ReadGlobals(cGlobals *globals, string xmlFile);
+    bool ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFile);
     bool ParseView(void);
     bool ParsePluginView(string plugName, int templateNumber);
     bool ParseGlobals(void);
+    bool ParseSkinSetup(string skin);
     void DeleteDocument(void);
     static void InitLibXML();
     static void CleanupLibXML();

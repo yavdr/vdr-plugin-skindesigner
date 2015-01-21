@@ -26,6 +26,7 @@ enum eViewElement {
     veTime,
     veMessage,
     veDevices,
+    veCurrentWeather,
     veCustomTokens,
     //DisplayChannel ViewElements
     veChannelInfo,

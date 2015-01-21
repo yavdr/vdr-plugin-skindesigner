@@ -48,7 +48,8 @@
         </listelement>
         <!-- additional element which is drawn for current element -->
         <!-- Available Variables channels menu currentelement:
-        {name}                  Name of recording
+        {name}                  Real Name of recording (Name of Recording Folder)
+        {epgname}               Name of recording (Name from EPG)
         {shorttext}             Short Text of recording
         {description}           Descrption of recording        
         {date}                  Date of recording
@@ -75,7 +76,7 @@
         <currentelement delay="500" fadetime="0">
             <area x="63%" y="0" width="36%" height="100%" layer="2">
                 <!-- header -->
-                <drawtext name="title" x="1%" y="0" width="98%" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{name}" />
+                <drawtext name="title" x="1%" y="0" width="98%" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{epgname}" />
                 <drawtext name="shorttext" x="1%" y="{height(title)}" width="98%" font="{semibold}" fontsize="6%" color="{clrWhite}" text="{shorttext}" />
                 <drawtext name="datetime" x="1%" y="{posy(shorttext)} + {height(shorttext)}" font="{light}" fontsize="5%" color="{clrWhite}" text="{date} {time}, {duration} min" />
                 <!-- scraper poster -->

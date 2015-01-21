@@ -5,6 +5,7 @@ cSDDisplayReplay::cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly) {
     doOutput = true;
     initial = true;
     modeOnly = ModeOnly;
+    replayView = NULL;
     if (!replayTemplate) {
         doOutput = false;
         esyslog("skindesigner: displayReplay no valid template - aborting");
@@ -19,9 +20,8 @@ cSDDisplayReplay::cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly) {
 }
 
 cSDDisplayReplay::~cSDDisplayReplay() {
-    if (!doOutput)
-        return;
-    delete replayView;
+    if (replayView)
+        delete replayView;
 }
 
 void cSDDisplayReplay::SetRecording(const cRecording *Recording) {

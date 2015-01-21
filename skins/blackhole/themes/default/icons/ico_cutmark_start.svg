@@ -13,7 +13,7 @@
    height="60"
    id="svg4410"
    version="1.1"
-   inkscape:version="0.91pre2 r13516"
+   inkscape:version="0.48.5 r10040"
    viewBox="0 0 20 60.000001"
    sodipodi:docname="ico_cutmark_start.svg">
   <defs
@@ -31,10 +31,10 @@
      inkscape:document-units="px"
      inkscape:current-layer="g5165"
      showgrid="false"
-     inkscape:window-width="1846"
-     inkscape:window-height="1058"
-     inkscape:window-x="66"
-     inkscape:window-y="-8"
+     inkscape:window-width="1400"
+     inkscape:window-height="998"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata4415">
@@ -84,6 +84,12 @@
            id="rect5163"
            style="opacity:1;fill:#800000;fill-opacity:1;stroke:#800000;stroke-width:1.74931276;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       </g>
+      <path
+         style="fill:#aa0000"
+         d="m 3.519685,59.740436 c -2.83822384,-0.789744 -4.24837212,-3.695526 -2.9953,-6.172178 0.5947804,-1.175563 1.9241322,-2.128627 3.3448652,-2.398063 0.3451571,-0.06546 2.2147922,-0.119014 4.1547447,-0.119014 l 3.5271861,0 0,-21.082677 0,-21.0826772 -3.277559,-0.00205 C 3.9689183,8.8810825 3.2550989,8.7351141 1.9590647,7.5925166 1.3158013,7.0254087 0.72338554,5.9229248 0.59012999,5.0449332 0.30222385,3.1479828 1.3351839,1.3732383 3.2570871,0.46279302 L 4.0511811,0.08661428 11.427803,0.05280619 c 7.852023,-0.03598691 7.823923,-0.03781394 8.276987,0.53816458 0.229454,0.29170214 0.232218,0.64095123 0.232218,29.33856123 0,26.76419 -0.01526,29.066633 -0.19444,29.340098 -0.420963,0.642471 -0.397558,0.640708 -8.353449,0.629257 -5.4874666,-0.0079 -7.4719699,-0.04786 -7.869434,-0.158451 z"
+         id="path2993"
+         inkscape:connector-curvature="0"
+         transform="matrix(1.0032441,0,0,0.9393488,432.41651,906.02347)" />
     </g>
   </g>
 </svg>

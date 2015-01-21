@@ -307,8 +307,9 @@ void cDisplayChannelView::ClearScreenResolution(void) {
 }
 
 void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
-    if (!event)
+    if (!event) {
         return;
+    }
 
     if (!ViewElementImplemented(veScraperContent)) {
         return;
@@ -538,6 +539,22 @@ void cDisplayChannelView::DrawCustomTokens(void) {
     map < string, int > intTokens = tmplView->GetCustomIntTokens();
     DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
 }
+
+void cDisplayChannelView::DrawCurrentWeather(void) {
+    if (!ViewElementImplemented(veCurrentWeather)) {
+        return;
+    }
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
+        ClearViewElement(veCurrentWeather);
+        return;
+    }
+    
+    ClearViewElement(veCurrentWeather);
+    DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
+}
+
 
 void cDisplayChannelView::Action(void) {
     SetInitFinished();

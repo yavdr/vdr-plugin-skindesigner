@@ -16,6 +16,7 @@ protected:
     void SetScraperTokens(const cEvent *event, const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens, map < string, vector< map< string, string > > > &loopTokens);
     bool SetTime(map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetDate(map < string, string > &stringTokens, map < string, int > &intTokens);
+    bool SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);
