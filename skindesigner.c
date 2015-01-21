@@ -19,7 +19,7 @@
 #endif
 
 
-static const char *VERSION        = "0.1.5";
+static const char *VERSION        = "0.1.6";
 static const char *DESCRIPTION    = "SkinDesigner";
 static const char *MAINMENUENTRY  = "Skin Designer";
 
