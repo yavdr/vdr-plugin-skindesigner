@@ -12,6 +12,10 @@
         <area x="17%" y="80%" width="67%" height="14%" layer="2">
             <drawimage imagetype="skinpart" path="displaychannelbackepg" x="0" y="0" width="100%" height="100%"/>
         </area>
+        <!-- channel logo background -->
+        <area x="1%" y="77%" width="14%" height="20%" layer="2">
+            <drawimage imagetype="skinpart" path="displaychannellogoback" x="0" y="0" width="100%" height="100%"/>
+        </area>        
         <!-- watch background -->
         <area x="86%" y="77%" width="{areaheight}*0.18" height="{areaheight}*0.18" layer="2">
             <drawimage imagetype="skinpart" path="watchback" x="0" y="0" width="100%" height="100%"/>
@@ -29,7 +33,7 @@
         <area x="17%" y="74%" width="67%" height="6%" layer="2">
             <drawtext x="0" y="0" font="{semibold}" fontsize="100%" color="{clrWhite}" text="{channelnumber}  {channelname}" />
         </area>
-        <area x="2%" y="75%" width="13%" height="25%" layer="2">
+        <area x="2%" y="78%" width="12%" height="18%" layer="3">
             <drawimage cache="true" imagetype="channellogo" path="{channelid}" width="100%" height="100%" align="center" valign="center"/>
         </area>
     </channelinfo>
@@ -106,6 +110,7 @@
             <drawimage condition="{isDolby}" imagetype="icon" path="ico_dolby" x="{areaheight}*6 + 20" y="0" width="{areaheight}*3" height="{areaheight}"/>
             <drawimage condition="{hasVT}" imagetype="icon" path="ico_videotext" x="{areaheight}*9 + 30" y="0" width="{areaheight}" height="{areaheight}"/>
             <drawimage condition="{isEncrypted}" imagetype="icon" path="ico_crypted" x="{areaheight}*10 + 40" y="0" width="{areaheight}*2" height="{areaheight}"/>
+            <drawimage condition="{isRecording}" imagetype="icon" path="ico_rec_on" x="{areaheight}*12 + 50" y="0" width="{areaheight}" height="{areaheight}"/>
         </area>
     </statusinfo>
 
