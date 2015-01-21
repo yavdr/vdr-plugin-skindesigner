@@ -167,4 +167,8 @@ Version 0.1.4
 Version 0.1.5
 
 - removed suppression of first DisplayChannel call after VDR start
+- fixed "flickering" bug with vdr2.1.7
+- fixed bug that osd language was not set correctly which caused one
+  additional skin caching at startup
 
+Version 0.1.6
