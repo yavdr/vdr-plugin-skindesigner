@@ -104,6 +104,7 @@ bool cPluginSkinDesigner::Start(void) {
         trueColorAvailable = false;
     } else
         dsyslog("skindesigner: TrueColor OSD found");
+    config.SetOsdLanguage();
     config.SetPathes();
     config.ReadSkins();
     config.InitSkinIterator();

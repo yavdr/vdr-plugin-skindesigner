@@ -24,7 +24,7 @@ cDesignerConfig::cDesignerConfig() {
     SetSkin();
     SetOSDSize();
     SetOSDFonts();
-    osdLanguage = Setup.OSDLanguage;
+    osdLanguage = "";
 }
 
 cDesignerConfig::~cDesignerConfig() {

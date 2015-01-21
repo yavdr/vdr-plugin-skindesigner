@@ -22,8 +22,6 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
         doOutput = false;
         return;
     }
-    channelView->DrawBackground();
-    channelView->DrawSignalBackground();
 }
 
 cSDDisplayChannel::~cSDDisplayChannel() {
@@ -165,6 +163,8 @@ void cSDDisplayChannel::Flush(void) {
         return;
 
     if (initial) {
+        channelView->DrawBackground();
+        channelView->DrawSignalBackground();
         channelView->DrawCurrentWeather();
         channelView->DrawCustomTokens();
     }

@@ -63,6 +63,7 @@ public:
     bool OsdSizeChanged(void);
     void SetOSDFonts(void);
     bool OsdFontsChanged(void);
+    void SetOsdLanguage(void) { osdLanguage = Setup.OSDLanguage; };
     bool OsdLanguageChanged(void);
     cString GetSkinRessourcePath(void);
     void AddPlugin(string name, map < int, string > &menus);
