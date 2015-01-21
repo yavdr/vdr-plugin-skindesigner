@@ -87,14 +87,12 @@ public:
 };
 
 #ifdef DEFINE_CONFIG
-    bool firstDisplay = true;
     cDesignerConfig config;
     cFontManager *fontManager = NULL;
     cImageCache *imgCache = NULL;
     cTheme Theme;
     cRecordingsFolderInfo recFolderInfo(Recordings);
 #else
-    extern bool firstDisplay;
     extern cDesignerConfig config;
     extern cFontManager *fontManager;
     extern cImageCache *imgCache;

@@ -49,7 +49,6 @@ cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
     if (!useBackupSkin) {
         cSDDisplayMenu *displayMenu = NULL;
         Init();
-        firstDisplay = false;
         displayMenu = new cSDDisplayMenu(menuTemplate);
         currentMenu = displayMenu;
         return displayMenu;

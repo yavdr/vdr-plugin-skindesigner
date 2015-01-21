@@ -3,12 +3,8 @@
 
 cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) {
     channelView = NULL;
-    if (firstDisplay) {
-        firstDisplay = false;
-        doOutput = false;
-        return;
-    } else if (!channelTemplate) {
-        esyslog("skindesigner: displayChannel no valid template - aborting");
+
+    if (!channelTemplate) {
         doOutput = false;
         return;
     } else {
