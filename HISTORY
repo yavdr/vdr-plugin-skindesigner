@@ -172,3 +172,6 @@ Version 0.1.5
   additional skin caching at startup
 
 Version 0.1.6
+
+- fixed bug that onpause view potentially starts during setting cutting
+  marks

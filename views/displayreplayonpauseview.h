@@ -8,10 +8,12 @@
 class cDisplayReplayOnPauseView : public cView, public cViewHelpers {
 private:
     int delay;
+    bool resetSleep;
     virtual void Action(void);
 public:
     cDisplayReplayOnPauseView(cTemplateViewElement *tmplViewElement);
     virtual ~cDisplayReplayOnPauseView();
+    void ResetSleep(void) { resetSleep = true; };
     void Render(void);
     void Flush(void) { DoFlush(); };
 };

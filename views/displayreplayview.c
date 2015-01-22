@@ -379,6 +379,12 @@ void cDisplayReplayView::ClearOnPause(void) {
     }
 }
 
+void cDisplayReplayView::DelayOnPause(void) {
+    if (onPauseView) {
+        onPauseView->ResetSleep();
+    }
+}
+
 void cDisplayReplayView::DrawCustomTokens(void) {
     if (!ViewElementImplemented(veCustomTokens)) {
         return;

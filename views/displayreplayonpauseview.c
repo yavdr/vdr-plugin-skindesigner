@@ -6,6 +6,7 @@ cDisplayReplayOnPauseView::cDisplayReplayOnPauseView(cTemplateViewElement *tmplV
     tmplViewElement->SetPixOffset(0);
     delay = tmplViewElement->GetNumericParameter(ptDelay) * 1000;
     SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
+    resetSleep = false;
 }
 
 cDisplayReplayOnPauseView::~cDisplayReplayOnPauseView() {
@@ -83,7 +84,20 @@ void cDisplayReplayOnPauseView::Render(void) {
 }
 
 void cDisplayReplayOnPauseView::Action(void) {
-    DoSleep(delay);
+    bool doContinue;
+    int sleepSlice = 10;
+    do {
+        doContinue = false;
+        for (int i = 0; Running() && (i*sleepSlice < delay); i++) {
+            cCondWait::SleepMs(sleepSlice);
+            if (resetSleep) {
+                doContinue = true;
+                resetSleep = false;
+                break;
+            }
+        }
+    } while (doContinue);
+
     if (!Running())
         return;
     Render();
