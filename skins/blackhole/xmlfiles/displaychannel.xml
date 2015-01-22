@@ -189,9 +189,9 @@
             <loop name="devices" x="0" y="0" orientation="horizontal" columnwidth="{areawidth}/{numdevices}" rowheight="{areaheight}">
                 <drawtext x="0" y="0" font="{regular}" fontsize="40%" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
                 <drawtext condition="{devices[hascam]}" align="right" y="0" font="{regular}" fontsize="40%" color="{clrWhite}" text="(CAM {devices[cam]})" />
-                <drawtext condition="{devices[recording]} ++ {devices[livetv]}" x="0" y="35%" font="{regular}" fontsize="30%" width="100%" color="{clrRed}" text="LiveTV, Recording ({devices[channelname]}) " />
-                <drawtext condition="{devices[recording]} ++ not{devices[livetv]}" x="0" y="35%" font="{regular}" fontsize="30%" width="100%" color="{clrRed}" text="Recording ({devices[channelname]}) " />
-                <drawtext condition="not{devices[recording]} ++ {devices[livetv]}" x="0" y="35%" font="{regular}" fontsize="30%" width="100%" color="{clrWhite}" text="LiveTV ({devices[channelname]}) " />
+                <drawtext condition="{devices[recording]} ++ {devices[livetv]}" x="0" y="35%" font="{regular}" fontsize="30%" width="{columnwidth}" color="{clrRed}" text="LiveTV, Recording ({devices[channelname]}) " />
+                <drawtext condition="{devices[recording]} ++ not{devices[livetv]}" x="0" y="35%" font="{regular}" fontsize="30%" width="{columnwidth}" color="{clrRed}" text="Recording ({devices[channelname]}) " />
+                <drawtext condition="not{devices[recording]} ++ {devices[livetv]}" x="0" y="35%" font="{regular}" fontsize="30%" width="{columnwidth}" color="{clrWhite}" text="LiveTV ({devices[channelname]}) " />
                 <drawrectangle  x="0" y="70%" width="{columnwidth} * {devices[signalstrength]} / 100 - 10 * {devices[signalstrength]} / 100" height="{rowheight}/15" color="{clrWhite}" />
                 <drawrectangle  x="0" y="85%" width="{columnwidth} * {devices[signalquality]} / 100 - 10 * {devices[signalquality]} / 100" height="{rowheight}/15" color="{clrWhite}" />
             </loop>  
