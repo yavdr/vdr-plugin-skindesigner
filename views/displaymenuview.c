@@ -419,7 +419,6 @@ void cDisplayMenuMainView::DrawTemperatures(void) {
     if (!ViewElementImplemented(veTemperatures)) {
         return;
     }
-
     cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
     system(*execCommand);
 

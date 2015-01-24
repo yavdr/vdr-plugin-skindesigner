@@ -22,19 +22,37 @@ class cGlobals {
 private:
     string language;
     string DoTranslate(string token);
-public:
-    cGlobals(void);
-    virtual ~cGlobals(void) {};
     map <string, tColor> colors;
+    map <string, string> fonts;
     map <string, int> intVars;
     map <string, double> doubleVars;
     map <string, string> stringVars;
-    map <string, string> fonts;
     map <string, map< string, string > > translations;
     map <string, string> customStringTokens;
     map <string, int> customIntTokens;
+public:
+    cGlobals(void);
+    virtual ~cGlobals(void) {};
     bool ReadFromXML(void);
+    void AddColor(string &name, tColor &col);
+    bool GetColor(string &name, tColor &col);
+    void AddFont(string &name, string &font);
+    bool GetFont(string name, string &font);
+    void AddInt(string &name, int value);
+    void ReplaceIntVars(string &value);
+    bool GetInt(string name, int &val);
+    void AddDouble(string &name, string &value);
+    void ReplaceDoubleVars(string &value);
+    void AddString(string &name, string &value);
+    void ReplaceStringVars(string &value);
+    bool AddTranslation(string name,  map < string, string > transl);
     bool Translate(string text, string &translation);
+    void AddCustomInt(string &name, int value);
+    void AddCustomString(string &name, string &value);
+    bool GetCustomInt(string name, int &val);
+    map <string, string> GetCustomStringTokens(void) { return customStringTokens; };
+    map <string, int> GetCustomIntTokens(void) { return customIntTokens; };
+    void ListCustomTokens(void);
     void Debug(void);
 };
 

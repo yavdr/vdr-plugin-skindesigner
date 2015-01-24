@@ -146,17 +146,9 @@ bool cSkinDesigner::SetCustomToken(string option) {
         return true;
 
     if (isNumber(val)) {
-        map<string, int>::iterator hit = globals->customIntTokens.find(key);
-        if (hit != globals->customIntTokens.end()) {
-            globals->customIntTokens.erase(key);
-        }
-        globals->customIntTokens.insert(pair<string,int>(key, atoi(val.c_str())));
+        globals->AddCustomInt(key, atoi(val.c_str()));
     } else {
-        map<string, string>::iterator hit = globals->customStringTokens.find(key);
-        if (hit != globals->customStringTokens.end()) {
-            globals->customStringTokens.erase(key);
-        }
-        globals->customStringTokens.insert(pair<string,string>(key, val));
+        globals->AddCustomString(key, val);
     }
     return true;
 }
@@ -164,13 +156,7 @@ bool cSkinDesigner::SetCustomToken(string option) {
 void cSkinDesigner::ListCustomTokens(void) {
     if (!globals)
         return;
-
-    for (map<string, string>::iterator it = globals->customStringTokens.begin(); it != globals->customStringTokens.end(); it++) {
-        dsyslog("skindesigner: custom string token \"%s\" = \"%s\"", (it->first).c_str(), (it->second).c_str());
-    }
-    for (map<string, int>::iterator it = globals->customIntTokens.begin(); it != globals->customIntTokens.end(); it++) {
-        dsyslog("skindesigner: custom int token \"%s\" = \"%d\"", (it->first).c_str(), it->second);
-    }
+    globals->ListCustomTokens();
 }
 
 /*********************************************************************************

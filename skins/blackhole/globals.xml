@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE globals SYSTEM "../../../../dtd/globals.dtd">
+<!DOCTYPE globals SYSTEM "../../dtd/globals.dtd">
 
 <globals>
     <!--
     define all your needed colors here
     -->
     <colors>
-        <color name="clrRed">FFFF0000</color>
-        <color name="clrGreen">FF5FE200</color>
-        <color name="clrYellow">FFE2DA00</color>
-        <color name="clrBlue">FF007FE2</color>
-        <color name="clrWhite">FFFFFFFF</color>
-        <color name="clrTransWhite">99FFFFFF</color>
-        <color name="clrBlack">FF000000</color>
-        <color name="clrProgressbar">FF8EAB21</color>
-        <color name="clrBorder">FF4C5C11</color>
-        <color name="clrGray">FF858585</color>
-        <color name="clrBackground">B012273F</color>
-        <color name="clrTransBlack">99000000</color>
-        <color name="clrTransBlackDark">CC000000</color>
-        <color name="clrTransRed">99FF0000</color>
-        <color name="clrFontMenuItem">FFFFFFFF</color>
-        <color name="clrFontMenuItemSelected">FF363636</color>
-        <color name="clrFontInactive">FF858585</color>
-        <color name="clrTransparent">00000000</color>
     </colors>
     <!--
     these variables can be used everywhere in the templates
@@ -31,31 +13,26 @@
     set such a variable to 1 for true and 0 for false
     -->
     <variables>
-        <var type="int" name="fadeTime">300</var>
     </variables>
     <!--
     translations used in the skin
     -->
     <translations>
-        <token name="tr(free)">
-            <trans lang="en_EN">free</trans>
-            <trans lang="de_DE">frei</trans>
+        <token name="tr(noactivetimers)">
+            <trans lang="en_EN">no active timers</trans>
+            <trans lang="de_DE">keine aktiven Timer</trans>
         </token>
         <token name="tr(transponder)">
             <trans lang="en_EN">Transponder</trans>
             <trans lang="de_DE">Transponder</trans>
         </token>
-        <token name="tr(now)">
-            <trans lang="en_EN">Now</trans>
-            <trans lang="de_DE">Jetzt</trans>
+        <token name="tr(schedule)">
+            <trans lang="en_EN">Schedule</trans>
+            <trans lang="de_DE">Programm</trans>
         </token>
-        <token name="tr(next)">
-            <trans lang="en_EN">Next</trans>
-            <trans lang="de_DE">Nachfolgend</trans>
-        </token>
-        <token name="tr(nextschedules)">
-            <trans lang="en_EN">Next Schedules</trans>
-            <trans lang="de_DE">Nachfolgende Sendungen</trans>
+        <token name="tr(since)">
+            <trans lang="en_EN">since</trans>
+            <trans lang="de_DE">Seit</trans>
         </token>
         <token name="tr(reruns)">
             <trans lang="en_EN">Reruns</trans>
@@ -192,6 +169,10 @@
         <token name="tr(pause)">
             <trans lang="en_EN">Pause</trans>
             <trans lang="de_DE">Pause</trans>
+        </token>
+        <token name="tr(temp)">
+            <trans lang="en_EN">Temperature</trans>
+            <trans lang="de_DE">Temperatur</trans>
         </token>
         <token name="tr(apparenttemp)">
             <trans lang="en_EN">Felt Temperature</trans>

@@ -175,3 +175,6 @@ Version 0.1.6
 
 - fixed bug that onpause view potentially starts during setting cutting
   marks
+- made all globals variables private
+- introduced globals.xml in skinpath, theme.xml in theme path. theme.xml
+  adds its vakues and potentially overrides valués from globals.xml  

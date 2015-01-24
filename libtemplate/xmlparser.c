@@ -89,7 +89,7 @@ bool cXmlParser::ReadPluginView(string plugName, int templateNumber, string temp
     return true;
 }
 
-bool cXmlParser::ReadGlobals(cGlobals *globals, string xmlFile) {
+bool cXmlParser::ReadGlobals(cGlobals *globals, string xmlFile, bool mandatory) {
     this->globals = globals;
     
     string xmlPath = GetPath(xmlFile);
@@ -101,20 +101,30 @@ bool cXmlParser::ReadGlobals(cGlobals *globals, string xmlFile) {
     
     doc = xmlCtxtReadFile(ctxt, xmlPath.c_str(), NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
 
-    if (doc == NULL ) {
-        esyslog("skindesigner: ERROR: Globals %s not parsed successfully.", xmlPath.c_str());
+    if (doc == NULL) {
+        if (mandatory) {
+            esyslog("skindesigner: ERROR: Globals %s not parsed successfully.", xmlPath.c_str());
+        } else {
+            dsyslog("skindesigner: Globals %s not parsed successfully.", xmlPath.c_str());
+        }
         return false;
     }
 
     root = xmlDocGetRootElement(doc);
 
     if (ctxt->valid == 0) {
-        esyslog("skindesigner: Failed to validate %s", xmlPath.c_str());
+        if (mandatory) {
+            esyslog("skindesigner: ERROR: Failed to validate %s", xmlPath.c_str());
+        } else {
+            dsyslog("skindesigner: Failed to validate %s", xmlPath.c_str());
+        }
         return false;
     }
 
     if (root == NULL) {
-        esyslog("skindesigner: ERROR: Globals %s is empty", xmlPath.c_str());
+        if (mandatory) {
+            esyslog("skindesigner: ERROR: Globals %s is empty", xmlPath.c_str());
+        } 
         return false;
     }
 
@@ -234,7 +244,6 @@ bool cXmlParser::ParsePluginView(string plugName, int templateNumber) {
 
 bool cXmlParser::ParseGlobals(void) {
     xmlNodePtr node = root->xmlChildrenNode;
-    
     while (node != NULL) {
         if (node->type != XML_ELEMENT_NODE) {
             node = node->next;
@@ -304,6 +313,8 @@ string cXmlParser::GetPath(string xmlFile) {
     string activeTheme = Setup.OSDTheme;
     string path = "";
     if (!xmlFile.compare("globals.xml")) {
+        path = *cString::sprintf("%s%s/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
+    } else if (!xmlFile.compare("theme.xml")) {
         path = *cString::sprintf("%s%s/themes/%s/%s", *config.skinPath, activeSkin.c_str(), activeTheme.c_str(), xmlFile.c_str());
     } else if (!xmlFile.compare("setup.xml")) {
         path = *cString::sprintf("%s%s/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
@@ -424,7 +435,7 @@ void cXmlParser::InsertColor(string name, string value) {
     str << value;
     tColor colVal;
     str >> std::hex >> colVal;
-    globals->colors.insert(pair<string, tColor>(name, colVal));
+    globals->AddColor(name, colVal);
 }
 
 void cXmlParser::ParseGlobalVariables(xmlNodePtr node) {
@@ -476,17 +487,11 @@ void cXmlParser::ParseGlobalVariables(xmlNodePtr node) {
 void cXmlParser::InsertVariable(string name, string type, string value) {
     if (!type.compare("int")) {
         int val = atoi(value.c_str());
-        globals->intVars.insert(pair<string, int>(name, val));
+        globals->AddInt(name, val);
     } else if (!type.compare("double")) {
-        if (config.replaceDecPoint) {
-            if (value.find_first_of('.') != string::npos) {
-                std::replace( value.begin(), value.end(), '.', config.decPoint);
-            }
-        }
-        double val = atof(value.c_str());
-        globals->doubleVars.insert(pair<string, double>(name, val));
+        globals->AddDouble(name, value);
     } else if (!type.compare("string")) {
-        globals->stringVars.insert(pair<string, string>(name, value));
+        globals->AddString(name, value);
     }
 }
 
@@ -523,8 +528,11 @@ void cXmlParser::ParseGlobalFonts(xmlNodePtr node) {
         }
         if (ok) {
             fontValue = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
-            if (fontName && fontValue)
-                globals->fonts.insert(pair<string, string>((const char*)fontName, (const char*)fontValue));
+            if (fontName && fontValue) {
+                string fN = (const char*)fontName;
+                string fV = (const char*)fontValue;
+                globals->AddFont(fN, fV);
+            }
         }
         if (fontName)
             xmlFree(fontName);
@@ -607,7 +615,7 @@ void cXmlParser::ParseTranslations(xmlNodePtr node) {
             nodeTrans = nodeTrans->next;
         }
         if (globals) {
-            globals->translations.insert(pair<string, map < string, string > >((const char*)tokenName, tokenTranslations));
+            globals->AddTranslation((const char*)tokenName, tokenTranslations);
         } else if (skinSetup) {
             skinSetup->SetTranslation((const char*)tokenName, tokenTranslations);
         }

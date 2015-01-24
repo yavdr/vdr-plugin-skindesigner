@@ -102,8 +102,7 @@ void cSkinSetup::AddToGlobals(cGlobals *globals) {
     	return;
     for (map < string, cSkinSetupParameter* >::iterator p = parameters.begin(); p != parameters.end(); p++) {
     	cSkinSetupParameter *param = p->second;
-		globals->intVars.erase(param->name);
-		globals->intVars.insert(pair<string,int>(param->name, param->value));
+		globals->AddInt(param->name, param->value);
     }
 }
 
