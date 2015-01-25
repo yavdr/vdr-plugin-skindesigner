@@ -177,4 +177,6 @@ Version 0.1.6
   marks
 - made all globals variables private
 - introduced globals.xml in skinpath, theme.xml in theme path. theme.xml
-  adds its vakues and potentially overrides valués from globals.xml  
+  adds its vakues and potentially overrides valués from globals.xml
+- check icons, menuicons and skinparts additionally directly in skin folder
+  to allow default images which can be used for all skins.

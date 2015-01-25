@@ -41,8 +41,10 @@ private:
     static string items[16];
     cImage *tempStaticLogo;
     string logoPath;
-    string iconPath;
-    string skinPartsPath;
+    string iconPathSkin;
+    string skinPartsPathSkin;
+    string iconPathTheme;
+    string skinPartsPathTheme;
     map<string, cImage*> iconCache;
     map<string, cImage*> channelLogoCache;
     map<string, cImage*> skinPartsCache;

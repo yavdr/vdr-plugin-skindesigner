@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE globals SYSTEM "../../dtd/globals.dtd">
+
+<globals>
+    <!--
+    define all your needed colors here
+    -->
+    <colors>
+    </colors>
+    <!--
+    these variables can be used everywhere in the templates
+    variabls of type int can also be used as conditions, just
+    set such a variable to 1 for true and 0 for false
+    -->
+    <variables>
+    </variables>
+    <!--
+    translations used in the skin
+    -->
+    <translations>
+    </translations>
+    <!--
+    The three Fonts FontOSD, FontFix and FontSml configured in VDR
+    can be used in all template "font" attributes with this tokens:
+    {vdrOsd}
+    {vdrFix}
+    {vdrSml} 
+    If you like to use further fonts, just define them below.
+    Syntax:
+    <font name="tokenname">fontname</font>
+    These fonts can then also be used in all templates in the "font" 
+    attribute.
+    if an invalid font is used in a template, vdrOsd is used as default.
+    -->
+    <fonts>
+    </fonts>
+</globals>
