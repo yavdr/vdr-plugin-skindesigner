@@ -182,3 +182,5 @@ Version 0.1.6
   to allow default images which can be used for all skins
 - fixed bug that setup variables are sometimes not identified in case two 
   or more skin names start identically
+
+Version 0.2.0
