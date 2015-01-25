@@ -172,3 +172,15 @@ Version 0.1.5
   additional skin caching at startup
 
 Version 0.1.6
+
+- fixed bug that onpause view potentially starts during setting cutting
+  marks
+- made all globals variables private
+- introduced globals.xml in skinpath, theme.xml in theme path. theme.xml
+  adds its vakues and potentially overrides valués from globals.xml
+- check icons, menuicons and skinparts additionally directly in skin folder
+  to allow default images which can be used for all skins
+- fixed bug that setup variables are sometimes not identified in case two 
+  or more skin names start identically
+
+Version 0.2.0

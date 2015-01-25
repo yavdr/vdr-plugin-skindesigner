@@ -1,5 +1,6 @@
 #include "templateviewlist.h"
 #include "../config.h"
+#include "../libcore/helpers.h"
 
 cTemplateViewList::cTemplateViewList(void) : cTemplateViewElement() {
     listElement = NULL;
@@ -87,16 +88,11 @@ int cTemplateViewList::GetAverageFontWidth(void) {
     string paramFontSize = fontFunc->GetParameter(ptFontSize);
 
     string fontName = "";
-    if ((fontNameToken.find("{") == 0) && (fontNameToken.find("}") == (fontNameToken.size()-1))) {
-        fontNameToken = fontNameToken.substr(1, fontNameToken.size()-2);
-        map<string,string>::iterator hit = globals->fonts.find(fontNameToken);
-        if (hit != globals->fonts.end()) {
-            fontName = hit->second;
-        } else {
-            map<string,string>::iterator def = globals->fonts.find("vdrOsd");
-            if (def == globals->fonts.end())
+    if (IsToken(fontNameToken)) {
+        if (!globals->GetFont(fontNameToken, fontName)) {
+            if (!globals->GetFont("{vdrOsd}", fontName)) {
                 return defaultAverageFontWidth;
-            fontName = def->second;
+            }
         }
     } else {
         //if no token, directly use input
@@ -135,16 +131,11 @@ cFont *cTemplateViewList::GetTextAreaFont(void) {
     string paramFontSize = fontFunc->GetParameter(ptFontSize);
 
     string fontName = "";
-    if ((fontNameToken.find("{") == 0) && (fontNameToken.find("}") == (fontNameToken.size()-1))) {
-        fontNameToken = fontNameToken.substr(1, fontNameToken.size()-2);
-        map<string,string>::iterator hit = globals->fonts.find(fontNameToken);
-        if (hit != globals->fonts.end()) {
-            fontName = hit->second;
-        } else {
-            map<string,string>::iterator def = globals->fonts.find("vdrOsd");
-            if (def == globals->fonts.end())
+    if (IsToken(fontNameToken)) {
+        if (!globals->GetFont(fontNameToken, fontName)) {
+            if (!globals->GetFont("{vdrOsd}", fontName)) {
                 return NULL;
-            fontName = def->second;
+            }
         }
     } else {
         //if no token, directly use input

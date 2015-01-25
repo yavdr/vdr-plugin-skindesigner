@@ -105,8 +105,8 @@ public:
     int GetNumPixmapsViewElement(eViewElement ve);
     int GetNumListViewMenuItems(void);
     bool GetScalingWindow(cRect &scalingWindow);
-    map<string,string> GetCustomStringTokens(void) { return globals->customStringTokens; };
-    map<string,int> GetCustomIntTokens(void) { return globals->customIntTokens; };
+    map<string,string> GetCustomStringTokens(void) { return globals->GetCustomStringTokens(); };
+    map<string,int> GetCustomIntTokens(void) { return globals->GetCustomIntTokens(); };
     //Checks for parsing template XML files
     bool ValidSubView(const char *subView);
     bool ValidViewElement(const char *viewElement);

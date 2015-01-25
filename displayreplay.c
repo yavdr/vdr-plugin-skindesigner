@@ -16,7 +16,6 @@ cSDDisplayReplay::cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly) {
         doOutput = false;
         return;
     }
-    replayView->DrawBackground(modeOnly);
 }
 
 cSDDisplayReplay::~cSDDisplayReplay() {
@@ -46,6 +45,7 @@ void cSDDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
 void cSDDisplayReplay::SetProgress(int Current, int Total) {
     if (!doOutput)
         return;
+    replayView->DelayOnPause();
     replayView->DrawProgressBar(Current, Total);
     replayView->DrawMarks(marks, Current, Total);
 }
@@ -83,6 +83,7 @@ void cSDDisplayReplay::Flush(void) {
     }
 
     if (initial) {
+        replayView->DrawBackground(modeOnly);
         replayView->DrawCustomTokens();
         replayView->DoFadeIn();
         initial = false;

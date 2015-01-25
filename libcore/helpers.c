@@ -90,6 +90,12 @@ bool isNumber(const string& s) {
     return !s.empty() && it == s.end();
 }
 
+bool IsToken(const string& token) {
+    if ((token.find("{") == 0) && (token.find("}") == (token.size()-1)))
+        return true;
+    return false;
+}
+
 bool FileExists(const string &fullpath) {
     struct stat buffer;
     return (stat (fullpath.c_str(), &buffer) == 0); 

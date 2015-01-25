@@ -50,7 +50,7 @@ public:
     virtual ~cXmlParser(void);
     bool ReadView(cTemplateView *view, string xmlFile);
     bool ReadPluginView(string plugName, int templateNumber, string templateName);
-    bool ReadGlobals(cGlobals *globals, string xmlFile);
+    bool ReadGlobals(cGlobals *globals, string xmlFile, bool mandatory);
     bool ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFile);
     bool ParseView(void);
     bool ParsePluginView(string plugName, int templateNumber);

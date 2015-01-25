@@ -33,6 +33,7 @@ public:
     void DrawMessage(eMessageType type, const char *text);
     void DrawOnPause(bool modeOnly);
     void ClearOnPause(void);
+    void DelayOnPause(void);
     void DrawCustomTokens(void);
     void DoFadeIn(void) { Start(); };
     void Flush(void) { DoFlush(); };

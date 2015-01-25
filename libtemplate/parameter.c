@@ -146,34 +146,8 @@ bool cNumericParameter::CheckExpression(int &val, string &parsedVal) {
     }
 
     if (globals) {
-        for (map<string, int>::iterator globInt = globals->intVars.begin(); globInt != globals->intVars.end(); globInt++) {
-            stringstream sToken;
-            sToken << "{" << globInt->first << "}";
-            string token = sToken.str();
-            size_t foundToken = parsedValue.find(token);
-            if (foundToken != string::npos) {
-                stringstream st;
-                st << globInt->second;
-                parsedValue = parsedValue.replace(foundToken, token.size(), st.str());
-            }
-        }
-        for (map<string, double>::iterator globDouble = globals->doubleVars.begin(); globDouble != globals->doubleVars.end(); globDouble++) {
-            stringstream sToken;
-            sToken << "{" << globDouble->first << "}";
-            string token = sToken.str();
-            size_t foundToken = parsedValue.find(token);
-            if (foundToken != string::npos) {
-                stringstream st;
-                st << globDouble->second;
-                string doubleVal = st.str();
-                if (config.replaceDecPoint) {
-                    if (doubleVal.find_first_of('.') != string::npos) {
-                        std::replace( doubleVal.begin(), doubleVal.end(), '.', config.decPoint);
-                    }
-                }
-                parsedValue = parsedValue.replace(foundToken, token.size(), doubleVal);
-            }
-        }
+        globals->ReplaceIntVars(parsedValue);
+        globals->ReplaceDoubleVars(parsedValue);
     }
 
     if (IsNumber(parsedValue)) {
@@ -339,15 +313,12 @@ bool cConditionalParameter::Evaluate(map < string, int > *intTokens, map < strin
 
 int cConditionalParameter::EvaluateParameter(string token, map < string, int > *intTokens, map < string, string > *stringTokens) {
     //first check globals
-    map < string, int >::iterator hitGlobals = globals->intVars.find(token);
-    if (hitGlobals != globals->intVars.end()) {
-        return hitGlobals->second;
-    }
+    int result = 0;
+    if (globals->GetInt(token, result))
+        return result;
     //then check custom tokens
-    map < string, int >::iterator hitCustomTokens = globals->customIntTokens.find(token);
-    if (hitCustomTokens != globals->customIntTokens.end()) {
-        return hitCustomTokens->second;
-    }
+    if (globals->GetCustomInt(token, result))
+        return result;
     //then check tokens
     if (intTokens) {
         map < string, int >::iterator hit = intTokens->find(token);

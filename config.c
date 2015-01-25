@@ -160,7 +160,9 @@ void cDesignerConfig::SetSkinSetupParameters(void) {
         string activeSkin = "";
         bool skinFound = false;
         while (GetSkin(activeSkin)) {
-            size_t hit = name.find(activeSkin);
+            stringstream checkString;
+            checkString << activeSkin << ".";
+            size_t hit = name.find(checkString.str());
             if (hit != 0)
                 continue;
             skinFound = true;

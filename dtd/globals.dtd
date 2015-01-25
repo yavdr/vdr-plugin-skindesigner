@@ -1,6 +1,6 @@
 <?xml encoding="UTF-8"?>
 
-<!ELEMENT globals (colors,variables,translations,fonts)>
+<!ELEMENT globals (colors | variables | translations | fonts)*>
 <!ELEMENT colors (color)*>
 <!ELEMENT variables (var)*>
 <!ELEMENT translations (token)*>

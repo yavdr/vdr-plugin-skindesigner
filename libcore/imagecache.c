@@ -32,12 +32,16 @@ void cImageCache::SetPathes(void) {
     } else {
         logoPath = *config.logoPath;
     }
-    iconPath = *cString::sprintf("%s%s/themes/%s/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
-    skinPartsPath = *cString::sprintf("%s%s/themes/%s/skinparts/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+
+    iconPathSkin = *cString::sprintf("%s%s/", *config.skinPath, Setup.OSDSkin);
+    skinPartsPathSkin = *cString::sprintf("%s%s/skinparts/", *config.skinPath, Setup.OSDSkin);
+
+    iconPathTheme = *cString::sprintf("%s%s/themes/%s/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    skinPartsPathTheme = *cString::sprintf("%s%s/themes/%s/skinparts/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
 
     dsyslog("skindesigner: using channel logo path %s", logoPath.c_str());
-    dsyslog("skindesigner: using icon path %s", iconPath.c_str());
-    dsyslog("skindesigner: using skinparts path %s", skinPartsPath.c_str());
+    dsyslog("skindesigner: using icon path %s", iconPathTheme.c_str());
+    dsyslog("skindesigner: using skinparts path %s", skinPartsPathTheme.c_str());
 }
 
 void cImageCache::CacheLogo(int width, int height) {
@@ -261,11 +265,20 @@ string cImageCache::GetIconName(string label, eMenuCategory cat) {
 }
 
 bool cImageCache::MenuIconExists(string name) {
-    cString iconFullPath = cString::sprintf("%smenuicons/", iconPath.c_str());
-    if (FileExists(*iconFullPath, name, "svg")) {
+    //first check in theme specific icon folder
+    cString iconThemePath = cString::sprintf("%smenuicons/", iconPathTheme.c_str());
+    if (FileExists(*iconThemePath, name, "svg")) {
         return true;
     }
-    if (FileExists(*iconFullPath, name, "png")) {
+    if (FileExists(*iconThemePath, name, "png")) {
+        return true;
+    }
+    //then check skin icon folder
+    cString iconSkinPath = cString::sprintf("%smenuicons/", iconPathSkin.c_str());
+    if (FileExists(*iconSkinPath, name, "svg")) {
+        return true;
+    }
+    if (FileExists(*iconSkinPath, name, "png")) {
         return true;
     }
     return false;
@@ -306,12 +319,22 @@ bool cImageCache::LoadIcon(eImageType type, string name) {
         subdir = "menuicons";
     else if (type == itIcon)
         subdir = "icons";
-    cString subIconPath = cString::sprintf("%s%s/", iconPath.c_str(), *subdir);
 
-    if (FileExists(*subIconPath, name, "svg"))
-        return LoadImage(*subIconPath, name, "svg");
-    else
-        return LoadImage(*subIconPath, name, "png");
+    //first check in theme specific icon path
+    cString subIconThemePath = cString::sprintf("%s%s/", iconPathTheme.c_str(), *subdir);
+
+    if (FileExists(*subIconThemePath, name, "svg"))
+        return LoadImage(*subIconThemePath, name, "svg");
+    else if (FileExists(*subIconThemePath, name, "png"))
+        return LoadImage(*subIconThemePath, name, "png");
+
+    //then check in skin icon path
+    cString subIconSkinPath = cString::sprintf("%s%s/", iconPathSkin.c_str(), *subdir);
+
+    if (FileExists(*subIconSkinPath, name, "svg"))
+        return LoadImage(*subIconSkinPath, name, "svg");
+    else 
+        return LoadImage(*subIconSkinPath, name, "png");
 }
 
 bool cImageCache::LoadLogo(const cChannel *channel) {
@@ -342,10 +365,17 @@ bool cImageCache::LoadSeparatorLogo(string name) {
 }
 
 bool cImageCache::LoadSkinpart(string name) {
-    if (FileExists(skinPartsPath.c_str(), name, "svg"))
-        return LoadImage(skinPartsPath.c_str(), name, "svg");
-    else
-        return LoadImage(skinPartsPath.c_str(), name, "png");
+    if (FileExists(skinPartsPathTheme.c_str(), name, "svg"))
+        return LoadImage(skinPartsPathTheme.c_str(), name, "svg");
+    
+    else if (FileExists(skinPartsPathTheme.c_str(), name, "png"))
+        return LoadImage(skinPartsPathTheme.c_str(), name, "png");
+    
+    else if (FileExists(skinPartsPathSkin.c_str(), name, "svg"))
+        return LoadImage(skinPartsPathSkin.c_str(), name, "svg");
+    
+    else 
+        return LoadImage(skinPartsPathSkin.c_str(), name, "png");
 }
 
 void cImageCache::Clear(void) {

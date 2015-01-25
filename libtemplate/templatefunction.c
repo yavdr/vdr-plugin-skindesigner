@@ -777,16 +777,11 @@ bool cTemplateFunction::SetAlign(eParamType type, string value) {
 
 bool cTemplateFunction::SetFont(eParamType type, string value) {
     //check if token
-    if ((value.find("{") == 0) && (value.find("}") == (value.size()-1))) {
-        value = value.substr(1, value.size()-2);
-        map<string,string>::iterator hit = globals->fonts.find(value);
-        if (hit != globals->fonts.end()) {
-            fontName = hit->second;
-        } else {
-            map<string,string>::iterator def = globals->fonts.find("vdrOsd");
-            if (def == globals->fonts.end())
+    if (IsToken(value)) {
+        if (!globals->GetFont(value, fontName)) {
+            if (!globals->GetFont("{vdrOsd}", fontName)) {
                 return false;
-            fontName = def->second;
+            }
         }
     } else {
         //if no token, directly use input
@@ -820,15 +815,10 @@ bool cTemplateFunction::SetImageType(eParamType type, string value) {
 
 bool cTemplateFunction::SetColor(eParamType type, string value) {
     if (globals) {
-        for (map<string, tColor>::iterator col = globals->colors.begin(); col != globals->colors.end(); col++) {
-            stringstream sColName;
-            sColName << "{" << col->first << "}";
-            string colName = sColName.str();
-            if (!colName.compare(value)) {
-                tColor colVal = col->second;
-                colorParameters.insert(pair<eParamType, tColor>(type, colVal));
-                return true;
-            }
+        tColor colVal = 0x00000000;
+        if (globals->GetColor(value, colVal)) {
+            colorParameters.insert(pair<eParamType, tColor>(type, colVal));
+            return true;
         }
     }
     if (value.size() != 8)
@@ -844,15 +834,7 @@ bool cTemplateFunction::SetColor(eParamType type, string value) {
 bool cTemplateFunction::SetTextTokens(string value) {
     textTokens.clear();
     //first replace globals
-    for (map<string,string>::iterator globStr = globals->stringVars.begin(); globStr != globals->stringVars.end(); globStr++) {
-        stringstream sToken;
-        sToken << "{" << globStr->first << "}";
-        string token = sToken.str();
-        size_t foundToken = value.find(token);
-        if (foundToken != string::npos) {
-            value = value.replace(foundToken, token.size(), globStr->second);
-        }
-    }
+    globals->ReplaceStringVars(value);
     //now tokenize
     bool tokenFound = true;
     while (tokenFound) {
