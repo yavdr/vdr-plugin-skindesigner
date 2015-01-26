@@ -184,3 +184,9 @@ Version 0.1.6
   or more skin names start identically
 
 Version 0.2.0
+
+- fixed Bug that double vars were not handled correctly
+- fixed Bug that calling mplayer plugin via keymacros.conf causes segfault
+
+Version 0.2.1
+

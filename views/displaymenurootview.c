@@ -31,12 +31,18 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
 }
 
 cDisplayMenuRootView::~cDisplayMenuRootView() {
-    if (view)
+    if (view) {
         delete view;
-    if (listView)
+        view = NULL;
+    }
+    if (listView) {
         delete listView;
-    if (detailView)
+        listView = NULL;
+    }
+    if (detailView) {
         delete detailView;
+        detailView = NULL;
+    }
 }
 
 /*******************************************************************
@@ -337,7 +343,7 @@ void cDisplayMenuRootView::Clear(void) {
 }
 
 void cDisplayMenuRootView::ClearRootView(void) {
-    if (defaultBackgroundDrawn && view->BackgroundImplemented())
+    if (defaultBackgroundDrawn && view && view->BackgroundImplemented())
         ClearViewElement(veBackground);
     if (defaultHeaderDrawn)
         ClearViewElement(veHeader);

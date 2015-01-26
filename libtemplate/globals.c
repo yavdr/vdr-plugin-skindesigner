@@ -112,6 +112,11 @@ void cGlobals::ReplaceDoubleVars(string &value) {
             stringstream st;
             st << it->second;
             string doubleVal = st.str();
+            if (config.replaceDecPoint) {
+                if (doubleVal.find_first_of('.') != string::npos) {
+                    std::replace( doubleVal.begin(), doubleVal.end(), '.', config.decPoint);
+                }
+            }
             value = value.replace(foundToken, token.size(), doubleVal);
         }
     }    
