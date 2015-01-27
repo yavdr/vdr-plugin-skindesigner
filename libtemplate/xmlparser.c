@@ -9,6 +9,7 @@ void SkinDesignerXMLErrorHandler (void * userData, xmlErrorPtr error) {
 }
 
 cXmlParser::cXmlParser(void) {
+    view = NULL;
     doc = NULL;
     root = NULL;
     ctxt = NULL;

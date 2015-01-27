@@ -10,6 +10,7 @@
 #include "displayvolume.h"
 #include "displaytracks.h"
 #include "displaymessage.h"
+#include "displayplugin.h"
 #include <vdr/skinlcars.h>
 
 class cSkinDesigner : public cSkin {
