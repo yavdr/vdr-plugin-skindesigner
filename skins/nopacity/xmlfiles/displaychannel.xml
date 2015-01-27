@@ -22,7 +22,7 @@
     {switching}                     true if a number is pressed on the remote to switch to a dedicated channel
     -->
     <channelinfo>
-        <area x="2%" y="80%" width="14%" height="18%" layer="2">
+        <area x="2%" y="80%" width="14%" height="18%" layer="3">
             <drawimage cache="true" imagetype="channellogo" path="{channelid}" width="94%" height="94%" align="center" valign="center"/>
         </area>
         <area x="18%" y="74%" width="42%" height="6%" layer="2">
