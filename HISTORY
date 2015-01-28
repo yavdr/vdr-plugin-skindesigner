@@ -192,3 +192,4 @@ Version 0.2.1
 
 - fixed bug that global tokens were not parsed correctly
 - added finnish translation
+- some more nopacity optimizations - thanx@utility

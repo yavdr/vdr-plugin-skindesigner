@@ -14,14 +14,14 @@
     {error}                    true if message is a error message
     -->
     <message>
-        <area x="5%" y="80%" width="90%" height="15%" layer="6">
+        <area x="5%" y="88%" width="90%" height="10%" layer="6">
             <drawimage condition="{status}" imagetype="skinpart" path="messageStatus" x="0" y="0" width="100%" height="100%" />
             <drawimage condition="{info}" imagetype="skinpart" path="messageInfo" x="0" y="0" width="100%" height="100%" />
             <drawimage condition="{warning}" imagetype="skinpart" path="messageWarning" x="0" y="0" width="100%" height="100%" />
             <drawimage condition="{error}" imagetype="skinpart" path="messageError" x="0" y="0" width="100%" height="100%" />
         </area>
-        <area x="5%" y="80%" width="90%" height="15%" layer="7">
-            <drawtext align="center" valign="center" font="{light}" fontsize="40%" color="{clrWhite}" text="{text}" />
+        <area x="5%" y="88%" width="90%" height="10%" layer="7">
+            <drawtext align="center" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{text}" />
         </area>
     </message>
 

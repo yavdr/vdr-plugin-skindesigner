@@ -11,6 +11,7 @@
         <color name="clrTransWhite">99FFFFFF</color>
         <color name="clrBlack">FF000000</color>
         <color name="clrProgressbar">FF3D0000</color>
+        <color name="clrScrollbar">FF3D0000</color>
         <color name="clrBorder">FF2B0000</color>
         <color name="clrGray">FF858585</color>
         <color name="clrBackground">B0000000</color>
@@ -23,6 +24,5 @@
         <color name="clrTransparent">00000000</color>
     </colors>
     <variables>
-        <var type="int" name="fadeTime">300</var>
     </variables>
 </globals>
