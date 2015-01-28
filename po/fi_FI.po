@@ -1,0 +1,91 @@
+# Copyright (C) 2014-2015
+# This file is distributed under the same license as the PACKAGE package.
+# Rolf Ahrenberg <rolf.ahrenberg@sci.fi>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: vdr-skindesigner 0.2.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2015-01-25 01:25+0200\n"
+"PO-Revision-Date: 2015-01-25 01:25+0200\n"
+"Last-Translator: Rolf Ahrenberg\n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "after one another"
+msgstr "yksi kerrallaan"
+
+msgid "at one go"
+msgstr "kaikki kerralla"
+
+msgid "Skin"
+msgstr "Ulkoasu"
+
+msgid "Plugin Setup"
+msgstr "Yleiset"
+
+msgid "Menu Item display method"
+msgstr "Valikkorivien esitystapa"
+
+msgid "Reruns"
+msgstr "Uusinnat"
+
+msgid "Maximum number of reruns to display"
+msgstr "Maksimissaan näytettävät uusinnat"
+
+msgid "Minimum timely distance of rerun (in hours)"
+msgstr "Minimikesto uusintojen välillä [h]"
+
+msgid "Limit Channel Numbers"
+msgstr "Aseta rajoitus kanavanumeroille"
+
+msgid "no limit"
+msgstr "ei rajoitusta"
+
+msgid "Image Loading"
+msgstr "Kuvat"
+
+msgid "Debug Image Loading"
+msgstr "Debuggaa kuvien latausta"
+
+msgid "Limit Channel Logo Cache"
+msgstr "Rajoita kanavalogojen välimuistia"
+
+msgid "Number to cache initially (per size)"
+msgstr "Oletuksena välimuistissa pidettävät logot"
+
+msgid "Number to cache in maximum"
+msgstr "Maksimissaan välimuistissa pidettävät logot"
+
+msgid "Skin Setup"
+msgstr "Ulkoasut"
+
+msgid "has no setup"
+msgstr "ei asetuksia"
+
+msgid "Cache Statistics"
+msgstr "Välimuisti"
+
+msgid "cached"
+msgstr "välimuistissa"
+
+msgid "icons"
+msgstr "ikoni(a)"
+
+msgid "size"
+msgstr "koko"
+
+msgid "byte"
+msgstr "tavu(a)"
+
+msgid "logos"
+msgstr "logo(a)"
+
+msgid "skinparts"
+msgstr "osasta"
+
+msgid "Skin Designer"
+msgstr "Skin Designer -ulkoasu"

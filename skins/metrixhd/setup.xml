@@ -24,10 +24,12 @@
         <token name="tr(fadetext)">
             <trans lang="en_EN">Fade time in ms (needs VDR restart)</trans>
             <trans lang="de_DE">Einblendzeit in ms (erfordert VDR Neustart)</trans>
+            <trans lang="fi_FI">Häivytyksen kesto [ms] (uud.käynnistys)</trans>
         </token>
         <token name="tr(showdevices)">
             <trans lang="en_EN">Show DVB device info when switching channel</trans>
             <trans lang="de_DE">DVB Karten Info beim Umschalten anzeigen</trans>
+            <trans lang="fi_FI">Näytä DVB-tiedot kanavanvaihdossa</trans>
         </token>
     </translations>
 </setup>

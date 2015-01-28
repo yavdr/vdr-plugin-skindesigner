@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE setup SYSTEM "../../dtd/setup.dtd">
+
+<setup>
+    <!--
+    define all your parameters here which should be configurable via
+    OSD and the skindesigner setup menu.
+    Parameters must have type "bool" or "integer". For "bool" Parameters
+    a choice yes/no is shown in the setup menu, a "integer" parameter
+    can be configured to a value between "min" and "max". If "min" is not
+    set, "0" is the minimum, if "max" is not set, "1000" is maximum.
+    "displayname" is used to display the option in the setup menu.
+    The configured parameter value is the default value.
+    -->
+    <parameters>
+        <parameter type="bool" name="showposter" displaytext="{tr(showpostertext)}">1</parameter>
+        <parameter type="bool" name="showweather" displaytext="{tr(showweather)}">1</parameter>
+        <parameter type="int" name="fadeTime" min="0" max="1000" displaytext="{tr(fadeText)}">300</parameter>
+        <parameter type="int" name="transparency" min="0" max="30" displaytext="{tr(transparency)}">20</parameter>
+    </parameters>
+
+    <!--
+    translations of displaytexts
+    -->
+    <translations>
+        <token name="tr(showpostertext)">
+            <trans lang="en_EN">Show Poster when switching channel</trans>
+            <trans lang="de_DE">Poster beim Umschalten anzeigen</trans>
+        </token>       
+        <token name="tr(showweather)">
+            <trans lang="en_EN">Show Weather in infobar</trans>
+            <trans lang="de_DE">Wetter in Infobar anzeigen</trans>
+        </token>
+        <token name="tr(fadeText)">
+            <trans lang="en_EN">Fade time in ms (needs VDR restart)</trans>
+            <trans lang="de_DE">Einblendzeit in ms (erfordert VDR Neustart)</trans>
+        </token>
+        <token name="tr(transparency)">
+            <trans lang="en_EN">Transpareny channel, replay and volume (needs VDR restart)</trans>
+            <trans lang="de_DE">Transparenz bei Kanal,Wiedergabe und Lautstärke (erfordert VDR Neustart)</trans>
+        </token>
+    </translations>
+</setup>

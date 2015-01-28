@@ -73,12 +73,15 @@ void cGlobals::ReplaceIntVars(string &value) {
         stringstream sToken;
         sToken << "{" << it->first << "}";
         string token = sToken.str();
-        size_t foundToken = value.find(token);
-        if (foundToken != string::npos) {
-            stringstream st;
-            st << it->second;
-            value = value.replace(foundToken, token.size(), st.str());
-        }
+        size_t foundToken = string::npos;
+        do {
+            foundToken = value.find(token);
+            if (foundToken != string::npos) {
+                stringstream st;
+                st << it->second;
+                value = value.replace(foundToken, token.size(), st.str());
+            }
+        } while (foundToken != string::npos);
     }
 }
 
@@ -107,18 +110,21 @@ void cGlobals::ReplaceDoubleVars(string &value) {
         stringstream sToken;
         sToken << "{" << it->first << "}";
         string token = sToken.str();
-        size_t foundToken = value.find(token);
-        if (foundToken != string::npos) {
-            stringstream st;
-            st << it->second;
-            string doubleVal = st.str();
-            if (config.replaceDecPoint) {
-                if (doubleVal.find_first_of('.') != string::npos) {
-                    std::replace( doubleVal.begin(), doubleVal.end(), '.', config.decPoint);
+        size_t foundToken = string::npos;
+        do {
+            foundToken = value.find(token);
+            if (foundToken != string::npos) {
+                stringstream st;
+                st << it->second;
+                string doubleVal = st.str();
+                if (config.replaceDecPoint) {
+                    if (doubleVal.find_first_of('.') != string::npos) {
+                        std::replace( doubleVal.begin(), doubleVal.end(), '.', config.decPoint);
+                    }
                 }
+                value = value.replace(foundToken, token.size(), doubleVal);
             }
-            value = value.replace(foundToken, token.size(), doubleVal);
-        }
+        } while (foundToken != string::npos);
     }    
 }
 

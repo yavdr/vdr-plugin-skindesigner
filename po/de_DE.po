@@ -24,8 +24,14 @@ msgstr "alle auf einmal"
 msgid "Skin"
 msgstr ""
 
+msgid "Plugin Setup"
+msgstr ""
+
 msgid "Menu Item display method"
 msgstr "Art der Ausgabe der Menüelemente"
+
+msgid "Reruns"
+msgstr "Wiederholungen"
 
 msgid "Maximum number of reruns to display"
 msgstr "Anzahl anzuzeigender Wiederholungen"
@@ -33,8 +39,14 @@ msgstr "Anzahl anzuzeigender Wiederholungen"
 msgid "Minimum timely distance of rerun (in hours)"
 msgstr "Zeitl. Abstand der Wiederholung (in h)"
 
-msgid "Limit Channel Numbers (0 = no limit)"
-msgstr "Kanalnummern begrenzen (0 = unbegrenzt)"
+msgid "Limit Channel Numbers"
+msgstr "Kanalnummern begrenzen"
+
+msgid "no limit"
+msgstr "unbegrenzt"
+
+msgid "Image Loading"
+msgstr "Bilder"
 
 msgid "Debug Image Loading"
 msgstr "Debugausgabe für das Laden der Bilder"
@@ -48,8 +60,14 @@ msgstr "Anzahl der initial zu cachenden Logos"
 msgid "Number to cache in maximum"
 msgstr "Maximale Anzahl zu cachender Logos"
 
-msgid "has no setup"
+msgid "Skin Setup"
 msgstr ""
+
+msgid "has no setup"
+msgstr "hat kein Setup"
+
+msgid "Cache Statistics"
+msgstr "Cache Statistik"
 
 msgid "cached"
 msgstr "cached"
@@ -69,11 +87,5 @@ msgstr "Logos"
 msgid "skinparts"
 msgstr "Skinparts"
 
-#~ msgid "Reruns"
-#~ msgstr "Wiederholungen"
-
-#~ msgid "Image Loading"
-#~ msgstr "Bilder"
-
-#~ msgid "Cache Statistics"
-#~ msgstr "Cache Statistik"
+msgid "Skin Designer"
+msgstr "Skin Designer"

@@ -97,16 +97,16 @@ cOsdItem *cSkinDesignerSetup::InfoItem(const char *label) {
 }
 
 void cSkinDesignerSetup::PluginSetup(void) {
-    Add(InfoItem("Plugin Setup"));
+    Add(InfoItem(tr("Plugin Setup")));
 
     Add(new cMenuEditStraItem(tr("Menu Item display method"), &blockFlush, 2, menuDisplayStyle));
 
-    Add(InfoItem("Reruns"));
+    Add(InfoItem(tr("Reruns")));
     Add(new cMenuEditIntItem(tr("Maximum number of reruns to display"), &rerunAmount, 1, 100));
     Add(new cMenuEditIntItem(tr("Minimum timely distance of rerun (in hours)"), &rerunDistance, 0, 1000));
-    Add(new cMenuEditIntItem(tr("Limit Channel Numbers (0 = no limit)"), &rerunMaxChannel, 0, 1000));
+    Add(new cMenuEditIntItem(tr("Limit Channel Numbers"), &rerunMaxChannel, 0, 1000, tr("no limit")));
 
-    Add(InfoItem("Image Loading"));
+    Add(InfoItem(tr("Image Loading")));
     Add(new cMenuEditBoolItem(tr("Debug Image Loading"), &debugImageLoading));
     Add(new cMenuEditBoolItem(tr("Limit Channel Logo Cache"), &limitLogoCache));
     Add(new cMenuEditIntItem(tr("Number to cache initially (per size)"), &numLogosPerSizeInitial, 0, 1000));
@@ -114,14 +114,14 @@ void cSkinDesignerSetup::PluginSetup(void) {
 }
 
 void cSkinDesignerSetup::SkinSetup(void) {
-    Add(InfoItem("Skin Setup"));
+    Add(InfoItem(tr("Skin Setup")));
 
     config.InitSkinIterator();
     string skin = "";
     while (config.GetSkin(skin)) {
         cSkinSetup *skinSetup = config.GetSkinSetup(skin);
         if (!skinSetup) {
-            Add(new cOsdItem(cString::sprintf("%s %s %s", tr("Skin"), skin.c_str(), tr("has no setup"))));
+            Add(new cOsdItem(cString::sprintf("%s %s\t%s", tr("Skin"), skin.c_str(), tr("has no setup"))));
             cList<cOsdItem>::Last()->SetSelectable(false);
         } else {
             Add(new cOsdItem(cString::sprintf("%s %s", tr("Skin"), skin.c_str())));
@@ -134,7 +134,7 @@ void cSkinDesignerSetup::ImageCacheStatistics(void) {
         return;
     }
 
-    Add(InfoItem("Cache Statistics"));
+    Add(InfoItem(tr("Cache Statistics")));
     int sizeIconCache = 0;
     int numIcons = 0;
     imgCache->GetIconCacheSize(numIcons, sizeIconCache);

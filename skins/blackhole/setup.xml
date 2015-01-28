@@ -30,34 +30,42 @@
         <token name="tr(showdevices)">
             <trans lang="en_EN">Show DVB device info when switching channel</trans>
             <trans lang="de_DE">DVB Karten Info beim Umschalten anzeigen</trans>
+            <trans lang="fi_FI">Näytä DVB-tiedot kanavanvaihdossa</trans>
         </token>
         <token name="tr(showpostertext)">
             <trans lang="en_EN">Show Poster when switching channel</trans>
             <trans lang="de_DE">Poster beim Umschalten anzeigen</trans>
+            <trans lang="fi_FI">Näytä posterit kanavanvaihdossa</trans>
         </token>
         <token name="tr(showmainmenuicons)">
             <trans lang="en_EN">Show Icons in Main Menu</trans>
             <trans lang="de_DE">Icons im Hauptmenü anzeigen</trans>
+            <trans lang="fi_FI">Näytä ikonit päävalikossa</trans>
         </token>
         <token name="tr(fadetext)">
             <trans lang="en_EN">Fade time in ms (needs VDR restart)</trans>
             <trans lang="de_DE">Einblendzeit in ms (erfordert VDR Neustart)</trans>
+            <trans lang="fi_FI">Häivytyksen kesto [ms] (uud.käynnistys)</trans>
         </token>
         <token name="tr(nummenuitemsmain)">
             <trans lang="en_EN">Items in main menu (needs VDR restart)</trans>
             <trans lang="de_DE">Elemente im Hauptmenü (erfordert VDR Neustart)</trans>
+            <trans lang="fi_FI">Valinnat päävalikossa (uud.käynnistys)</trans>
         </token>
         <token name="tr(nummenuitems)">
-            <trans lang="en_EN">Items in sdchedules, timers, ... menus (needs VDR restart)</trans>
+            <trans lang="en_EN">Items in schedules, timers, ... menus (needs VDR restart)</trans>
             <trans lang="de_DE">Elemente in Programm, Timer, ... Menüs (erfordert VDR Neustart)</trans>
+            <trans lang="fi_FI">Valinnat alivalikoissa (uud.käynnistys)</trans>
         </token>
         <token name="tr(nummenuitemsdefault)">
             <trans lang="en_EN">Items in default list menu (needs VDR restart)</trans>
             <trans lang="de_DE">Elemente im Standard ListenMenü (erfordert VDR Neustart)</trans>
+            <trans lang="fi_FI">Valinnat valikkolistoissa (uud.käynnistys)</trans>
         </token>
         <token name="tr(showsubtitle)">
             <trans lang="en_EN">Show shorttexts in schedules menus</trans>
             <trans lang="de_DE">Kurztexte im Programm Menü anzeigen</trans>
+            <trans lang="fi_FI">Näytä lyhyet kuvaukset ohjelmaoppaassa</trans>
         </token>
     </translations>
 </setup>
