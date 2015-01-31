@@ -196,3 +196,5 @@ Version 0.2.1
 - added possibiliy to use submenus in the skin setup menus
 - reloading active skin directly after closing setup menu so that
   changes of setup parameters are immediately in use 
+
+Version 0.2.2
