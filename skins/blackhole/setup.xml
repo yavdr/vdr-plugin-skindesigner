@@ -2,17 +2,7 @@
 <!DOCTYPE setup SYSTEM "../../dtd/setup.dtd">
 
 <setup>
-    <!--
-    define all your parameters here which should be configurable via
-    OSD and the skindesigner setup menu.
-    Parameters must have type "bool" or "integer". For "bool" Parameters
-    a choice yes/no is shown in the setup menu, a "integer" parameter
-    can be configured to a value between "min" and "max". If "min" is not
-    set, "0" is the minimum, if "max" is not set, "1000" is maximum.
-    "displayname" is used to display the option in the setup menu.
-    The configured parameter value is the default value.
-    -->
-    <parameters>
+    <menu>
         <parameter type="bool" name="showdevices" displaytext="{tr(showdevices)}">0</parameter>
         <parameter type="bool" name="showposter" displaytext="{tr(showpostertext)}">1</parameter>
         <parameter type="bool" name="showmainmenuicons" displaytext="{tr(showmainmenuicons)}">1</parameter>
@@ -21,11 +11,8 @@
         <parameter type="int" name="nummenuitems" min="6" max="30" displaytext="{tr(nummenuitems)}">10</parameter>
         <parameter type="int" name="nummenuitemsdefault" min="6" max="30" displaytext="{tr(nummenuitemsdefault)}">16</parameter>
         <parameter type="bool" name="showsubtitle" displaytext="{tr(showsubtitle)}">1</parameter>
-    </parameters>
+    </menu>
 
-    <!--
-    translations of displaytexts
-    -->
     <translations>
         <token name="tr(showdevices)">
             <trans lang="en_EN">Show DVB device info when switching channel</trans>
@@ -43,24 +30,24 @@
             <trans lang="fi_FI">Näytä ikonit päävalikossa</trans>
         </token>
         <token name="tr(fadetext)">
-            <trans lang="en_EN">Fade time in ms (needs VDR restart)</trans>
-            <trans lang="de_DE">Einblendzeit in ms (erfordert VDR Neustart)</trans>
-            <trans lang="fi_FI">Häivytyksen kesto [ms] (uud.käynnistys)</trans>
+            <trans lang="en_EN">Fade time in ms</trans>
+            <trans lang="de_DE">Einblendzeit in ms</trans>
+            <trans lang="fi_FI">Häivytyksen kesto [ms]</trans>
         </token>
         <token name="tr(nummenuitemsmain)">
-            <trans lang="en_EN">Items in main menu (needs VDR restart)</trans>
-            <trans lang="de_DE">Elemente im Hauptmenü (erfordert VDR Neustart)</trans>
-            <trans lang="fi_FI">Valinnat päävalikossa (uud.käynnistys)</trans>
+            <trans lang="en_EN">Items in main menu</trans>
+            <trans lang="de_DE">Elemente im Hauptmenü</trans>
+            <trans lang="fi_FI">Valinnat päävalikossa</trans>
         </token>
         <token name="tr(nummenuitems)">
-            <trans lang="en_EN">Items in schedules, timers, ... menus (needs VDR restart)</trans>
-            <trans lang="de_DE">Elemente in Programm, Timer, ... Menüs (erfordert VDR Neustart)</trans>
-            <trans lang="fi_FI">Valinnat alivalikoissa (uud.käynnistys)</trans>
+            <trans lang="en_EN">Items in schedules, timers, ... menus</trans>
+            <trans lang="de_DE">Elemente in Programm, Timer, ... Menüs</trans>
+            <trans lang="fi_FI">Valinnat alivalikoissa</trans>
         </token>
         <token name="tr(nummenuitemsdefault)">
-            <trans lang="en_EN">Items in default list menu (needs VDR restart)</trans>
-            <trans lang="de_DE">Elemente im Standard ListenMenü (erfordert VDR Neustart)</trans>
-            <trans lang="fi_FI">Valinnat valikkolistoissa (uud.käynnistys)</trans>
+            <trans lang="en_EN">Items in default list menu</trans>
+            <trans lang="de_DE">Elemente im Standard ListenMenü</trans>
+            <trans lang="fi_FI">Valinnat valikkolistoissa</trans>
         </token>
         <token name="tr(showsubtitle)">
             <trans lang="en_EN">Show shorttexts in schedules menus</trans>

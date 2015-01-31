@@ -1,8 +1,14 @@
 <?xml encoding="UTF-8"?>
 
-<!ELEMENT setup (parameters,translations)>
-<!ELEMENT parameters (parameter)*>
+<!ELEMENT setup (menu,translations)>
+<!ELEMENT menu (submenu | parameter)*>
 <!ELEMENT translations (token)*>
+
+<!ELEMENT submenu (submenu | parameter)*>
+<!ATTLIST submenu
+  name NMTOKEN #REQUIRED
+  displaytext CDATA #REQUIRED
+  >
 
 <!ELEMENT parameter (#PCDATA)>
 <!ATTLIST parameter

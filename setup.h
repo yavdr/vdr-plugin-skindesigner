@@ -29,16 +29,28 @@ public:
     virtual ~cSkinDesignerSetup();
 };
 
+// --- cSkinSetupSubMenu -----------------------------------------------------------
+
+class cSkinSetupSubMenu : public cOsdItem {
+private:
+    string name;
+public:
+    cSkinSetupSubMenu(string name, string displayText);
+    virtual ~cSkinSetupSubMenu() {};
+    string GetName(void) { return name; };
+};
+
 // --- cSkindesignerSkinSetup -----------------------------------------------------------
 
 class cSkindesignerSkinSetup : public cOsdMenu {
 private:
     string skin;
+    string name;
 protected:
     virtual eOSState ProcessKey(eKeys Key);
     void Set(void);
 public:
-    cSkindesignerSkinSetup(string skin);
+    cSkindesignerSkinSetup(string skin, string menu);
     virtual ~cSkindesignerSkinSetup();
 };
 

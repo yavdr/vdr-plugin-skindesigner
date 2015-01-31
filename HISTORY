@@ -193,3 +193,6 @@ Version 0.2.1
 - fixed bug that global tokens were not parsed correctly
 - added finnish translation
 - some more nopacity optimizations - thanx@utility
+- added possibiliy to use submenus in the skin setup menus
+- reloading active skin directly after closing setup menu so that
+  changes of setup parameters are immediately in use 
