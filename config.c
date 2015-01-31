@@ -25,6 +25,7 @@ cDesignerConfig::cDesignerConfig() {
     SetOSDSize();
     SetOSDFonts();
     osdLanguage = "";
+    setupCloseDoReload = false;
 }
 
 cDesignerConfig::~cDesignerConfig() {
@@ -88,7 +89,7 @@ void cDesignerConfig::DebugSkinSetups(void) {
     dsyslog("skindesigner: skin setups:");
     InitSetupIterator();
     cSkinSetup *skinSetup = NULL;
-    while (skinSetup = GetSkinSetup()) {
+    while (skinSetup = GetNextSkinSetup()) {
         skinSetup->Debug();
     }    
 }
@@ -125,7 +126,7 @@ cSkinSetup* cDesignerConfig::GetSkinSetup(string &skin) {
     return NULL;
 }
 
-cSkinSetup* cDesignerConfig::GetSkinSetup(void) {
+cSkinSetup* cDesignerConfig::GetNextSkinSetup(void) {
     if (setupIt == skinSetups.end()) {
         return NULL;
     }
@@ -133,6 +134,15 @@ cSkinSetup* cDesignerConfig::GetSkinSetup(void) {
     setupIt++;
     return skinSetup;
 }
+
+cSkinSetupMenu* cDesignerConfig::GetSkinSetupMenu(string &skin, string &menu) {
+    cSkinSetup *skinSetup = GetSkinSetup(skin);
+    if (!skinSetup)
+        return NULL;
+    esyslog("skindesigner: skinsetup found");
+    return skinSetup->GetMenu(menu);
+}
+
 
 void cDesignerConfig::TranslateSetup(void) {
     for (map< string, cSkinSetup* >::iterator it = skinSetups.begin(); it != skinSetups.end(); it++) {

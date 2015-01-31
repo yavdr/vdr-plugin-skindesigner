@@ -34,28 +34,63 @@ public:
     void Debug(void);
 };
 
+// --- cSkinSetupMenu -----------------------------------------------------------
+
+class cSkinSetupMenu {
+private:
+    string name;
+    string displayText;
+    cSkinSetupMenu *parent;
+    vector < cSkinSetupMenu* > subMenus;
+    vector < cSkinSetupMenu* >::iterator subMenuIt;
+    map < string, cSkinSetupParameter* > parameters;
+    map < string, cSkinSetupParameter* >::iterator paramIt;
+public:
+    cSkinSetupMenu(void);
+    virtual ~cSkinSetupMenu(void);
+    void SetName(string name) { this->name = name; };
+    void SetDisplayText(string displayText) { this->displayText = displayText; };
+    string GetName(void) { return name; };
+    string GetDisplayText(void) { return displayText; };
+    void SetParent(cSkinSetupMenu *p) { parent = p; };
+    cSkinSetupMenu *GetParent(void) { return parent; };
+    void AddSubMenu(cSkinSetupMenu *sub) { subMenus.push_back(sub); };
+    void SetParameter(eSetupParameterType paramType, xmlChar *name, xmlChar* displayText, xmlChar *min, xmlChar *max, xmlChar *value);
+    void InitIterators(void);
+    void InitParameterIterator(void) { paramIt = parameters.begin(); };
+    cSkinSetupParameter *GetNextParameter(bool deep = true);
+    cSkinSetupParameter *GetParameter(string name);
+    void InitSubmenuIterator(void) { subMenuIt = subMenus.begin(); };
+    cSkinSetupMenu *GetNextSubMenu(bool deep = true);
+    cSkinSetupMenu *GetMenu(string &name);
+    void Debug(bool deep = true);
+};
+
 // --- cSkinSetup -----------------------------------------------------------
 
 class cSkinSetup {
 private:
-	string skin;
-	map < string, cSkinSetupParameter* > parameters;
-    map < string, cSkinSetupParameter* >::iterator paramIt;
-	map < string, map< string, string > > translations;
+    string skin;
+    cSkinSetupMenu *rootMenu;
+    cSkinSetupMenu *currentMenu;
+    map < string, map< string, string > > translations;
     string DoTranslate(string token);
     bool Translate(string text, string &translation);
 public:
     cSkinSetup(string skin);
     virtual ~cSkinSetup(void);
     bool ReadFromXML(void);
+    void SetSubMenu(xmlChar *name, xmlChar *displayText);
+    void SubMenuDone(void);
     void SetParameter(xmlChar *type, xmlChar *name, xmlChar* displayText, xmlChar *min, xmlChar *max, xmlChar *value);
+    void InitParameterIterator(void) { rootMenu->InitIterators(); };
+    cSkinSetupParameter *GetNextParameter(void);
+    cSkinSetupParameter *GetParameter(string name);
     void SetTranslation(string translationToken, map < string, string > transl);
     void AddToGlobals(cGlobals *globals);
     void TranslateSetup(void);
-    void InitParameterIterator(void) { paramIt = parameters.begin(); };
-    cSkinSetupParameter *GetParameter(void);
-    cSkinSetupParameter *GetParameter(string name);
     string GetSkin(void) { return skin; };
+    cSkinSetupMenu *GetMenu(string &name);
     void Debug(void);
 };
 

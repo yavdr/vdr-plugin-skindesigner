@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE setup SYSTEM "../../dtd/setup.dtd">
+
+<setup>
+    <menu>
+        <parameter type="bool" name="showposter" displaytext="{tr(showpostertext)}">1</parameter>
+        <parameter type="bool" name="showweather" displaytext="{tr(showweather)}">1</parameter>
+        <parameter type="int" name="fadeTime" min="0" max="1000" displaytext="{tr(fadeText)}">300</parameter>
+        <parameter type="int" name="transparency" min="0" max="30" displaytext="{tr(transparency)}">20</parameter>
+    </menu>
+
+    <translations>
+        <token name="tr(showpostertext)">
+            <trans lang="en_EN">Show Poster when switching channel</trans>
+            <trans lang="de_DE">Poster beim Umschalten anzeigen</trans>
+        </token>       
+        <token name="tr(showweather)">
+            <trans lang="en_EN">Show Weather in infobar</trans>
+            <trans lang="de_DE">Wetter in Infobar anzeigen</trans>
+        </token>
+        <token name="tr(fadeText)">
+            <trans lang="en_EN">Fade time in ms</trans>
+            <trans lang="de_DE">Einblendzeit in ms</trans>
+        </token>
+        <token name="tr(transparency)">
+            <trans lang="en_EN">Transpareny channel, replay and volume</trans>
+            <trans lang="de_DE">Transparenz bei Kanal,Wiedergabe und Lautstärke</trans>
+        </token>
+    </translations>
+</setup>

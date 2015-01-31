@@ -49,7 +49,8 @@ public:
     void DebugSkinSetups(void);
     void DebugSkinSetupParameters(void);
     cSkinSetup* GetSkinSetup(string &skin);
-    cSkinSetup* GetSkinSetup(void);
+    cSkinSetup* GetNextSkinSetup(void);
+    cSkinSetupMenu* GetSkinSetupMenu(string &skin, string &menu);
     void InitSetupIterator(void) { setupIt = skinSetups.begin(); };
     void TranslateSetup(void);
     void SetSkinSetupParameters(void);
@@ -85,6 +86,8 @@ public:
     int rerunDistance;
     int rerunMaxChannel;
     int blockFlush;
+    //TemplateReload on Setup Close
+    bool setupCloseDoReload;
 };
 
 #ifdef DEFINE_CONFIG

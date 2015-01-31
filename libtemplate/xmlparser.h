@@ -31,6 +31,7 @@ private:
     xmlDocPtr doc;
     xmlNodePtr root;
     string GetPath(string xmlFile);
+    void ParseSetupMenu(xmlNodePtr node);
     void ParseSetupParameter(xmlNodePtr node);
     void ParseGlobalColors(xmlNodePtr node);
     void InsertColor(string name, string value);
@@ -51,7 +52,7 @@ public:
     bool ReadView(cTemplateView *view, string xmlFile);
     bool ReadPluginView(string plugName, int templateNumber, string templateName);
     bool ReadGlobals(cGlobals *globals, string xmlFile, bool mandatory);
-    bool ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFile);
+    bool ReadSkinSetup(cSkinSetup *skinSetup, string xmlFile);
     bool ParseView(void);
     bool ParsePluginView(string plugName, int templateNumber);
     bool ParseGlobals(void);
