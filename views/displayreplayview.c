@@ -96,6 +96,19 @@ void cDisplayReplayView::DrawTitle(const cRecording *recording) {
     DrawViewElement(veRecTitle, &stringTokens, &intTokens);
 }
 
+void cDisplayReplayView::DrawTitle(const char *title) {
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    stringTokens.insert(pair<string,string>("rectitle", title));
+    stringTokens.insert(pair<string,string>("recsubtitle", ""));
+    stringTokens.insert(pair<string,string>("recdate", ""));
+    stringTokens.insert(pair<string,string>("rectime", ""));
+
+    DrawViewElement(veRecTitle, &stringTokens, &intTokens);
+}
+
+
 void cDisplayReplayView::DrawRecordingInformation(const cRecording *recording) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
