@@ -200,3 +200,4 @@ Version 0.2.1
 Version 0.2.2
 
 - added replay onpause view in blackhole skin
+- implemented SetTitle() in displayreplay

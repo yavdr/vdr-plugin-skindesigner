@@ -22,6 +22,7 @@ public:
     void DrawDate(void);
     void DrawTime(void);
     void DrawTitle(const cRecording *recording);
+    void DrawTitle(const char *title);
     void DrawRecordingInformation(const cRecording *recording);
     void DrawScraperContent(const cRecording *recording);
     void DrawCurrent(const char *current);

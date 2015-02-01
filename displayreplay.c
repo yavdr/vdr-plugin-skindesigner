@@ -24,11 +24,17 @@ cSDDisplayReplay::~cSDDisplayReplay() {
 }
 
 void cSDDisplayReplay::SetRecording(const cRecording *Recording) {
-    if (!doOutput)
+    if (!doOutput || !Recording)
         return;
     replayView->DrawTitle(Recording);
     replayView->DrawRecordingInformation(Recording);
     replayView->DrawScraperContent(Recording);
+}
+
+void cSDDisplayReplay::SetTitle(const char *Title) {
+    if (!doOutput || !Title)
+        return;
+    replayView->DrawTitle(Title);
 }
 
 void cSDDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {

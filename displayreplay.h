@@ -17,7 +17,7 @@ public:
     cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly);
     virtual ~cSDDisplayReplay();
     virtual void SetRecording(const cRecording *Recording);
-    virtual void SetTitle(const char *Title) {};
+    virtual void SetTitle(const char *Title);
     virtual void SetMode(bool Play, bool Forward, int Speed);
     virtual void SetProgress(int Current, int Total);
     virtual void SetCurrent(const char *Current);
