@@ -206,7 +206,25 @@ string cImageCache::GetIconName(string label, eMenuCategory cat) {
         case mcSetupRecord:
         case mcSetupReplay:
             return "standardicons/Recordings";
-        case mcPlugin:
+        case mcPlugin: {
+            //check for Plugins
+            for (int i = 0; ; i++) {
+                cPlugin *p = cPluginManager::GetPlugin(i);
+                if (p) {
+                    const char *mainMenuEntry = p->MainMenuEntry();
+                    if (mainMenuEntry) {
+                        string plugMainEntry = mainMenuEntry;
+                        try {
+                            if (label.substr(0, plugMainEntry.size()) == plugMainEntry) {
+                                return *cString::sprintf("pluginicons/%s", p->Name());
+                            }
+                        } catch (...) {}
+                    }
+                } else
+                    break;
+            }
+            return "standardicons/Plugins";
+        } 
         case mcPluginSetup:
         case mcSetupPlugins:
             return "standardicons/Plugins";
