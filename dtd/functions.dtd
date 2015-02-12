@@ -27,6 +27,16 @@
   debug (true|false) #IMPLIED
 >
 
+<!ELEMENT grid (area|areascroll)*>
+<!ATTLIST grid
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  name CDATA #REQUIRED
+  debug (true|false) #IMPLIED
+>
+
 <!ELEMENT loop (drawtext|drawtextbox|drawimage|drawrectangle|drawellipse|drawslope)+>
 <!ATTLIST loop
   x CDATA #REQUIRED

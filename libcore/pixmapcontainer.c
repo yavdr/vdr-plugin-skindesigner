@@ -195,6 +195,13 @@ void cPixmapContainer::SetLayer(int num, int Layer) {
     pixmaps[num]->SetLayer(Layer);
 }
 
+void cPixmapContainer::SetViewPort(int num, const cRect &rect) {
+    cMutexLock MutexLock(&mutex);
+    if (!pixmaps[num])
+        return;
+    pixmaps[num]->SetViewPort(rect);    
+}
+
 int cPixmapContainer::Width(int num) {
     if (checkRunning && !Running())
         return 0;

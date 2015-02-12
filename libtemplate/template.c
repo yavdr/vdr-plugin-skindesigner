@@ -4,11 +4,11 @@
 
 // --- cTemplate -------------------------------------------------------------
 
-cTemplate::cTemplate(eViewType viewType) {
+cTemplate::cTemplate(eViewType viewType, string pluginName, int viewID) {
     globals = NULL;
     rootView = NULL;
     this->viewType = viewType;
-    CreateView();
+    CreateView(pluginName, viewID);
 }
 
 cTemplate::~cTemplate() {
@@ -21,8 +21,8 @@ cTemplate::~cTemplate() {
 /*******************************************************************
 * Public Functions
 *******************************************************************/
-bool cTemplate::ReadFromXML(void) {
-    std::string xmlFile;
+bool cTemplate::ReadFromXML(string xmlfile) {
+    string xmlFile;
     switch (viewType) {
         case vtDisplayChannel:
             xmlFile = "displaychannel.xml";
@@ -42,6 +42,9 @@ bool cTemplate::ReadFromXML(void) {
         case vtDisplayAudioTracks:
             xmlFile = "displayaudiotracks.xml";
             break;
+        case vtDisplayPlugin:
+            xmlFile = xmlfile;
+            break;
         default:
             return false;
     }
@@ -56,7 +59,7 @@ bool cTemplate::ReadFromXML(void) {
     //read additional plugin templates
     bool ok = true;
     if (viewType == vtDisplayMenu) {
-        config.InitPluginIterator();
+        config.InitPluginMenuIterator();
         map <int,string> *plugTemplates = NULL;
         string plugName;
         while ( plugTemplates = config.GetPluginTemplates(plugName) ) {
@@ -119,7 +122,7 @@ void cTemplate::Debug(void) {
 * Private Functions
 *******************************************************************/
 
-void cTemplate::CreateView(void) {
+void cTemplate::CreateView(string pluginName, int viewID) {
     switch (viewType) {
         case vtDisplayChannel:
             rootView = new cTemplateViewChannel();
@@ -138,7 +141,10 @@ void cTemplate::CreateView(void) {
             break;
         case vtDisplayMessage:
             rootView = new cTemplateViewMessage();
-            break;      
+            break;
+        case vtDisplayPlugin:
+            rootView = new cTemplateViewPlugin(pluginName, viewID);
+            break;
         default:
             esyslog("skindesigner: unknown view %d", viewType);
     }

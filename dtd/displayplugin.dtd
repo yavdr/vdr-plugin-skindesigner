@@ -1,0 +1,24 @@
+<?xml encoding="UTF-8"?>
+
+<!ENTITY % functions SYSTEM "functions.dtd">
+
+<!ELEMENT displayplugin (viewelement|grid)* >
+<!ATTLIST displayplugin
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  fadetime CDATA #IMPLIED
+  scaletvx CDATA #IMPLIED
+  scaletvy CDATA #IMPLIED
+  scaletvwidth CDATA #IMPLIED
+  scaletvheight CDATA #IMPLIED
+>
+
+<!ELEMENT viewelement (area|areascroll)*>
+<!ATTLIST viewelement
+  name CDATA #REQUIRED
+  debug CDATA #IMPLIED
+>
+
+%functions;

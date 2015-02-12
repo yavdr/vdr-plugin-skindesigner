@@ -53,6 +53,28 @@ void cTemplatePixmap::SetY(int y) {
     parameters->SetYManually(y);
 }
 
+void cTemplatePixmap::SetWidthPercent(double width) {
+    int absWidth = containerWidth * width;
+    cString pWidth = cString::sprintf("%d", absWidth);
+    parameters->SetWidthManually(*pWidth);    
+}
+
+void cTemplatePixmap::SetHeightPercent(double height) {
+    int absHeight = containerHeight * height;
+    cString pHeight = cString::sprintf("%d", absHeight);
+    parameters->SetHeightManually(*pHeight);    
+}
+
+void cTemplatePixmap::SetXPercent(double x) {
+    int absX = containerX + containerWidth * x;
+    parameters->SetXManually(absX);
+}
+
+void cTemplatePixmap::SetYPercent(double y) {
+    int absY = containerY + containerHeight * y;
+    parameters->SetYManually(absY);
+}
+
 void cTemplatePixmap::ClearDynamicParameters(void) {
     parameters->ClearDynamicParameters();
 }

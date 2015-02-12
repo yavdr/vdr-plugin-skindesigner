@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE displayplugin SYSTEM "../../../dtd/displayplugin.dtd">
+
+<displayplugin x="0" y="0" width="100%" height="100%" fadetime="0" scaletvx="55%" scaletvy="30%" scaletvwidth="40%" scaletvheight="40%">
+
+    <viewelement name="background">
+        <area x="0" y="0" width="100%" height="30%" layer="1">
+            <fill color="{clrRed}" />
+        </area>
+        <area x="0" y="0" width="100%" height="30%" layer="2">
+            <drawtext align="center" valign="center" font="{regular}" fontsize="20%" color="{clrWhite}" text="{backtext} {zahl}" />
+        </area>
+    </viewelement>
+
+</displayplugin>

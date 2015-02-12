@@ -288,21 +288,75 @@ cString cDesignerConfig::GetSkinRessourcePath(void) {
     return cString::sprintf("%s%s", *skinPath, osdSkin.c_str());
 }
 
-void cDesignerConfig::AddPlugin(string name, map < int, string > &menus) {
-    plugins.insert(pair< string, map < int, string > >(name, menus));
+void cDesignerConfig::AddPluginMenus(string name, map< int, string > menus) {
+    pluginMenus.insert(pair< string, map < int, string > >(name, menus));
 }
 
-void cDesignerConfig::InitPluginIterator(void) {
-    plugIt = plugins.begin();
+void cDesignerConfig::AddPluginViews(string name, 
+                                     map< int, string > views, 
+                                     map< int, map <int, string> > viewElements,
+                                     map< int, map <int, string> > viewGrids) {
+    pluginViews.insert(pair< string, map < int, string > >(name, views));
+    pluginViewElements.insert(pair< string, map< int, map <int, string> > >(name, viewElements));
+    pluginViewGrids.insert(pair< string, map< int, map <int, string> > >(name, viewGrids));
+}
+
+void cDesignerConfig::InitPluginMenuIterator(void) {
+    plugMenuIt = pluginMenus.begin();
 }
 
 map <int,string> *cDesignerConfig::GetPluginTemplates(string &name) {
-    if (plugIt == plugins.end())
+    if (plugMenuIt == pluginMenus.end())
         return NULL;
-    name = plugIt->first;
-    map <int,string> *templates = &plugIt->second;
-    plugIt++;
+    name = plugMenuIt->first;
+    map <int,string> *templates = &plugMenuIt->second;
+    plugMenuIt++;
     return templates; 
+}
+
+void cDesignerConfig::InitPluginViewIterator(void) {
+    plugViewIt = pluginViews.begin();
+}
+
+map <int,string> *cDesignerConfig::GetPluginViews(string &name) {
+    if (plugViewIt == pluginViews.end())
+        return NULL;
+    name = plugViewIt->first;
+    map <int,string> *views = &plugViewIt->second;
+    plugViewIt++;
+    return views; 
+}
+
+int cDesignerConfig::GetPluginViewElementID(string pluginName, string viewElementName, int viewID) {
+    map < string, map< int, map <int, string> > >::iterator hit = pluginViewElements.find(pluginName);
+    if (hit == pluginViewElements.end())
+        return -1;
+    map< int, map <int, string> >::iterator hit2 = (hit->second).find(viewID);
+    if (hit2 == (hit->second).end())
+        return -1;
+    
+    map <int, string> viewElements = hit2->second;
+    for (map <int, string>::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
+        if (!(it->second).compare(viewElementName))
+            return it->first;
+    }
+    return -1;
+}
+
+int cDesignerConfig::GetPluginViewGridID(string pluginName, string viewGridName, int viewID) {
+    map < string, map< int, map <int, string> > >::iterator hit = pluginViewGrids.find(pluginName);
+    if (hit == pluginViewGrids.end())
+        return -1;
+    map< int, map <int, string> >::iterator hit2 = (hit->second).find(viewID);
+    if (hit2 == (hit->second).end())
+        return -1;
+    
+    map <int, string> viewGrids = hit2->second;
+    for (map <int, string>::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
+        if (!(it->second).compare(viewGridName))
+            return it->first;
+    }
+    return -1;
 }
 
 cString cDesignerConfig::CheckSlashAtEnd(std::string path) {

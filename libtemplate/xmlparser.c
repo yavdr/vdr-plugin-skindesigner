@@ -195,6 +195,11 @@ bool cXmlParser::ParseView(void) {
             ParseViewElement(node->name, node->xmlChildrenNode, attribs);
         } else if (view->ValidViewList((const char*)node->name)) {
             ParseViewList(node);
+        } else if (view->ValidViewGrid((const char*)node->name)) {
+            xmlAttrPtr attr = node->properties;
+            vector<pair<string, string> > attribs;
+            ParseAttributes(attr, node, attribs);
+            ParseGrid(node->xmlChildrenNode, attribs);
         } else {
             return false;
         }
@@ -842,6 +847,42 @@ void cXmlParser::ParseViewTab(xmlNodePtr parentNode, cTemplateView *subView) {
     ParseFunctionCalls(node, viewTab);
 
     subView->AddViewTab(viewTab);
+}
+
+void cXmlParser::ParseGrid(xmlNodePtr node, vector<pair<string, string> > &attributes) {
+    if (!node)
+        return;
+    
+    if (!view)
+        return;
+
+    while (node != NULL) {
+
+        if (node->type != XML_ELEMENT_NODE) {
+            node = node->next;
+            continue;
+        }
+
+        if (xmlStrcmp(node->name, (const xmlChar *) "area") && xmlStrcmp(node->name, (const xmlChar *) "areascroll")) {
+            esyslog("skindesigner: invalid tag \"%s\"", node->name);
+            node = node->next;
+            continue;
+        }
+
+        xmlAttrPtr attr = node->properties;
+        vector<pair<string, string> > attribs;
+        ParseAttributes(attr, node, attribs);
+
+        cTemplatePixmap *pix = new cTemplatePixmap();
+        if (!xmlStrcmp(node->name, (const xmlChar *) "areascroll")) {
+            pix->SetScrolling();
+        }
+        pix->SetParameters(attribs);
+        ParseFunctionCalls(node->xmlChildrenNode, pix);
+        view->AddPixmapGrid(pix, attributes);
+        
+        node = node->next;
+    }
 }
 
 void cXmlParser::ParseFunctionCalls(xmlNodePtr node, cTemplatePixmap *pix) {

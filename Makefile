@@ -81,12 +81,14 @@ OBJS = $(PLUGIN).o \
        libtemplate/templateview.o \
        libtemplate/templateviewelement.o \
        libtemplate/templateviewlist.o \
+       libtemplate/templateviewgrid.o \
        libtemplate/templatepixmap.o \
        libtemplate/templateviewtab.o \
        libtemplate/templatefunction.o \
        libtemplate/templateloopfunction.o \
        libtemplate/xmlparser.o \
        views/view.o \
+       views/viewgrid.o \
        views/viewhelpers.o \
        views/displaychannelview.o \
        views/displaymenurootview.o \
@@ -100,7 +102,8 @@ OBJS = $(PLUGIN).o \
        views/displayreplayview.o \
        views/displayreplayonpauseview.o \
        views/displayvolumeview.o \
-       views/displayaudiotracksview.o
+       views/displayaudiotracksview.o \
+       views/displaypluginview.o
 
 ### The main target:
 

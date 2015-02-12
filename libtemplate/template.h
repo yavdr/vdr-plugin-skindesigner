@@ -26,7 +26,8 @@ enum eViewType {
     vtDisplayReplay,
     vtDisplayVolume,
     vtDisplayAudioTracks,
-    vtDisplayMessage
+    vtDisplayMessage,
+    vtDisplayPlugin
 };
 
 class cTemplate {
@@ -37,13 +38,13 @@ private:
 protected:
     cGlobals *globals;
     cTemplateView *rootView;
-    void CreateView(void);
+    void CreateView(string pluginName, int viewID);
     void GetUsedFonts(cTemplateView *view, vector< pair<string, int> > &usedFonts);
     void CacheImages(cTemplateView *view);
 public:
-    cTemplate(eViewType viewType);
+    cTemplate(eViewType viewType, string pluginName = "", int viewID = -1);
     virtual ~cTemplate(void);
-    bool ReadFromXML(void);
+    bool ReadFromXML(string xmlfile = "");
     void SetGlobals(cGlobals *globals);
     cTemplateView *GetRootView(void) { return rootView; };
     void Translate(void);

@@ -70,4 +70,31 @@ public:
     void ClearListItem(void);
 };
 
+class cGrid : public cView {
+protected:
+    bool dirty;
+    bool moved;
+    bool resized;
+    bool current;
+    double x;
+    double y;
+    double width;
+    double height;
+    map <string,string> stringTokens;
+    map <string,int> intTokens;
+    void PositionPixmap(cTemplatePixmap *pix);
+public:
+    cGrid(cTemplateViewElement *tmplGrid);
+    virtual ~cGrid();
+    bool Dirty(void) { return dirty; };
+    bool Moved(void) { return moved; };
+    bool Resized(void) { return resized; };
+    void Set(double x, double y, double width, double height, map <string,int> *intTokens, map <string,string> *stringTokens);
+    void SetCurrent(bool current);
+    void Move(void);
+    void Draw(void);
+    void Clear(void);
+    void DeletePixmaps(void);
+};
+
 #endif //__VIEW_H

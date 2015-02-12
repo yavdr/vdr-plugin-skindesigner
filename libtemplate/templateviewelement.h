@@ -87,7 +87,7 @@ public:
     virtual ~cTemplateViewElement(void);
     void SetParameters(vector<pair<string, string> > &params);
     bool CalculateParameters(void);
-    bool CalculatePixmapParameters(void);
+    virtual bool CalculatePixmapParameters(void);
     bool CalculatePixmapParametersList(int orientation, int numElements);    
     int GetNumericParameter(eParamType type);
     void AddPixmap(cTemplatePixmap *pix) { viewPixmaps.push_back(pix); };

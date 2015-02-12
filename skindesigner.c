@@ -162,13 +162,17 @@ bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
         return false;
 
     if (strcmp(Id, "RegisterPlugin") == 0) {
-        RegisterPlugin* call = (RegisterPlugin*) Data;
-        if (call->menus.size() < 1) {
-            esyslog("skindesigner: error - plugin without menus registered");
+        RegisterPlugin *call = (RegisterPlugin*) Data;
+        if (call->menus.size() < 1 && call->views.size() < 1) {
+            esyslog("skindesigner: error - plugin without menus or views registered");
             return false;
         }
-        config.AddPlugin(call->name, call->menus);
-        dsyslog("skindesigner: plugin %s has registered %ld templates", call->name.c_str(), call->menus.size());
+        config.AddPluginMenus(call->name, call->menus);
+        config.AddPluginViews(call->name, call->views, call->viewElements, call->viewGrids);
+        if (call->menus.size() > 0)
+            dsyslog("skindesigner: plugin %s has registered %ld menus", call->name.c_str(), call->menus.size());
+        if (call->views.size() > 0)
+            dsyslog("skindesigner: plugin %s has registered %ld views", call->name.c_str(), call->views.size());
         return true;
     } else if (strcmp(Id, "GetDisplayMenu") == 0) {
         GetDisplayMenu* call = (GetDisplayMenu*) Data;
@@ -178,6 +182,22 @@ bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
                 cSDDisplayMenu *displayMenu = (*skin)->GetDisplayMenu();
                 if (displayMenu) {
                     call->displayMenu = displayMenu;
+                    return true;
+                } else
+                    return false;
+            }
+        }
+        return false;
+    } else if (strcmp(Id, "GetDisplayPlugin") == 0) {
+        GetDisplayPlugin* call = (GetDisplayPlugin*) Data;
+        if (call->pluginName.size() == 0 || call->viewID < 0)
+            return false;
+        cSkin *current = Skins.Current();
+        for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
+            if (*skin == current) {
+                cSkinDisplayPlugin *displayPlugin = (*skin)->DisplayPlugin(call->pluginName, call->viewID);
+                if (displayPlugin) {
+                    call->displayPlugin = displayPlugin;
                     return true;
                 } else
                     return false;

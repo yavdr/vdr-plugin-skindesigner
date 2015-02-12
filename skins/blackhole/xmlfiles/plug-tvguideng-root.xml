@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE displayplugin SYSTEM "../../../dtd/displayplugin.dtd">
+
+<displayplugin x="0" y="0" width="100%" height="100%" fadetime="0" scaletvx="70%" scaletvy="0" scaletvwidth="30%" scaletvheight="15%">
+
+    <viewelement name="background">
+        <area x="0" y="20%" width="100%" height="65%" layer="1">
+            <fill color="{clrGray}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="header">
+        <area x="0" y="0" width="70%" height="15%" layer="1">
+            <fill color="{clrRed}" />
+        </area>
+        <area x="0" y="0" width="70%" height="20%" layer="2">
+            <drawtext align="center" valign="center" font="{regular}" fontsize="50%" color="{clrWhite}" text="{headertext}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="footer">
+        <area x="0" y="85%" width="100%" height="15%" layer="1">
+            <fill color="{clrBlue}" />
+        </area>
+        <area x="0" y="85%" width="100%" height="15%" layer="2">
+            <drawtext align="center" valign="center" font="{regular}" fontsize="60%" color="{clrWhite}" text="{footertext}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="datetimeline">
+        <area x="0" y="15%" width="15%" height="5%" layer="1">
+            <fill color="{clrBlack}" />
+        </area>
+        <area x="0" y="15%" width="15%" height="5%" layer="2">
+            <drawtext align="center" valign="center" font="{regular}" fontsize="80%" color="{clrWhite}" text="{date}" />
+        </area>
+    </viewelement>
+
+    <grid debug="true" name="timeline" x="15%" y="15%" width="85%" height="5%">
+        <area layer="1">
+            <fill condition="{fullhour}" color="{clrWhite}" />
+            <fill condition="not{fullhour}" color="{clrBlack}" />
+        </area>
+        <area layer="2">
+            <drawtext condition="{fullhour}" x="5%" valign="center" font="{light}" fontsize="80%" color="{clrBlack}" text="{timestring}" />
+            <drawtext condition="not{fullhour}" x="5%" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{timestring}" />
+        </area>
+    </grid>
+
+    <grid debug="true" name="channels" x="0" y="20%" width="15%" height="65%">
+        <area layer="1">
+            <fill color="{clrYellow}" />
+        </area>
+        <area layer="2">
+            <drawtext x="1%" valign="center" width="98%" font="{light}" fontsize="40%" color="{clrWhite}" text="{number} {name}" />
+        </area>
+    </grid>
+
+    <grid name="schedules" x="15%" y="20%" width="85%" height="65%">
+        <area layer="1">
+            <fill condition="{color}++not{current}" color="{clrBlue}" />
+            <fill condition="not{color}++not{current}" color="{clrGreen}" />
+            <fill condition="{current}" color="{clrRed}" />
+        </area>
+        <area layer="2">
+            <drawtext condition="not{dummy}" x="1%" y="5%" width="98%" font="{light}" fontsize="30%" color="{clrWhite}" text="{start} - {stop}" />
+            <drawtext condition="not{dummy}" x="1%" y="50%" width="98%" font="{light}" fontsize="30%" color="{clrWhite}" text="{title}" />
+            <drawtext condition="{dummy}" x="1%" valign="center" width="98%" font="{light}" fontsize="40%" color="{clrWhite}" text="{title}" />
+        </area>
+    </grid>
+
+</displayplugin>

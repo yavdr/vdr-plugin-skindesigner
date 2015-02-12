@@ -15,6 +15,7 @@
 
 #include "templateview.h"
 #include "templateviewlist.h"
+#include "templateviewgrid.h"
 #include "templateviewtab.h"
 #include "../libcore/skinsetup.h"
 
@@ -43,6 +44,7 @@ private:
     void ParseViewElement(const xmlChar * viewElement, xmlNodePtr node, vector<pair<string, string> > &attributes, cTemplateView *subView = NULL);
     void ParseViewList(xmlNodePtr parentNode, cTemplateView *subView = NULL);
     void ParseViewTab(xmlNodePtr parentNode, cTemplateView *subView);
+    void ParseGrid(xmlNodePtr node, vector<pair<string, string> > &attributes);
     void ParseFunctionCalls(xmlNodePtr node, cTemplatePixmap *pix);
     void ParseLoopFunctionCalls(xmlNodePtr node, cTemplateLoopFunction *loopFunc);
     bool ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs);

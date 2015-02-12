@@ -26,6 +26,7 @@ private:
     cTemplate *replayTemplate;
     cTemplate *volumeTemplate;
     cTemplate *audiotracksTemplate;
+    map< string, map <int, cTemplate*> > pluginTemplates;
     cSDDisplayMenu *currentMenu;
     void Init(void);
     void ReloadCaches(void);
@@ -42,6 +43,7 @@ public:
     virtual cSkinDisplayVolume *DisplayVolume(void);
     virtual cSkinDisplayTracks *DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks);
     virtual cSkinDisplayMessage *DisplayMessage(void);
+    virtual cSkinDisplayPlugin *DisplayPlugin(string pluginName, int viewID);
     void ActivateBackupSkin(void) { useBackupSkin = true; };
     void Reload(void);
     void ListAvailableFonts(void);

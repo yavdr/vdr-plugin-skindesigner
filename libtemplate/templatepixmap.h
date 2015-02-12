@@ -47,6 +47,10 @@ public:
     void SetHeight(int height);
     void SetX(int x);
     void SetY(int y);
+    void SetWidthPercent(double width);
+    void SetHeightPercent(double height);
+    void SetXPercent(double x);
+    void SetYPercent(double y);
     void SetContainer(int x, int y, int w, int h);
     void SetGlobals(cGlobals *globals) { this->globals = globals; };
     void AddFunction(string name, vector<pair<string, string> > &params);

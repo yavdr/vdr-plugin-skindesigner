@@ -837,3 +837,132 @@ void cViewListItem::SetListElementPosition(cTemplatePixmap *pix) {
     pix->SetY(y);
 }
 
+/***********************************************************************
+* cGrid
+************************************************************************/
+
+cGrid::cGrid(cTemplateViewElement *tmplGrid) : cView(tmplGrid) {
+    dirty = true;
+    moved = true;
+    resized = true;
+    current = false;
+    x = 0.0;
+    y = 0.0;
+    width = 0.0;
+    height = 0.0;
+}
+
+cGrid::~cGrid() {
+
+}
+
+void cGrid::Set(double x, double y, double width, double height,
+                map <string,int> *intTokens, map <string,string> *stringTokens) {
+    if ((width != this->width) || (height != this->height)) {
+        resized = true;
+        dirty = false;
+    } else {
+        resized = false;
+    }
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+    moved = true;
+    if (intTokens) {
+        this->intTokens = *intTokens;
+        SetCurrent(current);
+        dirty = true;
+    }
+    if (stringTokens) {
+        this->stringTokens = *stringTokens;
+        dirty = true;
+    }
+}
+
+void cGrid::SetCurrent(bool current) { 
+    this->current = current;
+    if (!resized)
+        dirty = true;
+    intTokens.erase("current");
+    intTokens.insert(pair<string,int>("current", current)); 
+}
+
+void cGrid::Move(void) {
+    tmplItem->InitIterator();
+    cTemplatePixmap *pix = NULL;
+    int pixCurrent = 0;
+
+    while(pix = tmplItem->GetNextPixmap()) {
+        PositionPixmap(pix);
+        cRect pixViewPort = pix->GetPixmapSize();
+        SetViewPort(pixCurrent, pixViewPort);
+        pixCurrent++;
+    }
+    dirty = false;
+    resized = false;
+    moved = false;
+}
+
+void cGrid::Draw(void) {
+    if (tmplItem->DebugTokens()) {
+        DebugTokens("Grid", &stringTokens, &intTokens);
+    }
+
+    tmplItem->InitIterator();
+    cTemplatePixmap *pix = NULL;
+    int pixCurrent = 0;
+
+    while(pix = tmplItem->GetNextPixmap()) {
+        PositionPixmap(pix);
+        if (!PixmapExists(pixCurrent)) {
+            pix->ParseDynamicParameters(&intTokens, true);
+        } else {
+            pix->ParseDynamicParameters(&intTokens, false);
+        }
+        if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
+            CreateViewPixmap(pixCurrent, pix);
+        }
+        //if pixmap still not valid, skip
+        if (!pix->Ready()  && !pix->Scrolling()) {
+            pixCurrent++;
+            continue;
+        }
+        //if condition for pixmap set, check if cond is true 
+        if (!pix->DoExecute()) {
+            pixCurrent++;
+            continue;
+        }
+    
+        pix->ClearDynamicFunctionParameters();
+        pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens);
+        //pix->Debug();
+        DrawPixmap(pixCurrent, pix);
+        pixCurrent++;
+    }
+    dirty = false;
+    resized = false;
+    moved = false;
+}
+
+void cGrid::Clear(void) {
+    int pixMax = NumPixmaps();
+    for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
+        Fill(pixCurrent, clrTransparent);
+    }
+}
+
+void cGrid::DeletePixmaps(void) {
+    int pixMax = NumPixmaps();
+    for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
+        DestroyPixmap(pixCurrent);
+    }
+}
+
+void cGrid::PositionPixmap(cTemplatePixmap *pix) {
+    pix->SetXPercent(x);
+    pix->SetYPercent(y);
+    pix->SetWidthPercent(width);
+    pix->SetHeightPercent(height);
+    pix->CalculateParameters();
+}

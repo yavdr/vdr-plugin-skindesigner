@@ -19,10 +19,6 @@ using namespace std;
 
 enum eViewList {
     vlUndefined,
-    //DisplayChannel ViewLists
-    vlDvbDeviceInfoList,
-    //DisplayMenu ViewLists
-    vlTimerList,
     vlMenuItem
 };
 

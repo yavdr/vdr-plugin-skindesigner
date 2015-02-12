@@ -13,6 +13,7 @@
 
 #include "templateviewelement.h"
 #include "templateviewlist.h"
+#include "templateviewgrid.h"
 #include "templatepixmap.h"
 #include "templateviewtab.h"
 #include "templatefunction.h"
@@ -50,6 +51,7 @@ protected:
     //basic view data structures
     map < eViewElement, cTemplateViewElement* > viewElements;
     map < eViewList, cTemplateViewList* > viewLists;
+    map < int, cTemplateViewGrid* > viewGrids;
     map < eSubView, cTemplateView* > subViews;
     vector< cTemplateViewTab* > viewTabs;
     map < string, map< int, cTemplateView*> > pluginViews;
@@ -62,6 +64,7 @@ protected:
     set<string> subViewsAllowed;
     set<string> viewElementsAllowed;
     set<string> viewListsAllowed;
+    set<string> viewGridsAllowed;
     map < string, set < string > > funcsAllowed;
     void SetFunctionDefinitions(void);
 public:
@@ -73,6 +76,7 @@ public:
     virtual void AddSubView(string sSubView, cTemplateView *subView) {};
     virtual void AddPluginView(string plugName, int templNo, cTemplateView *plugView) {};
     virtual void AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {};
+    virtual void AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string, string> > &gridAttributes) {};
     virtual void AddViewList(string sViewList, cTemplateViewList *viewList) {};
     virtual void AddViewTab(cTemplateViewTab *viewTab) {};
     //Setter Functions
@@ -83,6 +87,8 @@ public:
     cTemplateViewElement *GetViewElement(eViewElement ve);
     void InitViewElementIterator(void);
     cTemplateViewElement *GetNextViewElement(void);
+    //access view grids
+    cTemplateViewGrid *GetViewGrid(int gridID);
     //access list elements
     cTemplateViewList *GetViewList(eViewList vl);
     void InitViewListIterator(void);
@@ -110,7 +116,8 @@ public:
     //Checks for parsing template XML files
     bool ValidSubView(const char *subView);
     bool ValidViewElement(const char *viewElement);
-    bool ValidViewList(const char *viewList);    
+    bool ValidViewList(const char *viewList);
+    bool ValidViewGrid(const char *viewGrid);
     bool ValidFunction(const char *func);
     bool ValidAttribute(const char *func, const char *att);
     //Caching
@@ -202,6 +209,19 @@ public:
     string GetViewListName(eViewList vl);
     void AddPixmap(string viewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes);
     void AddViewList(string sViewList, cTemplateViewList *viewList);
+};
+
+// --- cTemplateViewAudioTracks -------------------------------------------------------------
+
+class cTemplateViewPlugin : public cTemplateView {
+private:
+    string pluginName;
+    int viewID;
+public:
+    cTemplateViewPlugin(string pluginName, int viewID);
+    virtual ~cTemplateViewPlugin(void);
+    void AddPixmap(string viewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes);
+    void AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string, string> > &gridAttributes);
 };
 
 #endif //__TEMPLATEVIEW_H

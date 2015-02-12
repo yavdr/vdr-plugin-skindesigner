@@ -42,6 +42,7 @@ protected:
     void SetAlpha(int num, int Alpha);
     void SetTransparency(int num, int Transparency);
     void SetLayer(int num, int Layer);
+    void SetViewPort(int num, const cRect &rect);
     int Width(int num);
     int Height(int num);
     int DrawportWidth(int num);

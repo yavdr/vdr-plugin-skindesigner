@@ -1,3 +1,4 @@
+#include "../config.h"
 #include "templateview.h"
 
 // --- cTemplateView -------------------------------------------------------------
@@ -19,6 +20,10 @@ cTemplateView::~cTemplateView() {
     }
 
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
+        delete it->second;
+    }
+
+    for (map < int, cTemplateViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
         delete it->second;
     }
 
@@ -61,8 +66,9 @@ void cTemplateView::SetContainer(int x, int y, int width, int height) {
 
 cTemplateViewElement *cTemplateView::GetViewElement(eViewElement ve) {
     map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end())
+    if (hit == viewElements.end()) {
         return NULL;
+    }
     return hit->second;
 }
 
@@ -76,6 +82,14 @@ cTemplateViewElement *cTemplateView::GetNextViewElement(void) {
     cTemplateViewElement *viewElement = veIt->second;
     veIt++;
     return viewElement; 
+}
+
+cTemplateViewGrid *cTemplateView::GetViewGrid(int gridID) {
+    map < int, cTemplateViewGrid* >::iterator hit = viewGrids.find(gridID);
+    if (hit == viewGrids.end()) {
+        return NULL;
+    }
+    return hit->second;    
 }
 
 cTemplateViewList *cTemplateView::GetViewList(eViewList vl) {
@@ -224,7 +238,14 @@ bool cTemplateView::ValidViewList(const char *viewList) {
     set<string>::iterator hit = viewListsAllowed.find(viewList);
     if (hit == viewListsAllowed.end())
         return false;
-    return true;    
+    return true;
+}
+
+bool cTemplateView::ValidViewGrid(const char *viewGrid) {
+    set<string>::iterator hit = viewGridsAllowed.find(viewGrid);
+    if (hit == viewGridsAllowed.end())
+        return false;
+    return true;
 }
 
 bool cTemplateView::ValidFunction(const char *func) {
@@ -428,6 +449,14 @@ void cTemplateView::PreCache(bool isSubview) {
         pixOffset += viewElement->GetNumPixmaps();
     }
 
+    //Cache ViewGrids
+    for (map < int, cTemplateViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
+        cTemplateViewGrid *viewGrid = it->second;
+        viewGrid->SetGlobals(globals);
+        viewGrid->SetContainer(0, 0, osdWidth, osdHeight);
+        viewGrid->CalculateParameters();
+        viewGrid->CalculatePixmapParameters();
+    }
 
     //Cache ViewLists
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
@@ -486,6 +515,12 @@ void cTemplateView::Debug(void) {
         viewList->Debug();
     }
 
+    for (map < int, cTemplateViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
+        esyslog("skindesigner: ++++++++ ViewGrid %d:", it->first);
+        cTemplateViewGrid *viewGrid = it->second;
+        viewGrid->Debug();
+    }
+
     for (vector<cTemplateViewTab*>::iterator tab = viewTabs.begin(); tab != viewTabs.end(); tab++) {
         esyslog("skindesigner: ++++++++ ViewTab");
         (*tab)->Debug();
@@ -516,6 +551,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("debug");
     attributes.insert("delay");
     attributes.insert("fadetime");
+    attributes.insert("name");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "area";
@@ -1095,7 +1131,6 @@ void cTemplateViewMenu::SetViewElements(void) {
 }
 
 void cTemplateViewMenu::SetViewLists(void) {
-    viewListsAllowed.insert("timerlist");
     viewListsAllowed.insert("menuitems");
 }
 
@@ -1210,9 +1245,6 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
 string cTemplateViewMenu::GetViewListName(eViewList vl) {
     string name;
     switch (vl) {
-        case vlTimerList:
-            name = "Timer List";
-            break;
         case vlMenuItem:
             name = "Menu Item";
             break;
@@ -1335,9 +1367,7 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
 void cTemplateViewMenu::AddViewList(string sViewList, cTemplateViewList *viewList) {
     
     eViewList vl = vlUndefined;
-    if (!sViewList.compare("timerlist")) {
-        vl = vlTimerList;
-    } else if (!sViewList.compare("menuitems")) {
+    if (!sViewList.compare("menuitems")) {
         vl = vlMenuItem;
     }
 
@@ -1796,4 +1826,109 @@ void cTemplateViewAudioTracks::AddViewList(string sViewList, cTemplateViewList *
     
     viewList->SetGlobals(globals);
     viewLists.insert(pair< eViewList, cTemplateViewList*>(vl, viewList));
+}
+
+/************************************************************************************
+* cTemplateViewPlugin
+************************************************************************************/
+
+cTemplateViewPlugin::cTemplateViewPlugin(string pluginName, int viewID) {
+    this->pluginName = pluginName;
+    this->viewID = viewID;
+    viewName = "displayplugin";
+    //definition of allowed parameters for class itself 
+    set<string> attributes;
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("fadetime");
+    attributes.insert("scaletvx");
+    attributes.insert("scaletvy");
+    attributes.insert("scaletvwidth");
+    attributes.insert("scaletvheight");
+    funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
+
+    attributes.clear();
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("name");
+    funcsAllowed.insert(pair< string, set<string> >("grid", attributes));
+
+    viewElementsAllowed.insert("viewelement");
+    viewGridsAllowed.insert("grid");
+}
+
+cTemplateViewPlugin::~cTemplateViewPlugin() {
+}
+
+void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+    eViewElement ve = veUndefined;
+    string viewElementName = "";
+    bool found = false;
+    for (vector<pair<string, string> >::iterator it = viewElementattributes.begin(); it != viewElementattributes.end(); it++) {
+        if (!(it->first).compare("name")) {
+            viewElementName = it->second;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        esyslog("skindesigner: no name defined for plugin %s viewelement", pluginName.c_str());
+    }
+
+    int viewElementID = config.GetPluginViewElementID(pluginName, viewElementName, viewID);
+
+    if (viewElementID == -1) {
+        esyslog("skindesigner: %s: unknown ViewElement in displayplugin: %s", pluginName.c_str(), viewElementName.c_str());
+        return;
+    }
+
+    pix->SetGlobals(globals);
+
+    ve = (eViewElement)viewElementID;
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end()) {
+        cTemplateViewElement *viewElement = new cTemplateViewElement();
+        viewElement->SetParameters(viewElementattributes);
+        viewElement->AddPixmap(pix);
+        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
+    } else {
+        (hit->second)->AddPixmap(pix);
+    }
+}
+
+void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string, string> > &gridAttributes) {
+    string gridName = "";
+    bool found = false;
+    for (vector<pair<string, string> >::iterator it = gridAttributes.begin(); it != gridAttributes.end(); it++) {
+        if (!(it->first).compare("name")) {
+            gridName = it->second;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        esyslog("skindesigner: no name defined for plugin %s grid", pluginName.c_str());
+    }
+    int gridID = config.GetPluginViewGridID(pluginName, gridName, viewID);
+
+    if (gridID == -1) {
+        esyslog("skindesigner: %s: unknown Grid in displayplugin: %s", pluginName.c_str(), gridName.c_str());
+        return;
+    }
+
+    pix->SetGlobals(globals);
+
+    map < int, cTemplateViewGrid* >::iterator hit = viewGrids.find(gridID);
+    if (hit == viewGrids.end()) {
+        cTemplateViewGrid *viewGrid = new cTemplateViewGrid();
+        viewGrid->SetParameters(gridAttributes);
+        viewGrid->AddPixmap(pix);
+        viewGrids.insert(pair< int, cTemplateViewGrid*>(gridID, viewGrid));
+    } else {
+        (hit->second)->AddPixmap(pix);
+    }
 }
