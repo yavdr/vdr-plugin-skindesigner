@@ -18,7 +18,7 @@ void cCairoImage::InitCairoImage(int width, int height) {
     
     surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
     cr = cairo_create(surface);
-    cairo_set_antialias(cr, CAIRO_ANTIALIAS_BEST);
+    cairo_set_antialias(cr, CAIRO_ANTIALIAS_SUBPIXEL);
 }
 
 void cCairoImage::DrawTextVertical(string text, tColor color, string font, int size) {
