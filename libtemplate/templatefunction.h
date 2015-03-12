@@ -29,6 +29,7 @@ enum eFuncType {
     ftFill,
     ftDrawText,
     ftDrawTextBox,
+    ftDrawTextVertical,
     ftDrawImage,
     ftDrawRectangle,
     ftDrawEllipse,
@@ -198,6 +199,8 @@ public:
     //Dynamic width or height parameter
     int GetWidth(bool cutted = true);
     int GetHeight(void);
+    int GetContainerWidth(void) { return containerWidth; };
+    int GetContainerHeight(void) { return containerHeight; };
     void GetNeededWidths(multimap<eParamType,string> *widths);
     void GetNeededHeights(multimap<eParamType,string> *heights);
     void GetNeededPosX(multimap<eParamType,string> *posXs);

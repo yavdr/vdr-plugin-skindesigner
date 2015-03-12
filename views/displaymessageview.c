@@ -18,6 +18,9 @@ bool cDisplayMessageView::createOsd(void) {
                         cOsd::OsdTop() + osdSize.Y(),
                         osdSize.Width(),
                         osdSize.Height());
+    if (!ok) {
+        DeleteOsdOnExit(false);
+    }
     return ok;
 }
 

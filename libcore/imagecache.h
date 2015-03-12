@@ -30,6 +30,8 @@ public:
     //skinparts
     void CacheSkinpart(string path, int width, int height);
     cImage *GetSkinpart(string name, int width, int height);
+    //cairo special images
+    cImage *GetVerticalText(string text, tColor color, string font, int size);
     //helpers
     void Clear(void);
     void Debug(bool full);
@@ -48,6 +50,7 @@ private:
     map<string, cImage*> iconCache;
     map<string, cImage*> channelLogoCache;
     map<string, cImage*> skinPartsCache;
+    map<string, cImage*> cairoImageCache;
     bool LoadIcon(eImageType type, string name);
     bool LoadLogo(const cChannel *channel);
     bool LoadSeparatorLogo(string name);

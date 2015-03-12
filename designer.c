@@ -107,7 +107,7 @@ cSkinDisplayMessage *cSkinDesigner::DisplayMessage(void) {
     return displayMessage;
 }
 
-cSkinDisplayPlugin *cSkinDesigner::DisplayPlugin(string pluginName, int viewID) {
+cSkinDisplayPlugin *cSkinDesigner::DisplayPlugin(string pluginName, int viewID, int subViewID) {
     currentMenu = NULL;
     if (useBackupSkin) 
         return NULL;
@@ -119,7 +119,7 @@ cSkinDisplayPlugin *cSkinDesigner::DisplayPlugin(string pluginName, int viewID) 
     map <int, cTemplate*>::iterator hit2 = (hit->second).find(viewID);
     if (hit2 == (hit->second).end())
         return NULL;
-    return new cSkinDisplayPlugin(hit2->second);
+    return new cSkinDisplayPlugin(hit2->second, subViewID);
 }
 
 
@@ -344,15 +344,23 @@ bool cSkinDesigner::LoadTemplates(void) {
     string plugName;
     while ( plugViews = config.GetPluginViews(plugName) ) {
         for (map <int,string>::iterator v = plugViews->begin(); v != plugViews->end(); v++) {
+            int viewID = v->first;
             stringstream templateName;
             templateName << "plug-" << plugName << "-" << v->second.c_str();
-            cTemplate *plgTemplate = new cTemplate(vtDisplayPlugin, plugName, v->first);
+            cTemplate *plgTemplate = new cTemplate(vtDisplayPlugin, plugName, viewID);
             plgTemplate->SetGlobals(globals);
             ok = plgTemplate->ReadFromXML(templateName.str());
             if (!ok) {
                 esyslog("skindesigner: error reading plugin %s template", plugName.c_str());
-                DeleteTemplates();
-                return false;                
+                delete plgTemplate;
+                pluginTemplates.erase(plugName);
+                break;
+            }
+            ok = plgTemplate->SetSubViews(plugName, viewID);
+            if (!ok) {
+                delete plgTemplate;
+                pluginTemplates.erase(plugName);
+                break;
             }
             plgTemplate->Translate();
             map< string, map <int, cTemplate*> >::iterator hit = pluginTemplates.find(plugName);

@@ -66,6 +66,7 @@ OBJS = $(PLUGIN).o \
        displaytracks.o \
        displayvolume.o \
        displayplugin.o \
+       libcore/cairoimage.o \
        libcore/pixmapcontainer.o \
        libcore/fontmanager.o \
        libcore/imagecache.o \

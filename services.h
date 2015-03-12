@@ -22,6 +22,10 @@ public:
     void SetView(int key, string templateName) {
 		views.insert(pair<int, string>(key, templateName));    	
     }
+    void SetSubView(int view, int subView, string templateName) {
+        pair<int, string> sub = make_pair(subView, templateName);
+        subViews.insert(pair<int, pair<int, string> >(view, sub));     
+    }
     void SetViewElement(int view, int viewElement, string name) {
         map< int, map<int, string> >::iterator hit = viewElements.find(view);
         if (hit == viewElements.end()) {
@@ -43,11 +47,12 @@ public:
         }
     }
 // in
-    string name;                          //name of plugin
-    map< int, string > menus;             //menus as key -> templatename hashmap 
-    map< int, string>  views;             //standalone views as key -> templatename hashmap 
-    map< int, map <int, string> > viewElements;  //viewelements as key -> (viewelement, viewelementname) hashmap 
-    map< int, map <int, string> > viewGrids;     //viewgrids as key -> (viewgrid, viewgridname) hashmap
+    string name;                                     //name of plugin
+    map< int, string > menus;                        //menus as key -> templatename hashmap 
+    map< int, string>  views;                        //standalone views as key -> templatename hashmap 
+    multimap< int, pair <int, string> >  subViews;   //subviews of standalone views as view -> (subview, templatename) multimap 
+    map< int, map <int, string> > viewElements;      //viewelements as key -> (viewelement, viewelementname) hashmap 
+    map< int, map <int, string> > viewGrids;         //viewgrids as key -> (viewgrid, viewgridname) hashmap
 //out
 };
 
@@ -68,11 +73,13 @@ public:
     GetDisplayPlugin(void) {
         pluginName = "";
         viewID = -1;
+        subViewID = -1;
         displayPlugin = NULL;
     };
 // in
     string pluginName;
     int viewID;
+    int subViewID;
 //out
     cSkinDisplayPlugin *displayPlugin;
 };

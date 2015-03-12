@@ -13,6 +13,7 @@ private:
     void Init(void);
     void DoFill(int num, cTemplateFunction *func);
     void DoDrawText(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
+    void DoDrawTextVertical(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawTextBox(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawFloatingTextBox(int num, cTemplateFunction *func);
     void DoDrawRectangle(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
@@ -40,7 +41,9 @@ protected:
     int scrollSpeed;
     void DrawViewElement(eViewElement ve, map <string,string> *stringTokens = NULL, map <string,int> *intTokens = NULL, map < string, vector< map< string, string > > > *loopTokens = NULL);
     void ClearViewElement(eViewElement ve);
+    void DestroyViewElement(eViewElement ve);
     bool ViewElementImplemented(eViewElement ve);
+    bool ViewElementScrolls(eViewElement ve);
     void CreateViewPixmap(int num, cTemplatePixmap *pix, cRect *size = NULL);
     void CreateScrollingPixmap(int num, cTemplatePixmap *pix, cSize &drawportSize);
     void DrawPixmap(int num, cTemplatePixmap *pix, map < string, vector< map< string, string > > > *loopTokens = NULL, bool flushPerLoop = false);

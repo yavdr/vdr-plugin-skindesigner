@@ -202,4 +202,9 @@ Version 0.2.2
 - added replay onpause view in blackhole skin
 - implemented SetTitle() in displayreplay
 - fixed header icon for plugin menus
+- added function "drawtextvertical"
+- implemented advanced plugin interface
+- added tvguideng templates for all skins
+
+Version 0.3.0
 

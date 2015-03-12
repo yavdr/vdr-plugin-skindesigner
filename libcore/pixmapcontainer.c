@@ -16,6 +16,7 @@ cPixmapContainer::cPixmapContainer(int numPixmaps) {
         pixmaps[i] = NULL;
         pixmapsTransparency[i] = 0;
     }
+    pixmapsLayer = NULL;
     mutex.Unlock();
     checkRunning = false;
     fadeTime = 0;
@@ -33,6 +34,9 @@ cPixmapContainer::~cPixmapContainer(void) {
     }
     delete[] pixmaps;
     delete[] pixmapsTransparency;
+    if (pixmapsLayer)
+        delete[] pixmapsLayer;
+
     if (deleteOsdOnExit && osd) {
         mutex.Lock();
         delete osd;
@@ -65,12 +69,6 @@ void cPixmapContainer::OpenFlush(void) {
     flushState = fsOpen; 
 }
 
-bool cPixmapContainer::PixmapExists(int num) {
-    cMutexLock MutexLock(&mutex);
-    if (pixmaps[num])
-        return true;
-    return false;
-}
 
 void cPixmapContainer::DoFlush(void) {
     cMutexLock MutexLock(&mutex);
@@ -79,6 +77,41 @@ void cPixmapContainer::DoFlush(void) {
     if (flushState == fsOpen) {
         osd->Flush();
     }
+}
+
+void cPixmapContainer::HidePixmaps(void) {
+    cMutexLock MutexLock(&mutex);
+    pixmapsLayer = new int[numPixmaps];
+    for(int i=0; i < numPixmaps; i++) {
+        if (!pixmaps[i]) {
+            pixmapsLayer[i] = 0;
+            continue;
+        }
+        pixmapsLayer[i] = pixmaps[i]->Layer();
+        pixmaps[i]->SetLayer(-1);
+    }
+}
+
+void cPixmapContainer::ShowPixmaps(void) {
+    cMutexLock MutexLock(&mutex);
+    if (!pixmapsLayer)
+        return;
+    for(int i=0; i < numPixmaps; i++) {
+        if (!pixmaps[i])
+            continue;
+        pixmaps[i]->SetLayer(pixmapsLayer[i]);
+    }
+}
+
+/******************************************************************************************************
+* Protected Functions
+******************************************************************************************************/
+
+bool cPixmapContainer::PixmapExists(int num) {
+    cMutexLock MutexLock(&mutex);
+    if (pixmaps[num])
+        return true;
+    return false;
 }
 
 void cPixmapContainer::CreatePixmap(int num, int Layer, const cRect &ViewPort, const cRect &DrawPort) {

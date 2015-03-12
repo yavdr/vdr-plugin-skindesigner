@@ -20,13 +20,14 @@ private:
     int numPixmaps;
     cPixmap **pixmaps;
     int *pixmapsTransparency;
+    int *pixmapsLayer;
     bool checkRunning;
     int fadeTime;
     bool deleteOsdOnExit;
 protected:
     void SetInitFinished(void) { pixContainerInit = false; };
     bool CreateOsd(int Left, int Top, int Width, int Height);
-    void DeleteOsdOnExit(void) { deleteOsdOnExit = true; };
+    void DeleteOsdOnExit(bool doDelete = true) { deleteOsdOnExit = doDelete; };
     //Wrappers for access to pixmaps
     bool PixmapExists(int num);
     int NumPixmaps(void) { return numPixmaps; };
@@ -69,6 +70,8 @@ public:
     void LockFlush(void);
     void OpenFlush(void);
     void DoFlush(void);
+    void HidePixmaps(void);
+    void ShowPixmaps(void);
     virtual void Action(void) {};
 };
 

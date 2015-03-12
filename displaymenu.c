@@ -11,7 +11,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
     pluginMenuType = mtUnknown;
     if (!menuTemplate) {
         doOutput = false;
-        esyslog("skindesigner: displayMenu no valid template - aborting");
+        dsyslog("skindesigner: displayMenu no valid template - aborting");
         return;
     } 
     rootView = new cDisplayMenuRootView(menuTemplate->GetRootView());
@@ -19,7 +19,6 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         doOutput = false;
         return;
     }
-    esyslog("skindesigner: menu opened");
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
@@ -27,7 +26,6 @@ cSDDisplayMenu::~cSDDisplayMenu() {
         delete rootView;
     if (textAreaFont)
         delete textAreaFont;
-    esyslog("skindesigner: menu closed");
 }
 
 void cSDDisplayMenu::Scroll(bool Up, bool Page) {
@@ -186,7 +184,6 @@ bool cSDDisplayMenu::SetItemPlugin(map<string,string> *stringTokens, map<string,
 }
 
 void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Selectable) {
-    esyslog("skindesigner: Item %s %s", Text, Current ? " -- ACTIVE --" : "");
     if (!doOutput)
         return;
     cDisplayMenuListView *list = rootView->GetListView();

@@ -124,6 +124,8 @@ void cTemplatePixmap::AddFunction(string name, vector<pair<string, string> > &pa
         type = ftDrawText;
     } else if (!name.compare("drawtextbox")) {
         type = ftDrawTextBox;
+    } else if (!name.compare("drawtextvertical")) {
+        type = ftDrawTextVertical;
     } else if (!name.compare("drawimage")) {
         type = ftDrawImage;
     } else if (!name.compare("drawrectangle")) {

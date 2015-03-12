@@ -293,10 +293,12 @@ void cDesignerConfig::AddPluginMenus(string name, map< int, string > menus) {
 }
 
 void cDesignerConfig::AddPluginViews(string name, 
-                                     map< int, string > views, 
+                                     map< int, string > views,
+                                     multimap< int, pair <int, string> > subViews,
                                      map< int, map <int, string> > viewElements,
                                      map< int, map <int, string> > viewGrids) {
     pluginViews.insert(pair< string, map < int, string > >(name, views));
+    pluginSubViews.insert(pair< string, multimap< int, pair <int, string> > >(name, subViews));
     pluginViewElements.insert(pair< string, map< int, map <int, string> > >(name, viewElements));
     pluginViewGrids.insert(pair< string, map< int, map <int, string> > >(name, viewGrids));
 }
@@ -325,6 +327,25 @@ map <int,string> *cDesignerConfig::GetPluginViews(string &name) {
     map <int,string> *views = &plugViewIt->second;
     plugViewIt++;
     return views; 
+}
+
+map <int,string> cDesignerConfig::GetPluginSubViews(string name, int viewID) {
+    map <int,string> subViews;
+
+    map < string, multimap< int, pair <int, string> > >::iterator hit = pluginSubViews.find(name);
+    if (hit == pluginSubViews.end())
+        return subViews;
+
+    multimap< int, pair<int, string> > subs = hit->second;
+
+    pair < multimap< int, pair<int, string> >::iterator, multimap< int, pair<int, string> >::iterator> viewSubViews;
+    viewSubViews = subs.equal_range(viewID); 
+
+    for (multimap< int, pair<int, string> >::iterator it=viewSubViews.first; it!=viewSubViews.second; ++it) {
+        pair<int, string> subViewFound = it->second;
+        subViews.insert(pair<int,string>(subViewFound.first, subViewFound.second));
+    }
+    return subViews;
 }
 
 int cDesignerConfig::GetPluginViewElementID(string pluginName, string viewElementName, int viewID) {

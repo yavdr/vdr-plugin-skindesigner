@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sys/stat.h>
 #include "imagecache.h"
+#include "cairoimage.h"
 #include "../config.h"
 #include "helpers.h"
 
@@ -331,6 +332,28 @@ cImage *cImageCache::GetSkinpart(string name, int width, int height) {
     return NULL;    
 }
 
+cImage *cImageCache::GetVerticalText(string text, tColor color, string font, int size) {
+    cMutexLock MutexLock(&mutex);
+    stringstream buf;
+    buf << text << "_" << size;
+    string imgName = buf.str();
+    map<string, cImage*>::iterator hit = cairoImageCache.find(imgName);
+    if (hit != cairoImageCache.end()) {
+        return (cImage*)hit->second;
+    } else {
+        cCairoImage c;
+        c.DrawTextVertical(text, color, font, size);
+        cImage *image = c.GetImage();
+        cairoImageCache.insert(pair<string, cImage*>(imgName, image));
+        hit = cairoImageCache.find(imgName);
+        if (hit != cairoImageCache.end()) {
+            return (cImage*)hit->second;
+        }
+    }
+    return NULL;
+}
+
+
 bool cImageCache::LoadIcon(eImageType type, string name) {
     cString subdir("");
     if (type == itMenuIcon)
@@ -409,11 +432,17 @@ void cImageCache::Clear(void) {
     }
     channelLogoCache.clear();
 
-    for(map<std::string, cImage*>::const_iterator it = skinPartsCache.begin(); it != skinPartsCache.end(); it++) {
+    for(map<string, cImage*>::const_iterator it = skinPartsCache.begin(); it != skinPartsCache.end(); it++) {
         cImage *img = (cImage*)it->second;
         delete img;
     }
     skinPartsCache.clear();
+
+    for(map<string, cImage*>::const_iterator it = cairoImageCache.begin(); it != cairoImageCache.end(); it++) {
+        cImage *img = (cImage*)it->second;
+        delete img;
+    }
+    cairoImageCache.clear();
 }
 
 void cImageCache::Debug(bool full) {

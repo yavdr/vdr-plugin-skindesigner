@@ -15,6 +15,7 @@
         <color name="clrBorder">FF4C5C11</color>
         <color name="clrGray">FF858585</color>
         <color name="clrBackground">B012273F</color>
+        <color name="clrBackgroundOpaque">FF12273F</color>
         <color name="clrTransBlack">99000000</color>
         <color name="clrTransBlackDark">CC000000</color>
         <color name="clrTransRed">99FF0000</color>

@@ -25,7 +25,6 @@ void cViewGrid::SetGrid(long gridID,
 }
 
 void cViewGrid::SetCurrent(long gridID, bool current) {
-    esyslog("skindesigner: setting %ld to current %d", gridID, current);
     map<long,cGrid*>::iterator hit = grids.find(gridID);
     if (hit != grids.end())
         (hit->second)->SetCurrent(current);
@@ -35,7 +34,6 @@ void cViewGrid::Delete(long gridID) {
     map<long,cGrid*>::iterator hit = grids.find(gridID);
     if (hit == grids.end())
         return;
-    esyslog("skindesigner: deleting grid %ld", gridID);
     delete (hit->second);
     grids.erase(gridID);
 }
@@ -47,27 +45,42 @@ void cViewGrid::Clear(void) {
 }
 
 void cViewGrid::Render(void) {
-    esyslog("skindesigner: rendering %ld grids", grids.size());
     for (map < long, cGrid* >::iterator it = grids.begin(); it != grids.end(); it++) {
         cGrid *grid = it->second;
         if (grid->Dirty()) {
             if (grid->Moved()) {
-                grid->DeletePixmaps();
+                grid->Move();
             }
-            esyslog("skindesigner: rendering grid %ld", it->first);
+            grid->Clear();
+            //esyslog("skindesigner: rendering grid %ld", it->first);
             grid->Draw();
         } else if (grid->Resized()) {
-            esyslog("skindesigner: resizing grid %ld", it->first);
+            //esyslog("skindesigner: resizing grid %ld", it->first);
             grid->DeletePixmaps();
             grid->Draw();
         } else if (grid->Moved()) {
-            esyslog("skindesigner: moving grid %ld", it->first);
-            grid->Move();            
+            //esyslog("skindesigner: moving grid %ld", it->first);
+            grid->Move();
         } else {
-            esyslog("skindesigner: skipping grid %ld", it->first);
+            //esyslog("skindesigner: skipping grid %ld", it->first);
         }
     }
 }
+
+void cViewGrid::Hide(void) {
+    for (map < long, cGrid* >::iterator it = grids.begin(); it != grids.end(); it++) {
+        cGrid *grid = it->second;
+        grid->HidePixmaps();
+    }
+}
+
+void cViewGrid::Show(void) {
+    for (map < long, cGrid* >::iterator it = grids.begin(); it != grids.end(); it++) {
+        cGrid *grid = it->second;
+        grid->ShowPixmaps();
+    }
+}
+
 
 void cViewGrid::Debug(void) {
     

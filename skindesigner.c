@@ -19,7 +19,7 @@
 #endif
 
 
-static const char *VERSION        = "0.2.2";
+static const char *VERSION        = "0.3.0";
 static const char *DESCRIPTION    = trNOOP("Skin Designer");
 
 class cPluginSkinDesigner : public cPlugin {
@@ -168,7 +168,7 @@ bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
             return false;
         }
         config.AddPluginMenus(call->name, call->menus);
-        config.AddPluginViews(call->name, call->views, call->viewElements, call->viewGrids);
+        config.AddPluginViews(call->name, call->views, call->subViews, call->viewElements, call->viewGrids);
         if (call->menus.size() > 0)
             dsyslog("skindesigner: plugin %s has registered %ld menus", call->name.c_str(), call->menus.size());
         if (call->views.size() > 0)
@@ -195,7 +195,7 @@ bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
         cSkin *current = Skins.Current();
         for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
             if (*skin == current) {
-                cSkinDisplayPlugin *displayPlugin = (*skin)->DisplayPlugin(call->pluginName, call->viewID);
+                cSkinDisplayPlugin *displayPlugin = (*skin)->DisplayPlugin(call->pluginName, call->viewID, call->subViewID);
                 if (displayPlugin) {
                     call->displayPlugin = displayPlugin;
                     return true;

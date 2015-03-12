@@ -211,7 +211,7 @@ public:
     void AddViewList(string sViewList, cTemplateViewList *viewList);
 };
 
-// --- cTemplateViewAudioTracks -------------------------------------------------------------
+// --- cTemplateViewPlugin -------------------------------------------------------------
 
 class cTemplateViewPlugin : public cTemplateView {
 private:
@@ -220,8 +220,10 @@ private:
 public:
     cTemplateViewPlugin(string pluginName, int viewID);
     virtual ~cTemplateViewPlugin(void);
+    void AddSubView(string sSubView, cTemplateView *subView);
     void AddPixmap(string viewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes);
     void AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string, string> > &gridAttributes);
+    void AddViewTab(cTemplateViewTab *viewTab);
 };
 
 #endif //__TEMPLATEVIEW_H

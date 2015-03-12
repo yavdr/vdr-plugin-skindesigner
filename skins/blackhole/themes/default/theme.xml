@@ -14,8 +14,10 @@
         <color name="clrWhite">FFFFFFFF</color>
         <color name="clrBlack">FF000000</color>
         <color name="clrGray">FF999999</color>
+        <color name="clrGray2">FF777777</color>
         <color name="clrRedTrans">55FF0000</color>
         <color name="clrBlackTrans">99000000</color>
+        <color name="clrBlueMenu">FF00284A</color>
     </colors>
     <!--
     these variables can be used everywhere in the templates

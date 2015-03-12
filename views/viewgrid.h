@@ -20,6 +20,8 @@ public:
     void Delete(long gridID);
     void Clear(void);
     void Render(void);
+    void Hide(void);
+    void Show(void);
     void Debug(void);
 };
 

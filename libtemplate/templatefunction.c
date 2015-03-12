@@ -725,11 +725,16 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
             break;
         case ptY:
         case ptHeight:
-        case ptFontSize:
         case ptScaleTvY:
         case ptScaleTvHeight:
             param.SetVertical();
             break;
+        case ptFontSize: {
+            if (this->type == ftDrawTextVertical)
+                param.SetHorizontal();
+            else 
+                param.SetVertical();
+            break; }
         case ptLayer:
             param.SetDefault(1);
             break;

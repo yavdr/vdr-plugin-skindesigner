@@ -642,6 +642,22 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("floatheight");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
+    name = "drawtextvertical";
+    attributes.clear();
+    attributes.insert("debug");
+    attributes.insert("condition");
+    attributes.insert("name");
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("height");
+    attributes.insert("align");
+    attributes.insert("valign");
+    attributes.insert("font");
+    attributes.insert("fontsize");
+    attributes.insert("color");
+    attributes.insert("text");
+    funcsAllowed.insert(pair< string, set<string> >(name, attributes));
+
     name = "drawimage";
     attributes.clear();
     attributes.insert("debug");
@@ -1849,6 +1865,20 @@ cTemplateViewPlugin::cTemplateViewPlugin(string pluginName, int viewID) {
     attributes.insert("scaletvheight");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
+    //definition of allowed parameters for viewtab
+    attributes.clear();
+    attributes.insert("debug");
+    attributes.insert("name");
+    attributes.insert("condition");
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("layer");
+    attributes.insert("transparency");
+    attributes.insert("scrollheight");
+    funcsAllowed.insert(pair< string, set<string> >("tab", attributes));
+
     attributes.clear();
     attributes.insert("x");
     attributes.insert("y");
@@ -1858,15 +1888,23 @@ cTemplateViewPlugin::cTemplateViewPlugin(string pluginName, int viewID) {
     funcsAllowed.insert(pair< string, set<string> >("grid", attributes));
 
     viewElementsAllowed.insert("viewelement");
+    viewElementsAllowed.insert("scrollbar");
+    viewElementsAllowed.insert("tablabels");
     viewGridsAllowed.insert("grid");
 }
 
 cTemplateViewPlugin::~cTemplateViewPlugin() {
 }
 
+void cTemplateViewPlugin::AddSubView(string sSubView, cTemplateView *subView) {
+    int subViewId = atoi(sSubView.c_str());
+    subViews.insert(pair< eSubView, cTemplateView* >((eSubView)subViewId, subView));
+}
+
 void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     string viewElementName = "";
+    int viewElementID = -1;
     bool found = false;
     for (vector<pair<string, string> >::iterator it = viewElementattributes.begin(); it != viewElementattributes.end(); it++) {
         if (!(it->first).compare("name")) {
@@ -1875,15 +1913,22 @@ void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmap *pix, v
             break;
         }
     }
-    if (!found) {
-        esyslog("skindesigner: no name defined for plugin %s viewelement", pluginName.c_str());
-    }
 
-    int viewElementID = config.GetPluginViewElementID(pluginName, viewElementName, viewID);
-
-    if (viewElementID == -1) {
-        esyslog("skindesigner: %s: unknown ViewElement in displayplugin: %s", pluginName.c_str(), viewElementName.c_str());
-        return;
+    if (found) {
+        viewElementID = config.GetPluginViewElementID(pluginName, viewElementName, viewID);
+    } else {
+        //check for internal view elements
+        ePluginInteralViewElements pve = pveUndefined;
+        if (!sViewElement.compare("scrollbar")) {
+            pve = pveScrollbar;
+        } else if (!sViewElement.compare("tablabels")) {
+            pve = pveTablabels;
+        }
+        if (pve == pveUndefined) {
+            esyslog("skindesigner: %s: unknown ViewElement in displayplugin: %s", pluginName.c_str(), viewElementName.c_str());
+            return;
+        }
+        viewElementID = pve;
     }
 
     pix->SetGlobals(globals);
@@ -1931,4 +1976,8 @@ void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string
     } else {
         (hit->second)->AddPixmap(pix);
     }
+}
+
+void cTemplateViewPlugin::AddViewTab(cTemplateViewTab *viewTab) {
+    viewTabs.push_back(viewTab);
 }

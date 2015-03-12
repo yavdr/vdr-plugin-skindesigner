@@ -70,6 +70,12 @@ enum eViewElement {
     veVolume
 };
 
+enum ePluginInteralViewElements {
+    pveScrollbar = -1,
+    pveTablabels = -2,
+    pveUndefined = 0
+};
+
 class cTemplateViewElement {
 protected:
     bool debugTokens;

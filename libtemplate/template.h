@@ -52,6 +52,8 @@ public:
     //get fonts for pre caching
     vector< pair<string, int> > GetUsedFonts(void);
     void CacheImages(void);
+    //Set Plugin Subviews
+    bool SetSubViews(string plugName, int viewID);
     //Debug
     void Debug(void);
 };

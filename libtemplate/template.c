@@ -56,7 +56,8 @@ bool cTemplate::ReadFromXML(string xmlfile) {
     if (!parser.ParseView()) {
         return false;
     }
-    //read additional plugin templates
+    
+    //read additional plugin menu templates
     bool ok = true;
     if (viewType == vtDisplayMenu) {
         config.InitPluginMenuIterator();
@@ -113,6 +114,39 @@ void cTemplate::CacheImages(void) {
         CacheImages(subView);
     }
 }
+
+bool cTemplate::SetSubViews(string plugName, int viewID) {
+    map <int,string> subViews = config.GetPluginSubViews(plugName, viewID);
+
+    if (subViews.size() == 0) {
+        return true;
+    }
+
+    for (map<int,string>::iterator it = subViews.begin(); it != subViews.end(); it ++) {
+        int subViewID = it->first;
+        stringstream templateName;
+        templateName << "plug-" << plugName << "-" << it->second;
+        string subViewTemplate = templateName.str();
+        cTemplateView *plgTemplateView = new cTemplateViewPlugin(plugName, subViewID);
+        plgTemplateView->SetGlobals(globals);
+        cXmlParser parser;
+        if (!parser.ReadView(plgTemplateView, subViewTemplate)) {
+            esyslog("skindesigner: error reading plugin %s template", plugName.c_str());
+            delete plgTemplateView;
+            return false;
+        }
+        if (!parser.ParseView()) {
+            esyslog("skindesigner: error reading plugin %s template", plugName.c_str());
+            delete plgTemplateView;
+            return false;
+        }
+        stringstream svid;
+        svid << subViewID;
+        rootView->AddSubView(svid.str(), plgTemplateView);
+    }
+    return true;
+}
+
 
 void cTemplate::Debug(void) {
     rootView->Debug();

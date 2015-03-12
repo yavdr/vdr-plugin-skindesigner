@@ -200,6 +200,8 @@ bool cXmlParser::ParseView(void) {
             vector<pair<string, string> > attribs;
             ParseAttributes(attr, node, attribs);
             ParseGrid(node->xmlChildrenNode, attribs);
+        } else if (!xmlStrcmp(node->name, (const xmlChar *) "tab")) {
+            ParseViewTab(node, view);
         } else {
             return false;
         }

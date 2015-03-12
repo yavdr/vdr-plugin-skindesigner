@@ -43,7 +43,7 @@ public:
     virtual cSkinDisplayVolume *DisplayVolume(void);
     virtual cSkinDisplayTracks *DisplayTracks(const char *Title, int NumTracks, const char * const *Tracks);
     virtual cSkinDisplayMessage *DisplayMessage(void);
-    virtual cSkinDisplayPlugin *DisplayPlugin(string pluginName, int viewID);
+    virtual cSkinDisplayPlugin *DisplayPlugin(string pluginName, int viewID, int subViewID);
     void ActivateBackupSkin(void) { useBackupSkin = true; };
     void Reload(void);
     void ListAvailableFonts(void);

@@ -16,7 +16,7 @@ cView::cView(cTemplateView *tmplView) : cPixmapContainer(tmplView->GetNumPixmaps
     Init();
 }
 
-cView::cView(cTemplateViewElement *tmplItem) : cPixmapContainer(tmplItem->GetNumPixmaps()) {
+cView::cView(cTemplateViewElement *tmplItem) : cPixmapContainer(tmplItem ? tmplItem->GetNumPixmaps() : 0) {
     this->tmplItem = tmplItem;
     tmplView = NULL;
     tmplTab = NULL;
@@ -164,6 +164,23 @@ void cView::ClearViewElement(eViewElement ve) {
     }
 }
 
+void cView::DestroyViewElement(eViewElement ve) {
+    if (!tmplView)
+        return;
+    cTemplateViewElement *viewElement = tmplView->GetViewElement(ve);
+    if (!viewElement)
+        return;
+    int pixCurrent = viewElement->GetPixOffset();
+    if (pixCurrent < 0)
+        return;
+    cTemplatePixmap *pix = NULL;
+    viewElement->InitIterator();
+    while(pix = viewElement->GetNextPixmap()) {
+        DestroyPixmap(pixCurrent);
+        pixCurrent++; 
+    }
+}
+
 void cView::ActivateScrolling(void) {
     if (veScroll == veUndefined)
         return;
@@ -191,6 +208,22 @@ void cView::ActivateScrolling(void) {
 bool cView::ViewElementImplemented(eViewElement ve) {
     return tmplView->GetNumPixmapsViewElement(ve);
 }
+
+bool cView::ViewElementScrolls(eViewElement ve) {
+    if (scrollingPix < 0)
+        return false;
+    if (!tmplView)
+        return false;
+    cTemplateViewElement *viewElement = tmplView->GetViewElement(ve);
+    if (!viewElement)
+        return false;
+    int pixStart = viewElement->GetPixOffset();
+    int numPixmaps = viewElement->GetNumPixmaps();
+    if ( (scrollingPix >= pixStart) && (scrollingPix < (pixStart + numPixmaps)) )
+        return true;
+    return false;
+}
+    
 
 void cView::CreateViewPixmap(int num, cTemplatePixmap *pix, cRect *size) {
     cRect pixSize;
@@ -235,6 +268,9 @@ void cView::DrawPixmap(int num, cTemplatePixmap *pix, map < string, vector< map<
                 break;
             case ftDrawText:
                 DoDrawText(num, func);
+                break;
+            case ftDrawTextVertical:
+                DoDrawTextVertical(num, func);
                 break;
             case ftDrawTextBox: {
                 int floating = func->GetNumericParameter(ptFloat);
@@ -436,6 +472,53 @@ void cView::DoDrawText(int num, cTemplateFunction *func, int x0, int y0) {
         text = func->GetText(false);
     }
     DrawText(num, pos, text.c_str(), clr, clrBack, fontName, fontSize);
+}
+
+void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0) {
+    string fontName = func->GetFontName();
+    int fontSize = func->GetNumericParameter(ptFontSize);
+    tColor clr = func->GetColorParameter(ptColor);
+    tColor clrBack = clrTransparent; 
+    string text = func->GetText(false);
+    cImage *textVertical = imgCache->GetVerticalText(text, clr, fontName, fontSize);
+    if (!textVertical)
+        return;
+
+    //align has to be set here because here we know the image size
+    int x = 0;
+    int y = 0;
+    int align = func->GetNumericParameter(ptAlign);
+    if (align == alCenter) {
+        int containerWidth = func->GetContainerWidth();
+        x = (containerWidth - textVertical->Width()) / 2;
+    } else if (align == alLeft) {
+        x = 0;
+    } else if (align = alRight) {
+        int containerWidth = func->GetContainerWidth();
+        x = (containerWidth - textVertical->Width());
+    } else {
+        x = func->GetNumericParameter(ptX);
+    }
+
+    int valign = func->GetNumericParameter(ptValign);
+    if (valign == alCenter) {
+        int containerHeight = func->GetContainerHeight();
+        y = (containerHeight - textVertical->Height()) / 2;
+    } else if (align == alTop) {
+        y = 0;
+    } else if (align = alBottom) {
+        int containerHeight = func->GetContainerHeight();
+        y = (containerHeight - textVertical->Height());
+    } else {
+        y = func->GetNumericParameter(ptY);
+    }
+
+    if (x < 0) x = 0;
+    x += x0;
+    if (y < 0) y = func->GetContainerHeight() - textVertical->Height() - 5;
+    y += y0;
+    cPoint pos(x,y);
+    DrawImage(num, pos, *textVertical);
 }
 
 void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
@@ -858,17 +941,22 @@ cGrid::~cGrid() {
 
 void cGrid::Set(double x, double y, double width, double height,
                 map <string,int> *intTokens, map <string,string> *stringTokens) {
+
     if ((width != this->width) || (height != this->height)) {
+        this->width = width;
+        this->height = height;
         resized = true;
         dirty = false;
     } else {
         resized = false;
     }
-    this->x = x;
-    this->y = y;
-    this->width = width;
-    this->height = height;
-    moved = true;
+    if (this->x != x || this->y != y) {
+        this->x = x;
+        this->y = y;
+        moved = true;
+    } else {
+        moved = false;
+    }
     if (intTokens) {
         this->intTokens = *intTokens;
         SetCurrent(current);
@@ -889,6 +977,8 @@ void cGrid::SetCurrent(bool current) {
 }
 
 void cGrid::Move(void) {
+    if (!tmplItem)
+        return;
     tmplItem->InitIterator();
     cTemplatePixmap *pix = NULL;
     int pixCurrent = 0;
@@ -905,6 +995,8 @@ void cGrid::Move(void) {
 }
 
 void cGrid::Draw(void) {
+    if (!tmplItem)
+        return;
     if (tmplItem->DebugTokens()) {
         DebugTokens("Grid", &stringTokens, &intTokens);
     }

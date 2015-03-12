@@ -11,8 +11,11 @@ private:
     cDisplayPluginView *pluginView;
 public:
     cSkinDisplayPlugin(void) {};
-    cSkinDisplayPlugin(cTemplate *pluginTemplate);
+    cSkinDisplayPlugin(cTemplate *pluginTemplate, int subViewID);
     virtual ~cSkinDisplayPlugin(void);
+    virtual void Deactivate(bool hide);
+    virtual void Activate(void);
+    virtual void ClearViewElement(int id);
     virtual void DisplayViewElement(int id);
     virtual void SetViewElementIntTokens(map<string,int> *intTokens);
     virtual void SetViewElementStringTokens(map<string,string> *stringTokens);
@@ -23,7 +26,18 @@ public:
     virtual void DeleteGrid(int viewGridID, long gridID);
     virtual void DisplayGrids(int viewGridID);
     virtual void ClearGrids(int viewGridID);
+    virtual void SetTabIntTokens(map<string,int> *intTokens);
+    virtual void SetTabStringTokens(map<string,string> *stringTokens);
+    virtual void SetTabLoopTokens(map<string,vector<map<string,string> > > *loopTokens);
+    virtual void SetTabs(void);
+    virtual void TabLeft(void);
+    virtual void TabRight(void);
+    virtual void TabUp(void);
+    virtual void TabDown(void);
+    virtual void DisplayTabs(void);
     virtual void Flush(void);
+    virtual bool ChannelLogoExists(string channelId);
+    virtual string GetEpgImagePath(void);
 };
 
 #endif //__DISPLAYPLUGIN_H

@@ -2,7 +2,7 @@
 
 <!ENTITY % functions SYSTEM "functions.dtd">
 
-<!ELEMENT displayplugin (viewelement|grid)* >
+<!ELEMENT displayplugin (viewelement|grid|tab|scrollbar|tablabels)* >
 <!ATTLIST displayplugin
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -19,6 +19,30 @@
 <!ATTLIST viewelement
   name CDATA #REQUIRED
   debug CDATA #IMPLIED
+>
+
+<!ELEMENT scrollbar (area|areascroll)*>
+<!ATTLIST scrollbar
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT tablabels (area|areascroll)*>
+<!ATTLIST tablabels
+  debug CDATA #IMPLIED
+>
+
+<!ELEMENT tab (loop|fill|drawtext|drawtextbox|drawimage|drawrectangle|drawellipse)*>
+<!ATTLIST tab
+  x CDATA #REQUIRED
+  y CDATA #REQUIRED
+  width CDATA #REQUIRED
+  height CDATA #REQUIRED
+  layer CDATA #REQUIRED
+  name CDATA #REQUIRED
+  scrollheight CDATA #REQUIRED
+  transparency CDATA #IMPLIED
+  condition CDATA #IMPLIED
+  debug (true|false) #IMPLIED
 >
 
 %functions;
