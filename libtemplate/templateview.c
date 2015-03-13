@@ -194,6 +194,14 @@ int cTemplateView::GetNumPixmapsViewElement(eViewElement ve) {
     return viewElement->GetNumPixmaps();
 }
 
+bool cTemplateView::ExecuteView(eViewElement ve) {
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end())
+        return false;
+    cTemplateViewElement *viewElement = hit->second;
+    return viewElement->Execute();
+}
+
 int cTemplateView::GetNumListViewMenuItems(void) {
     int numElements = 0;
     cTemplateViewList *menuList = GetViewList(vlMenuItem);
@@ -552,6 +560,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("delay");
     attributes.insert("fadetime");
     attributes.insert("name");
+    attributes.insert("condition");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "area";

@@ -105,6 +105,7 @@ public:
     void InitIterator(void);
     cTemplatePixmap *GetNextPixmap(void);
     cTemplateFunction *GetFunction(string name);
+    bool Execute(void);
     bool DebugTokens(void);
     virtual void Debug(void);
 };

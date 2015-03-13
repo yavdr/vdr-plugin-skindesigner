@@ -42,7 +42,7 @@ protected:
     void DrawViewElement(eViewElement ve, map <string,string> *stringTokens = NULL, map <string,int> *intTokens = NULL, map < string, vector< map< string, string > > > *loopTokens = NULL);
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
-    bool ViewElementImplemented(eViewElement ve);
+    bool ExecuteViewElement(eViewElement ve);
     bool ViewElementScrolls(eViewElement ve);
     void CreateViewPixmap(int num, cTemplatePixmap *pix, cRect *size = NULL);
     void CreateScrollingPixmap(int num, cTemplatePixmap *pix, cSize &drawportSize);

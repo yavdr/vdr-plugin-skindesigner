@@ -191,7 +191,7 @@ bool cXmlParser::ParseView(void) {
         } else if (view->ValidViewElement((const char*)node->name)) {
             xmlAttrPtr attr = node->properties;
             vector<pair<string, string> > attribs;
-            ParseAttributes(attr, node, attribs);
+            ParseAttributes(attr, node, attribs, true);
             ParseViewElement(node->name, node->xmlChildrenNode, attribs);
         } else if (view->ValidViewList((const char*)node->name)) {
             ParseViewList(node);
@@ -682,7 +682,7 @@ bool cXmlParser::ParseSubView(xmlNodePtr node) {
         if (subView->ValidViewElement((const char*)childNode->name)) {
             xmlAttrPtr attr = childNode->properties;
             vector<pair<string, string> > attribs;
-            ParseAttributes(attr, childNode, attribs);
+            ParseAttributes(attr, childNode, attribs, true);
             ParseViewElement(childNode->name, childNode->xmlChildrenNode, attribs, subView);
         } else if (subView->ValidViewList((const char*)childNode->name)) {
             ParseViewList(childNode, subView);
@@ -954,7 +954,7 @@ void cXmlParser::ParseLoopFunctionCalls(xmlNodePtr node, cTemplateLoopFunction *
     }
 }
 
-bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs) {
+bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs, bool isViewElement) {
     if (attr == NULL) {
         return false;
     }
@@ -965,15 +965,16 @@ bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<s
     while (NULL != attr) {
 
         string name = (const char*)attr->name;
+        /*
         if (!name.compare("debug")) {
             attribs.push_back(pair<string, string>((const char*)attr->name, "true"));
             attr = attr->next;
             continue;
         }
-
+        */
         xmlChar *value = NULL;
         value = xmlGetProp(node, attr->name);
-        if (!view->ValidAttribute((const char*)node->name, (const char*)attr->name)) {
+        if (!view->ValidAttribute(isViewElement ? "viewelement" : (const char*)node->name, (const char*)attr->name)) {
             esyslog("skindesigner: unknown attribute %s in %s", (const char*)attr->name, (const char*)node->name);
             attr = attr->next;
             if (value)

@@ -47,7 +47,7 @@ private:
     void ParseGrid(xmlNodePtr node, vector<pair<string, string> > &attributes);
     void ParseFunctionCalls(xmlNodePtr node, cTemplatePixmap *pix);
     void ParseLoopFunctionCalls(xmlNodePtr node, cTemplateLoopFunction *loopFunc);
-    bool ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs);
+    bool ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs, bool isViewElement = false);
 public:
     cXmlParser(void);
     virtual ~cXmlParser(void);

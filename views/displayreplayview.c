@@ -43,7 +43,7 @@ void cDisplayReplayView::DrawBackground(bool modeOnly) {
 }
 
 void cDisplayReplayView::DrawDate(void) {
-    if (!ViewElementImplemented(veDateTime)) {
+    if (!ExecuteViewElement(veDateTime)) {
         return;
     }
 
@@ -59,7 +59,7 @@ void cDisplayReplayView::DrawDate(void) {
 }
 
 void cDisplayReplayView::DrawTime(void) {
-    if (!ViewElementImplemented(veTime)) {
+    if (!ExecuteViewElement(veTime)) {
         return;
     }
 
@@ -137,7 +137,7 @@ void cDisplayReplayView::DrawScraperContent(const cRecording *recording) {
     if (!recording)
         return;
 
-    if (!ViewElementImplemented(veScraperContent)) {
+    if (!ExecuteViewElement(veScraperContent)) {
         return;
     }
 
@@ -399,7 +399,7 @@ void cDisplayReplayView::DelayOnPause(void) {
 }
 
 void cDisplayReplayView::DrawCustomTokens(void) {
-    if (!ViewElementImplemented(veCustomTokens)) {
+    if (!ExecuteViewElement(veCustomTokens)) {
         return;
     }
     if (!tmplView)

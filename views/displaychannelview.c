@@ -60,7 +60,7 @@ void cDisplayChannelView::ClearChannel(void) {
 }
 
 void cDisplayChannelView::DrawDate(void) {
-    if (!ViewElementImplemented(veDateTime)) {
+    if (!ExecuteViewElement(veDateTime)) {
         return;
     }
 
@@ -76,7 +76,7 @@ void cDisplayChannelView::DrawDate(void) {
 }
 
 void cDisplayChannelView::DrawTime(void) {
-    if (!ViewElementImplemented(veTime)) {
+    if (!ExecuteViewElement(veTime)) {
         return;
     }
 
@@ -91,7 +91,7 @@ void cDisplayChannelView::DrawTime(void) {
 }
 
 void cDisplayChannelView::DrawProgressBar(cString &start, cString &stop, int Current, int Total) {
-    if (!ViewElementImplemented(veProgressBar)) {
+    if (!ExecuteViewElement(veProgressBar)) {
         return;
     }
 
@@ -182,7 +182,7 @@ void cDisplayChannelView::ClearEPGInfo(void) {
 }
 
 void cDisplayChannelView::DrawStatusIcons(const cChannel *Channel) {
-    if (!ViewElementImplemented(veStatusInfo)) {
+    if (!ExecuteViewElement(veStatusInfo)) {
         return;
     }
 
@@ -217,7 +217,7 @@ void cDisplayChannelView::ClearStatusIcons(void) {
 }
 
 void cDisplayChannelView::DrawAudioInfo(void) {
-    if (!ViewElementImplemented(veAudioInfo)) {
+    if (!ExecuteViewElement(veAudioInfo)) {
         return;
     }
 
@@ -261,7 +261,7 @@ void cDisplayChannelView::ClearAudioInfo(void) {
 }
 
 void cDisplayChannelView::DrawScreenResolution(void) {
-    if (!ViewElementImplemented(veScreenResolution)) {
+    if (!ExecuteViewElement(veScreenResolution)) {
         return;
     }
 
@@ -311,7 +311,7 @@ void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
         return;
     }
 
-    if (!ViewElementImplemented(veScraperContent)) {
+    if (!ExecuteViewElement(veScraperContent)) {
         return;
     }
 
@@ -390,7 +390,7 @@ void cDisplayChannelView::ClearScraperContent(void) {
 }
 
 void cDisplayChannelView::DrawSignal(void) {
-    if (!ViewElementImplemented(veSignalQuality)) {
+    if (!ExecuteViewElement(veSignalQuality)) {
         return;
     }
     time_t Now = time(NULL);
@@ -426,7 +426,7 @@ void cDisplayChannelView::DrawSignal(void) {
 }
 
 void cDisplayChannelView::DrawSignalBackground(void) {
-    if (!ViewElementImplemented(veSignalQualityBack)) {
+    if (!ExecuteViewElement(veSignalQualityBack)) {
         return;
     }
     DrawViewElement(veSignalQualityBack);
@@ -442,7 +442,7 @@ void cDisplayChannelView::ClearSignalBackground(void) {
 }
 
 void cDisplayChannelView::DrawDevices(bool initial) {
-    if (!ViewElementImplemented(veDevices)) {
+    if (!ExecuteViewElement(veDevices)) {
         return;
     }
     map < string, string > stringTokens;
@@ -465,7 +465,7 @@ void cDisplayChannelView::ClearDevices(void) {
 }
 
 void cDisplayChannelView::DrawChannelGroups(const cChannel *Channel, cString ChannelName) {
-    if (!ViewElementImplemented(veChannelGroup)) {
+    if (!ExecuteViewElement(veChannelGroup)) {
         return;
     }
 
@@ -530,7 +530,7 @@ void cDisplayChannelView::DisplayMessage(eMessageType Type, const char *Text) {
 }
 
 void cDisplayChannelView::DrawCustomTokens(void) {
-    if (!ViewElementImplemented(veCustomTokens)) {
+    if (!ExecuteViewElement(veCustomTokens)) {
         return;
     }
     if (!tmplView)
@@ -541,7 +541,7 @@ void cDisplayChannelView::DrawCustomTokens(void) {
 }
 
 void cDisplayChannelView::DrawCurrentWeather(void) {
-    if (!ViewElementImplemented(veCurrentWeather)) {
+    if (!ExecuteViewElement(veCurrentWeather)) {
         return;
     }
     map < string, string > stringTokens;

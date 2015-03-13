@@ -21,91 +21,109 @@
 <!ELEMENT background (area)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT channelinfo (area|areascroll)*>
 <!ATTLIST channelinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT epginfo (area|areascroll)*>
 <!ATTLIST epginfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT progressbar (area|areascroll)*>
 <!ATTLIST progressbar
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT progressbarback (area)*>
 <!ATTLIST progressbarback
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT statusinfo (area|areascroll)*>
 <!ATTLIST statusinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT audioinfo (area|areascroll)*>
 <!ATTLIST audioinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT screenresolution (area|areascroll)*>
 <!ATTLIST screenresolution
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT channelgroup (area|areascroll)*>
 <!ATTLIST channelgroup
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT signalquality (area|areascroll)*>
 <!ATTLIST signalquality
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT signalqualityback (area|areascroll)*>
 <!ATTLIST signalqualityback
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT devices (area|areascroll)*>
 <!ATTLIST devices
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT currentweather (area|areascroll)*>
 <!ATTLIST currentweather
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT scrapercontent (area|areascroll)*>
 <!ATTLIST scrapercontent
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT time (area|areascroll)*>
 <!ATTLIST time
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 %functions;

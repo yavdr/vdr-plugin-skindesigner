@@ -227,7 +227,7 @@ void cDisplayPluginView::DrawScrollbar(void) {
 }
 
 void cDisplayPluginView::DrawTabLabels(void) {
-    if (!ViewElementImplemented((eViewElement)pveTablabels)) {
+    if (!ExecuteViewElement((eViewElement)pveTablabels)) {
         return;
     }
     map < string, string > labelStringTokens;

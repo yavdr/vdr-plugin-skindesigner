@@ -46,7 +46,7 @@ bool cTemplateViewElement::CalculateParameters(void) {
     parameters->SetContainer(containerX, containerY, containerWidth, containerHeight);
     parameters->SetGlobals(globals);
     paramsValid = parameters->CalculateParameters();
-
+    parameters->ParseParameters();
     return paramsValid;
 }
 
@@ -117,6 +117,13 @@ cTemplateFunction *cTemplateViewElement::GetFunction(string name) {
     }
     return NULL;
 }
+
+bool cTemplateViewElement::Execute(void) {
+    if (!parameters)
+        return true;
+    return parameters->DoExecute();
+}
+
 
 bool cTemplateViewElement::DebugTokens(void) {
     if (!parameters)

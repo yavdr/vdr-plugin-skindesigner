@@ -109,6 +109,7 @@ public:
     cRect GetOsdSize(void);
     int GetNumPixmaps(void);
     int GetNumPixmapsViewElement(eViewElement ve);
+    bool ExecuteView(eViewElement ve);
     int GetNumListViewMenuItems(void);
     bool GetScalingWindow(cRect &scalingWindow);
     map<string,string> GetCustomStringTokens(void) { return globals->GetCustomStringTokens(); };

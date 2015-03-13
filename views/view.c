@@ -205,7 +205,10 @@ void cView::ActivateScrolling(void) {
     }
 }
 
-bool cView::ViewElementImplemented(eViewElement ve) {
+bool cView::ExecuteViewElement(eViewElement ve) {
+    bool doExecute = tmplView->ExecuteView(ve);
+    if (!doExecute)
+        return false;
     return tmplView->GetNumPixmapsViewElement(ve);
 }
 

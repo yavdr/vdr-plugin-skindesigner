@@ -24,7 +24,7 @@ cDisplayMenuView::~cDisplayMenuView() {
 }
 
 bool cDisplayMenuView::DrawBackground(void) {
-    if (!ViewElementImplemented(veBackground)) {
+    if (!ExecuteViewElement(veBackground)) {
         return false;
     }
     map < string, string > stringTokens;
@@ -35,7 +35,7 @@ bool cDisplayMenuView::DrawBackground(void) {
 }
 
 bool cDisplayMenuView::DrawHeader(void) {
-    if (!ViewElementImplemented(veHeader)) {
+    if (!ExecuteViewElement(veHeader)) {
         return false;
     }
 
@@ -73,7 +73,7 @@ bool cDisplayMenuView::DrawHeader(void) {
 }
 
 bool cDisplayMenuView::DrawDateTime(void) {
-    if (!ViewElementImplemented(veDateTime)) {
+    if (!ExecuteViewElement(veDateTime)) {
         return false;
     }
 
@@ -90,7 +90,7 @@ bool cDisplayMenuView::DrawDateTime(void) {
 }
 
 bool cDisplayMenuView::DrawTime(void) {
-    if (!ViewElementImplemented(veTime)) {
+    if (!ExecuteViewElement(veTime)) {
         return false;
     }
     
@@ -108,7 +108,7 @@ bool cDisplayMenuView::DrawTime(void) {
 }
 
 bool cDisplayMenuView::DrawColorButtons(void) {
-    if (!ViewElementImplemented(veButtons)) {
+    if (!ExecuteViewElement(veButtons)) {
         return false;
     }
     map < string, string > stringTokens;
@@ -158,7 +158,7 @@ bool cDisplayMenuView::DrawColorButtons(void) {
 }
 
 bool cDisplayMenuView::DrawMessage(eMessageType type, const char *text) {
-    if (!ViewElementImplemented(veMessage)) {
+    if (!ExecuteViewElement(veMessage)) {
         return false;
     }
     if (!text) {
@@ -180,7 +180,7 @@ bool cDisplayMenuView::DrawMessage(eMessageType type, const char *text) {
 }
 
 void cDisplayMenuView::DrawScrollbar(int numMax, int numDisplayed, int offset) {
-    if (!ViewElementImplemented(veScrollbar)) {
+    if (!ExecuteViewElement(veScrollbar)) {
         return;
     }
     map < string, string > stringTokens;
@@ -204,7 +204,7 @@ void cDisplayMenuView::DrawScrollbar(int numMax, int numDisplayed, int offset) {
 }
 
 bool cDisplayMenuView::BackgroundImplemented(void) {
-    if (!ViewElementImplemented(veBackground)) {
+    if (!ExecuteViewElement(veBackground)) {
         return false;
     }
     return true;
@@ -250,7 +250,7 @@ bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
 }
 
 void cDisplayMenuMainView::DrawTimers(void) {
-    if (!ViewElementImplemented(veTimers)) {
+    if (!ExecuteViewElement(veTimers)) {
         return;
     }
 
@@ -344,7 +344,7 @@ void cDisplayMenuMainView::DrawTimers(void) {
 }
 
 void cDisplayMenuMainView::DrawDiscUsage(void) {
-    if (!ViewElementImplemented(veDiscUsage)) {
+    if (!ExecuteViewElement(veDiscUsage)) {
         return;
     }
 
@@ -369,7 +369,7 @@ void cDisplayMenuMainView::DrawDiscUsage(void) {
 }
 
 bool cDisplayMenuMainView::DrawLoad(void) {
-    if (!ViewElementImplemented(veSystemLoad)) {
+    if (!ExecuteViewElement(veSystemLoad)) {
         return false;
     }
 
@@ -416,7 +416,7 @@ bool cDisplayMenuMainView::DrawLoad(void) {
 }
 
 void cDisplayMenuMainView::DrawTemperatures(void) {
-    if (!ViewElementImplemented(veTemperatures)) {
+    if (!ExecuteViewElement(veTemperatures)) {
         return;
     }
     cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
@@ -464,7 +464,7 @@ void cDisplayMenuMainView::DrawTemperatures(void) {
 }
 
 bool cDisplayMenuMainView::DrawDevices(void) {
-    if (!ViewElementImplemented(veDevices)) {
+    if (!ExecuteViewElement(veDevices)) {
         return false;
     }
 
@@ -485,7 +485,7 @@ bool cDisplayMenuMainView::DrawDevices(void) {
 }
 
 void cDisplayMenuMainView::DrawCurrentSchedule(void) {
-    if (!ViewElementImplemented(veCurrentSchedule)) {
+    if (!ExecuteViewElement(veCurrentSchedule)) {
         return;
     }
 
@@ -582,7 +582,7 @@ void cDisplayMenuMainView::DrawCurrentSchedule(void) {
 }
 
 void cDisplayMenuMainView::DrawCurrentWeather(void) {
-    if (!ViewElementImplemented(veCurrentWeather)) {
+    if (!ExecuteViewElement(veCurrentWeather)) {
         return;
     }
     map < string, string > stringTokens;
@@ -597,7 +597,7 @@ void cDisplayMenuMainView::DrawCurrentWeather(void) {
 }
 
 void cDisplayMenuMainView::DrawCustomTokens(void) {
-    if (!ViewElementImplemented(veCustomTokens)) {
+    if (!ExecuteViewElement(veCustomTokens)) {
         return;
     }
     if (!tmplView)
@@ -623,7 +623,7 @@ cDisplayMenuSchedulesView::~cDisplayMenuSchedulesView() {
 }
 
 bool cDisplayMenuSchedulesView::DrawHeader(void) {
-    if (!ViewElementImplemented(veHeader)) {
+    if (!ExecuteViewElement(veHeader)) {
         return false;
     }
 

@@ -475,7 +475,7 @@ void cDisplayMenuRootView::DrawBackground(void) {
     DrawViewElement(veBackground, &stringTokens, &intTokens);
 }
 void cDisplayMenuRootView::DrawHeader(void) {
-    if (!ViewElementImplemented(veHeader)) {
+    if (!ExecuteViewElement(veHeader)) {
         return;
     }
 
@@ -514,7 +514,7 @@ void cDisplayMenuRootView::DrawHeader(void) {
 }
 
 void cDisplayMenuRootView::DrawDateTime(void) {
-    if (!ViewElementImplemented(veDateTime)) {
+    if (!ExecuteViewElement(veDateTime)) {
         return;
     }
     
@@ -530,7 +530,7 @@ void cDisplayMenuRootView::DrawDateTime(void) {
 }
 
 bool cDisplayMenuRootView::DrawTime(void) {
-    if (!ViewElementImplemented(veTime)) {
+    if (!ExecuteViewElement(veTime)) {
         return false;
     }
     
@@ -548,7 +548,7 @@ bool cDisplayMenuRootView::DrawTime(void) {
 
 
 void cDisplayMenuRootView::DrawColorButtons(void) {
-    if (!ViewElementImplemented(veButtons)) {
+    if (!ExecuteViewElement(veButtons)) {
         return;
     }
 
