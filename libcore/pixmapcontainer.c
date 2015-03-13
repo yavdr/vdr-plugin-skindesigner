@@ -358,7 +358,7 @@ void cPixmapContainer::FadeOut(void) {
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
-        if (Running() && (Delta < FadeFrameTime))
+        if (Delta < FadeFrameTime)
             cCondWait::SleepMs(FadeFrameTime - Delta);
         if ((int)(Now - Start) > fadeTime)
             break;
