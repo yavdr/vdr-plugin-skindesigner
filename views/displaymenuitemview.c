@@ -240,7 +240,12 @@ void cDisplayMenuItemMainView::SplitMenuText(void) {
             }
         }
         if (found) {
+            //if current char is not a figure anymore, break
             if (!(s >= '0' && s <= '9')) {
+                //there has to be a space after the menu item number 
+                //plugins with figures in their name are eval :-)
+                if (s != ' ')
+                    found = false;
                 doBreak = true;
             }
         }
