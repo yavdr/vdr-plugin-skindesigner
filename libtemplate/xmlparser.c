@@ -965,13 +965,6 @@ bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<s
     while (NULL != attr) {
 
         string name = (const char*)attr->name;
-        /*
-        if (!name.compare("debug")) {
-            attribs.push_back(pair<string, string>((const char*)attr->name, "true"));
-            attr = attr->next;
-            continue;
-        }
-        */
         xmlChar *value = NULL;
         value = xmlGetProp(node, attr->name);
         if (!view->ValidAttribute(isViewElement ? "viewelement" : (const char*)node->name, (const char*)attr->name)) {

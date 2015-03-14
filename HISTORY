@@ -210,4 +210,5 @@ Version 0.3.0
 
 - checking setup conditions for viewelements
 - fixed FadeOut bug
+- fixed crash when opening and closing main menu consecutively 
 
