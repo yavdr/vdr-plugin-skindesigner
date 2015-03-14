@@ -212,4 +212,5 @@ Version 0.3.0
 - fixed FadeOut bug
 - fixed crash when opening and closing main menu consecutively
 - fixed bug detecting menu item numbers in main menu
+- fixed recording progress bar in nopacity
 
