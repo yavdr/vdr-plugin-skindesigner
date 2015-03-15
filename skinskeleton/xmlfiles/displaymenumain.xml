@@ -57,6 +57,14 @@
     <systemload>
     </systemload>
 
+    <!-- Available Variables systemmemory:
+    {totalmem}                  total system memory in MB
+    {usedmem}                   currently used system memory in MB
+    {usedmempercent}            currently used system memory in Percent
+    -->
+    <systemmemory>
+    </systemmemory>
+
     <!-- Available Variables tempreatures:
     {cputemp}                  current cpu temperature in °C
     {gputemp}                  current gpu temperature in °C

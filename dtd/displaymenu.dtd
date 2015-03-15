@@ -75,6 +75,12 @@
   condition CDATA #IMPLIED
 >
 
+<!ELEMENT systemmemory (area|areascroll)*>
+<!ATTLIST systemmemory
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
 <!ELEMENT temperatures (area|areascroll)*>
 <!ATTLIST temperatures
   debug CDATA #IMPLIED
@@ -131,7 +137,8 @@
 >
 
 <!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | timers | 
-                    discusage | devices | systemload | temperatures | currentschedule | currentweather | customtokens | menuitems)*>
+                    discusage | devices | systemload | systemmemory | temperatures | currentschedule | 
+                    currentweather | customtokens | menuitems)*>
 <!ATTLIST menumain
   x CDATA #REQUIRED
   y CDATA #REQUIRED

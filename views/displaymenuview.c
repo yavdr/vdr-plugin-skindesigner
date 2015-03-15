@@ -1,6 +1,7 @@
 #define __STL_CONFIG_H
 #include <fstream>
 #include <iostream>
+#include <sys/sysinfo.h>
 #include <vdr/menu.h>
 #include <vdr/videodir.h>
 #include "displaymenuview.h"
@@ -224,6 +225,7 @@ void cDisplayMenuView::Action(void) {
 cDisplayMenuMainView::cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit) : cDisplayMenuView(tmplView, menuInit) {
     initial = true;
     lastSystemLoad = 0.0;
+    lastMemUsage = -1;
     InitDevices();
 }
 
@@ -243,9 +245,10 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
 
 bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
     bool loadChanged = DrawLoad();
+    bool memChanged = DrawMemory();
     bool devicesChanged = DrawDevices();
     initial = false;
-    return loadChanged || devicesChanged;
+    return loadChanged || memChanged || devicesChanged;
 
 }
 
@@ -411,6 +414,41 @@ bool cDisplayMenuMainView::DrawLoad(void) {
 
     ClearViewElement(veSystemLoad);
     DrawViewElement(veSystemLoad, &stringTokens, &intTokens);
+
+    return true;
+}
+
+bool cDisplayMenuMainView::DrawMemory(void) {
+    if (!ExecuteViewElement(veSystemMemory)) {
+        return false;
+    }
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    
+    long long totalMem = memInfo.totalram;
+    totalMem += memInfo.totalswap;
+    totalMem *= memInfo.mem_unit;
+    int totalMemMB = totalMem / 1024 / 1024;
+
+    long long usedMem = memInfo.totalram - memInfo.freeram;
+    usedMem += memInfo.totalswap - memInfo.freeswap;
+    usedMem *= memInfo.mem_unit;
+    int usedMemMB = usedMem / 1024 / 1024;
+
+    if (lastMemUsage == usedMemMB) {
+        return false;
+    }
+    lastMemUsage = usedMemMB;
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    intTokens.insert(pair<string,int>("totalmem", totalMemMB));
+    intTokens.insert(pair<string,int>("usedmem", usedMemMB));
+    if (totalMemMB > 0)
+        intTokens.insert(pair<string,int>("usedmempercent", usedMemMB * 100 / totalMemMB));
+
+    ClearViewElement(veSystemMemory);
+    DrawViewElement(veSystemMemory, &stringTokens, &intTokens);
 
     return true;
 }

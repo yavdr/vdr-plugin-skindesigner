@@ -45,6 +45,7 @@ enum eViewElement {
     veButtons,
     veDiscUsage,
     veSystemLoad,
+    veSystemMemory,
     veTemperatures,
     veTimers,
     veCurrentSchedule,

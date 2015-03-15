@@ -1144,6 +1144,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("message");
     viewElementsAllowed.insert("discusage");
     viewElementsAllowed.insert("systemload");
+    viewElementsAllowed.insert("systemmemory");
     viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
     viewElementsAllowed.insert("devices");
@@ -1226,6 +1227,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
             break;
         case veSystemLoad:
             name = "System Load";
+            break;
+        case veSystemMemory:
+            name = "System Memory";
             break;
         case veTemperatures:
             name = "Temperatures";
@@ -1348,6 +1352,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veDiscUsage;
     } else if (!sViewElement.compare("systemload")) {
         ve = veSystemLoad;
+    } else if (!sViewElement.compare("systemmemory")) {
+        ve = veSystemMemory;
     } else if (!sViewElement.compare("temperatures")) {
         ve = veTemperatures;
     } else if (!sViewElement.compare("timers")) {
