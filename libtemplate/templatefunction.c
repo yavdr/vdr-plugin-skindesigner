@@ -125,6 +125,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptScaleTvWidth;
         } else if (!name.compare("scaletvheight")) {
             p.first = ptScaleTvHeight;
+        } else if (!name.compare("hideroot")) {
+            p.first = ptHideRoot;
         } else if (!name.compare("cache")) {
             p.first = ptCache;
         } else if (!name.compare("determinatefont")) {
@@ -260,6 +262,10 @@ bool cTemplateFunction::CalculateParameters(void) {
                 break;
             case ptOverflow:
                 paramValid = SetOverflow(value);
+                break;
+            case ptHideRoot:
+                paramValid = SetHideRoot(value);
+                break;
             default:
                 paramValid = true;
                 break;
@@ -1044,6 +1050,14 @@ bool cTemplateFunction::SetOverflow(string value) {
         ok = false;
     numericParameters.insert(pair<eParamType, int>(ptOverflow, overflowType));
     return ok;
+}
+
+bool cTemplateFunction::SetHideRoot(string value) {
+    bool hideRoot = 0;
+    if (!value.compare("true"))
+        hideRoot = 1;
+    numericParameters.insert(pair<eParamType, int>(ptHideRoot, hideRoot));
+    return true;
 }
 
 void cTemplateFunction::ParseStringParameters(void) {

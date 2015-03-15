@@ -109,6 +109,7 @@ public:
     cRect GetOsdSize(void);
     int GetNumPixmaps(void);
     int GetNumPixmapsViewElement(eViewElement ve);
+    bool HideView(void);
     bool ExecuteView(eViewElement ve);
     int GetNumListViewMenuItems(void);
     bool GetScalingWindow(cRect &scalingWindow);

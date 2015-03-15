@@ -76,6 +76,7 @@ enum eParamType {
     ptScaleTvY,
     ptScaleTvWidth,
     ptScaleTvHeight,
+    ptHideRoot,
     ptCache,
     ptDeterminateFont,
     ptNone
@@ -150,6 +151,7 @@ protected:
     bool SetOrientation(string value);
     bool SetFloating(string value);
     bool SetOverflow(string value);
+    bool SetHideRoot(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);

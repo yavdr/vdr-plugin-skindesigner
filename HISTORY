@@ -214,4 +214,6 @@ Version 0.3.0
 - fixed bug detecting menu item numbers in main menu
 - fixed recording progress bar in nopacity
 - added <systemmemory> viewelement in main menu
+- added possibility to hide root menu from a subview template
+
 

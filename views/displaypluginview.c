@@ -34,8 +34,12 @@ bool cDisplayPluginView::createOsd(void) {
 
 void cDisplayPluginView::Deactivate(bool hide) {
     Stop();
-    if (!hide)
-        return;
+    if (!hide) {
+        bool hideFromTemplate = tmplView->HideView();
+        if (!hideFromTemplate)
+            return;
+        esyslog("skindesigner: hiding from template");
+    }
     HidePixmaps();
     for (map< int, cViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
         cViewGrid *viewGrid = it->second;

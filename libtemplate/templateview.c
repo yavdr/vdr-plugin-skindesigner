@@ -194,6 +194,13 @@ int cTemplateView::GetNumPixmapsViewElement(eViewElement ve) {
     return viewElement->GetNumPixmaps();
 }
 
+bool cTemplateView::HideView(void) {
+    if (!parameters)
+        return false;
+    return parameters->GetNumericParameter(ptHideRoot);
+}
+
+
 bool cTemplateView::ExecuteView(eViewElement ve) {
     map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
     if (hit == viewElements.end())
@@ -1878,6 +1885,7 @@ cTemplateViewPlugin::cTemplateViewPlugin(string pluginName, int viewID) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("hideroot");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     //definition of allowed parameters for viewtab
