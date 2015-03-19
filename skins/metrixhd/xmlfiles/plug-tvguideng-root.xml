@@ -200,7 +200,7 @@
     {timestring}             time of grid in hh:mm
     -->
     <grid name="timeline_hor" x="15%" y="20%" width="85%" height="5%">
-        <area layer="2">
+        <area layer="1">
             <drawrectangle condition="{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransWhite}"/>
             <drawrectangle condition="not{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
         </area>
@@ -211,7 +211,7 @@
     </grid>
 
     <grid name="timeline_ver" x="0" y="35%" width="8%" height="57%">
-       <area layer="2">
+       <area layer="1">
             <drawrectangle condition="{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransWhite}"/>
             <drawrectangle condition="not{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
         </area>

@@ -218,6 +218,4 @@ Version 0.3.0
 - moved access to cControl to main thread to avoid crash
   in onpauseview
 - added recording icons to metrixHD
-
-
-
+- fixed colors in tvguideng timeline in nopacity darkred
