@@ -32,7 +32,7 @@ public:
     void DrawControlIcons(bool play, bool forward, int speed, bool modeOnly);
     void DrawJump(const char *jump);
     void DrawMessage(eMessageType type, const char *text);
-    void DrawOnPause(bool modeOnly);
+    void DrawOnPause(string recFileName, bool modeOnly);
     void ClearOnPause(void);
     void DelayOnPause(void);
     void DrawCustomTokens(void);

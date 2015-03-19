@@ -1,4 +1,5 @@
 #define __STL_CONFIG_H
+#include <vdr/player.h>
 #include "displayreplay.h"
 
 cSDDisplayReplay::cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly) {
@@ -41,7 +42,14 @@ void cSDDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
     if (!doOutput)
         return;
     if (!Play && Speed < 0) {
-        replayView->DrawOnPause(modeOnly);
+        string recFileName = "";
+        cControl *control = cControl::Control();
+        if (control) {
+            const cRecording *recording = control->GetRecording();
+            if (recording && recording->FileName())
+                recFileName = recording->FileName();
+        }
+        replayView->DrawOnPause(recFileName, modeOnly);
     } else {
         replayView->ClearOnPause();
     }

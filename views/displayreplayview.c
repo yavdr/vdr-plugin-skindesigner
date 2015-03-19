@@ -376,12 +376,12 @@ void cDisplayReplayView::DrawMessage(eMessageType type, const char *text) {
     DrawViewElement(veMessage, &stringTokens, &intTokens);
 }
 
-void cDisplayReplayView::DrawOnPause(bool modeOnly) {
+void cDisplayReplayView::DrawOnPause(string recFileName, bool modeOnly) {
     eViewElement veTmplOnPause = modeOnly ? veOnPauseModeOnly : veOnPause;
     cTemplateViewElement *tmplOnPause = tmplView->GetViewElement(veTmplOnPause);
     if (!tmplOnPause)
         return;
-    onPauseView = new cDisplayReplayOnPauseView(tmplOnPause);
+    onPauseView = new cDisplayReplayOnPauseView(recFileName, tmplOnPause);
     onPauseView->Start();
 }
 
