@@ -215,5 +215,9 @@ Version 0.3.0
 - fixed recording progress bar in nopacity
 - added <systemmemory> viewelement in main menu
 - added possibility to hide root menu from a subview template
+- moved access to cControl to main thread to avoid crash
+  in onpauseview
+- added recording icons to metrixHD
+
 
 
