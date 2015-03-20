@@ -37,7 +37,7 @@ void cDisplayPluginView::Deactivate(bool hide) {
     bool hideFromTemplate = tmplView->HideView();
     if (!hide && !hideFromTemplate)
         return;
-    if (tvScaled) {
+    if (hideFromTemplate && tvScaled) {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
     HidePixmaps();
