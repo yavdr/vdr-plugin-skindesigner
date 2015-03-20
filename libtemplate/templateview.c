@@ -92,6 +92,18 @@ cTemplateViewGrid *cTemplateView::GetViewGrid(int gridID) {
     return hit->second;    
 }
 
+void cTemplateView::InitViewGridIterator(void) {
+    geIt = viewGrids.begin();
+}
+
+cTemplateViewGrid *cTemplateView::GetNextViewGrid(void) {
+    if (geIt == viewGrids.end())
+        return NULL;
+    cTemplateViewGrid *viewGrid = geIt->second;
+    geIt++;
+    return viewGrid; 
+}
+
 cTemplateViewList *cTemplateView::GetViewList(eViewList vl) {
     map < eViewList, cTemplateViewList* >::iterator hit = viewLists.find(vl);
     if (hit == viewLists.end())
@@ -408,6 +420,43 @@ void cTemplateView::Translate(void) {
                         bool translated = globals->Translate(text, translation);
                         if (translated) {
                             loopFunc->SetTranslatedText(translation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Translate ViewGrids
+    InitViewGridIterator();
+    cTemplateViewGrid *viewGrid = NULL;
+    while(viewGrid = GetNextViewGrid()) {
+        viewGrid->InitIterator();
+        cTemplatePixmap *pix = NULL;
+        while(pix = viewGrid->GetNextPixmap()) {
+            pix->InitIterator();
+            cTemplateFunction *func = NULL;
+            while(func = pix->GetNextFunction()) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                    string text = func->GetParameter(ptText);
+                    string translation;
+                    bool translated = globals->Translate(text, translation);
+                    if (translated) {
+                        func->SetTranslatedText(translation);
+                    }
+                }
+                if (func->GetType() == ftLoop) {
+                    cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                    funcsLoop->InitIterator();
+                    cTemplateFunction *loopFunc = NULL;
+                    while(loopFunc = funcsLoop->GetNextFunction()) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                            string text = loopFunc->GetParameter(ptText);
+                            string translation;
+                            bool translated = globals->Translate(text, translation);
+                            if (translated) {
+                                loopFunc->SetTranslatedText(translation);
+                            }
                         }
                     }
                 }

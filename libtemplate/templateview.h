@@ -58,6 +58,7 @@ protected:
     //helpers to iterate data structures
     map < eViewElement, cTemplateViewElement* >::iterator veIt;
     map < eViewList, cTemplateViewList* >::iterator vlIt;
+    map < int, cTemplateViewGrid* >::iterator geIt;
     map < eSubView, cTemplateView* >::iterator svIt;
     vector< cTemplateViewTab* >::iterator vtIt;
     //helpers to check valid xml templates
@@ -89,6 +90,8 @@ public:
     cTemplateViewElement *GetNextViewElement(void);
     //access view grids
     cTemplateViewGrid *GetViewGrid(int gridID);
+    void InitViewGridIterator(void);
+    cTemplateViewGrid *GetNextViewGrid(void);
     //access list elements
     cTemplateViewList *GetViewList(eViewList vl);
     void InitViewListIterator(void);
