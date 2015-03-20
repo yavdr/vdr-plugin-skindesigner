@@ -34,11 +34,11 @@ bool cDisplayPluginView::createOsd(void) {
 
 void cDisplayPluginView::Deactivate(bool hide) {
     Stop();
-    if (!hide) {
-        bool hideFromTemplate = tmplView->HideView();
-        if (!hideFromTemplate)
-            return;
-        esyslog("skindesigner: hiding from template");
+    bool hideFromTemplate = tmplView->HideView();
+    if (!hide && !hideFromTemplate)
+        return;
+    if (tvScaled) {
+        cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
     HidePixmaps();
     for (map< int, cViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {

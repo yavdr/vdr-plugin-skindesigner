@@ -404,6 +404,8 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptMenuItemWidth)
             return 0;
+        else if (type == ptHideRoot)
+            return 0;
         return -1;
     }
     return hit->second;
@@ -1053,7 +1055,7 @@ bool cTemplateFunction::SetOverflow(string value) {
 }
 
 bool cTemplateFunction::SetHideRoot(string value) {
-    bool hideRoot = 0;
+    int hideRoot = 0;
     if (!value.compare("true"))
         hideRoot = 1;
     numericParameters.insert(pair<eParamType, int>(ptHideRoot, hideRoot));
@@ -1537,6 +1539,9 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptScaleTvHeight:
             name = "Scale TV Picture Height";
+            break;
+        case ptHideRoot:
+            name = "Hide Root View";
             break;
         case ptCache:
             name = "Cache Image";

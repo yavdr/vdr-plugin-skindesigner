@@ -149,7 +149,7 @@
             <drawimage condition="gt({cputemp}, 80)" imagetype="skinpart" path="tachohands/temp_81"        x="{areawidth}*0.53" y="5%" width="20%" height="{areawidth}*0.2"/>
             <drawimage condition="lt({cputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{cputemp}" x="{areawidth}*0.53" y="5%" width="20%" height="{areawidth}*0.2"/>
             <drawimage condition="gt({gputemp}, 80)" imagetype="skinpart" path="tachohands/temp_81"        x="{areawidth}*0.78" y="5%" width="20%" height="{areawidth}*0.2"/>
-            <drawimage condition="lt({cputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{gputemp}" x="{areawidth}*0.78" y="5%" width="20%" height="{areawidth}*0.2"/>
+            <drawimage condition="lt({gputemp}, 81)" imagetype="skinpart" path="tachohands/temp_{gputemp}" x="{areawidth}*0.78" y="5%" width="20%" height="{areawidth}*0.2"/>
         </area>
         <area x="77%" y="51%" width="11%" height="19%" layer="4">
             <drawtext align="center" y="85%" font="{regular}" fontsize="15%" color="{clrWhite}" text="CPU Temp: {cputemp}°C" />
