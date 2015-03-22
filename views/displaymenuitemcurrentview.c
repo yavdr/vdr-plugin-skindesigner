@@ -5,13 +5,10 @@
 #include "displaymenuitemcurrentview.h"
 
 
-cDisplayMenuItemCurrentView::cDisplayMenuItemCurrentView(cTemplateViewElement *tmplCurrent) : cView(tmplCurrent) {
-    delay = tmplItem->GetNumericParameter(ptDelay);
-    SetFadeTime(tmplItem->GetNumericParameter(ptFadeTime));
+cDisplayMenuItemCurrentView::cDisplayMenuItemCurrentView(cTemplateViewElement *tmplCurrent) : cViewElement(tmplCurrent) {
 }
 
 cDisplayMenuItemCurrentView::~cDisplayMenuItemCurrentView() {
-    CancelSave();
 }
 
 void cDisplayMenuItemCurrentView::SetPosMenuItem(cRect &pos) {
@@ -65,39 +62,12 @@ cDisplayMenuItemCurrentMainView::cDisplayMenuItemCurrentMainView(cTemplateViewEl
     this->icon = icon;
 }
 
-cDisplayMenuItemCurrentMainView::~cDisplayMenuItemCurrentMainView() {
-}
-
-void cDisplayMenuItemCurrentMainView::Prepare(void) {
-}
-
-
 void cDisplayMenuItemCurrentMainView::Render(void) {
     stringTokens.insert(pair<string,string>("number", number));
     stringTokens.insert(pair<string,string>("label", label));
     stringTokens.insert(pair<string,string>("icon", icon));
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens);
-}
-
-void cDisplayMenuItemCurrentMainView::Clear(void) {
-    
-}
-
-void cDisplayMenuItemCurrentMainView::Action(void) {
-    SetInitFinished();
-    DoSleep(delay);
-    Render();
-    FadeIn();
-    DoFlush();
-    if (scrolling) {
-        DoSleep(scrollDelay);
-        if (scrollOrientation == orHorizontal) {
-            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
-        } else {
-            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
-        }
-    }
 }
 
 /*************************************************************
@@ -112,13 +82,6 @@ cDisplayMenuItemCurrentSchedulesView::cDisplayMenuItemCurrentSchedulesView(cTemp
     this->cat = cat;
     this->isEpgSearchFav = isEpgSearchFav;
 }
-
-cDisplayMenuItemCurrentSchedulesView::~cDisplayMenuItemCurrentSchedulesView() {
-}
-
-void cDisplayMenuItemCurrentSchedulesView::Prepare(void) {
-}
-
 
 void cDisplayMenuItemCurrentSchedulesView::Render(void) {
     intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule)&&(!isEpgSearchFav) ? true: false));
@@ -184,26 +147,6 @@ void cDisplayMenuItemCurrentSchedulesView::Render(void) {
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
 }
 
-void cDisplayMenuItemCurrentSchedulesView::Clear(void) {
-    
-}
-
-void cDisplayMenuItemCurrentSchedulesView::Action(void) {
-    SetInitFinished();
-    DoSleep(delay);
-    Render();
-    FadeIn();
-    DoFlush();
-    if (scrolling) {
-        DoSleep(scrollDelay);
-        if (scrollOrientation == orHorizontal) {
-            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
-        } else {
-            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
-        }
-    }
-}
-
 void cDisplayMenuItemCurrentSchedulesView::ReadSchedules(vector< map<string,string> > *schedulesTokens) {
     if (!event)
         return;
@@ -235,13 +178,6 @@ cDisplayMenuItemCurrentChannelView::cDisplayMenuItemCurrentChannelView(cTemplate
                          : cDisplayMenuItemCurrentView(tmplCurrent) {
     this->channel = channel;
 }
-
-cDisplayMenuItemCurrentChannelView::~cDisplayMenuItemCurrentChannelView() {
-}
-
-void cDisplayMenuItemCurrentChannelView::Prepare(void) {
-}
-
 
 void cDisplayMenuItemCurrentChannelView::Render(void) {
     if (!channel)
@@ -342,26 +278,6 @@ void cDisplayMenuItemCurrentChannelView::Render(void) {
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
 }
 
-void cDisplayMenuItemCurrentChannelView::Clear(void) {
-    
-}
-
-void cDisplayMenuItemCurrentChannelView::Action(void) {
-    SetInitFinished();
-    DoSleep(delay);
-    Render();
-    FadeIn();
-    DoFlush();
-    if (scrolling) {
-        DoSleep(scrollDelay);
-        if (scrollOrientation == orHorizontal) {
-            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
-        } else {
-            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
-        }
-    }
-}
-
 void cDisplayMenuItemCurrentChannelView::ReadSchedules(vector< map<string,string> > *schedulesTokens) {
     cSchedulesLock schedulesLock;
     const cSchedules *schedules = cSchedules::Schedules(schedulesLock);
@@ -397,13 +313,6 @@ cDisplayMenuItemCurrentTimerView::cDisplayMenuItemCurrentTimerView(cTemplateView
                          : cDisplayMenuItemCurrentView(tmplCurrent) {
     this->timer = timer;
 }
-
-cDisplayMenuItemCurrentTimerView::~cDisplayMenuItemCurrentTimerView() {
-}
-
-void cDisplayMenuItemCurrentTimerView::Prepare(void) {
-}
-
 
 void cDisplayMenuItemCurrentTimerView::Render(void) {
     if (!timer)
@@ -491,26 +400,6 @@ void cDisplayMenuItemCurrentTimerView::Render(void) {
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens);
 }
 
-void cDisplayMenuItemCurrentTimerView::Clear(void) {
-    
-}
-
-void cDisplayMenuItemCurrentTimerView::Action(void) {
-    SetInitFinished();
-    DoSleep(delay);
-    Render();
-    FadeIn();
-    DoFlush();
-    if (scrolling) {
-        DoSleep(scrollDelay);
-        if (scrollOrientation == orHorizontal) {
-            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
-        } else {
-            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
-        }
-    }
-}
-
 /*************************************************************
 * cDisplayMenuItemCurrentRecordingView
 *************************************************************/
@@ -522,13 +411,6 @@ cDisplayMenuItemCurrentRecordingView::cDisplayMenuItemCurrentRecordingView(cTemp
     this->total = total;
     this->newRecs = newRecs;
 }
-
-cDisplayMenuItemCurrentRecordingView::~cDisplayMenuItemCurrentRecordingView() {
-}
-
-void cDisplayMenuItemCurrentRecordingView::Prepare(void) {
-}
-
 
 void cDisplayMenuItemCurrentRecordingView::Render(void) {
     if (!recording)
@@ -658,26 +540,6 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
 }
 
-void cDisplayMenuItemCurrentRecordingView::Clear(void) {
-    
-}
-
-void cDisplayMenuItemCurrentRecordingView::Action(void) {
-    SetInitFinished();
-    DoSleep(delay);
-    Render();
-    FadeIn();
-    DoFlush();
-    if (scrolling) {
-        DoSleep(scrollDelay);
-        if (scrollOrientation == orHorizontal) {
-            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
-        } else {
-            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
-        }
-    }
-}
-
 /*************************************************************
 * cDisplayMenuItemCurrentPluginView
 *************************************************************/
@@ -691,34 +553,7 @@ cDisplayMenuItemCurrentPluginView::cDisplayMenuItemCurrentPluginView(cTemplateVi
     loopTokens = pluginLoopTokens;
 }
 
-cDisplayMenuItemCurrentPluginView::~cDisplayMenuItemCurrentPluginView() {
-}
-
-void cDisplayMenuItemCurrentPluginView::Prepare(void) {
-}
-
-
 void cDisplayMenuItemCurrentPluginView::Render(void) {
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
-}
-
-void cDisplayMenuItemCurrentPluginView::Clear(void) {
-    
-}
-
-void cDisplayMenuItemCurrentPluginView::Action(void) {
-    SetInitFinished();
-    DoSleep(delay);
-    Render();
-    FadeIn();
-    DoFlush();
-    if (scrolling) {
-        DoSleep(scrollDelay);
-        if (scrollOrientation == orHorizontal) {
-            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
-        } else {
-            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
-        }
-    }
 }

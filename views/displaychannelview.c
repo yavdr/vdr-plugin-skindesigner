@@ -2,6 +2,7 @@
 #include <vdr/menu.h>
 #include "../services/scraper2vdr.h"
 #include "displaychannelview.h"
+#include "displaychannelviewelements.h"
 #include "../libcore/timers.h"
 #include "../libcore/helpers.h"
 
@@ -438,22 +439,30 @@ void cDisplayChannelView::DrawDevices(bool initial) {
     }
 
     if (DetachViewElement(veDevices)) {
-        esyslog("skindesigner: start new thread for devices");
+        cViewElement *viewElement = GetViewElement(veDevices);
+        if (!viewElement) {
+            viewElement = new cViewElementDevices(tmplView->GetViewElement(veDevices));
+            AddViewElement(veDevices, viewElement);
+            viewElement->Start();
+        } else {
+            viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        map < string, vector< map< string, string > > > deviceLoopTokens;
+        vector< map< string, string > > devices;
+
+        bool changed = SetDevices(initial, &intTokens, &devices);
+        if (!changed)
+            return;
+
+        deviceLoopTokens.insert(pair< string, vector< map< string, string > > >("devices", devices));
+        
+        ClearViewElement(veDevices);
+        DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);        
     }
 
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    map < string, vector< map< string, string > > > deviceLoopTokens;
-    vector< map< string, string > > devices;
-
-    bool changed = SetDevices(initial, &intTokens, &devices);
-    if (!changed)
-        return;
-
-    deviceLoopTokens.insert(pair< string, vector< map< string, string > > >("devices", devices));
-    
-    ClearViewElement(veDevices);
-    DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);
 }
 
 void cDisplayChannelView::ClearDevices(void) {

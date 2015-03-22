@@ -196,7 +196,7 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices detached="true" delay="100" fadetime="300">
+    <devices detached="true" delay="500" fadetime="500">
         <area condition="{showdevices}" x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
