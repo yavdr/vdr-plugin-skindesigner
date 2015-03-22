@@ -6,6 +6,7 @@
 #include "viewhelpers.h"
 
 cViewHelpers::cViewHelpers(void) {
+    numDevices = 0;
     devicesInit = false;
     lastSecond = -1;
     lastMinute = -1;
@@ -36,7 +37,6 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
 #ifdef DOPROFILE
     cStopWatch watch("SetDevices");
 #endif
-    int numDevices = cDevice::NumDevices();
     if (!initial) {
         //check if drawing is necessary
         bool changed = false;

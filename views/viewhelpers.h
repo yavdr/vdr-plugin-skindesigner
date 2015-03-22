@@ -3,6 +3,7 @@
 
 class cViewHelpers {
 private:
+    int numDevices;
     bool devicesInit;
     int* lastSignalStrength;
     int* lastSignalQuality;
