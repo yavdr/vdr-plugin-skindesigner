@@ -46,6 +46,8 @@ cSkinDisplayChannel *cSkinDesigner::DisplayChannel(bool WithInfo) {
 }
 
 cSkinDisplayMenu *cSkinDesigner::DisplayMenu(void) {
+    if (init)
+        return NULL;
     if (!useBackupSkin) {
         cSDDisplayMenu *displayMenu = NULL;
         Init();

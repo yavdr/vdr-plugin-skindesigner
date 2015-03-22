@@ -196,11 +196,11 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices>
-        <area condition="{showdevices}" x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
+    <devices condition="{showdevices}" >
+        <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
-        <area condition="{showdevices}" x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="2">
+        <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="2">
             <loop name="devices" x="0" y="0" orientation="vertical" columnwidth="{areawidth}" rowheight="{areaheight} / {numdevices}" overflow="cut">
                 <drawtext name="label" x="5" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
                 <drawtext condition="{devices[hascam]}" x="{width(label)} + 15" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="(CAM {devices[cam]})" />

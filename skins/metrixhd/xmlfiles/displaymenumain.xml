@@ -240,7 +240,7 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices>
+    <devices condition="{showdevices}">
         <area x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
