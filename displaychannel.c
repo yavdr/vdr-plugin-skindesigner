@@ -22,11 +22,13 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
         doOutput = false;
         return;
     }
+    esyslog("skindesigner: displaychannel opened");
 }
 
 cSDDisplayChannel::~cSDDisplayChannel() {
     if (channelView)
         delete channelView;
+    esyslog("skindesigner: displaychannel closed");
 }
 
 void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {

@@ -124,6 +124,14 @@ bool cTemplateViewElement::Execute(void) {
     return parameters->DoExecute();
 }
 
+bool cTemplateViewElement::Detach(void) {
+    if (!parameters)
+        return false;
+    int detached = parameters->GetNumericParameter(ptDetached);
+    if (detached == 1)
+        return true;
+    return false;
+}
 
 bool cTemplateViewElement::DebugTokens(void) {
     if (!parameters)
@@ -136,6 +144,7 @@ void cTemplateViewElement::Debug(void) {
     esyslog("skindesigner: viewelement container size x: %d, y: %d, width: %d, height %d", containerX, containerY, containerWidth, containerHeight);
     if (parameters)
         parameters->Debug();
+    return;
     for (vector<cTemplatePixmap*>::iterator it = viewPixmaps.begin(); it != viewPixmaps.end(); it++) {
         (*it)->Debug();
     }

@@ -393,20 +393,11 @@ void cDisplayChannelView::DrawSignal(void) {
     if (!ExecuteViewElement(veSignalQuality)) {
         return;
     }
+
     time_t Now = time(NULL);
     if (Now != lastSignalDisplay) {
-#ifdef DOPROFILE
-        cStopWatch watch("DrawSignal");
-#endif
         int SignalStrength = cDevice::ActualDevice()->SignalStrength();
-#ifdef DOPROFILE
-        watch.Report("SignalStrength");
-#endif
         int SignalQuality = cDevice::ActualDevice()->SignalQuality();
-#ifdef DOPROFILE
-        watch.Report("SignalQuality");
-        watch.Stop("DrawSignal");
-#endif
         if (SignalStrength < 0) SignalStrength = 0;
         if (SignalQuality < 0) SignalQuality = 0;
         if ((SignalStrength == 0)&&(SignalQuality==0))
@@ -445,6 +436,11 @@ void cDisplayChannelView::DrawDevices(bool initial) {
     if (!ExecuteViewElement(veDevices)) {
         return;
     }
+
+    if (DetachViewElement(veDevices)) {
+        esyslog("skindesigner: start new thread for devices");
+    }
+
     map < string, string > stringTokens;
     map < string, int > intTokens;
     map < string, vector< map< string, string > > > deviceLoopTokens;

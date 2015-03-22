@@ -45,6 +45,7 @@ enum eParamType {
     ptWidth,
     ptHeight,
     ptMenuItemWidth,
+    ptDetached,
     ptFadeTime,
     ptDelay,
     ptImageType,
@@ -152,6 +153,7 @@ protected:
     bool SetFloating(string value);
     bool SetOverflow(string value);
     bool SetHideRoot(string value);
+    bool SetDetached(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);

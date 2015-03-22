@@ -6,6 +6,7 @@
 #include "viewhelpers.h"
 
 cViewHelpers::cViewHelpers(void) {
+    numDevices = 0;
     devicesInit = false;
     lastSecond = -1;
     lastMinute = -1;
@@ -20,7 +21,7 @@ cViewHelpers::~cViewHelpers() {
 }
 
 void cViewHelpers::InitDevices(void) {
-    int numDevices = cDevice::NumDevices();
+    numDevices = cDevice::NumDevices();
     lastSignalStrength = new int[numDevices];
     lastSignalQuality = new int[numDevices];
     recDevices = new bool[numDevices];
@@ -33,10 +34,6 @@ void cViewHelpers::InitDevices(void) {
 }
 
 bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices) {
-#ifdef DOPROFILE
-    cStopWatch watch("SetDevices");
-#endif
-    int numDevices = cDevice::NumDevices();
     if (!initial) {
         //check if drawing is necessary
         bool changed = false;
@@ -46,23 +43,13 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
                 continue;
             }
             int signalStrength = device->SignalStrength();
-#ifdef DOPROFILE
-            watch.Report(*cString::sprintf("SignalStrength() device %d", i));
-#endif
             int signalQuality = device->SignalQuality();
-#ifdef DOPROFILE
-            watch.Report(*cString::sprintf("SignalQuality() device %d", i));
-#endif
-
             if ((signalStrength != lastSignalStrength[i]) || (signalQuality != lastSignalQuality[i])) {
                 changed = true;
                 break;
             }            
         }
         if (!changed) {
-#ifdef DOPROFILE
-            watch.Stop("SetDevices End");
-#endif
             return false;
         }
     }
@@ -109,13 +96,7 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
             deviceVals.insert(pair< string, string >("devices[hascam]", "0"));
         }
         int signalStrength = device->SignalStrength();
-#ifdef DOPROFILE
-        watch.Report(*cString::sprintf("SignalStrength() device %d", i));
-#endif
         int signalQuality = device->SignalQuality();
-#ifdef DOPROFILE
-        watch.Report(*cString::sprintf("SignalQuality() device %d", i));
-#endif
         stringstream strCamNumber;
         strCamNumber << camNumber;
         deviceVals.insert(pair< string, string >("devices[cam]", strCamNumber.str()));
@@ -157,9 +138,6 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
     }
 
     intTokens->insert(pair<string, int>("numdevices", actualNumDevices));
-#ifdef DOPROFILE
-    watch.Stop("SetDevices End");
-#endif
     return true;
 }
 

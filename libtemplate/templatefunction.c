@@ -63,6 +63,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptHeight;
         } else if (!name.compare("menuitemwidth")) {
             p.first = ptMenuItemWidth;
+        } else if (!name.compare("detached")) {
+            p.first = ptDetached;
         } else if (!name.compare("fadetime")) {
             p.first = ptFadeTime;
         } else if (!name.compare("imagetype")) {
@@ -266,6 +268,9 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptHideRoot:
                 paramValid = SetHideRoot(value);
                 break;
+            case ptDetached:
+                paramValid = SetDetached(value);
+                break;
             default:
                 paramValid = true;
                 break;
@@ -405,6 +410,8 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
         else if (type == ptMenuItemWidth)
             return 0;
         else if (type == ptHideRoot)
+            return 0;
+        else if (type == ptDetached)
             return 0;
         return -1;
     }
@@ -1062,6 +1069,14 @@ bool cTemplateFunction::SetHideRoot(string value) {
     return true;
 }
 
+bool cTemplateFunction::SetDetached(string value) {
+    int detached = 0;
+    if (!value.compare("true"))
+        detached = 1;
+    numericParameters.insert(pair<eParamType, int>(ptDetached, detached));
+    return true;    
+}
+
 void cTemplateFunction::ParseStringParameters(void) {
     //first replace stringtokens in Text (drawText)
     stringstream text;
@@ -1446,7 +1461,10 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptMenuItemWidth:
             name = "Menu Item Width";
-            break;          
+            break;
+        case ptDetached:
+            name = "Detached";
+            break;       
         case ptFadeTime:
             name = "Fade Time";
             break;

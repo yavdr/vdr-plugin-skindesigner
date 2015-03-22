@@ -43,6 +43,7 @@ protected:
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
     bool ExecuteViewElement(eViewElement ve);
+    bool DetachViewElement(eViewElement ve);
     bool ViewElementScrolls(eViewElement ve);
     void CreateViewPixmap(int num, cTemplatePixmap *pix, cRect *size = NULL);
     void CreateScrollingPixmap(int num, cTemplatePixmap *pix, cSize &drawportSize);

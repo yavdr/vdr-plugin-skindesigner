@@ -86,6 +86,9 @@
 
 <!ELEMENT devices (area|areascroll)*>
 <!ATTLIST devices
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
