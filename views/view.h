@@ -72,12 +72,12 @@ protected:
     map < string, string > stringTokens;
     map < string, int > intTokens;
     void Action(void);
-    void Draw(map < string, vector< map< string, string > > > *loopTokens = NULL);
+    void ClearTokens(void);
 public:
     cViewElement(cTemplateViewElement *tmplViewElement);
     virtual ~cViewElement();
-    virtual void Render(void) {};
-    void Clear(void);
+    virtual bool Render(void) { return false; };
+    bool Starting(void) { return Running(); };
 };
 
 class cViewListItem : public cView {

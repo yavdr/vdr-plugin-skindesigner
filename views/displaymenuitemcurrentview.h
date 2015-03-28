@@ -24,7 +24,7 @@ private:
 public:
     cDisplayMenuItemCurrentMainView(cTemplateViewElement *tmplCurrent, string number, string label, string icon);
     virtual ~cDisplayMenuItemCurrentMainView() {};
-    void Render(void);
+    bool Render(void);
 };
 
 class cDisplayMenuItemCurrentSchedulesView: public cDisplayMenuItemCurrentView {
@@ -38,7 +38,7 @@ private:
 public:
     cDisplayMenuItemCurrentSchedulesView(cTemplateViewElement *tmplCurrent, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat, bool isEpgSearchFav);
     virtual ~cDisplayMenuItemCurrentSchedulesView() {};
-    void Render(void);
+    bool Render(void);
 };
 
 class cDisplayMenuItemCurrentChannelView: public cDisplayMenuItemCurrentView {
@@ -48,7 +48,7 @@ private:
 public:
     cDisplayMenuItemCurrentChannelView(cTemplateViewElement *tmplCurrent, const cChannel *channel);
     virtual ~cDisplayMenuItemCurrentChannelView() {};
-    void Render(void);
+    bool Render(void);
 };
 
 class cDisplayMenuItemCurrentTimerView: public cDisplayMenuItemCurrentView {
@@ -57,7 +57,7 @@ private:
 public:
     cDisplayMenuItemCurrentTimerView(cTemplateViewElement *tmplCurrent, const cTimer *timer);
     virtual ~cDisplayMenuItemCurrentTimerView() {};
-    void Render(void);
+    bool Render(void);
 };
 
 class cDisplayMenuItemCurrentRecordingView: public cDisplayMenuItemCurrentView {
@@ -69,7 +69,7 @@ private:
 public:
     cDisplayMenuItemCurrentRecordingView(cTemplateViewElement *tmplCurrent, const cRecording *recording, int level, int total, int newRecs);
     virtual ~cDisplayMenuItemCurrentRecordingView() {};
-    void Render(void);
+    bool Render(void);
 };
 
 class cDisplayMenuItemCurrentPluginView: public cDisplayMenuItemCurrentView {
@@ -78,7 +78,7 @@ private:
 public:
     cDisplayMenuItemCurrentPluginView(cTemplateViewElement *tmplCurrent, map <string,string> &plugStringTokens, map <string,int> &plugIntTokens, map<string,vector<map<string,string> > > &pluginLoopTokens);
     virtual ~cDisplayMenuItemCurrentPluginView() {};
-    void Render(void);
+    bool Render(void);
 };
 
 #endif //__DISPLAYMENUITEMCURRENTVIEW_H

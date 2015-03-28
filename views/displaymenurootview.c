@@ -1,12 +1,13 @@
 #define __STL_CONFIG_H
 #include <vdr/menu.h>
-#include <vdr/videodir.h>
 #include "displaymenurootview.h"
+#include "displayviewelements.h"
 #include "../config.h"
 #include "../libcore/helpers.h"
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
     cat = mcUndefined;
+    menuTitle = "";
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
@@ -479,37 +480,9 @@ void cDisplayMenuRootView::DrawHeader(void) {
     if (!ExecuteViewElement(veHeader)) {
         return;
     }
-
     map < string, string > stringTokens;
     map < string, int > intTokens;
-
-    stringTokens.insert(pair<string,string>("title", menuTitle));
-    stringTokens.insert(pair<string,string>("vdrversion", VDRVERSION));
-
-    //check for standard menu entries
-    bool hasIcon = false;
-
-    string icon = imgCache->GetIconName(menuTitle, cat);
-    if (imgCache->MenuIconExists(icon))
-        hasIcon = true;
-
-    stringTokens.insert(pair<string,string>("icon", icon));
-    intTokens.insert(pair<string,int>("hasicon", hasIcon));
-
-    //Disc Usage
-    string vdrUsageString = *cVideoDiskUsage::String();
-    int discUsage = cVideoDiskUsage::UsedPercent();
-    bool discAlert = (discUsage > 95) ? true : false;
-    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
-    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
-
-    intTokens.insert(pair<string, int>("usedpercent", discUsage));
-    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
-    intTokens.insert(pair<string, int>("discalert", discAlert));
-    intTokens.insert(pair<string, int>("freegb", freeGB));
-    stringTokens.insert(pair<string,string>("freetime", freeTime));
-    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
-
+    SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
     ClearViewElement(veHeader);
     DrawViewElement(veHeader, &stringTokens, &intTokens);
 }

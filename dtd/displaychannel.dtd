@@ -95,24 +95,36 @@
 
 <!ELEMENT currentweather (area|areascroll)*>
 <!ATTLIST currentweather
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT scrapercontent (area|areascroll)*>
 <!ATTLIST scrapercontent
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT time (area|areascroll)*>
 <!ATTLIST time
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
@@ -125,6 +137,9 @@
 
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >

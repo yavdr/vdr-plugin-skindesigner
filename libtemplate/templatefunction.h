@@ -56,6 +56,7 @@ enum eParamType {
     ptText,
     ptLayer,
     ptTransparency,
+    ptBackground,
     ptQuadrant,
     ptType,
     ptAlign,
@@ -154,6 +155,7 @@ protected:
     bool SetOverflow(string value);
     bool SetHideRoot(string value);
     bool SetDetached(string value);
+    bool SetBackground(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);

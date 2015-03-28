@@ -9,9 +9,6 @@ class cDisplayChannelView : public cView, public cViewHelpers {
 private:
     int lastScreenWidth;
     int lastScreenHeight;
-    int lastSignalDisplay;
-    int lastSignalStrength;
-    int lastSignalQuality;
     int lastNumAudioTracks;
     int lastAudioChannel;
     string lastTracDesc;

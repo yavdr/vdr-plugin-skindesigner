@@ -28,7 +28,7 @@
     {timers[channelid]}          ChannelID of channel
     {timers[channellogoexists]}  true if channel logo exists
     -->
-    <timers>
+    <timers detached="true" delay="100" fadetime="0">
         <area x="85%" y="28%" width="14%" height="60%" layer="1">
             <drawrectangle condition="gt({numtimers}, 0)" x="0" y="0" width="{areawidth}" height="{areaheight} / 4 * 99 / 100" color="{clrTransBlack}" />
             <drawrectangle condition="gt({numtimers}, 1)" x="0" y="{areaheight} / 4" width="{areawidth}" height="{areaheight} / 4 * 99 / 100" color="{clrTransBlack}" />
@@ -61,8 +61,8 @@
     {discalert}               true if disc usage is > 95%
     {vdrusagestring}          localized VDR internal usage string
     -->
-    <discusage>
-        <area x="89%" y="11%" width="10%" height="16%" layer="1">
+    <discusage detached="true" delay="100" fadetime="0">
+        <area background="true" x="89%" y="11%" width="10%" height="16%" layer="1">
             <fill condition="lt({freepercent}, 6)" color="{clrTransRed}" />
             <fill condition="gt({freepercent}, 5)" color="{clrBackground}" />
             <drawimage imagetype="skinpart" path="discpercent" x="0" y="82%" width="{areawidth}" height="18%"/>
@@ -75,8 +75,8 @@
         </area>        
     </discusage>
 
-    <currentweather>
-        <area x="63%" y="11%" width="25%" height="16%" layer="1">
+    <currentweather detached="true" delay="100" fadetime="0">
+        <area background="true" x="63%" y="11%" width="25%" height="16%" layer="1">
             <fill color="{clrBackground}"/>
         </area>
         <area x="63%" y="11%" width="25%" height="16%" layer="2">

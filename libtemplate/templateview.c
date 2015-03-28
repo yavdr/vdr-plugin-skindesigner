@@ -638,6 +638,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("height");
     attributes.insert("layer");
     attributes.insert("transparency");
+    attributes.insert("background");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "areascroll";

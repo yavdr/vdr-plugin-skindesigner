@@ -21,6 +21,7 @@ using namespace std;
 class cTemplatePixmap {
 protected:
     bool scrolling;
+    bool background;
     cTemplateFunction *parameters;
     vector<cTemplateFunction*> functions;
     vector<cTemplateFunction*>::iterator funcIt;
@@ -76,6 +77,7 @@ public:
     bool DoExecute(void) { return parameters->DoExecute(); };
     bool DoDebug(void) { return parameters->DoDebug(); };
     bool Ready(void);
+    bool BackgroundArea(void) { return background; };
     //Traverse Functions
     void InitIterator(void);
     cTemplateFunction *GetNextFunction(void);

@@ -62,12 +62,13 @@ cDisplayMenuItemCurrentMainView::cDisplayMenuItemCurrentMainView(cTemplateViewEl
     this->icon = icon;
 }
 
-void cDisplayMenuItemCurrentMainView::Render(void) {
+bool cDisplayMenuItemCurrentMainView::Render(void) {
     stringTokens.insert(pair<string,string>("number", number));
     stringTokens.insert(pair<string,string>("label", label));
     stringTokens.insert(pair<string,string>("icon", icon));
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens);
+    return true;
 }
 
 /*************************************************************
@@ -83,7 +84,7 @@ cDisplayMenuItemCurrentSchedulesView::cDisplayMenuItemCurrentSchedulesView(cTemp
     this->isEpgSearchFav = isEpgSearchFav;
 }
 
-void cDisplayMenuItemCurrentSchedulesView::Render(void) {
+bool cDisplayMenuItemCurrentSchedulesView::Render(void) {
     intTokens.insert(pair<string,int>("whatson", (cat == mcSchedule)&&(!isEpgSearchFav) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnow", (cat == mcScheduleNow) ? true: false));
     intTokens.insert(pair<string,int>("whatsonnext", (cat == mcScheduleNext) ? true: false));
@@ -145,6 +146,7 @@ void cDisplayMenuItemCurrentSchedulesView::Render(void) {
     loopTokens.insert(pair<string, vector< map< string, string > > >("schedule", schedulesTokens));
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
+    return true;
 }
 
 void cDisplayMenuItemCurrentSchedulesView::ReadSchedules(vector< map<string,string> > *schedulesTokens) {
@@ -179,9 +181,9 @@ cDisplayMenuItemCurrentChannelView::cDisplayMenuItemCurrentChannelView(cTemplate
     this->channel = channel;
 }
 
-void cDisplayMenuItemCurrentChannelView::Render(void) {
+bool cDisplayMenuItemCurrentChannelView::Render(void) {
     if (!channel)
-        return;
+        return false;
     //general channel information
     intTokens.insert(pair<string,int>("number", channel->Number()));
     intTokens.insert(pair<string,int>("transponder", channel->Transponder()));
@@ -276,6 +278,7 @@ void cDisplayMenuItemCurrentChannelView::Render(void) {
     loopTokens.insert(pair<string, vector< map< string, string > > >("schedule", schedulesTokens));
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
+    return true;
 }
 
 void cDisplayMenuItemCurrentChannelView::ReadSchedules(vector< map<string,string> > *schedulesTokens) {
@@ -314,9 +317,9 @@ cDisplayMenuItemCurrentTimerView::cDisplayMenuItemCurrentTimerView(cTemplateView
     this->timer = timer;
 }
 
-void cDisplayMenuItemCurrentTimerView::Render(void) {
+bool cDisplayMenuItemCurrentTimerView::Render(void) {
     if (!timer)
-        return;
+        return false;
     intTokens.insert(pair<string,int>("flagactive", timer->HasFlags(tfActive)));
     intTokens.insert(pair<string,int>("flaginstant", timer->HasFlags(tfInstant)));
     intTokens.insert(pair<string,int>("flagvps", timer->HasFlags(tfVps)));
@@ -398,6 +401,7 @@ void cDisplayMenuItemCurrentTimerView::Render(void) {
     }
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens);
+    return true;
 }
 
 /*************************************************************
@@ -412,9 +416,9 @@ cDisplayMenuItemCurrentRecordingView::cDisplayMenuItemCurrentRecordingView(cTemp
     this->newRecs = newRecs;
 }
 
-void cDisplayMenuItemCurrentRecordingView::Render(void) {
+bool cDisplayMenuItemCurrentRecordingView::Render(void) {
     if (!recording)
-        return;
+        return false;
     map < string, vector< map< string, string > > > loopTokens;
 
     bool isFolder = (total > 0) ? true : false;
@@ -468,7 +472,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
 
 
     const cRecordingInfo *info = usedRecording->Info();
-    if (!info) return;
+    if (!info) return true;
 
     bool extRecinfoAvailable = false;    
     if (info->Aux()) {
@@ -509,7 +513,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
     
     const cEvent *event = info->GetEvent();
-    if (!event) return;
+    if (!event) return true;
 
     string recDate = *(event->GetDateString());
     string recTime = *(event->GetTimeString());
@@ -538,6 +542,7 @@ void cDisplayMenuItemCurrentRecordingView::Render(void) {
     stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
+    return true;
 }
 
 /*************************************************************
@@ -553,7 +558,8 @@ cDisplayMenuItemCurrentPluginView::cDisplayMenuItemCurrentPluginView(cTemplateVi
     loopTokens = pluginLoopTokens;
 }
 
-void cDisplayMenuItemCurrentPluginView::Render(void) {
+bool cDisplayMenuItemCurrentPluginView::Render(void) {
     SetTokensPosMenuItem();
     DrawViewElement(veMenuCurrentItemDetail, &stringTokens, &intTokens, &loopTokens);
+    return true;
 }

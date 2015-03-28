@@ -1,15 +1,25 @@
+#include <fstream>
+#include <iostream>
 #include <vdr/menu.h>
+#include <vdr/videodir.h>
+#include <sys/sysinfo.h>
 #include "../services/scraper2vdr.h"
 #include "../services/weatherforecast.h"
 #include "../config.h"
+#include "../libcore/timers.h"
 #include "../libcore/helpers.h"
 #include "viewhelpers.h"
 
 cViewHelpers::cViewHelpers(void) {
     numDevices = 0;
     devicesInit = false;
+    lSignalDisplay = 0;
+    lSignalStrength = 0;
+    lSignalQuality = 0;
     lastSecond = -1;
     lastMinute = -1;
+    lastSystemLoad = 0.0;
+    lastMemUsage = -1;
 }
 
 cViewHelpers::~cViewHelpers() {
@@ -139,6 +149,28 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
 
     intTokens->insert(pair<string, int>("numdevices", actualNumDevices));
     return true;
+}
+
+bool cViewHelpers::SetSignal(map < string, int > &intTokens) {
+    bool done = false;
+    time_t Now = time(NULL);
+    if (Now != lSignalDisplay) {
+        int SignalStrength = cDevice::ActualDevice()->SignalStrength();
+        int SignalQuality = cDevice::ActualDevice()->SignalQuality();
+        if (SignalStrength < 0) SignalStrength = 0;
+        if (SignalQuality < 0) SignalQuality = 0;
+        if ((SignalStrength == 0)&&(SignalQuality==0))
+            return done;
+        if ((lSignalStrength != SignalStrength) || (lSignalQuality != SignalQuality)) {
+            intTokens.insert(pair<string,int>("signalstrength", SignalStrength));
+            intTokens.insert(pair<string,int>("signalquality", SignalQuality));
+            lSignalStrength = SignalStrength;
+            lSignalQuality = SignalQuality;
+            done = true;
+        }
+        lSignalDisplay = Now;
+    }
+    return done;
 }
 
 bool cViewHelpers::CheckNewMails(void) {
@@ -359,13 +391,80 @@ void cViewHelpers::SetScraperTokens(const cEvent *event, const cRecording *recor
 
 }
 
+void cViewHelpers::SetPosterBanner(const cEvent *event, map < string, string > &stringTokens, map < string, int > &intTokens) {
+    static cPlugin *pScraper = GetScraperPlugin();
+    if (!pScraper) {
+        return;
+    }
+
+    ScraperGetPosterBanner call;
+    call.event = event;
+    if (pScraper->Service("GetPosterBanner", &call)) {
+        int mediaWidth = 0;
+        int mediaHeight = 0;
+        string mediaPath = "";
+        bool isBanner = false;
+        int posterWidth = 0;
+        int posterHeight = 0;
+        string posterPath = "";
+        bool hasPoster = false;
+        int bannerWidth = 0;
+        int bannerHeight = 0;
+        string bannerPath = "";
+        bool hasBanner = false;
+
+        if ((call.type == tSeries) && call.banner.path.size() > 0) {
+            mediaWidth = call.banner.width;
+            mediaHeight = call.banner.height;
+            mediaPath = call.banner.path;
+            isBanner = true;
+            bannerWidth = mediaWidth;
+            bannerHeight = mediaHeight;
+            bannerPath = mediaPath;
+            hasBanner = true;
+
+            ScraperGetPoster callPoster;
+            callPoster.event = event;
+            callPoster.recording = NULL;
+            if (pScraper->Service("GetPoster", &callPoster)) {
+                posterWidth = callPoster.poster.width;
+                posterHeight = callPoster.poster.height;
+                posterPath = callPoster.poster.path;
+                hasPoster = true;
+            }
+        } else if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) {
+            mediaWidth = call.poster.width;
+            mediaHeight = call.poster.height;
+            mediaPath = call.poster.path;
+            posterWidth = call.poster.width;
+            posterHeight = call.poster.height;
+            posterPath = call.poster.path;
+            hasPoster = true;
+        } else
+            return;
+
+        intTokens.insert(pair<string,int>("mediawidth", mediaWidth));
+        intTokens.insert(pair<string,int>("mediaheight", mediaHeight));
+        intTokens.insert(pair<string,int>("isbanner", isBanner));
+        stringTokens.insert(pair<string,string>("mediapath", mediaPath));
+        intTokens.insert(pair<string,int>("posterwidth", posterWidth));
+        intTokens.insert(pair<string,int>("posterheight", posterHeight));
+        stringTokens.insert(pair<string,string>("posterpath", posterPath));
+        intTokens.insert(pair<string,int>("hasposter", hasPoster));
+        intTokens.insert(pair<string,int>("bannerwidth", bannerWidth));
+        intTokens.insert(pair<string,int>("bannerheight", bannerHeight));
+        stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
+        intTokens.insert(pair<string,int>("hasbanner", hasBanner));
+    }
+}
+
 bool cViewHelpers::SetTime(map < string, string > &stringTokens, map < string, int > &intTokens) {
     time_t t = time(0);   // get time now
     struct tm * now = localtime(&t);
     int sec = now->tm_sec;
-    if (sec == lastSecond)
+    if (sec == lastSecond) {
         return false;
-
+    }
     int min = now->tm_min;
     int hour = now->tm_hour;
     int hourMinutes = hour%12 * 5 + min / 12;
@@ -432,4 +531,317 @@ bool cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens,
     stringTokens.insert(pair<string,string>("pressure", currentWeather.pressure));
     stringTokens.insert(pair<string,string>("ozone", currentWeather.ozone));
     return true;
+}
+
+void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *timers) {
+    cGlobalSortedTimers SortedTimers;// local and remote timers
+    int numTimers = SortedTimers.Size();
+
+    intTokens->insert(pair<string, int>("numtimers", numTimers));
+
+    int numTimerConflicts = SortedTimers.NumTimerConfilicts();
+    intTokens->insert(pair<string, int>("numtimerconflicts", numTimerConflicts));
+
+    for (int i=0; i<15; i++) {
+        stringstream name;
+        name << "timer" << i+1 << "exists";
+        if (i < numTimers) {
+            intTokens->insert(pair<string, int>(name.str(), true));
+        } else {
+            intTokens->insert(pair<string, int>(name.str(), false));
+        }
+    }
+
+    for (int i = 0; i < numTimers; i++) {
+        if (i >=15)
+            break;
+        map< string, string > timerVals;
+        const cTimer *Timer = SortedTimers[i];
+        const cEvent *event = Timer->Event();
+        if (event) {
+            timerVals.insert(pair< string, string >("timers[title]", event->Title()));
+        } else {
+            const char *File = Setup.FoldersInTimerMenu ? NULL : strrchr(Timer->File(), FOLDERDELIMCHAR);
+            if (File && strcmp(File + 1, TIMERMACRO_TITLE) && strcmp(File + 1, TIMERMACRO_EPISODE))
+                File++;
+            else
+                File = Timer->File();
+            timerVals.insert(pair< string, string >("timers[title]", File));            
+        }
+        const cChannel *channel = Timer->Channel();
+        if (channel) {
+            timerVals.insert(pair< string, string >("timers[channelname]", channel->Name()));
+            stringstream chanNum;
+            chanNum << channel->Number();
+            timerVals.insert(pair< string, string >("timers[channelnumber]", chanNum.str()));
+            string channelID = *(channel->GetChannelID().ToString());
+            timerVals.insert(pair< string, string >("timers[channelid]", channelID));
+            bool logoExists = imgCache->LogoExists(channelID);
+            timerVals.insert(pair< string, string >("timers[channellogoexists]", logoExists ? "1" : "0"));
+        } else {
+            timerVals.insert(pair< string, string >("timers[channelname]", ""));
+            timerVals.insert(pair< string, string >("timers[channelnumber]", "0"));
+            timerVals.insert(pair< string, string >("timers[channelid]", ""));  
+            timerVals.insert(pair< string, string >("timers[channellogoexists]", "0"));
+        }
+        
+        timerVals.insert(pair< string, string >("timers[recording]", Timer->Recording() ? "1" : "0"));
+
+        cString timerDate("");
+        if (Timer->Recording()) {
+            timerDate = cString::sprintf("-%s", *TimeString(Timer->StopTime()));
+        } else {
+            time_t Now = time(NULL);
+            cString Today = WeekDayName(Now);
+            cString Time = TimeString(Timer->StartTime());
+            cString Day = WeekDayName(Timer->StartTime());
+            if (Timer->StartTime() > Now + 6 * SECSINDAY) {
+                time_t ttm = Timer->StartTime();
+                struct tm * timerTime = localtime(&ttm);
+                timerDate = cString::sprintf("%02d.%02d %s", timerTime->tm_mday, timerTime->tm_mon + 1, *Time);
+            } else if (strcmp(Day, Today) != 0)
+                timerDate = cString::sprintf("%s %s", *Day, *Time);
+            else
+                timerDate = Time;
+            if (Timer->Flags() & tfVps)
+                timerDate = cString::sprintf("VPS %s", *timerDate);
+        }
+        timerVals.insert(pair< string, string >("timers[datetime]", *timerDate));
+
+        timers->push_back(timerVals);
+    }
+}
+
+void cViewHelpers::SetMenuHeader(eMenuCategory cat, string menuTitle, map < string, string > &stringTokens, map < string, int > &intTokens) {
+    stringTokens.insert(pair<string,string>("title", menuTitle));
+    stringTokens.insert(pair<string,string>("vdrversion", VDRVERSION));
+
+    //check for standard menu entries
+    bool hasIcon = false;
+
+    string icon = imgCache->GetIconName(menuTitle, cat);
+    if (imgCache->MenuIconExists(icon))
+        hasIcon = true;
+
+    stringTokens.insert(pair<string,string>("icon", icon));
+    intTokens.insert(pair<string,int>("hasicon", hasIcon));
+
+    //Disc Usage
+    string vdrUsageString = *cVideoDiskUsage::String();
+    int discUsage = cVideoDiskUsage::UsedPercent();
+    bool discAlert = (discUsage > 95) ? true : false;
+    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
+    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
+
+    intTokens.insert(pair<string, int>("usedpercent", discUsage));
+    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
+    intTokens.insert(pair<string, int>("discalert", discAlert));
+    intTokens.insert(pair<string, int>("freegb", freeGB));
+    stringTokens.insert(pair<string,string>("freetime", freeTime));
+    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
+}
+
+void cViewHelpers::SetDiscUsage(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    string vdrUsageString = *cVideoDiskUsage::String();
+    int discUsage = cVideoDiskUsage::UsedPercent();
+    bool discAlert = (discUsage > 95) ? true : false;
+    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
+    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
+
+    intTokens.insert(pair<string, int>("usedpercent", discUsage));
+    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
+    intTokens.insert(pair<string, int>("discalert", discAlert));
+    intTokens.insert(pair<string, int>("freegb", freeGB));
+    stringTokens.insert(pair<string,string>("freetime", freeTime));
+    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
+}
+
+bool cViewHelpers::SetSystemLoad(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    double systemLoad;
+    if (getloadavg(&systemLoad, 1) > 0) {
+        if (lastSystemLoad == systemLoad) {
+            return false;
+        }
+        string load = *cString::sprintf("%.2f", systemLoad);
+        int loadHand = systemLoad * 1000;
+        int loadHandValue = 0;
+        if (loadHand > 2500)
+            loadHandValue = 2525;
+        else {
+
+            int loadHandDec = loadHand - (loadHand / 100) * 100;
+
+            if (loadHandDec <= 12)
+                loadHandDec = 0;
+            else if (loadHandDec <= 37)
+                loadHandDec = 25;
+            else if (loadHandDec <= 62)
+                loadHandDec = 50;
+            else if (loadHandDec <= 87)
+                loadHandDec = 75;
+            else
+                loadHandDec = 0;
+
+            loadHandValue = loadHand / 100 * 100 + loadHandDec;
+        }
+        stringTokens.insert(pair<string,string>("load", load));
+        intTokens.insert(pair<string,int>("loadhand", loadHandValue));
+        lastSystemLoad = systemLoad;
+    } else {
+        return false;
+    }
+    return true;
+}
+
+bool cViewHelpers::SetSystemMemory(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    
+    long long totalMem = memInfo.totalram;
+    totalMem += memInfo.totalswap;
+    totalMem *= memInfo.mem_unit;
+    int totalMemMB = totalMem / 1024 / 1024;
+
+    long long usedMem = memInfo.totalram - memInfo.freeram;
+    usedMem += memInfo.totalswap - memInfo.freeswap;
+    usedMem *= memInfo.mem_unit;
+    int usedMemMB = usedMem / 1024 / 1024;
+
+    if (lastMemUsage == usedMemMB) {
+        return false;
+    }
+    lastMemUsage = usedMemMB;
+
+    intTokens.insert(pair<string,int>("totalmem", totalMemMB));
+    intTokens.insert(pair<string,int>("usedmem", usedMemMB));
+    if (totalMemMB > 0)
+        intTokens.insert(pair<string,int>("usedmempercent", usedMemMB * 100 / totalMemMB));
+    return true;
+}
+
+bool cViewHelpers::SetSystemTemperatures(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
+    system(*execCommand);
+
+    string tempCPU, tempGPU;
+    int cpu, gpu;
+
+    cString itemFilename = cString::sprintf("%s/cpu", SCRIPTOUTPUTPATH );
+    ifstream file(*itemFilename, ifstream::in);
+    if( file.is_open() ) {
+        std::getline(file, tempCPU);
+        if (tempCPU.size() > 2) {
+            cpu = atoi(tempCPU.substr(0,2).c_str());
+        } else
+            cpu = 0;
+        file.close();
+    } else {
+        tempCPU = "0°C";
+        cpu = 0;
+    }
+
+    itemFilename = cString::sprintf("%s/gpu", SCRIPTOUTPUTPATH );
+    ifstream file2(*itemFilename, ifstream::in);
+    if( file2.is_open() ) {
+        std::getline(file2, tempGPU);
+        if (tempGPU.size() > 2) {
+            gpu = atoi(tempGPU.substr(0,2).c_str());
+        } else
+            gpu = 0;
+        file2.close();
+    } else {
+        tempGPU = "0°C";
+        gpu = 0;
+    }
+
+    intTokens.insert(pair<string,int>("cputemp", cpu));
+    intTokens.insert(pair<string,int>("gputemp", gpu));
+    return true;
+}
+
+void cViewHelpers::SetCurrentSchedule(map < string, string > &stringTokens, map < string, int > &intTokens) {
+    cDevice *device = cDevice::PrimaryDevice();
+    const cChannel *channel = NULL;
+    if (!device->Replaying() || device->Transferring()) {
+        channel = Channels.GetByNumber(device->CurrentChannel());
+    }
+    if (!channel)
+        return;
+
+    const cEvent *event = NULL;
+    cSchedulesLock SchedulesLock;
+    if (const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock))
+        if (const cSchedule *Schedule = Schedules->GetSchedule(channel))
+            event = Schedule->GetPresentEvent();
+    if (!event)
+        return;
+
+    stringTokens.insert(pair<string,string>("title", (event->Title())?event->Title():""));
+    stringTokens.insert(pair<string,string>("subtitle", (event->ShortText())?event->ShortText():""));
+    stringTokens.insert(pair<string,string>("start", *event->GetTimeString()));
+    stringTokens.insert(pair<string,string>("stop", *event->GetEndTimeString()));
+    intTokens.insert(pair<string,int>("duration", event->Duration() / 60));
+    intTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));
+    stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (event->Duration() / 60)%60)));
+    intTokens.insert(pair<string,int>("elapsed", (int)round((time(NULL) - event->StartTime())/60)));
+    intTokens.insert(pair<string,int>("remaining", (int)round((event->EndTime() - time(NULL))/60)));
+
+    int mediaWidth = 0;
+    int mediaHeight = 0;
+    string mediaPath = "";
+    bool isBanner = false;
+    int posterWidth = 0;
+    int posterHeight = 0;
+    string posterPath = "";
+    bool hasPoster = false;
+    int bannerWidth = 0;
+    int bannerHeight = 0;
+    string bannerPath = "";
+    bool hasBanner = false;
+    static cPlugin *pScraper = GetScraperPlugin();
+    if (pScraper) {
+        ScraperGetPosterBanner call;
+        call.event = event;
+        if (pScraper->Service("GetPosterBanner", &call)) {
+            if ((call.type == tSeries) && call.banner.path.size() > 0) {
+                mediaWidth = call.banner.width;
+                mediaHeight = call.banner.height;
+                mediaPath = call.banner.path;
+                isBanner = true;
+                bannerWidth = mediaWidth;
+                bannerHeight = mediaHeight;
+                bannerPath = mediaPath;
+                hasBanner = true;
+                ScraperGetPoster callPoster;
+                callPoster.event = event;
+                callPoster.recording = NULL;
+                if (pScraper->Service("GetPoster", &callPoster)) {
+                    posterWidth = callPoster.poster.width;
+                    posterHeight = callPoster.poster.height;
+                    posterPath = callPoster.poster.path;
+                    hasPoster = true;
+                }
+            } else if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) {
+                mediaWidth = call.poster.width;
+                mediaHeight = call.poster.height;
+                mediaPath = call.poster.path;
+                posterWidth = call.poster.width;
+                posterHeight = call.poster.height;
+                posterPath = call.poster.path;
+                hasPoster = true;
+            }
+        }
+    }
+    intTokens.insert(pair<string,int>("mediawidth", mediaWidth));
+    intTokens.insert(pair<string,int>("mediaheight", mediaHeight));
+    intTokens.insert(pair<string,int>("isbanner", isBanner));
+    stringTokens.insert(pair<string,string>("mediapath", mediaPath));
+    intTokens.insert(pair<string,int>("posterwidth", posterWidth));
+    intTokens.insert(pair<string,int>("posterheight", posterHeight));
+    stringTokens.insert(pair<string,string>("posterpath", posterPath));
+    intTokens.insert(pair<string,int>("hasposter", hasPoster));
+    intTokens.insert(pair<string,int>("bannerwidth", bannerWidth));
+    intTokens.insert(pair<string,int>("bannerheight", bannerHeight));
+    stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
+    intTokens.insert(pair<string,int>("hasbanner", hasBanner));
 }

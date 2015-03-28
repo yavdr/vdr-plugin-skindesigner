@@ -37,7 +37,8 @@ cView::~cView() {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
     for (map<eViewElement,cViewElement*>::iterator dVeIt = detachedViewElements.begin(); dVeIt != detachedViewElements.end(); dVeIt++) {
-        delete dVeIt->second;
+        cViewElement *ve = dVeIt->second;
+        delete ve;
     }
 }
 
@@ -94,6 +95,11 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
     viewElement->InitIterator();
     cTemplatePixmap *pix = NULL;
     while(pix = viewElement->GetNextPixmap()) {
+        //check if already drawn background area, this can be skipped
+        if (PixmapExists(pixCurrent) && pix->BackgroundArea()) {
+            pixCurrent++;
+            continue;
+        }
         //reset Template 
         pix->ClearDynamicParameters();
         //create Pixmap if already fully parsed
@@ -151,9 +157,12 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
 }
 
 void cView::ClearViewElement(eViewElement ve) {
-    if (!tmplView)
-        return;
-    cTemplateViewElement *viewElement = tmplView->GetViewElement(ve);
+    cTemplateViewElement *viewElement = NULL;
+    if (tmplViewElement) {
+        viewElement = tmplViewElement;
+    } else if (tmplView) {
+        viewElement = tmplView->GetViewElement(ve);
+    }
     if (!viewElement)
         return;
     int pixCurrent = viewElement->GetPixOffset();
@@ -162,7 +171,9 @@ void cView::ClearViewElement(eViewElement ve) {
     cTemplatePixmap *pix = NULL;
     viewElement->InitIterator();
     while(pix = viewElement->GetNextPixmap()) {
-        Fill(pixCurrent, clrTransparent);
+        if (!pix->BackgroundArea()) {
+            Fill(pixCurrent, clrTransparent);
+        }
         pixCurrent++; 
     }
 }
@@ -834,6 +845,7 @@ void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
 ************************************************************************/
 
 cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
+    tmplViewElement->SetPixOffset(0);
     delay = tmplViewElement->GetNumericParameter(ptDelay);
     SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
 }
@@ -858,82 +870,11 @@ void cViewElement::Action(void) {
     }
 }
 
-void cViewElement::Draw(map < string, vector< map< string, string > > > *loopTokens) {
-    if (!tmplViewElement)
-        return;
-
-    if (tmplViewElement->DebugTokens()) {
-        DebugTokens("viewelement", &stringTokens, &intTokens, loopTokens);
-    }
-    //iterate through pixmaps of viewelement
-    int pixCurrent = 0;
-    tmplViewElement->InitIterator();
-    cTemplatePixmap *pix = NULL;
-    while(pix = tmplViewElement->GetNextPixmap()) {
-        //reset Template 
-        pix->ClearDynamicParameters();
-        //create Pixmap if already fully parsed
-        if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
-            CreateViewPixmap(pixCurrent, pix);
-        }
-        //check if pixmap needs dynamic parameters  
-        if ((!pix->Ready() || !pix->DoExecute()) && !pix->Scrolling()) {
-            //parse dynamic parameters and initiate functions
-            pix->ParseDynamicParameters(&intTokens, true);
-            if (pix->Ready() && pix->DoExecute()) {
-                CreateViewPixmap(pixCurrent, pix);
-            }
-        } else {
-            //parse dynamic parameters but not initiate functions
-            pix->ParseDynamicParameters(&intTokens, false);
-        }
-        //if pixmap still not valid, skip
-        if (!pix->Ready() && !pix->Scrolling()) {
-            pixCurrent++;
-            continue;
-        }
-        //if condition for pixmap set, check if cond is true 
-        if (!pix->DoExecute()) {
-            pixCurrent++;
-            continue;
-        }
-        //parse dynamic tokens of pixmap functions
-        pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens);
-
-        if (!PixmapExists(pixCurrent) && pix->Scrolling()) {
-            cSize drawportSize;
-            scrolling = pix->CalculateDrawPortSize(drawportSize, loopTokens);
-            if (scrolling) {
-                /*
-                CreateScrollingPixmap(pixCurrent, pix, drawportSize);
-                pix->SetScrollingTextWidth();
-                veScroll = ve;
-                scrollingPix = pixCurrent;
-                scrollOrientation = pix->GetNumericParameter(ptOrientation); 
-                scrollMode = pix->GetNumericParameter(ptScrollMode);
-                scrollDelay = pix->GetNumericParameter(ptDelay);
-                scrollSpeed = pix->GetNumericParameter(ptScrollSpeed);
-                */
-            } else {
-                CreateViewPixmap(pixCurrent, pix);              
-            }
-        }
-        if (pix->DoDebug()) {
-            pix->Debug();
-        }
-        
-        DrawPixmap(pixCurrent, pix, loopTokens);
-        pixCurrent++; 
-    }
+void cViewElement::ClearTokens(void) {
+    stringTokens.clear();
+    intTokens.clear();
 }
 
-void cViewElement::Clear(void) {
-    int pixMax = NumPixmaps();
-    for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
-        Fill(pixCurrent, clrTransparent);
-    }
-}
 
 /***********************************************************************
 * cViewListItem
