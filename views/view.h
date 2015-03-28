@@ -8,6 +8,8 @@
 
 using namespace std;
 
+class cViewElement;
+
 class cView : public cPixmapContainer {
 private:
     void Init(void);
@@ -23,8 +25,10 @@ private:
     void ActivateScrolling(void);
 protected:
     cTemplateView *tmplView;
-    cTemplateViewElement *tmplItem;
+    cTemplateViewElement *tmplViewElement;
     cTemplateViewTab *tmplTab;
+    //detached viewelements
+    map < eViewElement, cViewElement* > detachedViewElements;
     //scaling window
     cRect scalingWindow;
     bool tvScaled;
@@ -43,7 +47,10 @@ protected:
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
     bool ExecuteViewElement(eViewElement ve);
+    bool DetachViewElement(eViewElement ve);
     bool ViewElementScrolls(eViewElement ve);
+    cViewElement *GetViewElement(eViewElement ve);
+    void AddViewElement(eViewElement ve, cViewElement *viewElement);
     void CreateViewPixmap(int num, cTemplatePixmap *pix, cRect *size = NULL);
     void CreateScrollingPixmap(int num, cTemplatePixmap *pix, cSize &drawportSize);
     void DrawPixmap(int num, cTemplatePixmap *pix, map < string, vector< map< string, string > > > *loopTokens = NULL, bool flushPerLoop = false);
@@ -52,10 +59,25 @@ protected:
     virtual void Action(void);
 public:
     cView(cTemplateView *tmplView);
-    cView(cTemplateViewElement *tmplItem);
+    cView(cTemplateViewElement *tmplViewElement);
     cView(cTemplateViewTab *tmplTab);
     virtual ~cView();
     virtual void Stop(void);
+};
+
+class cViewElement : public cView {
+private:
+protected:
+    int delay;
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    void Action(void);
+    void ClearTokens(void);
+public:
+    cViewElement(cTemplateViewElement *tmplViewElement);
+    virtual ~cViewElement();
+    virtual bool Render(void) { return false; };
+    bool Starting(void) { return Running(); };
 };
 
 class cViewListItem : public cView {

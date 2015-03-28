@@ -91,6 +91,7 @@ OBJS = $(PLUGIN).o \
        views/view.o \
        views/viewgrid.o \
        views/viewhelpers.o \
+       views/displayviewelements.o \
        views/displaychannelview.o \
        views/displaymenurootview.o \
        views/displaymenuview.o \

@@ -114,6 +114,7 @@ public:
     int GetNumPixmapsViewElement(eViewElement ve);
     bool HideView(void);
     bool ExecuteView(eViewElement ve);
+    bool DetachViewElement(eViewElement ve);
     int GetNumListViewMenuItems(void);
     bool GetScalingWindow(cRect &scalingWindow);
     map<string,string> GetCustomStringTokens(void) { return globals->GetCustomStringTokens(); };

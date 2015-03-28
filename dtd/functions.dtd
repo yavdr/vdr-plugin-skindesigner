@@ -7,6 +7,7 @@
   layer CDATA #REQUIRED
   transparency CDATA #IMPLIED
   condition CDATA #IMPLIED
+  background (true|false) #IMPLIED
   debug (true|false) #IMPLIED
 >
 

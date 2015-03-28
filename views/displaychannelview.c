@@ -2,15 +2,13 @@
 #include <vdr/menu.h>
 #include "../services/scraper2vdr.h"
 #include "displaychannelview.h"
+#include "displayviewelements.h"
 #include "../libcore/timers.h"
 #include "../libcore/helpers.h"
 
 cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplView) {
     lastScreenWidth = 0;
     lastScreenHeight = 0;
-    lastSignalDisplay = 0;
-    lastSignalStrength = 0;
-    lastSignalQuality = 0;
     lastNumAudioTracks = 0;
     lastAudioChannel = -1;
     lastTracDesc = "";
@@ -64,15 +62,27 @@ void cDisplayChannelView::DrawDate(void) {
         return;
     }
 
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    
-    if (!SetDate(stringTokens, intTokens)) {
-        return;
-    }
+    if (DetachViewElement(veDateTime)) {
+        cViewElement *viewElement = GetViewElement(veDateTime);
+        if (!viewElement) {
+            viewElement = new cViewElementDate(tmplView->GetViewElement(veDateTime));
+            AddViewElement(veDateTime, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        
+        if (!SetDate(stringTokens, intTokens)) {
+            return;
+        }
 
-    ClearViewElement(veDateTime);
-    DrawViewElement(veDateTime, &stringTokens, &intTokens);
+        ClearViewElement(veDateTime);
+        DrawViewElement(veDateTime, &stringTokens, &intTokens);
+    }
 }
 
 void cDisplayChannelView::DrawTime(void) {
@@ -80,14 +90,26 @@ void cDisplayChannelView::DrawTime(void) {
         return;
     }
 
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
+    if (DetachViewElement(veTime)) {
+        cViewElement *viewElement = GetViewElement(veTime);
+        if (!viewElement) {
+            viewElement = new cViewElementTime(tmplView->GetViewElement(veTime));
+            AddViewElement(veTime, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
 
-    if (!SetTime(stringTokens, intTokens)) {
-        return;
-    }    
-    ClearViewElement(veTime);
-    DrawViewElement(veTime, &stringTokens, &intTokens);
+        if (!SetTime(stringTokens, intTokens)) {
+            return;
+        }    
+        ClearViewElement(veTime);
+        DrawViewElement(veTime, &stringTokens, &intTokens);
+    }
 }
 
 void cDisplayChannelView::DrawProgressBar(cString &start, cString &stop, int Current, int Total) {
@@ -315,72 +337,22 @@ void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
         return;
     }
 
-    static cPlugin *pScraper = GetScraperPlugin();
-    if (!pScraper) {
-        return;
-    }
-
-    ScraperGetPosterBanner call;
-    call.event = event;
-    if (pScraper->Service("GetPosterBanner", &call)) {
-        int mediaWidth = 0;
-        int mediaHeight = 0;
-        string mediaPath = "";
-        bool isBanner = false;
-        int posterWidth = 0;
-        int posterHeight = 0;
-        string posterPath = "";
-        bool hasPoster = false;
-        int bannerWidth = 0;
-        int bannerHeight = 0;
-        string bannerPath = "";
-        bool hasBanner = false;
-
-        if ((call.type == tSeries) && call.banner.path.size() > 0) {
-            mediaWidth = call.banner.width;
-            mediaHeight = call.banner.height;
-            mediaPath = call.banner.path;
-            isBanner = true;
-            bannerWidth = mediaWidth;
-            bannerHeight = mediaHeight;
-            bannerPath = mediaPath;
-            hasBanner = true;
-
-            ScraperGetPoster callPoster;
-            callPoster.event = event;
-            callPoster.recording = NULL;
-            if (pScraper->Service("GetPoster", &callPoster)) {
-                posterWidth = callPoster.poster.width;
-                posterHeight = callPoster.poster.height;
-                posterPath = callPoster.poster.path;
-                hasPoster = true;
-            }
-        } else if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) {
-            mediaWidth = call.poster.width;
-            mediaHeight = call.poster.height;
-            mediaPath = call.poster.path;
-            posterWidth = call.poster.width;
-            posterHeight = call.poster.height;
-            posterPath = call.poster.path;
-            hasPoster = true;
-        } else
-            return;
-
-        map < string, int > intTokens;
+    if (DetachViewElement(veScraperContent)) {
+        cViewElement *viewElement = GetViewElement(veScraperContent);
+        if (!viewElement) {
+            viewElement = new cViewElementScraperContent(event, ctPosterBanner, tmplView->GetViewElement(veScraperContent));
+            AddViewElement(veScraperContent, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
         map < string, string > stringTokens;
-        intTokens.insert(pair<string,int>("mediawidth", mediaWidth));
-        intTokens.insert(pair<string,int>("mediaheight", mediaHeight));
-        intTokens.insert(pair<string,int>("isbanner", isBanner));
-        stringTokens.insert(pair<string,string>("mediapath", mediaPath));
-        intTokens.insert(pair<string,int>("posterwidth", posterWidth));
-        intTokens.insert(pair<string,int>("posterheight", posterHeight));
-        stringTokens.insert(pair<string,string>("posterpath", posterPath));
-        intTokens.insert(pair<string,int>("hasposter", hasPoster));
-        intTokens.insert(pair<string,int>("bannerwidth", bannerWidth));
-        intTokens.insert(pair<string,int>("bannerheight", bannerHeight));
-        stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
-        intTokens.insert(pair<string,int>("hasbanner", hasBanner));
-        ClearViewElement(veScraperContent);
+        map < string, int > intTokens;
+
+        SetPosterBanner(event, stringTokens, intTokens);
+        ClearScraperContent();
         DrawViewElement(veScraperContent, &stringTokens, &intTokens);
     }
 }
@@ -393,35 +365,27 @@ void cDisplayChannelView::DrawSignal(void) {
     if (!ExecuteViewElement(veSignalQuality)) {
         return;
     }
-    time_t Now = time(NULL);
-    if (Now != lastSignalDisplay) {
-#ifdef DOPROFILE
-        cStopWatch watch("DrawSignal");
-#endif
-        int SignalStrength = cDevice::ActualDevice()->SignalStrength();
-#ifdef DOPROFILE
-        watch.Report("SignalStrength");
-#endif
-        int SignalQuality = cDevice::ActualDevice()->SignalQuality();
-#ifdef DOPROFILE
-        watch.Report("SignalQuality");
-        watch.Stop("DrawSignal");
-#endif
-        if (SignalStrength < 0) SignalStrength = 0;
-        if (SignalQuality < 0) SignalQuality = 0;
-        if ((SignalStrength == 0)&&(SignalQuality==0))
-            return;
-        if ((lastSignalStrength != SignalStrength) || (lastSignalQuality != SignalQuality)) {
-            map < string, int > intTokens;
-            map < string, string > stringTokens;
-            intTokens.insert(pair<string,int>("signalstrength", SignalStrength));
-            intTokens.insert(pair<string,int>("signalquality", SignalQuality));
-            ClearViewElement(veSignalQuality);
-            DrawViewElement(veSignalQuality, &stringTokens, &intTokens);
+
+    if (DetachViewElement(veSignalQuality)) {
+        cViewElement *viewElement = GetViewElement(veSignalQuality);
+        if (!viewElement) {
+            viewElement = new cViewElementSignal(tmplView->GetViewElement(veSignalQuality));
+            AddViewElement(veSignalQuality, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
         }
-        lastSignalStrength = SignalStrength;
-        lastSignalQuality = SignalQuality;
-        lastSignalDisplay = Now;
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+
+        bool changed = SetSignal(intTokens);
+        if (!changed)
+            return;
+
+        ClearSignal();
+        DrawViewElement(veSignalQuality, &stringTokens, &intTokens);
     }
 }
 
@@ -445,19 +409,32 @@ void cDisplayChannelView::DrawDevices(bool initial) {
     if (!ExecuteViewElement(veDevices)) {
         return;
     }
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    map < string, vector< map< string, string > > > deviceLoopTokens;
-    vector< map< string, string > > devices;
 
-    bool changed = SetDevices(initial, &intTokens, &devices);
-    if (!changed)
-        return;
+    if (DetachViewElement(veDevices)) {
+        cViewElement *viewElement = GetViewElement(veDevices);
+        if (!viewElement) {
+            viewElement = new cViewElementDevices(tmplView->GetViewElement(veDevices));
+            AddViewElement(veDevices, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        map < string, vector< map< string, string > > > deviceLoopTokens;
+        vector< map< string, string > > devices;
 
-    deviceLoopTokens.insert(pair< string, vector< map< string, string > > >("devices", devices));
-    
-    ClearViewElement(veDevices);
-    DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);
+        bool changed = SetDevices(initial, &intTokens, &devices);
+        if (!changed)
+            return;
+
+        deviceLoopTokens.insert(pair< string, vector< map< string, string > > >("devices", devices));
+        
+        ClearDevices();
+        DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);        
+    }
 }
 
 void cDisplayChannelView::ClearDevices(void) {
@@ -472,8 +449,8 @@ void cDisplayChannelView::DrawChannelGroups(const cChannel *Channel, cString Cha
     bool separatorExists = imgCache->SeparatorLogoExists(*ChannelName);
     string separatorPath = separatorExists ? *ChannelName : "";
 
-    std::string prevChannelSep = GetChannelSep(Channel, true);
-    std::string nextChannelSep = GetChannelSep(Channel, false);
+    string prevChannelSep = GetChannelSep(Channel, true);
+    string nextChannelSep = GetChannelSep(Channel, false);
     bool prevAvailable = (prevChannelSep.size() > 0)?true:false;
     bool nextAvailable = (nextChannelSep.size() > 0)?true:false;
 
@@ -497,7 +474,7 @@ void cDisplayChannelView::ClearChannelGroups(void) {
 }
 
 string cDisplayChannelView::GetChannelSep(const cChannel *channel, bool prev) {
-    std::string sepName = "";
+    string sepName = "";
     const cChannel *sep = prev ? Channels.Prev(channel) :
                                  Channels.Next(channel);
     for (; sep; (prev)?(sep = Channels.Prev(sep)):(sep = Channels.Next(sep))) {
@@ -535,24 +512,49 @@ void cDisplayChannelView::DrawCustomTokens(void) {
     }
     if (!tmplView)
         return;
-    map < string, string > stringTokens = tmplView->GetCustomStringTokens();
-    map < string, int > intTokens = tmplView->GetCustomIntTokens();
-    DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
+    
+    if (DetachViewElement(veCustomTokens)) {
+        cViewElement *viewElement = GetViewElement(veCustomTokens);
+        if (!viewElement) {
+            viewElement = new cViewElementCustomTokens(tmplView->GetViewElement(veCustomTokens), tmplView);
+            AddViewElement(veCustomTokens, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens = tmplView->GetCustomStringTokens();
+        map < string, int > intTokens = tmplView->GetCustomIntTokens();
+        DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
+    }
 }
 
 void cDisplayChannelView::DrawCurrentWeather(void) {
     if (!ExecuteViewElement(veCurrentWeather)) {
         return;
     }
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
+
+    if (DetachViewElement(veCurrentWeather)) {
+        cViewElement *viewElement = GetViewElement(veCurrentWeather);
+        if (!viewElement) {
+            viewElement = new cViewElementWeather(tmplView->GetViewElement(veCurrentWeather));
+            AddViewElement(veCurrentWeather, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
+            ClearViewElement(veCurrentWeather);
+            return;
+        }
         ClearViewElement(veCurrentWeather);
-        return;
+        DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
     }
-    
-    ClearViewElement(veCurrentWeather);
-    DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
 }
 
 

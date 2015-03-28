@@ -7,16 +7,6 @@
         <area x="0" y="80%" width="100%" height="20%" layer="1">
             <fill color="{clrTransBlack}" />
         </area>
-        <!-- background datetime -->
-        <area x="70%" y="0" width="30%" height="13%" layer="1">
-            <fill color="{clrTransBlack}" />
-            <drawrectangle x="0" y="0" width="45%" height="100%" color="{clrTransBlueLight}" />
-        </area>
-        <!-- background weather -->
-        <area x="70%" y="15%" width="30%" height="13%" layer="1">
-            <fill color="{clrTransBlack}" />
-            <drawrectangle x="0" y="0" width="45%" height="100%" color="{clrTransBlueLight}" />
-        </area>
         <!-- background channellogo -->
         <area x="0" y="80%" width="20%" height="20%" layer="2">
             <fill color="{clrTransBlueLight}" />
@@ -196,8 +186,8 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices condition="{showdevices}" >
-        <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1">
+    <devices condition="{showdevices}" detached="true" delay="100" fadetime="{fadetime}">
+        <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="1" background="true">
             <fill color="{clrTransBlack}"/>
         </area>
         <area x="70%" y="30%" width="30%" height="{areaheight}/12 * {numdevices}" layer="2">
@@ -235,6 +225,10 @@
     {ozone}                     ozone value in DU
     -->
     <currentweather>
+        <area background="true" x="70%" y="15%" width="30%" height="13%" layer="1">
+            <fill color="{clrTransBlack}" />
+            <drawrectangle x="0" y="0" width="45%" height="100%" color="{clrTransBlueLight}" />
+        </area>
         <area x="70%" y="15%" width="13%" height="13%" layer="2">
             <drawimage imagetype="icon" path="{icon}" align="center" valign="center" width="{areaheight}*0.8" height="{areaheight}*0.8"/>
         </area>
@@ -284,6 +278,10 @@
     {year}                              year in yyyy
     -->
     <datetime>
+        <area background="true" x="70%" y="0" width="30%" height="13%" layer="1">
+            <fill color="{clrTransBlack}" />
+            <drawrectangle x="0" y="0" width="45%" height="100%" color="{clrTransBlueLight}" />
+        </area>
         <area x="70%" y="0" width="13%" height="13%" layer="2">
             <drawtext align="right" y="0" font="{light}" fontsize="50%" color="{clrWhite}" text="{dayname}" />
             <drawtext align="right" y="48%" font="{light}" fontsize="50%" color="{clrWhite}" text="{day}. {monthnameshort}" />

@@ -53,54 +53,81 @@
 
 <!ELEMENT timers (area|areascroll)*>
 <!ATTLIST timers
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT discusage (area|areascroll)*>
 <!ATTLIST discusage
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT devices (area|areascroll)*>
 <!ATTLIST devices
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT systemload (area|areascroll)*>
 <!ATTLIST systemload
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT systemmemory (area|areascroll)*>
 <!ATTLIST systemmemory
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT temperatures (area|areascroll)*>
 <!ATTLIST temperatures
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT currentschedule (area|areascroll)*>
 <!ATTLIST currentschedule
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT currentweather (area|areascroll)*>
 <!ATTLIST currentweather
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >

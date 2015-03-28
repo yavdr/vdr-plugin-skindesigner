@@ -228,5 +228,13 @@ Version 0.3.1
 
 Version 0.3.2
 
+<<<<<<< HEAD
 - fixed crash in drawing devices
+=======
+- fixed crash if number of dvb devices changes
+- added possibility to detach dedicated viewelements in displaychannel
+  and displaymenumain that they start in an own thread
+- introduced background="true" attribute in viewelements. These areas
+  will only be drawn once.
+>>>>>>> multithread
 

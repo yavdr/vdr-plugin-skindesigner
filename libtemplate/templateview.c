@@ -221,6 +221,14 @@ bool cTemplateView::ExecuteView(eViewElement ve) {
     return viewElement->Execute();
 }
 
+bool cTemplateView::DetachViewElement(eViewElement ve) {
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end())
+        return false;
+    cTemplateViewElement *viewElement = hit->second;
+    return viewElement->Detach();    
+}
+
 int cTemplateView::GetNumListViewMenuItems(void) {
     int numElements = 0;
     cTemplateViewList *menuList = GetViewList(vlMenuItem);
@@ -613,6 +621,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     string name = "viewelement";
     set<string> attributes;
     attributes.insert("debug");
+    attributes.insert("detached");
     attributes.insert("delay");
     attributes.insert("fadetime");
     attributes.insert("name");
@@ -629,6 +638,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("height");
     attributes.insert("layer");
     attributes.insert("transparency");
+    attributes.insert("background");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "areascroll";

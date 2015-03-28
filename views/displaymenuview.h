@@ -37,8 +37,6 @@ public:
 class cDisplayMenuMainView : public cDisplayMenuView {
 private:
     bool initial;
-    double lastSystemLoad;
-    int lastMemUsage;
     void DrawTimers(void);
     void DrawDiscUsage(void);
     bool DrawLoad(void);

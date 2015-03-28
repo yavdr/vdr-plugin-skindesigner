@@ -107,6 +107,7 @@ public:
     cTemplatePixmap *GetNextPixmap(void);
     cTemplateFunction *GetFunction(string name);
     bool Execute(void);
+    bool Detach(void);
     bool DebugTokens(void);
     virtual void Debug(void);
 };

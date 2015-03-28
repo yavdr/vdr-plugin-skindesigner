@@ -12,6 +12,7 @@ cTemplatePixmap::cTemplatePixmap(void) {
     containerHeight = 0;
     globals = NULL;
     scrolling = false;
+    background = false;
 }
 
 cTemplatePixmap::~cTemplatePixmap() {
@@ -170,6 +171,8 @@ bool cTemplatePixmap::CalculateParameters(void) {
             loopFunc->CalculateLoopFuncParameters();
         }
     }
+
+    background = parameters->GetNumericParameter(ptBackground);
 
     return paramsValid;
 }

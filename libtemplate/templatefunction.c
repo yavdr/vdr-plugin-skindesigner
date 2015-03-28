@@ -63,6 +63,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptHeight;
         } else if (!name.compare("menuitemwidth")) {
             p.first = ptMenuItemWidth;
+        } else if (!name.compare("detached")) {
+            p.first = ptDetached;
         } else if (!name.compare("fadetime")) {
             p.first = ptFadeTime;
         } else if (!name.compare("imagetype")) {
@@ -81,6 +83,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptLayer;
         } else if (!name.compare("transparency")) {
             p.first = ptTransparency;
+        } else if (!name.compare("background")) {
+            p.first = ptBackground;
         } else if (!name.compare("quadrant")) {
             p.first = ptQuadrant;
         } else if (!name.compare("type")) {
@@ -266,6 +270,12 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptHideRoot:
                 paramValid = SetHideRoot(value);
                 break;
+            case ptDetached:
+                paramValid = SetDetached(value);
+                break;
+            case ptBackground:
+                paramValid = SetBackground(value);
+                break;
             default:
                 paramValid = true;
                 break;
@@ -405,6 +415,10 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
         else if (type == ptMenuItemWidth)
             return 0;
         else if (type == ptHideRoot)
+            return 0;
+        else if (type == ptDetached)
+            return 0;
+        else if (type == ptBackground)
             return 0;
         return -1;
     }
@@ -1062,6 +1076,22 @@ bool cTemplateFunction::SetHideRoot(string value) {
     return true;
 }
 
+bool cTemplateFunction::SetDetached(string value) {
+    int detached = 0;
+    if (!value.compare("true"))
+        detached = 1;
+    numericParameters.insert(pair<eParamType, int>(ptDetached, detached));
+    return true;    
+}
+
+bool cTemplateFunction::SetBackground(string value) {
+    int back = 0;
+    if (!value.compare("true"))
+        back = 1;
+    numericParameters.insert(pair<eParamType, int>(ptBackground, back));
+    return true;    
+}
+
 void cTemplateFunction::ParseStringParameters(void) {
     //first replace stringtokens in Text (drawText)
     stringstream text;
@@ -1446,7 +1476,10 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptMenuItemWidth:
             name = "Menu Item Width";
-            break;          
+            break;
+        case ptDetached:
+            name = "Detached";
+            break;       
         case ptFadeTime:
             name = "Fade Time";
             break;
