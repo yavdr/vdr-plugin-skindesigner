@@ -119,6 +119,8 @@ void cPixmapContainer::CreatePixmap(int num, int Layer, const cRect &ViewPort, c
     if (!osd || (checkRunning && !Running()))
         return;
     pixmaps[num] = osd->CreatePixmap(Layer, ViewPort, DrawPort);
+    if (!pixmaps[num])
+        return;
     pixmaps[num]->Fill(clrTransparent);
     if (pixContainerInit && fadeTime) {
         pixmaps[num]->SetAlpha(0);

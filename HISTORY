@@ -235,4 +235,5 @@ Version 0.3.2
 - introduced background="true" attribute in viewelements. These areas
   will only be drawn once.
 - fixed bug in creating osd
+- fixed bug when creating pixmaps
 
