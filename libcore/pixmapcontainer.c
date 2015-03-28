@@ -52,7 +52,7 @@ bool cPixmapContainer::CreateOsd(int Left, int Top, int Width, int Height) {
     }
     cOsd *newOsd = cOsdProvider::NewOsd(Left, Top);
     if (newOsd) {
-        tArea Area = { 0, 0, Width, Height,  32 };
+        tArea Area = { 0, 0, Width - 1, Height - 1,  32 };
         if (newOsd->SetAreas(&Area, 1) == oeOk) {
             osd = newOsd;
             return true;
