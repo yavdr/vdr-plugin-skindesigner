@@ -15,6 +15,8 @@ private:
     int lastMinute;
     double lastSystemLoad;
     int lastMemUsage;
+    void RecName(string &path, string &name, string &folder);
+    void RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster);
 protected:
     void InitDevices(void);
     bool SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices);
@@ -26,6 +28,7 @@ protected:
     bool SetDate(map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens);
     void SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *timers);
+    void SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *lastRecordings);
     void SetMenuHeader(eMenuCategory cat, string menuTitle, map < string, string > &stringTokens, map < string, int > &intTokens);
     void SetDiscUsage(map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetSystemLoad(map < string, string > &stringTokens, map < string, int > &intTokens);

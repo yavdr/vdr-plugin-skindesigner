@@ -78,6 +78,14 @@ public:
     bool Render(void);
 };
 
+class cViewElementLastRecordings : public cViewElement, public cViewHelpers {
+private:
+public:
+    cViewElementLastRecordings(cTemplateViewElement *tmplViewElement);
+    virtual ~cViewElementLastRecordings() {};
+    bool Render(void);
+};
+
 class cViewElementDiscUsage : public cViewElement, public cViewHelpers {
 private:
 public:

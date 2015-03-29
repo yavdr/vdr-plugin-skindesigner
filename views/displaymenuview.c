@@ -205,6 +205,7 @@ cDisplayMenuMainView::~cDisplayMenuMainView() {
 
 void cDisplayMenuMainView::DrawStaticViewElements(void) {
     DrawTimers();
+    DrawLastRecordings();
     DrawDiscUsage();
     DrawTemperatures();
     DrawCurrentSchedule();
@@ -248,6 +249,35 @@ void cDisplayMenuMainView::DrawTimers(void) {
         ClearViewElement(veTimers);
         DrawViewElement(veTimers, &stringTokens, &intTokens, &timerLoopTokens);
     }    
+}
+
+void cDisplayMenuMainView::DrawLastRecordings(void) {
+    if (!ExecuteViewElement(veLastRecordings)) {
+        return;
+    }
+
+    if (DetachViewElement(veLastRecordings)) {
+        cViewElement *viewElement = GetViewElement(veLastRecordings);
+        if (!viewElement) {
+            viewElement = new cViewElementLastRecordings(tmplView->GetViewElement(veLastRecordings));
+            AddViewElement(veLastRecordings, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        map < string, vector< map< string, string > > > recordingLoopTokens;
+        vector< map< string, string > > lastRecordings;
+
+        SetLastRecordings(&intTokens, &stringTokens, &lastRecordings);
+        recordingLoopTokens.insert(pair< string, vector< map< string, string > > >("recordings", lastRecordings));
+
+        ClearViewElement(veLastRecordings);
+        DrawViewElement(veLastRecordings, &stringTokens, &intTokens, &recordingLoopTokens);
+    }
 }
 
 void cDisplayMenuMainView::DrawDiscUsage(void) {

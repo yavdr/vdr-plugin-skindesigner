@@ -1213,6 +1213,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("systemmemory");
     viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
+    viewElementsAllowed.insert("lastrecordings");
     viewElementsAllowed.insert("devices");
     viewElementsAllowed.insert("currentweather");
     viewElementsAllowed.insert("currentschedule");
@@ -1303,13 +1304,16 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
         case veTimers:
             name = "Timers";
             break;
+        case veLastRecordings:
+            name = "Last Recordings";
+            break;
         case veCurrentSchedule:
             name = "Current Schedule";
             break;
         case veCurrentWeather:
             name = "Current Weather";
             break;
-       case veCustomTokens:
+        case veCustomTokens:
             name = "Custom Tokens";
             break;
         case veDevices:
@@ -1424,6 +1428,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veTemperatures;
     } else if (!sViewElement.compare("timers")) {
         ve = veTimers;
+    } else if (!sViewElement.compare("lastrecordings")) {
+        ve = veLastRecordings;
     } else if (!sViewElement.compare("currentschedule")) {
         ve = veCurrentSchedule;
     } else if (!sViewElement.compare("customtokens")) {

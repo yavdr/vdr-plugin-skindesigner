@@ -239,3 +239,6 @@ Version 0.3.2
 
 Version 0.3.3
 
+- added viewelement <lastrecordings> with information about 5 newest
+  recordings in main menu
+

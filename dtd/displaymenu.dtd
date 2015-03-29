@@ -123,6 +123,15 @@
   condition CDATA #IMPLIED
 >
 
+<!ELEMENT lastrecordings (area|areascroll)*>
+<!ATTLIST lastrecordings
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
   detached CDATA #IMPLIED
@@ -165,7 +174,7 @@
 
 <!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | timers | 
                     discusage | devices | systemload | systemmemory | temperatures | currentschedule | 
-                    currentweather | customtokens | menuitems)*>
+                    currentweather | lastrecordings | customtokens | menuitems)*>
 <!ATTLIST menumain
   x CDATA #REQUIRED
   y CDATA #REQUIRED

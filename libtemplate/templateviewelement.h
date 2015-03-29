@@ -48,6 +48,7 @@ enum eViewElement {
     veSystemMemory,
     veTemperatures,
     veTimers,
+    veLastRecordings,
     veCurrentSchedule,
     veMenuItem,
     veMenuCurrentItemDetail,

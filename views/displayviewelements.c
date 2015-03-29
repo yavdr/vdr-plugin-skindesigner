@@ -129,11 +129,28 @@ bool cViewElementTimers::Render(void) {
     vector< map< string, string > > timers;
 
     SetTimers(&intTokens, &stringTokens, &timers);
-
     timerLoopTokens.insert(pair< string, vector< map< string, string > > >("timers", timers));
 
     ClearViewElement(veTimers);
     DrawViewElement(veTimers, &stringTokens, &intTokens, &timerLoopTokens);
+    return true;
+}
+
+/********************************************************************************************************************/
+
+cViewElementLastRecordings::cViewElementLastRecordings(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+}
+
+bool cViewElementLastRecordings::Render(void) {
+    ClearTokens();
+    map < string, vector< map< string, string > > > recordingLoopTokens;
+    vector< map< string, string > > lastRecordings;
+
+    SetLastRecordings(&intTokens, &stringTokens, &lastRecordings);
+    recordingLoopTokens.insert(pair< string, vector< map< string, string > > >("recordings", lastRecordings));
+
+    ClearViewElement(veLastRecordings);
+    DrawViewElement(veLastRecordings, &stringTokens, &intTokens, &recordingLoopTokens);
     return true;
 }
 

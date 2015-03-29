@@ -19,6 +19,21 @@
     <timers>
     </timers>
 
+    <!-- Available Variables lastrecordings: 5 newest recordings
+    {recordings[]}               array with 5 newest recordings
+    {recordings[name]}           name of recording
+    {recordings[seriesname]}     series name if available
+    {recordings[date]}           date of recording in dd.mm.yy
+    {recordings[time]}           time of recording in hh:mm
+    {recordings[duration]}       duration of recording in minutes
+    {recordings[hasposter]}      true if poster available
+    {recordings[posterpath]}     path of poster if available
+    {recordings[posterwidth]}    width of poster
+    {recordings[posterheight]}   height of poster
+    -->
+    <lastrecordings>
+    </lastrecordings>
+
     <!-- Available Variables discusage:
     {freetime}                available disc capacity in hh:mm
     {freepercent}             available disc capacity in percent

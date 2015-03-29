@@ -612,6 +612,45 @@ void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *str
     }
 }
 
+void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *lastRecordings) {
+    RecordingsSortMode = rsmTime;
+    Recordings.Sort();
+    int found = 0;
+    for (cRecording *recording = Recordings.Last(); recording; recording = Recordings.Prev(recording)) {
+        map< string, string > recVals;
+        string recFullPath = recording->Name() ? recording->Name() : "";
+        string recName = "";
+        string recPath = "";
+        RecName(recFullPath, recName, recPath);
+        stringstream recDuration;
+        int dur = recording->LengthInSeconds()/60;
+        recDuration << dur;
+        string posterPath = "";
+        int posterWidth = 0;
+        int posterHeight = 0;
+        bool hasPoster = false;
+        RecPoster(recording, posterWidth, posterHeight, posterPath, hasPoster);
+        stringstream sPosterWidth;
+        sPosterWidth << posterWidth;
+        stringstream sPosterHeight;
+        sPosterHeight << posterHeight;
+        string sHasPoster = hasPoster ? "1" : "0";
+        recVals.insert(pair< string, string >("recordings[name]", recName));
+        recVals.insert(pair< string, string >("recordings[seriesname]", recPath));
+        recVals.insert(pair< string, string >("recordings[date]", *ShortDateString(recording->Start())));
+        recVals.insert(pair< string, string >("recordings[time]", *TimeString(recording->Start())));
+        recVals.insert(pair< string, string >("recordings[duration]", recDuration.str()));
+        recVals.insert(pair< string, string >("recordings[hasposter]", sHasPoster));
+        recVals.insert(pair< string, string >("recordings[posterpath]", posterPath));
+        recVals.insert(pair< string, string >("recordings[posterwidth]", sPosterWidth.str()));
+        recVals.insert(pair< string, string >("recordings[posterheight]", sPosterHeight.str()));
+        lastRecordings->push_back(recVals);
+        found++;
+        if (found == 5)
+            break;
+    }
+}
+
 void cViewHelpers::SetMenuHeader(eMenuCategory cat, string menuTitle, map < string, string > &stringTokens, map < string, int > &intTokens) {
     stringTokens.insert(pair<string,string>("title", menuTitle));
     stringTokens.insert(pair<string,string>("vdrversion", VDRVERSION));
@@ -845,3 +884,40 @@ void cViewHelpers::SetCurrentSchedule(map < string, string > &stringTokens, map 
     stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
     intTokens.insert(pair<string,int>("hasbanner", hasBanner));
 }
+
+void cViewHelpers::RecName(string &path, string &name, string &folder) {
+    size_t delim = path.find_last_of('~');
+    if (delim == string::npos) {
+        name = path;
+        if (name.find('%') == 0) {
+            name = name.substr(1);
+        }
+        return;
+    }
+    name = path.substr(delim+1);
+    if (name.find('%') == 0) {
+        name = name.substr(1);
+    }
+    folder = path.substr(0, delim);
+    size_t delim2 = folder.find_last_of('~');
+    if (delim2 == string::npos) {
+        return;
+    }
+    folder = folder.substr(delim2+1);
+}
+
+void cViewHelpers::RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster) {
+    static cPlugin *pScraper = GetScraperPlugin();
+    if (!pScraper)
+        return;
+    ScraperGetPoster callPoster;
+    callPoster.event = NULL;
+    callPoster.recording = rec;
+    if (pScraper->Service("GetPoster", &callPoster)) {
+        posterWidth = callPoster.poster.width;
+        posterHeight = callPoster.poster.height;
+        path = callPoster.poster.path;
+        hasPoster = true;
+    }
+}
+
