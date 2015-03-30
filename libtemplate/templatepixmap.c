@@ -206,10 +206,27 @@ void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *string
         return;
     }
 
-    ReplaceWidthFunctions();
-    ReplaceHeightFunctions();
-    ReplacePosXFunctions();
-    ReplacePosYFunctions();
+    bool replacedWidth  = ReplaceWidthFunctions();
+    bool replacedHeight = ReplaceHeightFunctions();
+    bool replacedPosX =   ReplacePosXFunctions();
+    bool replacedPosY =   ReplacePosYFunctions();
+
+    if (!replacedWidth && !replacedHeight && !replacedPosX && !replacedPosY)
+        return;
+
+    InitIterator();
+    func = NULL;
+    while(func = GetNextFunction()) {
+        if (func->ParsedCompletely())
+            continue;
+        func->SetStringTokens(stringTokens);
+        func->SetIntTokens(intTokens);
+        func->ParseParameters();
+        if (func->Updated())
+            func->CompleteParameters();
+        func->UnsetIntTokens();
+        func->UnsetStringTokens();
+    }
 }
 
 bool cTemplatePixmap::CalculateDrawPortSize(cSize &size, map < string, vector< map< string, string > > > *loopTokens) {
@@ -376,7 +393,8 @@ bool cTemplatePixmap::Ready(void) {
     return true;
 }
 
-void cTemplatePixmap::ReplaceWidthFunctions(void) {
+bool cTemplatePixmap::ReplaceWidthFunctions(void) {
+    bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
@@ -397,14 +415,18 @@ void cTemplatePixmap::ReplaceWidthFunctions(void) {
                     func->SetWidth(type, label, funcWidth);
                     if (func->Updated()) {
                         func->CompleteParameters();
+                    } else {
+                        replaced = true;
                     }
                 }
             }
         }
     }
+    return replaced;
 }
 
-void cTemplatePixmap::ReplaceHeightFunctions(void) {
+bool cTemplatePixmap::ReplaceHeightFunctions(void) {
+    bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
@@ -425,14 +447,18 @@ void cTemplatePixmap::ReplaceHeightFunctions(void) {
                     func->SetHeight(type, label, funcHeight);
                     if (func->Updated()) {
                         func->CompleteParameters();
+                    } else {
+                        replaced = true;
                     }
                 }
             }
         }
     }
+    return replaced;
 }
 
-void cTemplatePixmap::ReplacePosXFunctions(void) {
+bool cTemplatePixmap::ReplacePosXFunctions(void) {
+    bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
@@ -454,15 +480,19 @@ void cTemplatePixmap::ReplacePosXFunctions(void) {
                         func->SetX(type, label, funcX);
                         if (func->Updated()) {
                             func->CompleteParameters();
+                        } else {
+                            replaced = true;
                         }
                     }
                 }
             }
         }
     }
+    return replaced;
 }
 
-void cTemplatePixmap::ReplacePosYFunctions(void) {
+bool cTemplatePixmap::ReplacePosYFunctions(void) {
+    bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
@@ -484,12 +514,15 @@ void cTemplatePixmap::ReplacePosYFunctions(void) {
                         func->SetY(type, label, funcY);
                         if (func->Updated()) {
                             func->CompleteParameters();
+                        } else {
+                            replaced = true;
                         }
                     }
                 }
             }
         }
     }
+    return replaced;
 }
 
 void cTemplatePixmap::Debug(void) {

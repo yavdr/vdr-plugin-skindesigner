@@ -31,11 +31,11 @@ protected:
     int containerHeight;
     cGlobals *globals;
     //functions replacing {width(label)} and {height(label)} tokens
-    void ReplaceWidthFunctions(void);
-    void ReplaceHeightFunctions(void);
+    bool ReplaceWidthFunctions(void);
+    bool ReplaceHeightFunctions(void);
     //functions replacing {posx(label)} and {posy(label)} tokens
-    void ReplacePosXFunctions(void);
-    void ReplacePosYFunctions(void);
+    bool ReplacePosXFunctions(void);
+    bool ReplacePosYFunctions(void);
     //Get Scrolling Function
     cTemplateFunction *GetScrollFunction(void);
 public:
