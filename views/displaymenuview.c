@@ -13,6 +13,8 @@ cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cVi
     else
         SetFadeTime(0);
     cat = mcUndefined;
+    sortMode = msmUnknown;
+    sortModeLast = msmUnknown;
     buttonTexts = NULL;
 }
 
@@ -173,6 +175,38 @@ void cDisplayMenuView::DrawScrollbar(int numMax, int numDisplayed, int offset) {
 
     ClearViewElement(veScrollbar);
     DrawViewElement(veScrollbar, &stringTokens, &intTokens);
+}
+
+bool cDisplayMenuView::DrawSortMode(void) {
+    if (!ExecuteViewElement(veSortMode)) {
+        return false;
+    }
+    if (sortMode == msmUnknown) {
+        if (sortModeLast != msmUnknown)
+            ClearViewElement(veSortMode);
+        sortModeLast = msmUnknown;
+        return true;
+    }
+    if (sortMode == sortModeLast)
+        return true;
+    sortModeLast = sortMode;
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    bool sortNumber   = (sortMode == msmNumber)   ? true : false;
+    bool sortName     = (sortMode == msmName)     ? true : false;
+    bool sortTime     = (sortMode == msmTime)     ? true : false;
+    bool sortProvider = (sortMode == msmProvider) ? true : false;
+
+    intTokens.insert(pair<string, int>("sortnumber", sortNumber));
+    intTokens.insert(pair<string, int>("sortname", sortName));
+    intTokens.insert(pair<string, int>("sorttime", sortTime));
+    intTokens.insert(pair<string, int>("sortprovider", sortProvider));
+
+    ClearViewElement(veSortMode);
+    DrawViewElement(veSortMode, &stringTokens, &intTokens);
+    return true;
 }
 
 bool cDisplayMenuView::BackgroundImplemented(void) {

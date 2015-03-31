@@ -248,5 +248,8 @@ Version 0.3.3
 - translate drawtextvertical
 - added viewelement <endtime> in displayreplay to display the time
   the currently replayed recording ends
+- added viewelement <sortmode> in displaymenu to display the sort
+  mode of the currently displayed menu. <sortmode> can be used in
+  any list menu, implementation in displaymenu.xml is default
 
 

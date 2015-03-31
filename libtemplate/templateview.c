@@ -1123,17 +1123,6 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvheight");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
-    //definition of allowed parameters for timerlist viewlist 
-    attributes.clear();
-    attributes.insert("x");
-    attributes.insert("y");
-    attributes.insert("width");
-    attributes.insert("height");
-    attributes.insert("orientation");
-    attributes.insert("align");
-    attributes.insert("numlistelements");
-    funcsAllowed.insert(pair< string, set<string> >("timerlist", attributes));
-
     //definition of allowed parameters for menuitems viewlist 
     attributes.clear();
     attributes.insert("x");
@@ -1209,6 +1198,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("header");
     viewElementsAllowed.insert("colorbuttons");
     viewElementsAllowed.insert("message");
+    viewElementsAllowed.insert("sortmode");
     viewElementsAllowed.insert("discusage");
     viewElementsAllowed.insert("systemload");
     viewElementsAllowed.insert("systemmemory");
@@ -1289,6 +1279,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
             break;
         case veMessage:
             name = "Message";
+            break;
+        case veSortMode:
+            name = "Sort Mode";
             break;
         case veDiscUsage:
             name = "Disc Usage";
@@ -1419,6 +1412,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veButtons;
     } else if (!sViewElement.compare("message")) {
         ve = veMessage;
+    } else if (!sViewElement.compare("sortmode")) {
+        ve = veSortMode;
     } else if (!sViewElement.compare("discusage")) {
         ve = veDiscUsage;
     } else if (!sViewElement.compare("systemload")) {

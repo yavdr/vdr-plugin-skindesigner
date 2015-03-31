@@ -7,6 +7,8 @@
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
     cat = mcUndefined;
+    sortMode = msmUnknown;
+    sortModeLast = msmUnknown;
     menuTitle = "";
     viewType = svUndefined;
     subView = NULL;
@@ -27,6 +29,7 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     defaultButtonsDrawn = false;
     defaultDateTimeDrawn = false;
     defaultMessageDrawn = false;
+    defaultSortmodeDrawn = false;
     DeleteOsdOnExit();
     SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
@@ -212,6 +215,13 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
     }
 }
 
+void cDisplayMenuRootView::SetSortMode(eMenuSortMode sortMode) {
+    this->sortMode = sortMode;
+    if (!view)
+        return;
+    view->SetSortMode(sortMode);
+}
+
 void cDisplayMenuRootView::CorrectDefaultMenu(void) {
     if (viewType > svMenuDefault && viewType != svMenuPlugin) {
         SetMenu(mcUnknown, true);
@@ -355,6 +365,8 @@ void cDisplayMenuRootView::ClearRootView(void) {
         ClearViewElement(veDateTime);
     if (defaultMessageDrawn)
         ClearViewElement(veMessage);
+    if (defaultSortmodeDrawn)
+        ClearViewElement(veSortMode);
 }
 
 int cDisplayMenuRootView::GetMaxItems(void) {
@@ -417,6 +429,13 @@ void cDisplayMenuRootView::Render(void) {
         defaultHeaderDrawn = false;
     }
 
+    if (!view->DrawSortMode()) {
+        defaultSortmodeDrawn = true;
+        DrawSortMode();
+    } else {
+        defaultSortmodeDrawn = false;
+    }
+
     if (!view->DrawColorButtons()) {
         defaultButtonsDrawn = true;
         DrawColorButtons();
@@ -476,6 +495,7 @@ void cDisplayMenuRootView::DrawBackground(void) {
     map < string, int > intTokens;
     DrawViewElement(veBackground, &stringTokens, &intTokens);
 }
+
 void cDisplayMenuRootView::DrawHeader(void) {
     if (!ExecuteViewElement(veHeader)) {
         return;
@@ -520,6 +540,38 @@ bool cDisplayMenuRootView::DrawTime(void) {
     return true;
 }
 
+void cDisplayMenuRootView::DrawSortMode(void) {
+    if (!ExecuteViewElement(veSortMode)) {
+        return;
+    }
+    if (sortMode == msmUnknown) {
+        if (sortModeLast != msmUnknown)
+            ClearViewElement(veSortMode);
+        sortModeLast = msmUnknown;
+        return;
+    }
+    if (sortMode == sortModeLast) {
+        return;
+    }
+    sortModeLast = sortMode;
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    bool sortNumber   = (sortMode == msmNumber)   ? true : false;
+    bool sortName     = (sortMode == msmName)     ? true : false;
+    bool sortTime     = (sortMode == msmTime)     ? true : false;
+    bool sortProvider = (sortMode == msmProvider) ? true : false;
+
+    intTokens.insert(pair<string, int>("sortnumber", sortNumber));
+    intTokens.insert(pair<string, int>("sortname", sortName));
+    intTokens.insert(pair<string, int>("sorttime", sortTime));
+    intTokens.insert(pair<string, int>("sortprovider", sortProvider));
+
+    ClearViewElement(veSortMode);
+    DrawViewElement(veSortMode, &stringTokens, &intTokens);
+    return;
+}
 
 void cDisplayMenuRootView::DrawColorButtons(void) {
     if (!ExecuteViewElement(veButtons)) {

@@ -5,9 +5,21 @@
 #include "viewhelpers.h"
 #include "displaymenulistview.h"
 
+#if APIVERSNUM < 20107
+enum eMenuSortMode {
+    msmUnknown = 0,
+    msmNumber,
+    msmName,
+    msmTime,
+    msmProvider
+};
+#endif
+
 class cDisplayMenuView : public cView, public cViewHelpers {
 protected:
     eMenuCategory cat;
+    eMenuSortMode sortMode;
+    eMenuSortMode sortModeLast;
     string menuTitle;
     string *buttonTexts;
     virtual void Action(void);
@@ -15,6 +27,7 @@ public:
     cDisplayMenuView(cTemplateView *tmplView, bool menuInit);
     virtual ~cDisplayMenuView();
     void SetMenuCat(eMenuCategory newCat) { cat = newCat; };
+    void SetSortMode(eMenuSortMode sortMode) { this->sortMode = sortMode; };
     void SetTitle(const char *title) {menuTitle = title; };
     virtual void SetChannel(const cChannel *channel) {};
     virtual const cChannel *GetChannel(void) { return NULL; };
@@ -29,6 +42,7 @@ public:
     bool DrawColorButtons(void);
     bool DrawMessage(eMessageType type, const char *text);
     void DrawScrollbar(int numMax, int numDisplayed, int offset);
+    bool DrawSortMode(void);
     virtual void DrawStaticViewElements(void) {};
     virtual bool DrawDynamicViewElements(void) { return false; };
     bool BackgroundImplemented(void);

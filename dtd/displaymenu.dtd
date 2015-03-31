@@ -2,7 +2,7 @@
 
 <!ENTITY % functions SYSTEM "functions.dtd">
 
-<!ELEMENT displaymenu (background,header,datetime,time*,message,colorbuttons,
+<!ELEMENT displaymenu (background,header,datetime,time*,message,sortmode*,colorbuttons,
                        menudefault,menumain*,menusetup*,menuschedules*,
                        menutimers*,menuchannels*,menurecordings*,
                        menudetailedepg,menudetailedrecording,
@@ -41,6 +41,12 @@
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT sortmode (area|areascroll)*>
+<!ATTLIST sortmode
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
@@ -159,7 +165,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT menudefault (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menudefault (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menudefault
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -172,7 +178,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | timers | 
+<!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | sortmode | timers | 
                     discusage | devices | systemload | systemmemory | temperatures | currentschedule | 
                     currentweather | lastrecordings | customtokens | menuitems)*>
 <!ATTLIST menumain
@@ -187,7 +193,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menusetup (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menusetup (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menusetup
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -200,7 +206,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menuschedules (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menuschedules (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menuschedules
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -213,7 +219,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menutimers (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menutimers (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menutimers
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -226,7 +232,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menuchannels (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menuchannels (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menuchannels
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -239,7 +245,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menurecordings (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menurecordings (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menurecordings
   x CDATA #REQUIRED
   y CDATA #REQUIRED

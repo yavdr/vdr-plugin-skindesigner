@@ -84,6 +84,21 @@
             <drawtext align="center" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{text}" />
         </area>
     </message>
+    
+    <!-- Available Variables sortmode:
+    {sortnumber}              true if menu is sorted by number
+    {sortname}                true if menu is sorted alphabetical
+    {sorttime}                true if menu is sorted by time
+    {sortprovider}            true if menu is sorted by provider
+    -->
+    <sortmode>
+        <area x="35%" y="2%" width="6%" height="6%" layer="4">
+            <drawimage condition="{sortnumber}" imagetype="icon" path="ico_sort_number" x="0" y="0" width="100%" height="100%"/>
+            <drawimage condition="{sortname}" imagetype="icon" path="ico_sort_name" x="0" y="0" width="100%" height="100%"/>
+            <drawimage condition="{sorttime}" imagetype="icon" path="ico_sort_time" x="0" y="0" width="100%" height="100%"/>
+            <drawimage condition="{sortprovider}" imagetype="icon" path="ico_sort_provider" x="0" y="0" width="100%" height="100%"/>
+        </area>
+    </sortmode>
     <!-- Available Variables colorbuttons:
     {red1}                    true if red button is button 1
     {red2}                    true if red button is button 2

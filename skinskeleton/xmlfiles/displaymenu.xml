@@ -55,6 +55,14 @@
     -->
     <time>
     </time>
+    <!-- Available Variables sortmode:
+    {sortnumber}              true if menu is sorted by number
+    {sortname}                true if menu is sorted alphabetical
+    {sorttime}                true if menu is sorted by time
+    {sortprovider}            true if menu is sorted by provider
+    -->
+    <sortmode>
+    </sortmode>
     <!-- Available Variables message:
     {text}                    message text
     {status}                  true if message is an status message

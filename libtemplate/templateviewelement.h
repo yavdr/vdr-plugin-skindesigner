@@ -25,6 +25,7 @@ enum eViewElement {
     veDateTime,
     veTime,
     veMessage,
+    veSortMode,
     veDevices,
     veCurrentWeather,
     veCustomTokens,

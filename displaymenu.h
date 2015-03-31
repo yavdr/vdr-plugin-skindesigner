@@ -30,6 +30,7 @@ public:
     virtual int MaxItems(void);
     virtual void Clear(void);
     virtual void SetMenuCategory(eMenuCategory MenuCat);
+    virtual void SetMenuSortMode(eMenuSortMode MenuSortMode);
     virtual void SetPluginMenu(string name, int menu, int type, bool init);
     virtual void SetTitle(const char *Title);
     virtual void SetButtons(const char *Red, const char *Green = NULL, const char *Yellow = NULL, const char *Blue = NULL);

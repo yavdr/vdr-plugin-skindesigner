@@ -56,6 +56,12 @@ void cSDDisplayMenu::SetMenuCategory(eMenuCategory MenuCat) {
         state = vsMenuInit;
 }
 
+void cSDDisplayMenu::SetMenuSortMode(eMenuSortMode MenuSortMode) {
+    if (!doOutput)
+        return;
+    rootView->SetSortMode(MenuSortMode);
+}
+
 void cSDDisplayMenu::SetPluginMenu(string name, int menu, int type, bool init) {
     pluginName = name;
     pluginMenu = menu;
