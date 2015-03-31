@@ -313,7 +313,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -326,7 +326,7 @@ void cTemplateView::Translate(void) {
                     funcsLoop->InitIterator();
                     cTemplateFunction *loopFunc = NULL;
                     while(loopFunc = funcsLoop->GetNextFunction()) {
-                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                             string text = loopFunc->GetParameter(ptText);
                             string translation;
                             bool translated = globals->Translate(text, translation);
@@ -349,7 +349,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -365,7 +365,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -383,7 +383,7 @@ void cTemplateView::Translate(void) {
                 pix->InitIterator();
                 cTemplateFunction *func = NULL;
                 while(func = pix->GetNextFunction()) {
-                    if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                    if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                         string text = func->GetParameter(ptText);
                         string translation;
                         bool translated = globals->Translate(text, translation);
@@ -409,7 +409,7 @@ void cTemplateView::Translate(void) {
         viewTab->InitIterator();
         cTemplateFunction *func = NULL;
         while(func = viewTab->GetNextFunction()) {
-            if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+            if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                 string text = func->GetParameter(ptText);
                 string translation;
                 translated = globals->Translate(text, translation);
@@ -422,7 +422,7 @@ void cTemplateView::Translate(void) {
                 funcsLoop->InitIterator();
                 cTemplateFunction *loopFunc = NULL;
                 while(loopFunc = funcsLoop->GetNextFunction()) {
-                    if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                    if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                         string text = loopFunc->GetParameter(ptText);
                         string translation;
                         bool translated = globals->Translate(text, translation);
@@ -445,7 +445,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -458,7 +458,7 @@ void cTemplateView::Translate(void) {
                     funcsLoop->InitIterator();
                     cTemplateFunction *loopFunc = NULL;
                     while(loopFunc = funcsLoop->GetNextFunction()) {
-                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                             string text = loopFunc->GetParameter(ptText);
                             string translation;
                             bool translated = globals->Translate(text, translation);

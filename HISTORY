@@ -245,5 +245,6 @@ Version 0.3.3
   height, posx or posy values are not parsed correctly
 - fixed bug also for loops
 - added possibility to draw vertical text bottomum and topdown
+- translate drawtextvertical
 
 

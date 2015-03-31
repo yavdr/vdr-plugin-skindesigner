@@ -188,7 +188,7 @@ void cTemplateFunction::SetTextboxHeight(int boxHeight) {
 }
 
 void cTemplateFunction::SetTranslatedText(string translation) {
-    if (type != ftDrawText && type != ftDrawTextBox)
+    if (type != ftDrawText && type != ftDrawTextBox && type != ftDrawTextVertical)
         return;
     if (translation.size() == 0)
         return;
@@ -1453,6 +1453,9 @@ string cTemplateFunction::GetFuncName(void) {
             break;
         case ftDrawTextBox:
             name = "Function DrawTextBox";
+            break;
+        case ftDrawTextVertical:
+            name = "Function DrawTextVertical";
             break;
         case ftDrawImage:
             name = "Function DrawImage";
