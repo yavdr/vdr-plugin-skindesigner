@@ -4,7 +4,7 @@
 
 <!ELEMENT displayreplay (background | backgroundmodeonly |datetime | time | 
                          scrapercontent | rectitle | recinfo | currenttime | 
-                         totaltime | progressbar | cutmarks | controlicons | 
+                         totaltime | endtime | progressbar | cutmarks | controlicons | 
                          controliconsmodeonly | jump | message | onpause | 
                          onpausemodeonly | customtokens)*>
 <!ATTLIST displayreplay
@@ -67,6 +67,12 @@
 
 <!ELEMENT totaltime (area|areascroll)*>
 <!ATTLIST totaltime
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT endtime (area|areascroll)*>
+<!ATTLIST endtime
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >

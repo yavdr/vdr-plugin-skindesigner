@@ -27,6 +27,8 @@ cSDDisplayReplay::~cSDDisplayReplay() {
 void cSDDisplayReplay::SetRecording(const cRecording *Recording) {
     if (!doOutput || !Recording)
         return;
+    if (initial)
+        replayView->SetRecordingLength(Recording->LengthInSeconds());
     replayView->DrawTitle(Recording);
     replayView->DrawRecordingInformation(Recording);
     replayView->DrawScraperContent(Recording);
@@ -62,6 +64,7 @@ void cSDDisplayReplay::SetProgress(int Current, int Total) {
     replayView->DelayOnPause();
     replayView->DrawProgressBar(Current, Total);
     replayView->DrawMarks(marks, Current, Total);
+    replayView->DrawEndTime(Current, Total);
 }
 
 void cSDDisplayReplay::SetCurrent(const char *Current) {

@@ -112,7 +112,6 @@ cSkinDisplayPlugin *cSkinDesigner::DisplayPlugin(string pluginName, int viewID, 
     if (useBackupSkin) 
         return NULL;
     Init();
-    cSkinDisplayPlugin *displayPlugin = NULL;
     map< string, map <int, cTemplate*> >::iterator hit = pluginTemplates.find(pluginName);
     if (hit == pluginTemplates.end())
         return NULL;

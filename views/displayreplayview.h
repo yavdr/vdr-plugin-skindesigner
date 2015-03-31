@@ -7,6 +7,8 @@
 
 class cDisplayReplayView : public cView, public cViewHelpers {
 private:
+    int length;
+    string endLast;
     cDisplayReplayOnPauseView *onPauseView;
     int numMarksLast;
     int *lastMarks;
@@ -18,6 +20,7 @@ public:
     cDisplayReplayView(cTemplateView *tmplView);
     virtual ~cDisplayReplayView();
     bool createOsd(void);
+    void SetRecordingLength(int length) { this->length = length; };
     void DrawBackground(bool modeOnly);
     void DrawDate(void);
     void DrawTime(void);
@@ -27,6 +30,7 @@ public:
     void DrawScraperContent(const cRecording *recording);
     void DrawCurrent(const char *current);
     void DrawTotal(const char *total);
+    void DrawEndTime(int current, int total);
     void DrawProgressBar(int current, int total);
     void DrawMarks(const cMarks *marks, int current, int total);
     void DrawControlIcons(bool play, bool forward, int speed, bool modeOnly);

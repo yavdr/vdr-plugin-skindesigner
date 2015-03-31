@@ -246,5 +246,7 @@ Version 0.3.3
 - fixed bug also for loops
 - added possibility to draw vertical text bottomum and topdown
 - translate drawtextvertical
+- added viewelement <endtime> in displayreplay to display the time
+  the currently replayed recording ends
 
 

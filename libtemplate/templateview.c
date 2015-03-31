@@ -1606,6 +1606,7 @@ void cTemplateViewReplay::SetViewElements(void) {
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("currenttime");
     viewElementsAllowed.insert("totaltime");
+    viewElementsAllowed.insert("endtime");
     viewElementsAllowed.insert("progressbar");
     viewElementsAllowed.insert("cutmarks");
     viewElementsAllowed.insert("controlicons");
@@ -1640,6 +1641,9 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
             break;
         case veRecTotal:
             name = "Recording total Time";
+            break;
+        case veRecEnd:
+            name = "Recording end Time";
             break;
         case veRecProgressBar:
             name = "Rec Progress Bar";
@@ -1697,6 +1701,8 @@ void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmap *pix, v
         ve = veRecCurrent;
     } else if (!sViewElement.compare("totaltime")) {
         ve = veRecTotal;
+    } else if (!sViewElement.compare("endtime")) {
+        ve = veRecEnd;
     } else if (!sViewElement.compare("progressbar")) {
         ve = veRecProgressBar;
     } else if (!sViewElement.compare("cutmarks")) {

@@ -119,6 +119,14 @@
         </area>
     </totaltime>
 
+    <!-- Available Variables endtime:
+    {recend}                     End Time in hh:mm
+    -->
+    <endtime>
+        <area x="63%" y="92%" width="20%" height="7%" layer="2">
+            <drawtext align="center" valign="bottom" font="{light}" fontsize="60%" color="{clrWhite}" text="{tr(endsat)}: {recend}" />
+        </area>
+    </endtime>
     <!-- Available Variables progressbar:
     {current}                   current frame of recording
     {total}                     total frames of recording

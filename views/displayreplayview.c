@@ -5,6 +5,8 @@
 #include "../libcore/helpers.h"
 
 cDisplayReplayView::cDisplayReplayView(cTemplateView *tmplView) : cView(tmplView) {
+    length = 0;
+    endLast = "";
     onPauseView = NULL;
     numMarksLast = 0;
     lastMarks = NULL;
@@ -224,6 +226,25 @@ void cDisplayReplayView::DrawTotal(const char *total) {
 
     ClearViewElement(veRecTotal);
     DrawViewElement(veRecTotal, &stringTokens, &intTokens);
+}
+
+void cDisplayReplayView::DrawEndTime(int current, int total) {
+    if (!current)
+        return;
+    double rest = (double)(total - current) / (double)total;
+    time_t end = time(0) + rest*length;
+    string endTime = *TimeString(end);
+    if (!endTime.compare(endLast)) {
+        return;
+    }
+    endLast = endTime;
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    stringTokens.insert(pair<string,string>("recend", endTime));
+
+    ClearViewElement(veRecEnd);
+    DrawViewElement(veRecEnd, &stringTokens, &intTokens);
 }
 
 void cDisplayReplayView::DrawProgressBar(int current, int total) {

@@ -60,6 +60,7 @@ enum eViewElement {
     veRecInfo,
     veRecCurrent,
     veRecTotal,
+    veRecEnd,
     veRecProgressBar,
     veCuttingMarks,
     veControlIcons,
