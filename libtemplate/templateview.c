@@ -727,6 +727,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("height");
     attributes.insert("align");
     attributes.insert("valign");
+    attributes.insert("direction");
     attributes.insert("font");
     attributes.insert("fontsize");
     attributes.insert("color");

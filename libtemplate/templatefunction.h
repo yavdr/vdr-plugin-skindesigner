@@ -81,6 +81,7 @@ enum eParamType {
     ptHideRoot,
     ptCache,
     ptDeterminateFont,
+    ptDirection,
     ptNone
 };
 
@@ -103,6 +104,12 @@ enum eOverflowType {
     otNone,
     otWrap,
     otCut
+};
+
+enum eDirection {
+    diNone,
+    diBottomUp,
+    diTopDown
 };
 
 class cTemplateFunction {
@@ -156,6 +163,7 @@ protected:
     bool SetHideRoot(string value);
     bool SetDetached(string value);
     bool SetBackground(string value);
+    bool SetDirection(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);

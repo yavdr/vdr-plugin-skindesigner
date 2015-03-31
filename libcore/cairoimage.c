@@ -1,4 +1,5 @@
 #include "cairoimage.h"
+#include "../libtemplate/templatefunction.h"
 
 cCairoImage::cCairoImage(void) {
     surface = NULL;
@@ -21,18 +22,26 @@ void cCairoImage::InitCairoImage(int width, int height) {
     cairo_set_antialias(cr, CAIRO_ANTIALIAS_SUBPIXEL);
 }
 
-void cCairoImage::DrawTextVertical(string text, tColor color, string font, int size) {
+void cCairoImage::DrawTextVertical(string text, tColor color, string font, int size, int direction) {
 
     int imgHeight = GetTextWidth(text, font, size);
     InitCairoImage(size * 1.2, imgHeight);
 
     SetColor(color);
-    cairo_move_to (cr, size, imgHeight);
     cairo_font_weight_t fontWeight = CAIRO_FONT_WEIGHT_NORMAL;
     cairo_font_slant_t fontSlant = CAIRO_FONT_SLANT_NORMAL;
     cairo_select_font_face (cr, font.c_str(), fontSlant, fontWeight);
     cairo_set_font_size (cr, size);
-    cairo_rotate(cr, 3*M_PI/2);
+    int x = size;
+    int y = imgHeight;
+    double rotate = 3*M_PI/2;
+    if (direction == diTopDown) {
+        rotate = M_PI/2;
+        x = size*0.3;
+        y = 0;
+    }
+    cairo_move_to (cr, x, y);
+    cairo_rotate(cr, rotate);
     cairo_show_text (cr, text.c_str());
 }
 

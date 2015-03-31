@@ -20,7 +20,7 @@ public:
     cCairoImage(void);
     virtual ~cCairoImage();
     void InitCairoImage(int width, int height);
-    void DrawTextVertical(string text, tColor color, string font, int size);
+    void DrawTextVertical(string text, tColor color, string font, int size, int direction);
     cImage *GetImage(void);
 };
 #endif //__CAIROIMAGE_H

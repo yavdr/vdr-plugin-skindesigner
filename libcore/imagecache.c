@@ -332,17 +332,17 @@ cImage *cImageCache::GetSkinpart(string name, int width, int height) {
     return NULL;    
 }
 
-cImage *cImageCache::GetVerticalText(string text, tColor color, string font, int size) {
+cImage *cImageCache::GetVerticalText(string text, tColor color, string font, int size, int direction) {
     cMutexLock MutexLock(&mutex);
     stringstream buf;
-    buf << text << "_" << size;
+    buf << text << "_" << size << "_" << direction;
     string imgName = buf.str();
     map<string, cImage*>::iterator hit = cairoImageCache.find(imgName);
     if (hit != cairoImageCache.end()) {
         return (cImage*)hit->second;
     } else {
         cCairoImage c;
-        c.DrawTextVertical(text, color, font, size);
+        c.DrawTextVertical(text, color, font, size, direction);
         cImage *image = c.GetImage();
         cairoImageCache.insert(pair<string, cImage*>(imgName, image));
         hit = cairoImageCache.find(imgName);

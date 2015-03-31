@@ -108,6 +108,7 @@
   fontsize CDATA #REQUIRED
   name NMTOKEN #IMPLIED
   text CDATA #REQUIRED
+  direction (bottomup|topdown) #IMPLIED
   condition CDATA #IMPLIED
   debug (true|false) #IMPLIED  
 >

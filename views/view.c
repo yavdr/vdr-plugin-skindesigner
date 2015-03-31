@@ -513,10 +513,11 @@ void cView::DoDrawText(int num, cTemplateFunction *func, int x0, int y0) {
 void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0) {
     string fontName = func->GetFontName();
     int fontSize = func->GetNumericParameter(ptFontSize);
+    int direction = func->GetNumericParameter(ptDirection);
     tColor clr = func->GetColorParameter(ptColor);
     tColor clrBack = clrTransparent; 
     string text = func->GetText(false);
-    cImage *textVertical = imgCache->GetVerticalText(text, clr, fontName, fontSize);
+    cImage *textVertical = imgCache->GetVerticalText(text, clr, fontName, fontSize, direction);
     if (!textVertical)
         return;
 
@@ -529,7 +530,7 @@ void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0)
         x = (containerWidth - textVertical->Width()) / 2;
     } else if (align == alLeft) {
         x = 0;
-    } else if (align = alRight) {
+    } else if (align == alRight) {
         int containerWidth = func->GetContainerWidth();
         x = (containerWidth - textVertical->Width());
     } else {
@@ -542,13 +543,12 @@ void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0)
         y = (containerHeight - textVertical->Height()) / 2;
     } else if (align == alTop) {
         y = 0;
-    } else if (align = alBottom) {
+    } else if (align == alBottom) {
         int containerHeight = func->GetContainerHeight();
         y = (containerHeight - textVertical->Height());
     } else {
         y = func->GetNumericParameter(ptY);
     }
-
     if (x < 0) x = 0;
     x += x0;
     if (y < 0) y = func->GetContainerHeight() - textVertical->Height() - 5;

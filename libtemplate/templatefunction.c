@@ -135,6 +135,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptCache;
         } else if (!name.compare("determinatefont")) {
             p.first = ptDeterminateFont;
+        } else if (!name.compare("direction")) {
+            p.first = ptDirection;
         } else {
             p.first = ptNone;
         }
@@ -275,6 +277,9 @@ bool cTemplateFunction::CalculateParameters(void) {
                 break;
             case ptBackground:
                 paramValid = SetBackground(value);
+                break;
+            case ptDirection:
+                paramValid = SetDirection(value);
                 break;
             default:
                 paramValid = true;
@@ -420,6 +425,8 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptBackground)
             return 0;
+        else if (type == ptDirection)
+            return diBottomUp;
         return -1;
     }
     return hit->second;
@@ -475,6 +482,9 @@ int cTemplateFunction::GetWidth(bool cutted) {
             else
                 funcWidth = fontManager->Width(fontName, GetNumericParameter(ptFontSize), parsedText.c_str());
             break; }
+        case ftDrawTextVertical:
+            funcWidth = GetNumericParameter(ptFontSize)*1.2;
+            break;
         case ftFill:
         case ftDrawImage:
         case ftDrawRectangle:
@@ -495,6 +505,9 @@ int cTemplateFunction::GetHeight(void) {
     switch (type) {
         case ftDrawText:
             funcHeight = fontManager->Height(fontName, GetNumericParameter(ptFontSize));
+            break;
+        case ftDrawTextVertical:
+            funcHeight = fontManager->Width(fontName, GetNumericParameter(ptFontSize), parsedText.c_str());
             break;
         case ftFill:
         case ftDrawImage:
@@ -1092,6 +1105,16 @@ bool cTemplateFunction::SetBackground(string value) {
     return true;    
 }
 
+bool cTemplateFunction::SetDirection(string value) {
+    int direction = diNone;
+    if (!value.compare("bottomup"))
+        direction = diBottomUp;
+    else if (!value.compare("topdown"))
+        direction = diTopDown;
+    numericParameters.insert(pair<eParamType, int>(ptDirection, direction));
+    return true;
+}
+
 void cTemplateFunction::ParseStringParameters(void) {
     //first replace stringtokens in Text (drawText)
     stringstream text;
@@ -1581,7 +1604,10 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptDeterminateFont:
             name = "Determinate Font";
-            break;    
+            break;
+        case ptDirection:
+            name = "Text Direction";
+            break;
         default:
             name = "Unknown";
             break;

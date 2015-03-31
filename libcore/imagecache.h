@@ -31,7 +31,7 @@ public:
     void CacheSkinpart(string path, int width, int height);
     cImage *GetSkinpart(string name, int width, int height);
     //cairo special images
-    cImage *GetVerticalText(string text, tColor color, string font, int size);
+    cImage *GetVerticalText(string text, tColor color, string font, int size, int direction);
     //helpers
     void Clear(void);
     void Debug(bool full);
