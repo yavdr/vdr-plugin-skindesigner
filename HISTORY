@@ -243,3 +243,5 @@ Version 0.3.3
   recordings in main menu
 - fixed bug that parameters with both dynamic tokens and relative width,
   height, posx or posy values are not parsed correctly
+- fixed bug also for loops
+

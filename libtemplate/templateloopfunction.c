@@ -95,8 +95,25 @@ void cTemplateLoopFunction::ParseDynamicParameters(map <string,string> *tokens) 
         return;
     }
 
-    ReplaceWidthFunctions();
-    ReplaceHeightFunctions();
+    bool replacedWidth = ReplaceWidthFunctions();
+    bool replacedHeight = ReplaceHeightFunctions();
+
+    if (!replacedWidth && !replacedHeight)
+        return;
+
+    InitIterator();
+    func = NULL;
+    while(func = GetNextFunction()) {
+        if (func->ParsedCompletely())
+            continue;
+        func->SetStringTokens(tokens);
+        func->SetIntTokens(&intTokens);
+        func->ParseParameters();
+        if (func->Updated())
+            func->CompleteParameters();
+        func->UnsetIntTokens();
+        func->UnsetStringTokens();
+    }
 }
 
 int cTemplateLoopFunction::GetLoopElementsWidth(void) {
@@ -132,7 +149,8 @@ int cTemplateLoopFunction::GetLoopElementsHeight(void) {
     return maxHeight;
 }
 
-void cTemplateLoopFunction::ReplaceWidthFunctions(void) {
+bool cTemplateLoopFunction::ReplaceWidthFunctions(void) {
+    bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
@@ -153,14 +171,18 @@ void cTemplateLoopFunction::ReplaceWidthFunctions(void) {
                     func->SetWidth(type, label, funcWidth);
                     if (func->Updated()) {
                         func->CompleteParameters();
+                    } else {
+                        replaced = true;
                     }
                 }
             }
         }
     }
+    return replaced;
 }
 
-void cTemplateLoopFunction::ReplaceHeightFunctions(void) {
+bool cTemplateLoopFunction::ReplaceHeightFunctions(void) {
+    bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
@@ -181,11 +203,14 @@ void cTemplateLoopFunction::ReplaceHeightFunctions(void) {
                     func->SetHeight(type, label, funcHeight);
                     if (func->Updated()) {
                         func->CompleteParameters();
+                    } else {
+                        replaced = true;
                     }
                 }
             }
         }
     }
+    return replaced;
 }
 
 bool cTemplateLoopFunction::Ready(void) {
