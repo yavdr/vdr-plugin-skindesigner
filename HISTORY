@@ -255,3 +255,4 @@ Version 0.3.3
   if recording is replayed. New token {islivetv} indicates this.
 - added Token {percentseen} to listelements in menurecordings. For
   VDR Version < 2.1.8 {percentseen} is set to -1.
+- added Token {timers[isremotetimer]} to <timers> in main menu

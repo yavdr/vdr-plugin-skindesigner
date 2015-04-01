@@ -557,6 +557,7 @@ void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *str
             break;
         map< string, string > timerVals;
         const cTimer *Timer = SortedTimers[i];
+        string isRemoteTimer = SortedTimers.IsRemoteTimer(i) ? "1" : "0";
         const cEvent *event = Timer->Event();
         if (event) {
             timerVals.insert(pair< string, string >("timers[title]", event->Title()));
@@ -607,7 +608,8 @@ void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *str
                 timerDate = cString::sprintf("VPS %s", *timerDate);
         }
         timerVals.insert(pair< string, string >("timers[datetime]", *timerDate));
-
+        timerVals.insert(pair< string, string >("timers[isremotetimer]", isRemoteTimer));
+        
         timers->push_back(timerVals);
     }
 }

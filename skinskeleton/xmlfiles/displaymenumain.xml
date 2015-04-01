@@ -15,6 +15,7 @@
     {timers[channelnumber]}      number of channel
     {timers[channelid]}          ChannelID of channel
     {timers[channellogoexists]}  true if channel logo exists
+    {timers[isremotetimer]}      true if timer is a remote timer from remotetimers plugin
     -->
     <timers>
     </timers>

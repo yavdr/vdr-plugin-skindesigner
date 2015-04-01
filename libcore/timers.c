@@ -9,6 +9,7 @@ static int CompareTimers(const void *a, const void *b) {
 cGlobalSortedTimers::cGlobalSortedTimers(bool forceRefresh) : cVector<const cTimer *>(Timers.Count()) {
     static bool initial = true;
     static cRemoteTimerRefresh *remoteTimerRefresh = NULL;
+    localTimer = NULL;
 
     if (forceRefresh)
         initial = true;
@@ -41,9 +42,42 @@ cGlobalSortedTimers::cGlobalSortedTimers(bool forceRefresh) : cVector<const cTim
   
     Sort(CompareTimers);
     
+    int numTimers = Size();
+    if (numTimers > 0) {
+        localTimer = new bool[numTimers];
+        for (int i=0; i < numTimers; i++) {
+            if (!pRemoteTimers) {
+                localTimer[i] = true;
+            } else {
+                localTimer[i] = false;
+                for (cTimer *Timer = Timers.First(); Timer; Timer = Timers.Next(Timer)) {
+                    if (Timer == At(i)) {
+                        localTimer[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     if (pRemoteTimers && (remoteTimerRefresh == NULL))
         remoteTimerRefresh = new cRemoteTimerRefresh();
 }
+
+cGlobalSortedTimers::~cGlobalSortedTimers(void) {
+    if (localTimer) {
+        delete[] localTimer;
+    }
+}
+
+bool cGlobalSortedTimers::IsRemoteTimer(int i) {
+    if (!localTimer)
+        return true;
+    if (i >= Size())
+        return true;
+    return !(localTimer[i]);
+}
+
 
 int cGlobalSortedTimers::NumTimerConfilicts(void) {
     int numConflicts = 0;
