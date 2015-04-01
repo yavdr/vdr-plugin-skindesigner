@@ -17,6 +17,8 @@ private:
     int lastMemUsage;
     void RecName(string &path, string &name, string &folder);
     void RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster);
+    void SetCurrentScheduleFromChannel(const cChannel *channel, map < string, string > &stringTokens, map < string, int > &intTokens);
+    void SetCurrentScheduleFromRecording(const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens);
 protected:
     void InitDevices(void);
     bool SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices);
@@ -34,7 +36,7 @@ protected:
     bool SetSystemLoad(map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetSystemMemory(map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetSystemTemperatures(map < string, string > &stringTokens, map < string, int > &intTokens);
-    void SetCurrentSchedule(map < string, string > &stringTokens, map < string, int > &intTokens);
+    void SetCurrentSchedule(string recName, map < string, string > &stringTokens, map < string, int > &intTokens);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);

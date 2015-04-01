@@ -10,6 +10,7 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     sortMode = msmUnknown;
     sortModeLast = msmUnknown;
     menuTitle = "";
+    currentRecording = "";
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
@@ -186,7 +187,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
         //Create new View
         switch (newViewType) {
             case svMenuMain:
-                view = new cDisplayMenuMainView(subView, menuInit);
+                view = new cDisplayMenuMainView(subView, menuInit, currentRecording);
                 break;
             case svMenuSchedules:
                 if (subViewAvailable)

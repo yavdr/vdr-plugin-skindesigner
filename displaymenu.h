@@ -21,6 +21,7 @@ private:
     int pluginMenu;
     ePluginMenuType pluginMenuType;
     mutable cFont *textAreaFont;
+    void SetCurrentRecording(void);
 protected:
     int Tab(int n);
 public:

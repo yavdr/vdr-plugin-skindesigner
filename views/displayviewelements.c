@@ -212,12 +212,13 @@ bool cViewElementTemperature::Render(void) {
 
 /********************************************************************************************************************/
 
-cViewElementCurrentSchedule::cViewElementCurrentSchedule(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+cViewElementCurrentSchedule::cViewElementCurrentSchedule(cTemplateViewElement *tmplViewElement, string currentRecording) : cViewElement(tmplViewElement) {
+    this->currentRecording = currentRecording;
 }
 
 bool cViewElementCurrentSchedule::Render(void) {
     ClearTokens();
-    SetCurrentSchedule(stringTokens, intTokens);
+    SetCurrentSchedule(currentRecording, stringTokens, intTokens);
     ClearViewElement(veCurrentSchedule);
     DrawViewElement(veCurrentSchedule, &stringTokens, &intTokens);
     return true;

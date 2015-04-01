@@ -251,5 +251,5 @@ Version 0.3.3
 - added viewelement <sortmode> in displaymenu to display the sort
   mode of the currently displayed menu. <sortmode> can be used in
   any list menu, implementation in displaymenu.xml is default
-
-
+- use recording info for <currentschedule> viewelement in main menu
+  if recording is replayed. New token {islivetv} indicates this.

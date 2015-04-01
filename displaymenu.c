@@ -1,3 +1,4 @@
+#include <vdr/player.h>
 #include "displaymenu.h"
 #include "libcore/helpers.h"
 
@@ -19,6 +20,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         doOutput = false;
         return;
     }
+    SetCurrentRecording();
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
@@ -311,4 +313,20 @@ void cSDDisplayMenu::Flush(void) {
         rootView->DoFlush();
     }
     state = vsIdle;
+}
+
+void cSDDisplayMenu::SetCurrentRecording(void) {
+    cControl *control = cControl::Control();
+    if (!control) {
+        return;
+    }
+    const cRecording *recording = control->GetRecording();
+    if (!recording) {
+        return;
+    }
+    string recFileName = "";
+    if (recording->FileName()) {
+        recFileName = recording->FileName();
+    }
+    rootView->SetCurrentRecording(recFileName);
 }

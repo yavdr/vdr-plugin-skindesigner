@@ -27,6 +27,7 @@ private:
     cDisplayMenuView *view;
     cDisplayMenuListView *listView;
     cDisplayMenuDetailView *detailView;
+    string currentRecording;
     string menuTitle;
     string buttonTexts[4];
     bool defaultBackgroundDrawn;
@@ -50,6 +51,7 @@ public:
     bool createOsd(void);
     void SetMenu(eMenuCategory menuCat, bool menuInit);
     void SetSortMode(eMenuSortMode sortMode);
+    void SetCurrentRecording(string rec) { currentRecording = rec; };
     void CorrectDefaultMenu(void);
     void SetPluginMenu(string name, int menu, int type);
     void SetTitle(const char *title);

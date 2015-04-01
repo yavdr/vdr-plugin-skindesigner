@@ -227,7 +227,8 @@ void cDisplayMenuView::Action(void) {
 * cDisplayMenuMainView
 ************************************************************************/
 
-cDisplayMenuMainView::cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit) : cDisplayMenuView(tmplView, menuInit) {
+cDisplayMenuMainView::cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit, string currentRecording) : cDisplayMenuView(tmplView, menuInit) {
+    this->currentRecording = currentRecording;
     initial = true;
     InitDevices();
 }
@@ -458,7 +459,7 @@ void cDisplayMenuMainView::DrawCurrentSchedule(void) {
     if (DetachViewElement(veCurrentSchedule)) {
         cViewElement *viewElement = GetViewElement(veCurrentSchedule);
         if (!viewElement) {
-            viewElement = new cViewElementCurrentSchedule(tmplView->GetViewElement(veCurrentSchedule));
+            viewElement = new cViewElementCurrentSchedule(tmplView->GetViewElement(veCurrentSchedule), currentRecording);
             AddViewElement(veCurrentSchedule, viewElement);
             viewElement->Start();
         } else {
@@ -468,7 +469,7 @@ void cDisplayMenuMainView::DrawCurrentSchedule(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        SetCurrentSchedule(stringTokens, intTokens);
+        SetCurrentSchedule(currentRecording, stringTokens, intTokens);
         ClearViewElement(veCurrentSchedule);
         DrawViewElement(veCurrentSchedule, &stringTokens, &intTokens);
     }

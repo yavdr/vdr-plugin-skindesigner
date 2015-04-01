@@ -51,6 +51,7 @@ public:
 class cDisplayMenuMainView : public cDisplayMenuView {
 private:
     bool initial;
+    string currentRecording;
     void DrawTimers(void);
     void DrawLastRecordings(void);
     void DrawDiscUsage(void);
@@ -62,7 +63,7 @@ private:
     void DrawCurrentWeather(void);
     void DrawCustomTokens(void);
 public:
-    cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit);
+    cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit, string currentRecording);
     virtual ~cDisplayMenuMainView();
     void DrawStaticViewElements(void);
     bool DrawDynamicViewElements(void);

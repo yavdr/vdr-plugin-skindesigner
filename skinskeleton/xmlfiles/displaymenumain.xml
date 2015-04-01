@@ -88,15 +88,17 @@
     </temperatures>
 
     <!-- Available Variables currentschedule:
+    if a recording is displayed, info of this recording is used
+    {islivetv}                  true if info is from livetv, false if recording is displayed
     {title}                     Title of the current Schedule
     {subtitle}                  Subtitle of the current Schedule
-    {start}                     Start of current Schedule in hh:mm
-    {stop}                      End of current Schedule in hh:mm 
+    {start}                     Start of current Schedule in hh:mm (empty for recordings)
+    {stop}                      End of current Schedule in hh:mm (empty for recordings)
     {duration}                  Duration of current Schedule in min
     {durationhours}             Duration, full hours
     {minutes}                   Duration, rest of minutes
-    {elapsed}                   Elapsed time of current Schedule in min
-    {remaining}                 Remaining time of current Schedule in min
+    {elapsed}                   Elapsed time of current Schedule in min (0 for recordings)
+    {remaining}                 Remaining time of current Schedule in min (0 for recordings)
     {hasPoster}                 true if poster is available
     {posterpath}                Full Path of Poster to use in image path attribute
     {posterwidth}               width of poster in pixel

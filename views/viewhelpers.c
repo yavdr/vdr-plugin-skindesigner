@@ -801,15 +801,62 @@ bool cViewHelpers::SetSystemTemperatures(map < string, string > &stringTokens, m
     return true;
 }
 
-void cViewHelpers::SetCurrentSchedule(map < string, string > &stringTokens, map < string, int > &intTokens) {
+void cViewHelpers::SetCurrentSchedule(string recName, map < string, string > &stringTokens, map < string, int > &intTokens) {
     cDevice *device = cDevice::PrimaryDevice();
     const cChannel *channel = NULL;
     if (!device->Replaying() || device->Transferring()) {
         channel = Channels.GetByNumber(device->CurrentChannel());
     }
-    if (!channel)
-        return;
+    if (channel) {
+        SetCurrentScheduleFromChannel(channel, stringTokens, intTokens);
+    } else {
+        if (recName.size() == 0)
+            return;
+        const cRecording *recording = new cRecording(recName.c_str());
+        if (recording) {
+            SetCurrentScheduleFromRecording(recording, stringTokens, intTokens);
+            delete recording;
+        }
+    }
+}
 
+void cViewHelpers::RecName(string &path, string &name, string &folder) {
+    size_t delim = path.find_last_of('~');
+    if (delim == string::npos) {
+        name = path;
+        if (name.find('%') == 0) {
+            name = name.substr(1);
+        }
+        return;
+    }
+    name = path.substr(delim+1);
+    if (name.find('%') == 0) {
+        name = name.substr(1);
+    }
+    folder = path.substr(0, delim);
+    size_t delim2 = folder.find_last_of('~');
+    if (delim2 == string::npos) {
+        return;
+    }
+    folder = folder.substr(delim2+1);
+}
+
+void cViewHelpers::RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster) {
+    static cPlugin *pScraper = GetScraperPlugin();
+    if (!pScraper)
+        return;
+    ScraperGetPoster callPoster;
+    callPoster.event = NULL;
+    callPoster.recording = rec;
+    if (pScraper->Service("GetPoster", &callPoster)) {
+        posterWidth = callPoster.poster.width;
+        posterHeight = callPoster.poster.height;
+        path = callPoster.poster.path;
+        hasPoster = true;
+    }
+}
+
+void cViewHelpers::SetCurrentScheduleFromChannel(const cChannel *channel, map < string, string > &stringTokens, map < string, int > &intTokens) {
     const cEvent *event = NULL;
     cSchedulesLock SchedulesLock;
     if (const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock))
@@ -818,6 +865,7 @@ void cViewHelpers::SetCurrentSchedule(map < string, string > &stringTokens, map 
     if (!event)
         return;
 
+    intTokens.insert(pair<string,int>("islivetv", 1));
     stringTokens.insert(pair<string,string>("title", (event->Title())?event->Title():""));
     stringTokens.insert(pair<string,string>("subtitle", (event->ShortText())?event->ShortText():""));
     stringTokens.insert(pair<string,string>("start", *event->GetTimeString()));
@@ -888,39 +936,86 @@ void cViewHelpers::SetCurrentSchedule(map < string, string > &stringTokens, map 
     intTokens.insert(pair<string,int>("hasbanner", hasBanner));
 }
 
-void cViewHelpers::RecName(string &path, string &name, string &folder) {
-    size_t delim = path.find_last_of('~');
-    if (delim == string::npos) {
-        name = path;
-        if (name.find('%') == 0) {
-            name = name.substr(1);
-        }
-        return;
-    }
-    name = path.substr(delim+1);
-    if (name.find('%') == 0) {
-        name = name.substr(1);
-    }
-    folder = path.substr(0, delim);
-    size_t delim2 = folder.find_last_of('~');
-    if (delim2 == string::npos) {
-        return;
-    }
-    folder = folder.substr(delim2+1);
-}
+void cViewHelpers::SetCurrentScheduleFromRecording(const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens) {
+    intTokens.insert(pair<string,int>("islivetv", 0));
 
-void cViewHelpers::RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster) {
+    string recFullName = recording->Name() ? recording->Name() : "";
+    string recName = "";
+    string recFolder = "";
+    RecName(recFullName, recName, recFolder);
+
+    stringTokens.insert(pair<string,string>("title", recName));
+    const cRecordingInfo *info = recording->Info();
+    if (info) {
+        stringTokens.insert(pair<string,string>("subtitle", info->ShortText() ? info->ShortText() : ""));
+    } else {
+        stringTokens.insert(pair<string,string>("subtitle", recFolder));
+    }
+    stringTokens.insert(pair<string,string>("start", ""));
+    stringTokens.insert(pair<string,string>("stop", ""));
+    intTokens.insert(pair<string,int>("duration", recording->LengthInSeconds() / 60));
+    intTokens.insert(pair<string,int>("durationhours", recording->LengthInSeconds() / 3600));
+    stringTokens.insert(pair<string,string>("durationminutes", *cString::sprintf("%.2d", (recording->LengthInSeconds() / 60)%60)));
+    intTokens.insert(pair<string,int>("elapsed", 0));
+    intTokens.insert(pair<string,int>("remaining", 0));
+
+    int mediaWidth = 0;
+    int mediaHeight = 0;
+    string mediaPath = "";
+    bool isBanner = false;
+    int posterWidth = 0;
+    int posterHeight = 0;
+    string posterPath = "";
+    bool hasPoster = false;
+    int bannerWidth = 0;
+    int bannerHeight = 0;
+    string bannerPath = "";
+    bool hasBanner = false;
     static cPlugin *pScraper = GetScraperPlugin();
-    if (!pScraper)
-        return;
-    ScraperGetPoster callPoster;
-    callPoster.event = NULL;
-    callPoster.recording = rec;
-    if (pScraper->Service("GetPoster", &callPoster)) {
-        posterWidth = callPoster.poster.width;
-        posterHeight = callPoster.poster.height;
-        path = callPoster.poster.path;
-        hasPoster = true;
+    if (pScraper) {
+        ScraperGetPosterBannerV2 call;
+        call.event = NULL;
+        call.recording = recording;
+        if (pScraper->Service("GetPosterBannerV2", &call)) {
+            if ((call.type == tSeries) && call.banner.path.size() > 0) {
+                mediaWidth = call.banner.width;
+                mediaHeight = call.banner.height;
+                mediaPath = call.banner.path;
+                isBanner = true;
+                bannerWidth = mediaWidth;
+                bannerHeight = mediaHeight;
+                bannerPath = mediaPath;
+                hasBanner = true;
+                ScraperGetPoster callPoster;
+                callPoster.event = NULL;
+                callPoster.recording = recording;
+                if (pScraper->Service("GetPoster", &callPoster)) {
+                    posterWidth = callPoster.poster.width;
+                    posterHeight = callPoster.poster.height;
+                    posterPath = callPoster.poster.path;
+                    hasPoster = true;
+                }
+            } else if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) {
+                mediaWidth = call.poster.width;
+                mediaHeight = call.poster.height;
+                mediaPath = call.poster.path;
+                posterWidth = call.poster.width;
+                posterHeight = call.poster.height;
+                posterPath = call.poster.path;
+                hasPoster = true;
+            }
+        }
     }
+    intTokens.insert(pair<string,int>("mediawidth", mediaWidth));
+    intTokens.insert(pair<string,int>("mediaheight", mediaHeight));
+    intTokens.insert(pair<string,int>("isbanner", isBanner));
+    stringTokens.insert(pair<string,string>("mediapath", mediaPath));
+    intTokens.insert(pair<string,int>("posterwidth", posterWidth));
+    intTokens.insert(pair<string,int>("posterheight", posterHeight));
+    stringTokens.insert(pair<string,string>("posterpath", posterPath));
+    intTokens.insert(pair<string,int>("hasposter", hasPoster));
+    intTokens.insert(pair<string,int>("bannerwidth", bannerWidth));
+    intTokens.insert(pair<string,int>("bannerheight", bannerHeight));
+    stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
+    intTokens.insert(pair<string,int>("hasbanner", hasBanner));
 }
-

@@ -120,8 +120,9 @@ public:
 
 class cViewElementCurrentSchedule : public cViewElement, public cViewHelpers {
 private:
+    string currentRecording;
 public:
-    cViewElementCurrentSchedule(cTemplateViewElement *tmplViewElement);
+    cViewElementCurrentSchedule(cTemplateViewElement *tmplViewElement, string currentRecording);
     virtual ~cViewElementCurrentSchedule() {};
     bool Render(void);
 };
