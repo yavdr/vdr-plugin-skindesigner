@@ -1,6 +1,7 @@
 #include "displayviewelements.h"
 
-cViewElementDevices::cViewElementDevices(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+cViewElementDevices::cViewElementDevices(bool light, cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+    this->light = light;
     init = true;
 }
 
@@ -11,7 +12,7 @@ bool cViewElementDevices::Render(void) {
 
     if (init)
         InitDevices();
-    bool changed = SetDevices(init, &intTokens, &devices);
+    bool changed = SetDevices(init, light, &intTokens, &devices);
     init = false;
     
     if (!changed)

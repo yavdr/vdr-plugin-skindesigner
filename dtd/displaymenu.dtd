@@ -82,6 +82,7 @@
   fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
+  mode CDATA #IMPLIED
 >
 
 <!ELEMENT systemload (area|areascroll)*>

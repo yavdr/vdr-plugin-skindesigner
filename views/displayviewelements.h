@@ -8,8 +8,9 @@
 class cViewElementDevices : public cViewElement, public cViewHelpers {
 private:
     bool init;
+    bool light;
 public:
-    cViewElementDevices(cTemplateViewElement *tmplViewElement);
+    cViewElementDevices(bool light, cTemplateViewElement *tmplViewElement);
     virtual ~cViewElementDevices() {};
     bool Render(void);
 };

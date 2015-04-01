@@ -256,3 +256,5 @@ Version 0.3.3
 - added Token {percentseen} to listelements in menurecordings. For
   VDR Version < 2.1.8 {percentseen} is set to -1.
 - added Token {timers[isremotetimer]} to <timers> in main menu
+- added parameter mode to viewelement <devices>. if mode="light"
+  no signal information will be fetched to improve performance.

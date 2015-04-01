@@ -409,11 +409,15 @@ void cDisplayChannelView::DrawDevices(bool initial) {
     if (!ExecuteViewElement(veDevices)) {
         return;
     }
-
+    string mode = tmplView->GetViewElementMode(veDevices);
+    bool light = false;
+    if (!mode.compare("light")) {
+        light = true;
+    }
     if (DetachViewElement(veDevices)) {
         cViewElement *viewElement = GetViewElement(veDevices);
         if (!viewElement) {
-            viewElement = new cViewElementDevices(tmplView->GetViewElement(veDevices));
+            viewElement = new cViewElementDevices(light, tmplView->GetViewElement(veDevices));
             AddViewElement(veDevices, viewElement);
             viewElement->Start();
         } else {
@@ -426,7 +430,7 @@ void cDisplayChannelView::DrawDevices(bool initial) {
         map < string, vector< map< string, string > > > deviceLoopTokens;
         vector< map< string, string > > devices;
 
-        bool changed = SetDevices(initial, &intTokens, &devices);
+        bool changed = SetDevices(initial, light, &intTokens, &devices);
         if (!changed)
             return;
 

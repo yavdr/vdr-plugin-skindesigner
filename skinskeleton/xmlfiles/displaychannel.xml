@@ -107,6 +107,7 @@
     </signalqualityback>
 
     <!-- Available Variables devices:
+    signalstrength and -quality are only set if not mode="light" is used in <devices>
     {numdevices}                number of available devices
     {devices[]}                 array with available devices
     {devices[num]}              number of current device
@@ -124,7 +125,7 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices>
+    <devices mode="full|light">
     </devices>
 
     <!-- Available Variables currentweather:

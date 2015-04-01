@@ -21,7 +21,7 @@ private:
     void SetCurrentScheduleFromRecording(const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens);
 protected:
     void InitDevices(void);
-    bool SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices);
+    bool SetDevices(bool initial, bool light, map<string,int> *intTokens, vector<map<string,string> > *devices);
     bool SetSignal(map < string, int > &intTokens);
     bool CheckNewMails(void);
     void SetScraperTokens(const cEvent *event, const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens, map < string, vector< map< string, string > > > &loopTokens);

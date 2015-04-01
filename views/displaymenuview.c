@@ -423,11 +423,16 @@ bool cDisplayMenuMainView::DrawDevices(void) {
     if (!ExecuteViewElement(veDevices)) {
         return false;
     }
+    string mode = tmplView->GetViewElementMode(veDevices);
+    bool light = false;
+    if (!mode.compare("light")) {
+        light = true;
+    } 
     bool changed = false;
     if (DetachViewElement(veDevices)) {
         cViewElement *viewElement = GetViewElement(veDevices);
         if (!viewElement) {
-            viewElement = new cViewElementDevices(tmplView->GetViewElement(veDevices));
+            viewElement = new cViewElementDevices(light, tmplView->GetViewElement(veDevices));
             AddViewElement(veDevices, viewElement);
             viewElement->Start();
             changed = true;
@@ -441,7 +446,7 @@ bool cDisplayMenuMainView::DrawDevices(void) {
         map < string, vector< map< string, string > > > deviceLoopTokens;
         vector< map< string, string > > devices;
 
-        changed = SetDevices(initial, &intTokens, &devices);
+        changed = SetDevices(initial, light, &intTokens, &devices);
         if (!changed)
             return false;
 

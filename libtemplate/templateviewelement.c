@@ -133,6 +133,12 @@ bool cTemplateViewElement::Detach(void) {
     return false;
 }
 
+string cTemplateViewElement::GetMode(void) {
+    if (!parameters)
+        return "";
+    return parameters->GetParameter(ptMode);
+}
+
 bool cTemplateViewElement::DebugTokens(void) {
     if (!parameters)
         return false;

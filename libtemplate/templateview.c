@@ -229,6 +229,14 @@ bool cTemplateView::DetachViewElement(eViewElement ve) {
     return viewElement->Detach();    
 }
 
+string cTemplateView::GetViewElementMode(eViewElement ve) {
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end())
+        return "";
+    cTemplateViewElement *viewElement = hit->second;
+    return viewElement->GetMode();    
+}
+
 int cTemplateView::GetNumListViewMenuItems(void) {
     int numElements = 0;
     cTemplateViewList *menuList = GetViewList(vlMenuItem);
@@ -626,6 +634,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("fadetime");
     attributes.insert("name");
     attributes.insert("condition");
+    attributes.insert("mode");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "area";

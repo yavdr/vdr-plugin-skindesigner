@@ -53,6 +53,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptCond;
         } else if (!name.compare("name")) {
             p.first = ptName;
+        } else if (!name.compare("mode")) {
+            p.first = ptMode;
         } else if (!name.compare("x")) {
             p.first = ptX;
         } else if (!name.compare("y")) {
@@ -1487,6 +1489,9 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptName:
             name = "Name";
+            break;
+        case ptMode:
+            name = "Mode";
             break;
         case ptX:
             name = "X";

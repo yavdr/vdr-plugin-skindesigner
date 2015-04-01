@@ -40,6 +40,7 @@ enum eFuncType {
 enum eParamType {
     ptCond,
     ptName,
+    ptMode,
     ptX,
     ptY,
     ptWidth,

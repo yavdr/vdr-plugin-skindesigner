@@ -91,6 +91,7 @@
   fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
+  mode CDATA #IMPLIED
 >
 
 <!ELEMENT currentweather (area|areascroll)*>

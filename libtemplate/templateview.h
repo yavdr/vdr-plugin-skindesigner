@@ -115,6 +115,7 @@ public:
     bool HideView(void);
     bool ExecuteView(eViewElement ve);
     bool DetachViewElement(eViewElement ve);
+    string GetViewElementMode(eViewElement ve);
     int GetNumListViewMenuItems(void);
     bool GetScalingWindow(cRect &scalingWindow);
     map<string,string> GetCustomStringTokens(void) { return globals->GetCustomStringTokens(); };

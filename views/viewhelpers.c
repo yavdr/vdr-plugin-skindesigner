@@ -43,8 +43,10 @@ void cViewHelpers::InitDevices(void) {
     devicesInit = true;
 }
 
-bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<map<string,string> > *devices) {
+bool cViewHelpers::SetDevices(bool initial, bool light, map<string,int> *intTokens, vector<map<string,string> > *devices) {
     if (!initial) {
+        if (light)
+            return false;
         //check if drawing is necessary
         bool changed = false;
         for (int i = 0; i < numDevices; i++) {
@@ -105,11 +107,16 @@ bool cViewHelpers::SetDevices(bool initial, map<string,int> *intTokens, vector<m
         } else {
             deviceVals.insert(pair< string, string >("devices[hascam]", "0"));
         }
-        int signalStrength = device->SignalStrength();
-        int signalQuality = device->SignalQuality();
         stringstream strCamNumber;
         strCamNumber << camNumber;
         deviceVals.insert(pair< string, string >("devices[cam]", strCamNumber.str()));
+
+        int signalStrength = 0;
+        int signalQuality = 0;
+        if (!light) {
+            signalStrength = device->SignalStrength();
+            signalQuality = device->SignalQuality();
+        }
         stringstream strStrength;
         strStrength << signalStrength;
         deviceVals.insert(pair< string, string >("devices[signalstrength]", strStrength.str()));

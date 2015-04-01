@@ -111,6 +111,7 @@ public:
     cTemplateFunction *GetFunction(string name);
     bool Execute(void);
     bool Detach(void);
+    string GetMode(void);
     bool DebugTokens(void);
     virtual void Debug(void);
 };
