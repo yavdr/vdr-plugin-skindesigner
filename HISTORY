@@ -253,3 +253,5 @@ Version 0.3.3
   any list menu, implementation in displaymenu.xml is default
 - use recording info for <currentschedule> viewelement in main menu
   if recording is replayed. New token {islivetv} indicates this.
+- added Token {percentseen} to listelements in menurecordings. For
+  VDR Version < 2.1.8 {percentseen} is set to -1.

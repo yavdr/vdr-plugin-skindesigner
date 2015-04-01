@@ -690,6 +690,19 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
 
     stringTokens.insert(pair<string,string>("name", buffer.c_str()));
     intTokens.insert(pair<string,int>("new", usedRecording->IsNew()));
+
+    int percSeen = 0;
+#if APIVERSNUM < 20108
+    percSeen = -1;
+#else
+    percSeen = 0;
+    int framesSeen = usedRecording->GetResume();
+    int framesTotal = usedRecording->NumFrames();
+    if (framesTotal > 0) {
+        percSeen = (double)framesSeen / (double)framesTotal * 100;
+    }
+#endif
+    intTokens.insert(pair<string,int>("percentseen", percSeen));
     intTokens.insert(pair<string,int>("newrecordingsfolder", newRecs));
     intTokens.insert(pair<string,int>("numrecordingsfolder", total));
     intTokens.insert(pair<string,int>("cutted", usedRecording->IsEdited()));
