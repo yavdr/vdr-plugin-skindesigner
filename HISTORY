@@ -261,3 +261,5 @@ Version 0.3.3
 
   Version 0.3.4
   
+- fixed backward compatibility to VDR version < 2.1.1 where
+  cRecording::IsInUse() was introduced

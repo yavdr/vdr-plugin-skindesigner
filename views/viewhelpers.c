@@ -626,9 +626,11 @@ void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,stri
     Recordings.Sort();
     int found = 0;
     for (cRecording *recording = Recordings.Last(); recording; recording = Recordings.Prev(recording)) {
+#if APIVERSNUM >= 20101
         if (recording->IsInUse()) {
             continue;
         }
+#endif
         map< string, string > recVals;
         string recFullPath = recording->Name() ? recording->Name() : "";
         string recName = "";
