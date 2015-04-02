@@ -22,6 +22,7 @@ public:
     virtual bool LoadImage(const char *path) { return false; };
     virtual void DrawToCairo(cairo_t *cr) {};
     virtual void GetImageSize(int &width, int &height) {};
+    static cImageImporter* CreateImageImporter(const char* path);
 };
 
 // Image importer for PNG

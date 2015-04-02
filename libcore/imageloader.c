@@ -4,6 +4,7 @@
 #include <string>
 #include <dirent.h>
 #include <iostream>
+#include <fstream>
 
 cImageLoader::cImageLoader() {
     importer = NULL;
@@ -77,8 +78,11 @@ bool cImageLoader::LoadImage(const char *fullpath) {
         importer = new cImageImporterSVG;
     else if (endswith(fullpath, ".jpg"))
         importer = new cImageImporterJPG;
-    else
-        return false;
+    else {
+        importer = cImageImporter::CreateImageImporter(fullpath);
+        if (!importer)
+            return false;
+    }
 
     return importer->LoadImage(fullpath);
 }
@@ -89,6 +93,35 @@ bool cImageLoader::LoadImage(std::string Path, std::string FileName, std::string
     sstrImgFile << Path << FileName << "." << Extension;
     std::string imgFile = sstrImgFile.str();
     return LoadImage(imgFile.c_str());
+}
+
+cImageImporter* cImageImporter::CreateImageImporter(const char* path) {
+    char pngSig[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
+    char jpgSig[] = { 0xFF, 0xD8, 0xFF, 0xD9 };
+    char buffer[8] = { 0 };
+    ifstream f(path, ios::in | ios::binary);
+    f.read(buffer, 8);
+    if (!f)
+        return NULL;
+    if(buffer[0] == jpgSig[0] && buffer[1] == jpgSig[1]) {
+        f.seekg(-2, f.end);
+        f.read(buffer, 2);
+        if(buffer[0] == jpgSig[2] && buffer[1] == jpgSig[3]) {
+            f.close();
+            return new cImageImporterJPG;
+        }
+    } else if(buffer[0] == pngSig[0] 
+        && buffer[1] == pngSig[1]
+        && buffer[2] == pngSig[2]
+        && buffer[3] == pngSig[3]
+        && buffer[4] == pngSig[4]
+        && buffer[5] == pngSig[5]
+        && buffer[6] == pngSig[6]
+        && buffer[7] == pngSig[7]) {
+            f.close();
+            return new cImageImporterPNG;
+    } 
+    return NULL;
 }
 
 //

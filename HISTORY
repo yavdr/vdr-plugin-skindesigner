@@ -263,3 +263,4 @@ Version 0.3.3
   
 - fixed backward compatibility to VDR version < 2.1.1 where
   cRecording::IsInUse() was introduced
+- automatically detect type of image if no file extension is available
