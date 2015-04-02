@@ -316,6 +316,8 @@ bool cTemplateFunction::ReCalculateParameters(void) {
             case ptRowHeight:
                 SetNumericParameter(type, value);
                 break;
+            default:
+                break;
         }
         if (!paramValid) {
             paramsValid = false;
@@ -1356,7 +1358,7 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
     stringstream sstrTextTall;
     stringstream sstrTextFull;
 
-    for (int i=0; i<flds.size(); i++) {
+    for (int i=0; i < (int)flds.size(); i++) {
         if (!flds[i].size()) {
             //empty line
             linesDrawn++;

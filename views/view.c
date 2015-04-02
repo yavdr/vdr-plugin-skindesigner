@@ -360,8 +360,7 @@ void cView::DrawLoop(int numPixmap, cTemplateFunction *func, map < string, vecto
     int columnWidth = loopFunc->GetNumericParameter(ptColumnWidth);
     int rowHeight = loopFunc->GetNumericParameter(ptRowHeight);
     int overflow = loopFunc->GetNumericParameter(ptOverflow);
-    int maxItems = loopFunc->GetNumericParameter(ptNumElements);
-
+    
     int x0 = loopX0;
     int y0 = loopY0;
 
@@ -515,7 +514,6 @@ void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0)
     int fontSize = func->GetNumericParameter(ptFontSize);
     int direction = func->GetNumericParameter(ptDirection);
     tColor clr = func->GetColorParameter(ptColor);
-    tColor clrBack = clrTransparent; 
     string text = func->GetText(false);
     cImage *textVertical = imgCache->GetVerticalText(text, clr, fontName, fontSize, direction);
     if (!textVertical)
@@ -649,7 +647,7 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
     std::stringstream sstrTextTall;
     std::stringstream sstrTextFull;
 
-    for (int i=0; i<flds.size(); i++) {
+    for (int i=0; i < (int)flds.size(); i++) {
         if (!flds[i].size()) {
             //empty line
             linesDrawn++;

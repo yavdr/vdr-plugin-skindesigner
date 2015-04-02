@@ -156,7 +156,7 @@ vector<string>& splitstring::split(char delim, int rep) {
     string work = data();
     string buf = "";
     int i = 0;
-    while (i < work.length()) {
+    while (i < (int)work.length()) {
         if (work[i] != delim)
             buf += work[i];
         else if (rep == 1) {

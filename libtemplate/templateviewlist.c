@@ -115,7 +115,6 @@ cFont *cTemplateViewList::GetTextAreaFont(void) {
     if (!listElement)
         return NULL;
 
-    int fontWidth = 0;
     int numItems = GetNumericParameter(ptNumElements);
     int listHeight = GetNumericParameter(ptHeight);
     if (listHeight <= 0)
