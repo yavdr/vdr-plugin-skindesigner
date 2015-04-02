@@ -7,6 +7,7 @@
  */
 #include <getopt.h>
 #include <vdr/plugin.h>
+#include <libskindesignerapi/skindesignerapi.h>
 
 #define DEFINE_CONFIG 1
 #include "config.h"

@@ -54,6 +54,9 @@ LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
+INCLUDES += $(shell pkg-config --cflags libskindesignerapi)
+LIBS += $(shell pkg-config --libs libskindesignerapi)
+
 ### The object files:
 OBJS = $(PLUGIN).o \
        config.o \
