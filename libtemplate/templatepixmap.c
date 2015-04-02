@@ -189,7 +189,6 @@ void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *string
     InitIterator();
     cTemplateFunction *func = NULL;
     bool completelyParsed = true;
-    bool updated = false;
     while(func = GetNextFunction()) {
         func->SetStringTokens(stringTokens);
         func->SetIntTokens(intTokens);
@@ -340,7 +339,6 @@ cTemplateFunction *cTemplatePixmap::GetScrollFunction(void) {
         return NULL;
     InitIterator();
     cTemplateFunction *f = NULL;
-    bool foundElement = false;
     while (f = GetNextFunction()) {
         string funcName = f->GetParameter(ptName);
         if (!funcName.compare(scrollElement)) {

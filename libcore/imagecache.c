@@ -91,7 +91,7 @@ cImage *cImageCache::GetLogo(string channelID, int width, int height) {
             return NULL;
         bool success = LoadLogo(channel);
         if (success) {
-            if (config.limitLogoCache && (channelLogoCache.size() >= config.numLogosMax)) {
+            if (config.limitLogoCache && ((int)channelLogoCache.size() >= config.numLogosMax)) {
                 //logo cache is full, don't cache anymore
                 if (tempStaticLogo) {
                     delete tempStaticLogo;
@@ -245,6 +245,8 @@ string cImageCache::GetIconName(string label, eMenuCategory cat) {
             return "standardicons/Miscellaneous";    
         case mcCommand:
             return "standardicons/Commands";
+        default:
+            break;
     }
     //check for standard menu entries
     for (int i=0; i<16; i++) {
