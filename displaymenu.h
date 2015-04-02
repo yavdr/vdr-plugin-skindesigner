@@ -1,6 +1,6 @@
 #ifndef __DISPLAYMENU_H
 #define __DISPLAYMENU_H
-
+#include <libskindesignerapi/skindesignerapi.h>
 #include "libtemplate/template.h"
 #include "views/displaymenurootview.h"
 
@@ -12,7 +12,7 @@ enum eViewState {
     vsIdle
 };
 
-class cSDDisplayMenu : public cSkinDisplayMenu {
+class cSDDisplayMenu : public skindesignerapi::ISDDisplayMenu {
 private:
     cDisplayMenuRootView *rootView;
     eViewState state;

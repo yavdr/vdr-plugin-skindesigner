@@ -1,4 +1,4 @@
-# Makefile for libskindesigner
+# Makefile for libskindesignerapi
 
 NAME = skindesignerapi
 LIBNAME = lib$(NAME)

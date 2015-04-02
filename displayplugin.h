@@ -1,10 +1,11 @@
 #ifndef __DISPLAYPLUGIN_H
 #define __DISPLAYPLUGIN_H
 
+#include <libskindesignerapi/skindesignerapi.h>
 #include "libtemplate/template.h"
 #include "views/displaypluginview.h"
 
-class cSkinDisplayPlugin {
+class cSkinDisplayPlugin : public skindesignerapi::ISkinDisplayPlugin {
 private:
     bool doOutput;
     bool initial;

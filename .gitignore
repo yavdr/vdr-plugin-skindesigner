@@ -6,3 +6,5 @@
 *.mo
 *.pot
 *.tgz
+*.pc
+libskindesignerapi.so*

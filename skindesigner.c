@@ -13,7 +13,6 @@
 #include "config.h"
 #include "designer.h"
 #include "setup.h"
-#include "services.h"
 
 #if defined(APIVERSNUM) && APIVERSNUM < 20000 
 #error "VDR-2.0.0 API version or greater is required!"
@@ -23,9 +22,13 @@
 static const char *VERSION        = "0.3.4";
 static const char *DESCRIPTION    = trNOOP("Skin Designer");
 
-class cPluginSkinDesigner : public cPlugin {
+class cPluginSkinDesigner : public cPlugin, public skindesignerapi::SkindesignerAPI {
 private:
     vector<cSkinDesigner*> skins;
+protected:
+    bool ServiceRegisterPlugin(skindesignerapi::cPluginStructure *plugStructure);
+    skindesignerapi::ISDDisplayMenu *ServiceGetDisplayMenu(void);
+    skindesignerapi::ISkinDisplayPlugin *ServiceGetDisplayPlugin(string pluginName, int viewID, int subViewID);
 public:
     cPluginSkinDesigner(void);
     virtual ~cPluginSkinDesigner();
@@ -159,54 +162,6 @@ bool cPluginSkinDesigner::SetupParse(const char *Name, const char *Value) {
 }
 
 bool cPluginSkinDesigner::Service(const char *Id, void *Data) {
-    if (Data == NULL)
-        return false;
-
-    if (strcmp(Id, "RegisterPlugin") == 0) {
-        RegisterPlugin *call = (RegisterPlugin*) Data;
-        if (call->menus.size() < 1 && call->views.size() < 1) {
-            esyslog("skindesigner: error - plugin without menus or views registered");
-            return false;
-        }
-        config.AddPluginMenus(call->name, call->menus);
-        config.AddPluginViews(call->name, call->views, call->subViews, call->viewElements, call->viewGrids);
-        if (call->menus.size() > 0)
-            dsyslog("skindesigner: plugin %s has registered %ld menus", call->name.c_str(), call->menus.size());
-        if (call->views.size() > 0)
-            dsyslog("skindesigner: plugin %s has registered %ld views", call->name.c_str(), call->views.size());
-        return true;
-    } else if (strcmp(Id, "GetDisplayMenu") == 0) {
-        GetDisplayMenu* call = (GetDisplayMenu*) Data;
-        cSkin *current = Skins.Current();
-        for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
-            if (*skin == current) {
-                cSDDisplayMenu *displayMenu = (*skin)->GetDisplayMenu();
-                if (displayMenu) {
-                    call->displayMenu = displayMenu;
-                    return true;
-                } else
-                    return false;
-            }
-        }
-        return false;
-    } else if (strcmp(Id, "GetDisplayPlugin") == 0) {
-        GetDisplayPlugin* call = (GetDisplayPlugin*) Data;
-        if (call->pluginName.size() == 0 || call->viewID < 0)
-            return false;
-        cSkin *current = Skins.Current();
-        for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
-            if (*skin == current) {
-                cSkinDisplayPlugin *displayPlugin = (*skin)->DisplayPlugin(call->pluginName, call->viewID, call->subViewID);
-                if (displayPlugin) {
-                    call->displayPlugin = displayPlugin;
-                    return true;
-                } else
-                    return false;
-            }
-        }
-        return false;
-    }
-
     return false;
 }
 
@@ -278,6 +233,52 @@ cString cPluginSkinDesigner::SVDRPCommand(const char *Command, const char *Optio
     }
     ReplyCode = 502;
     return "";
+}
+
+bool cPluginSkinDesigner::ServiceRegisterPlugin(skindesignerapi::cPluginStructure *plugStructure) {
+    if (plugStructure->menus.size() < 1 && plugStructure->views.size() < 1) {
+        esyslog("skindesigner: error - plugin without menus or views registered");
+        return false;
+    }
+    config.AddPluginMenus(plugStructure->name, plugStructure->menus);
+    config.AddPluginViews(plugStructure->name, plugStructure->views, plugStructure->subViews, plugStructure->viewElements, plugStructure->viewGrids);
+    if (plugStructure->menus.size() > 0)
+        dsyslog("skindesigner: plugin %s has registered %ld menus", plugStructure->name.c_str(), plugStructure->menus.size());
+    if (plugStructure->views.size() > 0)
+        dsyslog("skindesigner: plugin %s has registered %ld views", plugStructure->name.c_str(), plugStructure->views.size());
+    return true;
+}
+
+skindesignerapi::ISDDisplayMenu *cPluginSkinDesigner::ServiceGetDisplayMenu(void) {
+    cSkin *current = Skins.Current();
+    for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
+        if (*skin == current) {
+            cSDDisplayMenu *displayMenu = (*skin)->GetDisplayMenu();
+            if (displayMenu) {
+                return displayMenu;
+            } else {
+                return NULL;
+            }
+        }
+    }
+    return NULL;
+}
+
+skindesignerapi::ISkinDisplayPlugin *cPluginSkinDesigner::ServiceGetDisplayPlugin(string pluginName, int viewID, int subViewID) {
+    if (pluginName.size() == 0 || viewID < 0)
+        return NULL;
+    cSkin *current = Skins.Current();
+    for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
+        if (*skin == current) {
+            cSkinDisplayPlugin *displayPlugin = (*skin)->DisplayPlugin(pluginName, viewID, subViewID);
+            if (displayPlugin) {
+                return displayPlugin;
+            } else {
+                return NULL;
+            }
+        }
+    }
+    return NULL;
 }
 
 VDRPLUGINCREATOR(cPluginSkinDesigner); // Don't touch this!
