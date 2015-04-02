@@ -96,8 +96,8 @@ bool cImageLoader::LoadImage(std::string Path, std::string FileName, std::string
 }
 
 cImageImporter* cImageImporter::CreateImageImporter(const char* path) {
-    char pngSig[] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
-    char jpgSig[] = { 0xFF, 0xD8, 0xFF, 0xD9 };
+    char pngSig[] = { char(0x89), char(0x50), char(0x4E), char(0x47), char(0x0D), char(0x0A), char(0x1A), char(0x0A) };
+    char jpgSig[] = { char(0xFF), char(0xD8), char(0xFF), char(0xD9) };
     char buffer[8] = { 0 };
     ifstream f(path, ios::in | ios::binary);
     f.read(buffer, 8);
@@ -121,6 +121,7 @@ cImageImporter* cImageImporter::CreateImageImporter(const char* path) {
             f.close();
             return new cImageImporterPNG;
     } 
+    f.close();
     return NULL;
 }
 
