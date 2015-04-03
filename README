@@ -18,7 +18,7 @@ Description
 
 Skindesigner is a VDR skin engine that displays XML based Skins.
 
-Currently two XML Skins (MetrixHD and nOpacity freestyle) are included in
+Currently three XML Skins (MetrixHD, nOpacity freestyle and blackhole) are included in
 <pluginsourcedir>/skins/
 
 Requirements
@@ -41,8 +41,25 @@ Requirements
 Installation
 ------------
 
-After "normal" Plugin installation you have to care about the paths for the
-XML skins and epg images. The following paths can be set at startup:
+First you have to install libSkindesignerAPI:
+
+cd <PLUGINSOURCEDIR>/libskindesignerapi
+make clean
+make install
+
+After installation check if libskindesignerapi.pc is correctly found in your
+PKG_CONFIG_PATH. If not, you should do something like this in your .bashrc:
+
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+
+Note that skindesigner itself and all plugins which use libSkindesignerAPI have to
+be build against the same major verison of this lib to be compatible.
+
+After installing the lib the Skindesigner Plugin has to be installed as any other 
+VDR Plugin has to be installed for your Distribution.
+
+After installation you have to care about the paths for the XML skins and epg images. 
+The following paths can be set at startup:
 
 -s <SKINPATH>, --skinpath=<SKINPATH>
     Path to the XML skins (Default: <ResourceDirectory>/plugins/skindesigner/skins/)
