@@ -271,3 +271,4 @@ Version 0.4.0
 - fixed bug that time was not correctly drawn if a submenu implements
   its own time display
 - fixed bug that date was drawn every flush in displayreplay 
+- fixed bug in metrixhd timers menu
