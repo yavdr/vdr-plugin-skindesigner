@@ -491,6 +491,7 @@ bool cViewHelpers::SetDate(map < string, string > &stringTokens, map < string, i
     int min = now->tm_min;
     if (min == lastMinute)
         return false;
+    lastMinute = min;
 
     intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
     intTokens.insert(pair<string, int>("day", now->tm_mday));

@@ -55,7 +55,6 @@ void cDisplayReplayView::DrawDate(void) {
     if (!SetDate(stringTokens, intTokens)) {
         return;
     }
-
     ClearViewElement(veDateTime);
     DrawViewElement(veDateTime, &stringTokens, &intTokens);
 }
@@ -78,7 +77,7 @@ void cDisplayReplayView::DrawTime(void) {
 void cDisplayReplayView::DrawTitle(const cRecording *recording) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
-    
+
     const char *recName = NULL;
     const cRecordingInfo *recInfo = recording->Info();
     if (recInfo) {
@@ -262,6 +261,7 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) 
         return;
     if (!MarksChanged(marks, current))
         return;
+
     map < string, string > stringTokens;
     map < string, int > intTokens;
     map < string, vector< map< string, string > > > loopTokens;
