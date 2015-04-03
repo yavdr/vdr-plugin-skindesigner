@@ -52,6 +52,7 @@ class cPluginStructure {
 public:
     cPluginStructure(void) {
         name = "";
+        libskindesignerAPIVersion = "undefined";
     };
     void SetMenu(int key, string templateName) {
         menus.insert(pair<int, string>(key, templateName));
@@ -84,6 +85,7 @@ public:
         }
     }
     string name;                                     //name of plugin
+    string libskindesignerAPIVersion;                //skindesigner API Version plugin is using
     map< int, string > menus;                        //menus as key -> templatename hashmap 
     map< int, string>  views;                        //standalone views as key -> templatename hashmap 
     multimap< int, pair <int, string> >  subViews;   //subviews of standalone views as view -> (subview, templatename) multimap 

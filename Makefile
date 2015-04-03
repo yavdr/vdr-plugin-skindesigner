@@ -56,6 +56,7 @@ LIBS += $(shell xml2-config --libs)
 
 INCLUDES += $(shell pkg-config --cflags libskindesignerapi)
 LIBS += $(shell pkg-config --libs libskindesignerapi)
+DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(shell pkg-config --modversion libskindesignerapi)"'
 
 ### The object files:
 OBJS = $(PLUGIN).o \

@@ -25,6 +25,7 @@ static const char *DESCRIPTION    = trNOOP("Skin Designer");
 class cPluginSkinDesigner : public cPlugin, public skindesignerapi::SkindesignerAPI {
 private:
     vector<cSkinDesigner*> skins;
+    string libskindesignerApiVersion;
 protected:
     bool ServiceRegisterPlugin(skindesignerapi::cPluginStructure *plugStructure);
     skindesignerapi::ISDDisplayMenu *ServiceGetDisplayMenu(void);
@@ -53,6 +54,7 @@ public:
 };
 
 cPluginSkinDesigner::cPluginSkinDesigner(void) {
+    libskindesignerApiVersion = "undefined";
 }
 
 cPluginSkinDesigner::~cPluginSkinDesigner() {
@@ -107,6 +109,10 @@ bool cPluginSkinDesigner::Start(void) {
         trueColorAvailable = false;
     } else
         dsyslog("skindesigner: TrueColor OSD found");
+
+    libskindesignerApiVersion = LIBSKINDESIGNERAPIVERSION;
+    dsyslog("skindesigner: using libskindesigner API Version %s", libskindesignerApiVersion.c_str());
+
     config.SetOsdLanguage();
     config.SetPathes();
     config.ReadSkins();
@@ -240,6 +246,7 @@ bool cPluginSkinDesigner::ServiceRegisterPlugin(skindesignerapi::cPluginStructur
         esyslog("skindesigner: error - plugin without menus or views registered");
         return false;
     }
+    dsyslog("skindesigner: plugin %s uses libskindesigner API Version %s", plugStructure->name.c_str(), plugStructure->libskindesignerAPIVersion.c_str());
     config.AddPluginMenus(plugStructure->name, plugStructure->menus);
     config.AddPluginViews(plugStructure->name, plugStructure->views, plugStructure->subViews, plugStructure->viewElements, plugStructure->viewGrids);
     if (plugStructure->menus.size() > 0)
