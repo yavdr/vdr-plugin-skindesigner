@@ -38,7 +38,7 @@ public:
     bool DrawBackground(void);
     virtual bool DrawHeader(void);
     bool DrawDateTime(void);
-    bool DrawTime(void);
+    bool DrawTime(bool &implemented);
     bool DrawColorButtons(void);
     bool DrawMessage(eMessageType type, const char *text);
     void DrawScrollbar(int numMax, int numDisplayed, int offset);

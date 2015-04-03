@@ -34,6 +34,7 @@ private:
     bool defaultHeaderDrawn;
     bool defaultButtonsDrawn;
     bool defaultDateTimeDrawn;
+    bool defaultTimeDrawn;
     bool defaultMessageDrawn;
     bool defaultSortmodeDrawn;
     void DrawBackground(void);

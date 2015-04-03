@@ -29,6 +29,7 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     defaultHeaderDrawn = false;
     defaultButtonsDrawn = false;
     defaultDateTimeDrawn = false;
+    defaultTimeDrawn = false;
     defaultMessageDrawn = false;
     defaultSortmodeDrawn = false;
     DeleteOsdOnExit();
@@ -364,6 +365,8 @@ void cDisplayMenuRootView::ClearRootView(void) {
         ClearViewElement(veButtons);
     if (defaultDateTimeDrawn)
         ClearViewElement(veDateTime);
+    if (defaultTimeDrawn)
+        ClearViewElement(veTime);
     if (defaultMessageDrawn)
         ClearViewElement(veMessage);
     if (defaultSortmodeDrawn)
@@ -468,9 +471,12 @@ bool cDisplayMenuRootView::RenderDynamicElements(void) {
     if (!view)
         return false;
     bool updated = false;
-    if (view->DrawTime()) {
+    bool implemented = false;
+    if (view->DrawTime(implemented)) {
+        defaultTimeDrawn = false;
         updated = true;
-    } else if (DrawTime()) {
+    } else if (!implemented && DrawTime()) {
+        defaultTimeDrawn = true;
         updated = true;
     }
     if (view->DrawDynamicViewElements()){

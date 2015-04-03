@@ -268,3 +268,5 @@ Version 0.3.4
 
 Version 0.4.0
 
+- fixed bug that time was not correctly drawn if a submenu implements
+  its own time display
