@@ -54,24 +54,9 @@ LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
-INCLUDESLIBSD = $(shell pkg-config --silence-errors --cflags libskindesignerapi)
-ifeq ($(strip $(INCLUDESLIBSD)),)
-    INCLUDESLIBSD = $(shell pkg-config --cflags ./libskindesignerapi/libskindesignerapi.pc)
-endif
-
-LIBSLIBSD = $(shell pkg-config --silence-errors --libs libskindesignerapi)
-ifeq ($(strip $(LIBSLIBSD)),)
-    LIBSLIBSD = $(shell pkg-config --libs ./libskindesignerapi/libskindesignerapi.pc)
-endif
-
-LIBSDVERSION = $(shell pkg-config --silence-errors --modversion libskindesignerapi)
-ifeq ($(strip $(LIBSDVERSION)),)
-    LIBSDVERSION = $(shell pkg-config --modversion ./libskindesignerapi/libskindesignerapi.pc)
-endif
-
-INCLUDES += $(INCLUDESLIBSD)
-LIBS += $(LIBSLIBSD)
-DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(LIBSDVERSION)"'
+INCLUDES += $(shell pkg-config --cflags libskindesignerapi)
+LIBS += $(shell pkg-config --libs libskindesignerapi)
+DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(shell pkg-config --modversion libskindesignerapi)"'
 
 ### The object files:
 OBJS = $(PLUGIN).o \

@@ -274,3 +274,5 @@ Version 0.4.0
 - fixed bug in metrixhd timers menu
 - fixed bug that datetime was not correctly drawn if a submenu implements
   its own datetime display
+- adapted Makefiles to work also in a LCLBLD environment
+- reverted Makefile changes in parts
