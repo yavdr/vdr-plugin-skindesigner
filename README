@@ -48,9 +48,7 @@ make clean
 make install
 
 After installation check if libskindesignerapi.pc is correctly found in your
-PKG_CONFIG_PATH. If not, you should do something like this in your .bashrc:
-
-export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+PKG_CONFIG_PATH.
 
 Note that skindesigner itself and all plugins which use libSkindesignerAPI have to
 be build against the same major verison of this lib to be compatible.
