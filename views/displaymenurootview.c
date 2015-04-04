@@ -479,15 +479,17 @@ bool cDisplayMenuRootView::RenderDynamicElements(void) {
         defaultTimeDrawn = true;
         updated = true;
     }
-    if (view->DrawDynamicViewElements()){
-        updated = true;
+
+    implemented = false;
+    if (view->DrawDateTime(implemented)) {
+        defaultDateTimeDrawn = false;
+    } else if (!implemented) {
+        DrawDateTime();
+        defaultDateTimeDrawn = true;
     }
 
-    if (!view->DrawDateTime()) {
-        defaultDateTimeDrawn = true;
-        DrawDateTime();
-    } else {
-        defaultDateTimeDrawn = false;
+    if (view->DrawDynamicViewElements()){
+        updated = true;
     }
 
     return updated;

@@ -37,7 +37,7 @@ public:
     void SetButtonTexts(string *buttonTexts) { this->buttonTexts = buttonTexts; };
     bool DrawBackground(void);
     virtual bool DrawHeader(void);
-    bool DrawDateTime(void);
+    bool DrawDateTime(bool &implemented);
     bool DrawTime(bool &implemented);
     bool DrawColorButtons(void);
     bool DrawMessage(eMessageType type, const char *text);

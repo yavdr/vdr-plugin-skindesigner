@@ -46,11 +46,11 @@ bool cDisplayMenuView::DrawHeader(void) {
     return true;
 }
 
-bool cDisplayMenuView::DrawDateTime(void) {
+bool cDisplayMenuView::DrawDateTime(bool &implemented) {
     if (!ExecuteViewElement(veDateTime)) {
         return false;
     }
-
+    implemented = true;
     map < string, string > stringTokens;
     map < string, int > intTokens;
     
@@ -67,7 +67,6 @@ bool cDisplayMenuView::DrawTime(bool &implemented) {
     if (!ExecuteViewElement(veTime)) {
         return false;
     }
-    
     implemented = true;
     map < string, string > stringTokens;
     map < string, int > intTokens;
