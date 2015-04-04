@@ -18,7 +18,8 @@ TMPDIR ?= /tmp
 ### The name of the distribution archive:
 ARCHIVE = $(LIBNAME)-$(VERSION)
 
-CXXFLAGS = $(shell pkg-config --variable=cxxflags vdr)
+PKGCFG = $(if $(VDRDIR),$(shell pkg-config --silence-errors --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --silence-errors --variable=$(1) vdr || pkg-config --variable=$(1) ../../../../vdr.pc))
+CXXFLAGS = $(call PKGCFG,cxxflags)
 LDFLAGS = -shared -Wl,-soname,$(SONAME)
 
 DEFINES += -DAPIVERSION=$(MAJOR) -DLIBVERSION=\"$(VERSION)\"

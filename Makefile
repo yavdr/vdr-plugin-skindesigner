@@ -15,7 +15,7 @@ VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ pri
 ### The directory environment:
 
 # Use package data if installed...otherwise assume we're under the VDR source directory:
-PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
+PKGCFG = $(if $(VDRDIR),$(shell pkg-config --silence-errors --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --silence-errors --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
 LIBDIR = $(call PKGCFG,libdir)
 LOCDIR = $(call PKGCFG,locdir)
 PLGCFG  = $(call PKGCFG,plgcfg)
@@ -54,9 +54,24 @@ LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
-INCLUDES += $(shell pkg-config --cflags libskindesignerapi)
-LIBS += $(shell pkg-config --libs libskindesignerapi)
-DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(shell pkg-config --modversion libskindesignerapi)"'
+INCLUDESLIBSD = $(shell pkg-config --silence-errors --cflags libskindesignerapi)
+ifeq ($(strip $(INCLUDESLIBSD)),)
+    INCLUDESLIBSD = $(shell pkg-config --cflags ./libskindesignerapi/libskindesignerapi.pc)
+endif
+
+LIBSLIBSD = $(shell pkg-config --silence-errors --libs libskindesignerapi)
+ifeq ($(strip $(LIBSLIBSD)),)
+    LIBSLIBSD = $(shell pkg-config --libs ./libskindesignerapi/libskindesignerapi.pc)
+endif
+
+LIBSDVERSION = $(shell pkg-config --silence-errors --modversion libskindesignerapi)
+ifeq ($(strip $(LIBSDVERSION)),)
+    LIBSDVERSION = $(shell pkg-config --modversion ./libskindesignerapi/libskindesignerapi.pc)
+endif
+
+INCLUDES += $(INCLUDESLIBSD)
+LIBS += $(LIBSLIBSD)
+DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(LIBSDVERSION)"'
 
 ### The object files:
 OBJS = $(PLUGIN).o \
