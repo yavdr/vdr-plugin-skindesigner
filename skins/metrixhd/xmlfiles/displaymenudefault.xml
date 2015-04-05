@@ -188,28 +188,6 @@
                 <drawtext condition="{column5set}" x="{column5x}" valign="center" font="{light}" fontsize="90%" width="{column5width}" color="{clrWhite}" text="{column5}" />
                 <drawtext condition="{column6set}" x="{column6x}" valign="center" font="{light}" fontsize="90%" width="{column6width}" color="{clrWhite}" text="{column6}" />
             </area>
-            <!--
-            <areascroll condition="not{separator}++eq({columnscroll},1)" scrollelement="column1" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="{column1width}" layer="3">
-                <drawtext name="column1" x="{column1x}" width="{column1width}" valign="center" font="{vdrOsd}" fontsize="90%" color="{clrWhite}" text="{column1}" />
-            </areascroll>
-            <area condition="not{separator}++eq({columnscroll},1)" x="1%" width="100%" layer="3">
-                <drawtext condition="{column2set}" x="{column2x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column2}" />
-                <drawtext condition="{column3set}" x="{column3x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column3}" />
-                <drawtext condition="{column4set}" x="{column4x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column4}" />
-                <drawtext condition="{column5set}" x="{column5x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column5}" />
-                <drawtext condition="{column6set}" x="{column6x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column6}" />
-            </area>
-            <areascroll condition="not{separator}++gt({columnscroll},1)" scrollelement="column2" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="{column2x}" width="{column2width}" layer="3">
-                <drawtext name="column2" x="0" width="{column2width}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column2}" />
-            </areascroll>
-            <area condition="not{separator}++gt({columnscroll},1)" x="1%" width="100%" layer="3">
-                <drawtext condition="{column1set}" x="{column1x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column1}" />
-                <drawtext condition="{column3set}" x="{column3x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column3}" />
-                <drawtext condition="{column4set}" x="{column4x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column4}" />
-                <drawtext condition="{column5set}" x="{column5x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column5}" />
-                <drawtext condition="{column6set}" x="{column6x}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column6}" />
-            </area>
-            -->
         </listelement>
     </menuitems>
 </menudefault>
