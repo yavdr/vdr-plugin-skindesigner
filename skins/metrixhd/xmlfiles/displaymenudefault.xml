@@ -113,7 +113,7 @@
     <!-- IMPORTANT: menuitemwidth and determinatefont have to be defined here. menuitemwidth defines the total width of the 
     default menu items, determinatefont the function which sets the actual font to use. With that it is possible to determinate
     the correct column widths -->
-    <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="16">
+    <menuitems x="0" y="10%" orientation="vertical" width="94%" height="82%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="16">
         <!-- Available Variables default menu listelement:
         {nummenuitem}               number of item in list, starts with 1
         {column1}                   text of column1
@@ -140,18 +140,48 @@
         {column6width}              proposed width of column6
         {columnscroll}              number of column which should have scrollable text
         {current}                   true if column is currently selected 
-        {separator}                 true if column is a list separator 
+        {separator}                 true if column is a list separator
+
+        A dynamic token is set to indicate the current menu category or the plugin which is currently running.
+        With that it is possible to display different default menus with an individual style.
+        If a setup menu is diplayed, the token
+        {setup}                     is set to true
+        For the commands menu
+        {commands}                  is set to true
+        If a plugin is running, a token called as the name of the plugin is set to true
+        {pluginname}                is set to true
         -->
         <listelement>
-            <area x="0" width="95%" layer="2">
+            <area x="0" condition="not{separator}" width="100%" layer="2">
                 <fill condition="not{current}" color="{clrTransparent}" />
                 <fill condition="{current}" color="{clrTransBlueLight}" />
             </area>
 
-            <areascroll scrollelement="column1" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="{column1width}" layer="3">
+            <!-- Separators -->
+            <area x="0" condition="{separator}" width="100%" layer="2">
+                <fill color="{clrDarkGray}" />
+            </area>
+            <area x="1%" condition="{separator}" width="98%" layer="3">
+                <drawtext align="left" valign="center" font="{light}" fontsize="90%" width="98%" color="{clrWhite}" text="{column1}" />
+            </area>
+
+            <!-- Setup Menus -->
+            <areascroll condition="not{separator} ++ {setup} ++ {column2set}" scrollelement="column1" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="59%" layer="3">
+                <drawtext name="column1" x="0" width="99%" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column1}" />
+            </areascroll>
+            <area x="60%" condition="not{separator} ++ {setup} ++ {column2set}" width="39%" layer="3">
+                <drawtext align="right" valign="center" font="{light}" fontsize="90%" width="99%" color="{clrWhite}" text="{column2}" />
+            </area>
+
+            <area x="1%" condition="not{separator} ++ {setup} ++ not{column2set}" width="98%" layer="3">
+                <drawtext align="left" valign="center" font="{light}" fontsize="90%" width="99%" color="{clrWhite}" text="{column1}" />
+            </area>
+            
+            <!-- Default Menus -->
+            <areascroll condition="not{separator} ++ not{setup}" scrollelement="column1" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="{column1width}" layer="3">
                 <drawtext name="column1" x="{column1x}" width="{column1width}" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{column1}" />
             </areascroll>
-            <area x="1%" width="100%" layer="3">
+            <area condition="not{separator} ++ not{setup}" x="1%" width="100%" layer="3">
                 <drawtext condition="{column2set}" x="{column2x}" valign="center" font="{light}" fontsize="90%" width="{column2width}" color="{clrWhite}" text="{column2}" />
                 <drawtext condition="{column3set}" x="{column3x}" valign="center" font="{light}" fontsize="90%" width="{column3width}" color="{clrWhite}" text="{column3}" />
                 <drawtext condition="{column4set}" x="{column4x}" valign="center" font="{light}" fontsize="90%" width="{column4width}" color="{clrWhite}" text="{column4}" />

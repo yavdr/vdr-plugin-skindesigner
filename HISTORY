@@ -276,3 +276,5 @@ Version 0.4.0
   its own datetime display
 - adapted Makefiles to work also in a LCLBLD environment
 - reverted Makefile changes in parts
+- added category indicator token to default menus
+

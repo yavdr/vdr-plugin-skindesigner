@@ -15,6 +15,7 @@ enum ePluginMenuType {
 class cDisplayMenuRootView : public cView, public cViewHelpers  {
 private:
     eMenuCategory cat;
+    string selectedPluginMainMenu;
     eMenuSortMode sortMode;
     eMenuSortMode sortModeLast;
     eSubView viewType;
@@ -51,6 +52,7 @@ public:
     virtual ~cDisplayMenuRootView();
     bool createOsd(void);
     void SetMenu(eMenuCategory menuCat, bool menuInit);
+    void SetSelectedPluginMainMenu(string name) { selectedPluginMainMenu = name; };
     void SetSortMode(eMenuSortMode sortMode);
     void SetCurrentRecording(string rec) { currentRecording = rec; };
     void CorrectDefaultMenu(void);

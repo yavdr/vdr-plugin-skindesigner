@@ -42,11 +42,13 @@ private:
     int *tabWidths;
     string *tabTexts;
     int maxTabs;
+    string menuCategory;
 public:
     cDisplayMenuItemDefaultView(cTemplateViewList *tmplList, string *tabTexts, int *tabs, int *tabWidths, bool current, bool selectable);
     virtual ~cDisplayMenuItemDefaultView();
     void SetTabTexts(string *tabTexts);
     void SetTokens(void);
+    void SetMenuCategory(string cat) { menuCategory = cat; };
     void Prepare(void);
     void Render(void);
     void Debug(void);
@@ -54,17 +56,21 @@ public:
 
 class cDisplayMenuItemMainView: public cDisplayMenuItemView {
 private:
+    bool isPlugin;
+    string plugName;
     string text;
     string number;
     string label;
     string icon;
     void SplitMenuText(void);
+    void CheckPlugins(void);
 public:
     cDisplayMenuItemMainView(cTemplateViewList *tmplList, string itemText, bool current, bool selectable);
     virtual ~cDisplayMenuItemMainView();
     void SetTokens(void);
     void Prepare(void);
     void Render(void);
+    string GetPluginName(void);
     void Debug(void);
 };
 

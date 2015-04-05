@@ -25,7 +25,7 @@ public:
     //icons
     void CacheIcon(eImageType type, string path, int width, int height);
     cImage *GetIcon(eImageType type, string name, int width, int height);
-    string GetIconName(string label, eMenuCategory cat = mcUndefined);
+    string GetIconName(string label, eMenuCategory cat = mcUndefined, string plugName = "");
     bool MenuIconExists(string name);
     //skinparts
     void CacheSkinpart(string path, int width, int height);

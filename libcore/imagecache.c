@@ -188,7 +188,7 @@ cImage *cImageCache::GetIcon(eImageType type, string name, int width, int height
     return NULL;    
 }
 
-string cImageCache::GetIconName(string label, eMenuCategory cat) {
+string cImageCache::GetIconName(string label, eMenuCategory cat, string plugName) {
     //if cat is set, use standard menu entries
     switch (cat) {
         case mcSchedule:
@@ -267,6 +267,9 @@ string cImageCache::GetIconName(string label, eMenuCategory cat) {
         }
     } catch (...) {}
     //check for Plugins
+    if (plugName.size() > 0) {
+        return *cString::sprintf("pluginicons/%s", plugName.c_str());
+    }
     for (int i = 0; ; i++) {
         cPlugin *p = cPluginManager::GetPlugin(i);
         if (p) {

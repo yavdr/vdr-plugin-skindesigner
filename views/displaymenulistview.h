@@ -8,20 +8,23 @@
 class cDisplayMenuListView {
 private:
     cTemplateViewList *tmplList;
+    eMenuCategory cat;
+    string currentPlug;
     int itemCount;
     cDisplayMenuItemView **menuItems;
     int *tabs;
     int *tabWidths;
     bool oneColumn;
+    string GetDefaultMenuCategory(void);
 public:
-    cDisplayMenuListView(cTemplateViewList *tmplList, int count = -1);
+    cDisplayMenuListView(cTemplateViewList *tmplList, int count, eMenuCategory cat = mcUnknown, string currentPlug = "");
     virtual ~cDisplayMenuListView();
     void Clear(void);
     void SetTabs(int tab1, int tab2, int tab3, int tab4, int tab5);
     int GetMaxItems(void) { return itemCount; };
     int GetListWidth(void);
     void AddDefaultMenuItem(int index, string *tabTexts, bool current, bool selectable);
-    void AddMainMenuItem(int index, const char *itemText, bool current, bool selectable);
+    string AddMainMenuItem(int index, const char *itemText, bool current, bool selectable);
     void AddSetupMenuItem(int index, const char *itemText, bool current, bool selectable);
     void AddSchedulesMenuItem(int index, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable);
     void AddChannelsMenuItem(int index, const cChannel *channel, bool withProvider, bool current, bool selectable);

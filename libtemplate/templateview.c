@@ -637,6 +637,11 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("mode");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
+    name = "listelement";
+    attributes.clear();
+    attributes.insert("debug");
+    funcsAllowed.insert(pair< string, set<string> >(name, attributes));
+
     name = "area";
     attributes.clear();
     attributes.insert("debug");
@@ -1147,6 +1152,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
 
     //definition of allowed parameters for currentitems viewlist 
     attributes.clear();
+    attributes.insert("debug");
     attributes.insert("delay");
     attributes.insert("fadetime");
     funcsAllowed.insert(pair< string, set<string> >("currentelement", attributes));

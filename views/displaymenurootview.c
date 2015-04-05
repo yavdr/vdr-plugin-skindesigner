@@ -7,6 +7,7 @@
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
     cat = mcUndefined;
+    selectedPluginMainMenu = "";
     sortMode = msmUnknown;
     sortModeLast = msmUnknown;
     menuTitle = "";
@@ -208,7 +209,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
             cTemplateViewList *tmplMenuItems = subView->GetViewList(vlMenuItem);
             if (!tmplMenuItems)
                 return;
-            listView = new cDisplayMenuListView(tmplMenuItems);
+            listView = new cDisplayMenuListView(tmplMenuItems, -1, menuCat, selectedPluginMainMenu);
         } else {
             //Create detailed view
             detailView = new cDisplayMenuDetailView(subView);

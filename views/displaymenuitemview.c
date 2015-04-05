@@ -106,6 +106,7 @@ cDisplayMenuItemDefaultView::cDisplayMenuItemDefaultView(cTemplateViewList *tmpl
     this->tabs = tabs;
     this->tabWidths = tabWidths;
     maxTabs = cSkinDisplayMenu::MaxTabs;
+    menuCategory = "";
 }
 
 cDisplayMenuItemDefaultView::~cDisplayMenuItemDefaultView() {
@@ -138,6 +139,9 @@ void cDisplayMenuItemDefaultView::SetTokens(void) {
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
     intTokens.insert(pair<string,int>("nummenuitem", num+1));
+    if (menuCategory.size() > 0) {
+        intTokens.insert(pair<string,int>(menuCategory, 1));
+    }
 }
 
 void cDisplayMenuItemDefaultView::Prepare(void) {
@@ -173,6 +177,10 @@ cDisplayMenuItemMainView::cDisplayMenuItemMainView(cTemplateViewList *tmplList, 
     number = "";
     label = "";
     icon = "";
+    isPlugin = false;
+    plugName = "";
+    SplitMenuText();
+    CheckPlugins();
 }
 
 cDisplayMenuItemMainView::~cDisplayMenuItemMainView() {
@@ -193,8 +201,11 @@ void cDisplayMenuItemMainView::SetTokens(void) {
 
 void cDisplayMenuItemMainView::Prepare(void) {
     ArrangeContainer();
-    SplitMenuText();
-    icon = imgCache->GetIconName(label);
+    if (isPlugin) {
+        icon = imgCache->GetIconName(label, mcUnknown, plugName);
+    } else {
+        icon = imgCache->GetIconName(label);
+    }
 }
 
 
@@ -212,6 +223,12 @@ void cDisplayMenuItemMainView::Render(void) {
     }
 
     dirty = false;
+}
+
+string cDisplayMenuItemMainView::GetPluginName(void) {
+    if (!isPlugin)
+        return "";
+    return plugName;
 }
 
 void cDisplayMenuItemMainView::Debug(void) {
@@ -263,6 +280,24 @@ void cDisplayMenuItemMainView::SplitMenuText(void) {
     } else {
         number = "";
         label = textPlain.c_str();
+    }
+}
+
+void cDisplayMenuItemMainView::CheckPlugins(void) {
+    for (int i = 0; ; i++) {
+        cPlugin *p = cPluginManager::GetPlugin(i);
+        if (p) {
+            const char *mainMenuEntry = p->MainMenuEntry();
+            if (mainMenuEntry) {
+                string plugMainEntry = mainMenuEntry;
+                if (label.substr(0, plugMainEntry.size()) == plugMainEntry) {
+                    isPlugin = true;
+                    plugName = p->Name() ? p->Name() : "";
+                    return;
+                }
+            }
+        } else
+            break;
     }
 }
 

@@ -2,7 +2,7 @@
 #include "displaymenulistview.h"
 
 
-cDisplayMenuListView::cDisplayMenuListView(cTemplateViewList *tmplList, int count) {
+cDisplayMenuListView::cDisplayMenuListView(cTemplateViewList *tmplList, int count, eMenuCategory cat, string currentPlug) {
     oneColumn = true;
     this->tmplList = tmplList;
     if (count < 0) {
@@ -15,6 +15,8 @@ cDisplayMenuListView::cDisplayMenuListView(cTemplateViewList *tmplList, int coun
         intTokens.insert(pair<string,int>("numelements", count));
         tmplList->CalculateListParameters(&intTokens);
     }
+    this->cat = cat;
+    this->currentPlug = currentPlug;
     menuItems = new cDisplayMenuItemView*[itemCount];
     for (int i=0; i<itemCount; i++)
         menuItems[i] = NULL;
@@ -111,19 +113,24 @@ void cDisplayMenuListView::AddDefaultMenuItem(int index, string *tabTexts, bool 
             break;
         }
     }
-    cDisplayMenuItemView *item = new cDisplayMenuItemDefaultView(tmplList, tabTexts, tabs, tabWidths, current, selectable);
+    cDisplayMenuItemDefaultView *item = new cDisplayMenuItemDefaultView(tmplList, tabTexts, tabs, tabWidths, current, selectable);
+    item->SetMenuCategory(GetDefaultMenuCategory());
     menuItems[index] = item;
 }
 
-void cDisplayMenuListView::AddMainMenuItem(int index, const char *itemText, bool current, bool selectable) {
+string cDisplayMenuListView::AddMainMenuItem(int index, const char *itemText, bool current, bool selectable) {
     if (index >= itemCount)
-        return;
+        return "";
     if (menuItems[index]) {
-        menuItems[index]->SetCurrent(current);
-        return;
+        cDisplayMenuItemMainView *menuItem = dynamic_cast<cDisplayMenuItemMainView*>(menuItems[index]);
+        if (!menuItem)
+            return "";
+        menuItem->SetCurrent(current);
+        return menuItem->GetPluginName();
     }
-    cDisplayMenuItemView *item = new cDisplayMenuItemMainView(tmplList, itemText, current, selectable);
+    cDisplayMenuItemMainView *item = new cDisplayMenuItemMainView(tmplList, itemText, current, selectable);
     menuItems[index] = item;
+    return item->GetPluginName();
 }
 
 void cDisplayMenuListView::AddSetupMenuItem(int index, const char *itemText, bool current, bool selectable) {
@@ -240,4 +247,14 @@ void cDisplayMenuListView::Debug(void) {
             menuItems[i]->Debug();
         }
     }
+}
+
+string cDisplayMenuListView::GetDefaultMenuCategory(void) {
+    if (cat == mcSchedule || cat == mcScheduleNow || cat == mcScheduleNext)
+        return "schedule";
+    else if (cat >= mcPluginSetup && cat <= mcSetupPlugins)
+        return "setup";
+    else if (cat == mcCommand)
+        return "commands";
+    return currentPlug;
 }

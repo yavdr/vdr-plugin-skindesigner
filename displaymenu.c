@@ -202,7 +202,10 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
         rootView->LockFlush();
     eMenuCategory cat = MenuCategory();
     if (cat == mcMain && rootView->SubViewAvailable()) {
-        list->AddMainMenuItem(Index, Text, Current, Selectable);
+        string plugName = list->AddMainMenuItem(Index, Text, Current, Selectable);
+        if (Current) {
+            rootView->SetSelectedPluginMainMenu(plugName);
+        }
     } else if (cat == mcSetup && rootView->SubViewAvailable()) {
         list->AddSetupMenuItem(Index, Text, Current, Selectable);        
     } else {
