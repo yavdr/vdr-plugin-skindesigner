@@ -1331,8 +1331,10 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
     int floatType = GetNumericParameter(ptFloat);
 
     if (floatType == flNone) {
+        fontManager->Lock();
         cTextWrapper wrapper;
         wrapper.Set(text.c_str(), font, width);
+        fontManager->Unlock();
         int lines = wrapper.Lines();
         return (lines * fontHeight);
     }
@@ -1370,7 +1372,9 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
         } else {
             cTextWrapper wrapper;
             if (drawNarrow) {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, widthNarrow);
+                fontManager->Unlock();
                 int newLines = wrapper.Lines();
                 //check if wrapper fits completely into narrow area
                 if (linesDrawn + newLines < linesNarrow) {
@@ -1392,7 +1396,9 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
                     drawNarrow = false;
                 }
             } else {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, width);
+                fontManager->Unlock();
                 for (int line = 0; line < wrapper.Lines(); line++) {
                     sstrTextFull << wrapper.GetLine(line) << " ";        
                 }
@@ -1400,8 +1406,12 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
             }
         }
     }
+    fontManager->Lock();
     wTextTall.Set(sstrTextTall.str().c_str(), font, widthNarrow);
+    fontManager->Unlock();
+    fontManager->Lock();
     wTextFull.Set(sstrTextFull.str().c_str(), font, width);
+    fontManager->Unlock();
 
     int textLinesTall = wTextTall.Lines();
     int textLinesFull = wTextFull.Lines();

@@ -576,8 +576,10 @@ void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
     const cFont *font = fontManager->Font(fontName, fontSize);
     if (!font)
         return;
+    fontManager->Lock();
     cTextWrapper wrapper;
     wrapper.Set(text.c_str(), font, width);
+    fontManager->Unlock();
     int fontHeight = fontManager->Height(fontName, fontSize);
     int lines = wrapper.Lines();
     int yLine = y;
@@ -659,7 +661,9 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
         } else {
             cTextWrapper wrapper;
             if (drawNarrow) {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, widthNarrow);
+                fontManager->Unlock();
                 int newLines = wrapper.Lines();
                 //check if wrapper fits completely into narrow area
                 if (linesDrawn + newLines < linesNarrow) {
@@ -681,7 +685,9 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
                     drawNarrow = false;
                 }
             } else {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, width);
+                fontManager->Unlock();
                 for (int line = 0; line < wrapper.Lines(); line++) {
                     sstrTextFull << wrapper.GetLine(line) << " ";        
                 }
@@ -697,9 +703,12 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
     if (posLastCarriageReturn != string::npos && (posLastCarriageReturn < textTall.size() - 1)) {
         numLinesToAddAtTall = textTall.size() - posLastCarriageReturn - 2;
     }
-
+    fontManager->Lock();
     wTextTall.Set(textTall.c_str(), font, widthNarrow);
+    fontManager->Unlock();
+    fontManager->Lock();
     wTextFull.Set(sstrTextFull.str().c_str(), font, width);
+    fontManager->Unlock();
 
     int textLinesTall = wTextTall.Lines();
     int textLinesFull = wTextFull.Lines();
