@@ -11,8 +11,8 @@ class cTemplateLoopFunction : public cTemplateFunction {
 private:
     vector<cTemplateFunction*> functions;
     vector<cTemplateFunction*>::iterator funcIt;
-    void ReplaceWidthFunctions(void);
-    void ReplaceHeightFunctions(void);
+    bool ReplaceWidthFunctions(void);
+    bool ReplaceHeightFunctions(void);
 public:
     cTemplateLoopFunction(void);
     virtual ~cTemplateLoopFunction(void);

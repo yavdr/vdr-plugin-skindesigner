@@ -28,8 +28,13 @@ private:
     string fontSml;
     string osdLanguage;
     cGlobals *tmplGlobals;
-    map < string, map < int, string > > plugins;
-    map < string, map < int, string > >::iterator plugIt;
+    map < string, map < int, string > > pluginMenus;
+    map < string, map < int, string > >::iterator plugMenuIt;
+    map < string, map < int, string > > pluginViews;
+    map < string, map < int, string > >::iterator plugViewIt;
+    map < string, multimap< int, pair <int, string> > > pluginSubViews;
+    map < string, map< int, map <int, string> > > pluginViewElements;
+    map < string, map< int, map <int, string> > > pluginViewGrids;
     map < string, cSkinSetup* > skinSetups;
     map < string, cSkinSetup* >::iterator setupIt;
     vector < pair <string, int> > skinSetupParameters;
@@ -49,7 +54,8 @@ public:
     void DebugSkinSetups(void);
     void DebugSkinSetupParameters(void);
     cSkinSetup* GetSkinSetup(string &skin);
-    cSkinSetup* GetSkinSetup(void);
+    cSkinSetup* GetNextSkinSetup(void);
+    cSkinSetupMenu* GetSkinSetupMenu(string &skin, string &menu);
     void InitSetupIterator(void) { setupIt = skinSetups.begin(); };
     void TranslateSetup(void);
     void SetSkinSetupParameters(void);
@@ -66,9 +72,15 @@ public:
     void SetOsdLanguage(void) { osdLanguage = Setup.OSDLanguage; };
     bool OsdLanguageChanged(void);
     cString GetSkinRessourcePath(void);
-    void AddPlugin(string name, map < int, string > &menus);
-    void InitPluginIterator(void);
+    void AddPluginMenus(string name, map< int, string > menus);
+    void AddPluginViews(string name, map< int, string > views, multimap< int, pair <int, string> > subViews, map< int, map <int, string> > viewElements, map< int, map <int, string> > viewGrids);
+    void InitPluginMenuIterator(void);
     map <int,string> *GetPluginTemplates(string &name);
+    void InitPluginViewIterator(void);
+    map <int,string> *GetPluginViews(string &name);
+    map <int,string> GetPluginSubViews(string name, int viewID);
+    int GetPluginViewElementID(string pluginName, string viewElementName, int viewID);
+    int GetPluginViewGridID(string pluginName, string viewGridName, int viewID);
     cString skinPath;
     cString logoPath;
     cString epgImagePath;
@@ -85,6 +97,8 @@ public:
     int rerunDistance;
     int rerunMaxChannel;
     int blockFlush;
+    //TemplateReload on Setup Close
+    bool setupCloseDoReload;
 };
 
 #ifdef DEFINE_CONFIG

@@ -119,8 +119,9 @@
     {timers[channelnumber]}      number of channel
     {timers[channelid]}          ChannelID of channel
     {timers[channellogoexists]}  true if channel logo exists
+    {timers[isremotetimer]}      true if timer is a remote timer from remotetimers plugin
     -->
-    <timers>
+    <timers detached="true" delay="100" fadetime="0">
         <area x="0" y="75%" width="{areawidth}/8 - 5" height="25%" layer="1">
             <fill color="{clrTransBlack}" />
         </area>
@@ -174,8 +175,8 @@
     {discalert}               true if disc usage is > 95%
     {vdrusagestring}          localized VDR internal usage string
     -->
-    <discusage>
-        <area x="75%" y="26%" width="25%" height="10%" layer="1">
+    <discusage detached="true" delay="100" fadetime="0">
+        <area background="true" x="75%" y="26%" width="25%" height="10%" layer="1">
             <fill condition="not{discalert}" color="{clrTransBlack}"/>
             <fill condition="{discalert}" color="{clrRed}"/>
         </area>
@@ -206,7 +207,7 @@
     {pressure}                  pressure in HPo
     {ozone}                     ozone value in DU
     -->
-    <currentweather>
+    <currentweather detached="true" delay="100" fadetime="0">
         <area x="75%" y="13%" width="25%" height="10%" layer="2">
             <drawrectangle x="0" y="0" width="53%" height="100%" color="{clrTransBlueLight}" />
             <drawrectangle x="53%" y="0" width="47%" height="100%" color="{clrTransBlack}" />
@@ -240,8 +241,8 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices>
-        <area x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="1">
+    <devices condition="{showdevices}" detached="true" delay="100" fadetime="0">
+        <area background="true" x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
         <area x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="2">
@@ -261,8 +262,8 @@
     <!-- Available Variables systemload:
     {load}                      current system load
     -->
-    <systemload>
-        <area x="75%" y="40%" width="25%" height="5%" layer="1">
+    <systemload detached="true" delay="100" fadetime="0">
+        <area background="true" x="75%" y="40%" width="25%" height="5%" layer="1">
             <fill color="{clrTransBlack}"/>
         </area>
         <area x="75%" y="40%" width="25%" height="5%" layer="2">

@@ -32,7 +32,7 @@ bool cDisplayAudiotracksView::createOsd(void) {
 }
 
 void cDisplayAudiotracksView::DrawBackground(void) {
-    if (!ViewElementImplemented(veBackground)) {
+    if (!ExecuteViewElement(veBackground)) {
         return;
     }
 
@@ -45,7 +45,7 @@ void cDisplayAudiotracksView::DrawBackground(void) {
 }
 
 void cDisplayAudiotracksView::DrawHeader(const char *title, int audioChannel) {
-    if (!ViewElementImplemented(veHeader)) {
+    if (!ExecuteViewElement(veHeader)) {
         return;
     }
 

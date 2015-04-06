@@ -106,6 +106,7 @@ cDisplayMenuItemDefaultView::cDisplayMenuItemDefaultView(cTemplateViewList *tmpl
     this->tabs = tabs;
     this->tabWidths = tabWidths;
     maxTabs = cSkinDisplayMenu::MaxTabs;
+    menuCategory = "";
 }
 
 cDisplayMenuItemDefaultView::~cDisplayMenuItemDefaultView() {
@@ -138,6 +139,9 @@ void cDisplayMenuItemDefaultView::SetTokens(void) {
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
     intTokens.insert(pair<string,int>("nummenuitem", num+1));
+    if (menuCategory.size() > 0) {
+        intTokens.insert(pair<string,int>(menuCategory, 1));
+    }
 }
 
 void cDisplayMenuItemDefaultView::Prepare(void) {
@@ -173,6 +177,10 @@ cDisplayMenuItemMainView::cDisplayMenuItemMainView(cTemplateViewList *tmplList, 
     number = "";
     label = "";
     icon = "";
+    isPlugin = false;
+    plugName = "";
+    SplitMenuText();
+    CheckPlugins();
 }
 
 cDisplayMenuItemMainView::~cDisplayMenuItemMainView() {
@@ -193,8 +201,11 @@ void cDisplayMenuItemMainView::SetTokens(void) {
 
 void cDisplayMenuItemMainView::Prepare(void) {
     ArrangeContainer();
-    SplitMenuText();
-    icon = imgCache->GetIconName(label);
+    if (isPlugin) {
+        icon = imgCache->GetIconName(label, mcUnknown, plugName);
+    } else {
+        icon = imgCache->GetIconName(label);
+    }
 }
 
 
@@ -212,6 +223,12 @@ void cDisplayMenuItemMainView::Render(void) {
     }
 
     dirty = false;
+}
+
+string cDisplayMenuItemMainView::GetPluginName(void) {
+    if (!isPlugin)
+        return "";
+    return plugName;
 }
 
 void cDisplayMenuItemMainView::Debug(void) {
@@ -240,7 +257,12 @@ void cDisplayMenuItemMainView::SplitMenuText(void) {
             }
         }
         if (found) {
+            //if current char is not a figure anymore, break
             if (!(s >= '0' && s <= '9')) {
+                //there has to be a space after the menu item number 
+                //plugins with figures in their name are eval :-)
+                if (s != ' ')
+                    found = false;
                 doBreak = true;
             }
         }
@@ -258,6 +280,24 @@ void cDisplayMenuItemMainView::SplitMenuText(void) {
     } else {
         number = "";
         label = textPlain.c_str();
+    }
+}
+
+void cDisplayMenuItemMainView::CheckPlugins(void) {
+    for (int i = 0; ; i++) {
+        cPlugin *p = cPluginManager::GetPlugin(i);
+        if (p) {
+            const char *mainMenuEntry = p->MainMenuEntry();
+            if (mainMenuEntry) {
+                string plugMainEntry = mainMenuEntry;
+                if (label.substr(0, plugMainEntry.size()) == plugMainEntry) {
+                    isPlugin = true;
+                    plugName = p->Name() ? p->Name() : "";
+                    return;
+                }
+            }
+        } else
+            break;
     }
 }
 
@@ -685,6 +725,19 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
 
     stringTokens.insert(pair<string,string>("name", buffer.c_str()));
     intTokens.insert(pair<string,int>("new", usedRecording->IsNew()));
+
+    int percSeen = 0;
+#if APIVERSNUM < 20108
+    percSeen = -1;
+#else
+    percSeen = 0;
+    int framesSeen = usedRecording->GetResume();
+    int framesTotal = usedRecording->NumFrames();
+    if (framesTotal > 0) {
+        percSeen = (double)framesSeen / (double)framesTotal * 100;
+    }
+#endif
+    intTokens.insert(pair<string,int>("percentseen", percSeen));
     intTokens.insert(pair<string,int>("newrecordingsfolder", newRecs));
     intTokens.insert(pair<string,int>("numrecordingsfolder", total));
     intTokens.insert(pair<string,int>("cutted", usedRecording->IsEdited()));

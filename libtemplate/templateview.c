@@ -1,3 +1,4 @@
+#include "../config.h"
 #include "templateview.h"
 
 // --- cTemplateView -------------------------------------------------------------
@@ -19,6 +20,10 @@ cTemplateView::~cTemplateView() {
     }
 
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
+        delete it->second;
+    }
+
+    for (map < int, cTemplateViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
         delete it->second;
     }
 
@@ -61,8 +66,9 @@ void cTemplateView::SetContainer(int x, int y, int width, int height) {
 
 cTemplateViewElement *cTemplateView::GetViewElement(eViewElement ve) {
     map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end())
+    if (hit == viewElements.end()) {
         return NULL;
+    }
     return hit->second;
 }
 
@@ -76,6 +82,26 @@ cTemplateViewElement *cTemplateView::GetNextViewElement(void) {
     cTemplateViewElement *viewElement = veIt->second;
     veIt++;
     return viewElement; 
+}
+
+cTemplateViewGrid *cTemplateView::GetViewGrid(int gridID) {
+    map < int, cTemplateViewGrid* >::iterator hit = viewGrids.find(gridID);
+    if (hit == viewGrids.end()) {
+        return NULL;
+    }
+    return hit->second;    
+}
+
+void cTemplateView::InitViewGridIterator(void) {
+    geIt = viewGrids.begin();
+}
+
+cTemplateViewGrid *cTemplateView::GetNextViewGrid(void) {
+    if (geIt == viewGrids.end())
+        return NULL;
+    cTemplateViewGrid *viewGrid = geIt->second;
+    geIt++;
+    return viewGrid; 
 }
 
 cTemplateViewList *cTemplateView::GetViewList(eViewList vl) {
@@ -180,6 +206,37 @@ int cTemplateView::GetNumPixmapsViewElement(eViewElement ve) {
     return viewElement->GetNumPixmaps();
 }
 
+bool cTemplateView::HideView(void) {
+    if (!parameters)
+        return false;
+    return parameters->GetNumericParameter(ptHideRoot);
+}
+
+
+bool cTemplateView::ExecuteView(eViewElement ve) {
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end())
+        return false;
+    cTemplateViewElement *viewElement = hit->second;
+    return viewElement->Execute();
+}
+
+bool cTemplateView::DetachViewElement(eViewElement ve) {
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end())
+        return false;
+    cTemplateViewElement *viewElement = hit->second;
+    return viewElement->Detach();    
+}
+
+string cTemplateView::GetViewElementMode(eViewElement ve) {
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end())
+        return "";
+    cTemplateViewElement *viewElement = hit->second;
+    return viewElement->GetMode();    
+}
+
 int cTemplateView::GetNumListViewMenuItems(void) {
     int numElements = 0;
     cTemplateViewList *menuList = GetViewList(vlMenuItem);
@@ -224,7 +281,14 @@ bool cTemplateView::ValidViewList(const char *viewList) {
     set<string>::iterator hit = viewListsAllowed.find(viewList);
     if (hit == viewListsAllowed.end())
         return false;
-    return true;    
+    return true;
+}
+
+bool cTemplateView::ValidViewGrid(const char *viewGrid) {
+    set<string>::iterator hit = viewGridsAllowed.find(viewGrid);
+    if (hit == viewGridsAllowed.end())
+        return false;
+    return true;
 }
 
 bool cTemplateView::ValidFunction(const char *func) {
@@ -257,7 +321,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -270,7 +334,7 @@ void cTemplateView::Translate(void) {
                     funcsLoop->InitIterator();
                     cTemplateFunction *loopFunc = NULL;
                     while(loopFunc = funcsLoop->GetNextFunction()) {
-                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                             string text = loopFunc->GetParameter(ptText);
                             string translation;
                             bool translated = globals->Translate(text, translation);
@@ -293,7 +357,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -309,7 +373,7 @@ void cTemplateView::Translate(void) {
             pix->InitIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
-                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                     string text = func->GetParameter(ptText);
                     string translation;
                     bool translated = globals->Translate(text, translation);
@@ -327,7 +391,7 @@ void cTemplateView::Translate(void) {
                 pix->InitIterator();
                 cTemplateFunction *func = NULL;
                 while(func = pix->GetNextFunction()) {
-                    if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+                    if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                         string text = func->GetParameter(ptText);
                         string translation;
                         bool translated = globals->Translate(text, translation);
@@ -353,7 +417,7 @@ void cTemplateView::Translate(void) {
         viewTab->InitIterator();
         cTemplateFunction *func = NULL;
         while(func = viewTab->GetNextFunction()) {
-            if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox) {
+            if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                 string text = func->GetParameter(ptText);
                 string translation;
                 translated = globals->Translate(text, translation);
@@ -366,12 +430,49 @@ void cTemplateView::Translate(void) {
                 funcsLoop->InitIterator();
                 cTemplateFunction *loopFunc = NULL;
                 while(loopFunc = funcsLoop->GetNextFunction()) {
-                    if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox) {
+                    if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
                         string text = loopFunc->GetParameter(ptText);
                         string translation;
                         bool translated = globals->Translate(text, translation);
                         if (translated) {
                             loopFunc->SetTranslatedText(translation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Translate ViewGrids
+    InitViewGridIterator();
+    cTemplateViewGrid *viewGrid = NULL;
+    while(viewGrid = GetNextViewGrid()) {
+        viewGrid->InitIterator();
+        cTemplatePixmap *pix = NULL;
+        while(pix = viewGrid->GetNextPixmap()) {
+            pix->InitIterator();
+            cTemplateFunction *func = NULL;
+            while(func = pix->GetNextFunction()) {
+                if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
+                    string text = func->GetParameter(ptText);
+                    string translation;
+                    bool translated = globals->Translate(text, translation);
+                    if (translated) {
+                        func->SetTranslatedText(translation);
+                    }
+                }
+                if (func->GetType() == ftLoop) {
+                    cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                    funcsLoop->InitIterator();
+                    cTemplateFunction *loopFunc = NULL;
+                    while(loopFunc = funcsLoop->GetNextFunction()) {
+                        if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
+                            string text = loopFunc->GetParameter(ptText);
+                            string translation;
+                            bool translated = globals->Translate(text, translation);
+                            if (translated) {
+                                loopFunc->SetTranslatedText(translation);
+                            }
                         }
                     }
                 }
@@ -428,6 +529,14 @@ void cTemplateView::PreCache(bool isSubview) {
         pixOffset += viewElement->GetNumPixmaps();
     }
 
+    //Cache ViewGrids
+    for (map < int, cTemplateViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
+        cTemplateViewGrid *viewGrid = it->second;
+        viewGrid->SetGlobals(globals);
+        viewGrid->SetContainer(0, 0, osdWidth, osdHeight);
+        viewGrid->CalculateParameters();
+        viewGrid->CalculatePixmapParameters();
+    }
 
     //Cache ViewLists
     for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
@@ -486,6 +595,12 @@ void cTemplateView::Debug(void) {
         viewList->Debug();
     }
 
+    for (map < int, cTemplateViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
+        esyslog("skindesigner: ++++++++ ViewGrid %d:", it->first);
+        cTemplateViewGrid *viewGrid = it->second;
+        viewGrid->Debug();
+    }
+
     for (vector<cTemplateViewTab*>::iterator tab = viewTabs.begin(); tab != viewTabs.end(); tab++) {
         esyslog("skindesigner: ++++++++ ViewTab");
         (*tab)->Debug();
@@ -514,8 +629,17 @@ void cTemplateView::SetFunctionDefinitions(void) {
     string name = "viewelement";
     set<string> attributes;
     attributes.insert("debug");
+    attributes.insert("detached");
     attributes.insert("delay");
     attributes.insert("fadetime");
+    attributes.insert("name");
+    attributes.insert("condition");
+    attributes.insert("mode");
+    funcsAllowed.insert(pair< string, set<string> >(name, attributes));
+
+    name = "listelement";
+    attributes.clear();
+    attributes.insert("debug");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "area";
@@ -528,6 +652,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("height");
     attributes.insert("layer");
     attributes.insert("transparency");
+    attributes.insert("background");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "areascroll";
@@ -604,6 +729,23 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("float");
     attributes.insert("floatwidth");
     attributes.insert("floatheight");
+    funcsAllowed.insert(pair< string, set<string> >(name, attributes));
+
+    name = "drawtextvertical";
+    attributes.clear();
+    attributes.insert("debug");
+    attributes.insert("condition");
+    attributes.insert("name");
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("height");
+    attributes.insert("align");
+    attributes.insert("valign");
+    attributes.insert("direction");
+    attributes.insert("font");
+    attributes.insert("fontsize");
+    attributes.insert("color");
+    attributes.insert("text");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "drawimage";
@@ -995,17 +1137,6 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvheight");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
-    //definition of allowed parameters for timerlist viewlist 
-    attributes.clear();
-    attributes.insert("x");
-    attributes.insert("y");
-    attributes.insert("width");
-    attributes.insert("height");
-    attributes.insert("orientation");
-    attributes.insert("align");
-    attributes.insert("numlistelements");
-    funcsAllowed.insert(pair< string, set<string> >("timerlist", attributes));
-
     //definition of allowed parameters for menuitems viewlist 
     attributes.clear();
     attributes.insert("x");
@@ -1021,6 +1152,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
 
     //definition of allowed parameters for currentitems viewlist 
     attributes.clear();
+    attributes.insert("debug");
     attributes.insert("delay");
     attributes.insert("fadetime");
     funcsAllowed.insert(pair< string, set<string> >("currentelement", attributes));
@@ -1081,10 +1213,13 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("header");
     viewElementsAllowed.insert("colorbuttons");
     viewElementsAllowed.insert("message");
+    viewElementsAllowed.insert("sortmode");
     viewElementsAllowed.insert("discusage");
     viewElementsAllowed.insert("systemload");
+    viewElementsAllowed.insert("systemmemory");
     viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
+    viewElementsAllowed.insert("lastrecordings");
     viewElementsAllowed.insert("devices");
     viewElementsAllowed.insert("currentweather");
     viewElementsAllowed.insert("currentschedule");
@@ -1095,7 +1230,6 @@ void cTemplateViewMenu::SetViewElements(void) {
 }
 
 void cTemplateViewMenu::SetViewLists(void) {
-    viewListsAllowed.insert("timerlist");
     viewListsAllowed.insert("menuitems");
 }
 
@@ -1161,11 +1295,17 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
         case veMessage:
             name = "Message";
             break;
+        case veSortMode:
+            name = "Sort Mode";
+            break;
         case veDiscUsage:
             name = "Disc Usage";
             break;
         case veSystemLoad:
             name = "System Load";
+            break;
+        case veSystemMemory:
+            name = "System Memory";
             break;
         case veTemperatures:
             name = "Temperatures";
@@ -1173,13 +1313,16 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
         case veTimers:
             name = "Timers";
             break;
+        case veLastRecordings:
+            name = "Last Recordings";
+            break;
         case veCurrentSchedule:
             name = "Current Schedule";
             break;
         case veCurrentWeather:
             name = "Current Weather";
             break;
-       case veCustomTokens:
+        case veCustomTokens:
             name = "Custom Tokens";
             break;
         case veDevices:
@@ -1210,9 +1353,6 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
 string cTemplateViewMenu::GetViewListName(eViewList vl) {
     string name;
     switch (vl) {
-        case vlTimerList:
-            name = "Timer List";
-            break;
         case vlMenuItem:
             name = "Menu Item";
             break;
@@ -1287,14 +1427,20 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veButtons;
     } else if (!sViewElement.compare("message")) {
         ve = veMessage;
+    } else if (!sViewElement.compare("sortmode")) {
+        ve = veSortMode;
     } else if (!sViewElement.compare("discusage")) {
         ve = veDiscUsage;
     } else if (!sViewElement.compare("systemload")) {
         ve = veSystemLoad;
+    } else if (!sViewElement.compare("systemmemory")) {
+        ve = veSystemMemory;
     } else if (!sViewElement.compare("temperatures")) {
         ve = veTemperatures;
     } else if (!sViewElement.compare("timers")) {
         ve = veTimers;
+    } else if (!sViewElement.compare("lastrecordings")) {
+        ve = veLastRecordings;
     } else if (!sViewElement.compare("currentschedule")) {
         ve = veCurrentSchedule;
     } else if (!sViewElement.compare("customtokens")) {
@@ -1335,9 +1481,7 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
 void cTemplateViewMenu::AddViewList(string sViewList, cTemplateViewList *viewList) {
     
     eViewList vl = vlUndefined;
-    if (!sViewList.compare("timerlist")) {
-        vl = vlTimerList;
-    } else if (!sViewList.compare("menuitems")) {
+    if (!sViewList.compare("menuitems")) {
         vl = vlMenuItem;
     }
 
@@ -1472,6 +1616,7 @@ void cTemplateViewReplay::SetViewElements(void) {
     viewElementsAllowed.insert("scrapercontent");
     viewElementsAllowed.insert("currenttime");
     viewElementsAllowed.insert("totaltime");
+    viewElementsAllowed.insert("endtime");
     viewElementsAllowed.insert("progressbar");
     viewElementsAllowed.insert("cutmarks");
     viewElementsAllowed.insert("controlicons");
@@ -1506,6 +1651,9 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
             break;
         case veRecTotal:
             name = "Recording total Time";
+            break;
+        case veRecEnd:
+            name = "Recording end Time";
             break;
         case veRecProgressBar:
             name = "Rec Progress Bar";
@@ -1563,6 +1711,8 @@ void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmap *pix, v
         ve = veRecCurrent;
     } else if (!sViewElement.compare("totaltime")) {
         ve = veRecTotal;
+    } else if (!sViewElement.compare("endtime")) {
+        ve = veRecEnd;
     } else if (!sViewElement.compare("progressbar")) {
         ve = veRecProgressBar;
     } else if (!sViewElement.compare("cutmarks")) {
@@ -1796,4 +1946,143 @@ void cTemplateViewAudioTracks::AddViewList(string sViewList, cTemplateViewList *
     
     viewList->SetGlobals(globals);
     viewLists.insert(pair< eViewList, cTemplateViewList*>(vl, viewList));
+}
+
+/************************************************************************************
+* cTemplateViewPlugin
+************************************************************************************/
+
+cTemplateViewPlugin::cTemplateViewPlugin(string pluginName, int viewID) {
+    this->pluginName = pluginName;
+    this->viewID = viewID;
+    viewName = "displayplugin";
+    //definition of allowed parameters for class itself 
+    set<string> attributes;
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("fadetime");
+    attributes.insert("scaletvx");
+    attributes.insert("scaletvy");
+    attributes.insert("scaletvwidth");
+    attributes.insert("scaletvheight");
+    attributes.insert("hideroot");
+    funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
+
+    //definition of allowed parameters for viewtab
+    attributes.clear();
+    attributes.insert("debug");
+    attributes.insert("name");
+    attributes.insert("condition");
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("layer");
+    attributes.insert("transparency");
+    attributes.insert("scrollheight");
+    funcsAllowed.insert(pair< string, set<string> >("tab", attributes));
+
+    attributes.clear();
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("name");
+    funcsAllowed.insert(pair< string, set<string> >("grid", attributes));
+
+    viewElementsAllowed.insert("viewelement");
+    viewElementsAllowed.insert("scrollbar");
+    viewElementsAllowed.insert("tablabels");
+    viewGridsAllowed.insert("grid");
+}
+
+cTemplateViewPlugin::~cTemplateViewPlugin() {
+}
+
+void cTemplateViewPlugin::AddSubView(string sSubView, cTemplateView *subView) {
+    int subViewId = atoi(sSubView.c_str());
+    subViews.insert(pair< eSubView, cTemplateView* >((eSubView)subViewId, subView));
+}
+
+void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+    eViewElement ve = veUndefined;
+    string viewElementName = "";
+    int viewElementID = -1;
+    bool found = false;
+    for (vector<pair<string, string> >::iterator it = viewElementattributes.begin(); it != viewElementattributes.end(); it++) {
+        if (!(it->first).compare("name")) {
+            viewElementName = it->second;
+            found = true;
+            break;
+        }
+    }
+
+    if (found) {
+        viewElementID = config.GetPluginViewElementID(pluginName, viewElementName, viewID);
+    } else {
+        //check for internal view elements
+        ePluginInteralViewElements pve = pveUndefined;
+        if (!sViewElement.compare("scrollbar")) {
+            pve = pveScrollbar;
+        } else if (!sViewElement.compare("tablabels")) {
+            pve = pveTablabels;
+        }
+        if (pve == pveUndefined) {
+            esyslog("skindesigner: %s: unknown ViewElement in displayplugin: %s", pluginName.c_str(), viewElementName.c_str());
+            return;
+        }
+        viewElementID = pve;
+    }
+
+    pix->SetGlobals(globals);
+
+    ve = (eViewElement)viewElementID;
+    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    if (hit == viewElements.end()) {
+        cTemplateViewElement *viewElement = new cTemplateViewElement();
+        viewElement->SetParameters(viewElementattributes);
+        viewElement->AddPixmap(pix);
+        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
+    } else {
+        (hit->second)->AddPixmap(pix);
+    }
+}
+
+void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string, string> > &gridAttributes) {
+    string gridName = "";
+    bool found = false;
+    for (vector<pair<string, string> >::iterator it = gridAttributes.begin(); it != gridAttributes.end(); it++) {
+        if (!(it->first).compare("name")) {
+            gridName = it->second;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        esyslog("skindesigner: no name defined for plugin %s grid", pluginName.c_str());
+    }
+    int gridID = config.GetPluginViewGridID(pluginName, gridName, viewID);
+
+    if (gridID == -1) {
+        esyslog("skindesigner: %s: unknown Grid in displayplugin: %s", pluginName.c_str(), gridName.c_str());
+        return;
+    }
+
+    pix->SetGlobals(globals);
+
+    map < int, cTemplateViewGrid* >::iterator hit = viewGrids.find(gridID);
+    if (hit == viewGrids.end()) {
+        cTemplateViewGrid *viewGrid = new cTemplateViewGrid();
+        viewGrid->SetParameters(gridAttributes);
+        viewGrid->AddPixmap(pix);
+        viewGrids.insert(pair< int, cTemplateViewGrid*>(gridID, viewGrid));
+    } else {
+        (hit->second)->AddPixmap(pix);
+    }
+}
+
+void cTemplateViewPlugin::AddViewTab(cTemplateViewTab *viewTab) {
+    viewTabs.push_back(viewTab);
 }

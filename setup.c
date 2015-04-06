@@ -15,6 +15,7 @@ cSkinDesignerSetup::cSkinDesignerSetup() {
 }
 
 cSkinDesignerSetup::~cSkinDesignerSetup() {
+    config.setupCloseDoReload = true;
 }
 
 
@@ -44,7 +45,7 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
                     size_t hit = itemText.find(tr("Skin"));
                     if (hit == 0) {
                         string skin = itemText.substr(strlen(tr("Skin"))+1);
-                        state = AddSubMenu(new cSkindesignerSkinSetup(skin));
+                        state = AddSubMenu(new cSkindesignerSkinSetup(skin, ""));
                     }
                     break;
                 } default:
@@ -67,11 +68,11 @@ void cSkinDesignerSetup::Store(void) {
 
     config.InitSetupIterator();
     cSkinSetup *skinSetup = NULL;
-    while (skinSetup = config.GetSkinSetup()) {
+    while (skinSetup = config.GetNextSkinSetup()) {
         string skin = skinSetup->GetSkin();
         skinSetup->InitParameterIterator();
         cSkinSetupParameter *param = NULL;
-        while (param = skinSetup->GetParameter()) {
+        while (param = skinSetup->GetNextParameter()) {
             cString paramName = cString::sprintf("%s.%s", skin.c_str(), param->name.c_str());
             SetupStore(*paramName, param->value);
             config.UpdateSkinSetupParameter(*paramName, param->value);
@@ -157,10 +158,18 @@ void cSkinDesignerSetup::ImageCacheStatistics(void) {
     cList<cOsdItem>::Last()->SetSelectable(false);
 }
 
+// --- cSkinSetupSubMenu -----------------------------------------------------------
+
+cSkinSetupSubMenu::cSkinSetupSubMenu(string name, string displayText) : cOsdItem(displayText.c_str()) {
+    this->name = name;
+}
+
 // --- cSkindesignerSkinSetup -----------------------------------------------------------
 
-cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin)  : cOsdMenu(*cString::sprintf("%s: %s \"%s\"", trVDR("Setup"), tr("Skin"), skin.c_str()), 30) {
+cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin, string name)  : 
+cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.c_str(), name.c_str()), 30) {
     this->skin = skin;
+    this->name = name;
     Set();
 }
 
@@ -171,9 +180,16 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
     eOSState state = cOsdMenu::ProcessKey(Key);
     if (state == osUnknown) {
         switch (Key) {
-            case kOk:
-                return osBack;
-            default:
+            case kOk: {
+                cOsdItem *current = Get(Current());
+                cSkinSetupSubMenu *subMenuItem = dynamic_cast<cSkinSetupSubMenu*>(current);
+                if (subMenuItem) {
+                    state = AddSubMenu(new cSkindesignerSkinSetup(skin, subMenuItem->GetName()));
+                    break;
+                } else {
+                    return osBack;
+                }
+            } default:
                 break;
         }
     }
@@ -181,13 +197,13 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
 }
 
 void cSkindesignerSkinSetup::Set(void) {
-    cSkinSetup *skinSetup = config.GetSkinSetup(skin);
-    if (!skinSetup)
+    cSkinSetupMenu *menu = config.GetSkinSetupMenu(skin, name);
+    if (!menu) {
         return;
-
-    skinSetup->InitParameterIterator();
+    }
+    menu->InitParameterIterator();
     cSkinSetupParameter *param = NULL;
-    while (param = skinSetup->GetParameter()) {
+    while (param = menu->GetNextParameter(false)) {
         if (param->type == sptInt) {
             Add(new cMenuEditIntItem(param->displayText.c_str(), &param->value, param->min, param->max));
         } else if (param->type == sptBool) {
@@ -195,4 +211,9 @@ void cSkindesignerSkinSetup::Set(void) {
         }
     }
 
+    menu->InitSubmenuIterator();
+    cSkinSetupMenu *subMenu = NULL;
+    while (subMenu = menu->GetNextSubMenu(false)) {
+        Add(new cSkinSetupSubMenu(subMenu->GetName(), subMenu->GetDisplayText()));
+    }
 }

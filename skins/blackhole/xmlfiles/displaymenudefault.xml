@@ -59,6 +59,7 @@
                 <drawimage condition="not{current}" imagetype="skinpart" path="menubutton" x="0" y="0" width="100%" height="100%"/>
                 <drawimage condition="{current}" imagetype="skinpart" path="menubuttonactive" x="0" y="0" width="100%" height="100%"/>
             </area>
+
             <areascroll scrollelement="column1" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="1%" width="{column1width}" layer="3">
                 <drawtext name="column1" x="{column1x}" width="{column1width}" valign="center" font="{regular}" fontsize="90%" color="{clrWhite}" text="{column1}" />
             </areascroll>

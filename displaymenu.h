@@ -1,6 +1,6 @@
 #ifndef __DISPLAYMENU_H
 #define __DISPLAYMENU_H
-
+#include <libskindesignerapi/skindesignerapi.h>
 #include "libtemplate/template.h"
 #include "views/displaymenurootview.h"
 
@@ -12,7 +12,7 @@ enum eViewState {
     vsIdle
 };
 
-class cSDDisplayMenu : public cSkinDisplayMenu {
+class cSDDisplayMenu : public skindesignerapi::ISDDisplayMenu {
 private:
     cDisplayMenuRootView *rootView;
     eViewState state;
@@ -21,6 +21,7 @@ private:
     int pluginMenu;
     ePluginMenuType pluginMenuType;
     mutable cFont *textAreaFont;
+    void SetCurrentRecording(void);
 protected:
     int Tab(int n);
 public:
@@ -30,6 +31,7 @@ public:
     virtual int MaxItems(void);
     virtual void Clear(void);
     virtual void SetMenuCategory(eMenuCategory MenuCat);
+    virtual void SetMenuSortMode(eMenuSortMode MenuSortMode);
     virtual void SetPluginMenu(string name, int menu, int type, bool init);
     virtual void SetTitle(const char *Title);
     virtual void SetButtons(const char *Red, const char *Green = NULL, const char *Yellow = NULL, const char *Blue = NULL);

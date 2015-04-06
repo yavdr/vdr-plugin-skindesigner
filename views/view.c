@@ -11,13 +11,13 @@ cView::cView(cTemplateView *tmplView) : cPixmapContainer(tmplView->GetNumPixmaps
     if (tvScaled) {
         cDevice::PrimaryDevice()->ScaleVideo(scalingWindow);
     }
-    tmplItem = NULL;
+    tmplViewElement = NULL;
     tmplTab = NULL;
     Init();
 }
 
-cView::cView(cTemplateViewElement *tmplItem) : cPixmapContainer(tmplItem->GetNumPixmaps()) {
-    this->tmplItem = tmplItem;
+cView::cView(cTemplateViewElement *tmplViewElement) : cPixmapContainer(tmplViewElement ? tmplViewElement->GetNumPixmaps() : 0) {
+    this->tmplViewElement = tmplViewElement;
     tmplView = NULL;
     tmplTab = NULL;
     tvScaled = false;
@@ -27,7 +27,7 @@ cView::cView(cTemplateViewElement *tmplItem) : cPixmapContainer(tmplItem->GetNum
 cView::cView(cTemplateViewTab *tmplTab) : cPixmapContainer(1) {
     this->tmplTab = tmplTab;
     tmplView = NULL;
-    tmplItem = NULL;
+    tmplViewElement = NULL;
     tvScaled = false;
     Init();
 }
@@ -35,6 +35,10 @@ cView::cView(cTemplateViewTab *tmplTab) : cPixmapContainer(1) {
 cView::~cView() {
     if (tvScaled) {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
+    }
+    for (map<eViewElement,cViewElement*>::iterator dVeIt = detachedViewElements.begin(); dVeIt != detachedViewElements.end(); dVeIt++) {
+        cViewElement *ve = dVeIt->second;
+        delete ve;
     }
 }
 
@@ -72,9 +76,9 @@ void cView::Stop(void) {
 
 void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, map <string,int> *intTokens, map < string, vector< map< string, string > > > *loopTokens) {
     //setting correct ViewElement, depending which constructor was used
-    cTemplateViewElement *viewElement;
-    if (tmplItem && (ve == veMenuCurrentItemDetail || ve == veOnPause)) {
-        viewElement = tmplItem;
+    cTemplateViewElement *viewElement = NULL;
+    if (tmplViewElement) {
+        viewElement = tmplViewElement;
     } else if (tmplView) {
         viewElement = tmplView->GetViewElement(ve);
     }
@@ -91,6 +95,11 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
     viewElement->InitIterator();
     cTemplatePixmap *pix = NULL;
     while(pix = viewElement->GetNextPixmap()) {
+        //check if already drawn background area, this can be skipped
+        if (PixmapExists(pixCurrent) && pix->BackgroundArea()) {
+            pixCurrent++;
+            continue;
+        }
         //reset Template 
         pix->ClearDynamicParameters();
         //create Pixmap if already fully parsed
@@ -148,6 +157,28 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
 }
 
 void cView::ClearViewElement(eViewElement ve) {
+    cTemplateViewElement *viewElement = NULL;
+    if (tmplViewElement) {
+        viewElement = tmplViewElement;
+    } else if (tmplView) {
+        viewElement = tmplView->GetViewElement(ve);
+    }
+    if (!viewElement)
+        return;
+    int pixCurrent = viewElement->GetPixOffset();
+    if (pixCurrent < 0)
+        return;
+    cTemplatePixmap *pix = NULL;
+    viewElement->InitIterator();
+    while(pix = viewElement->GetNextPixmap()) {
+        if (!pix->BackgroundArea()) {
+            Fill(pixCurrent, clrTransparent);
+        }
+        pixCurrent++; 
+    }
+}
+
+void cView::DestroyViewElement(eViewElement ve) {
     if (!tmplView)
         return;
     cTemplateViewElement *viewElement = tmplView->GetViewElement(ve);
@@ -159,7 +190,7 @@ void cView::ClearViewElement(eViewElement ve) {
     cTemplatePixmap *pix = NULL;
     viewElement->InitIterator();
     while(pix = viewElement->GetNextPixmap()) {
-        Fill(pixCurrent, clrTransparent);
+        DestroyPixmap(pixCurrent);
         pixCurrent++; 
     }
 }
@@ -188,8 +219,46 @@ void cView::ActivateScrolling(void) {
     }
 }
 
-bool cView::ViewElementImplemented(eViewElement ve) {
+bool cView::ExecuteViewElement(eViewElement ve) {
+    if (!tmplView)
+        return false;
+    bool doExecute = tmplView->ExecuteView(ve);
+    if (!doExecute)
+        return false;
     return tmplView->GetNumPixmapsViewElement(ve);
+}
+
+bool cView::DetachViewElement(eViewElement ve) {
+    if (!tmplView)
+        return false;
+    return tmplView->DetachViewElement(ve);    
+}
+
+bool cView::ViewElementScrolls(eViewElement ve) {
+    if (scrollingPix < 0)
+        return false;
+    if (!tmplView)
+        return false;
+    cTemplateViewElement *viewElement = tmplView->GetViewElement(ve);
+    if (!viewElement)
+        return false;
+    int pixStart = viewElement->GetPixOffset();
+    int numPixmaps = viewElement->GetNumPixmaps();
+    if ( (scrollingPix >= pixStart) && (scrollingPix < (pixStart + numPixmaps)) )
+        return true;
+    return false;
+}
+    
+cViewElement *cView::GetViewElement(eViewElement ve) {
+    map < eViewElement, cViewElement* >::iterator hit = detachedViewElements.find(ve);
+    if (hit == detachedViewElements.end())
+        return NULL;
+    cViewElement *viewElement = hit->second;
+    return viewElement;
+}
+
+void cView::AddViewElement(eViewElement ve, cViewElement *viewElement) {
+    detachedViewElements.insert(pair< eViewElement, cViewElement* >(ve, viewElement));
 }
 
 void cView::CreateViewPixmap(int num, cTemplatePixmap *pix, cRect *size) {
@@ -235,6 +304,9 @@ void cView::DrawPixmap(int num, cTemplatePixmap *pix, map < string, vector< map<
                 break;
             case ftDrawText:
                 DoDrawText(num, func);
+                break;
+            case ftDrawTextVertical:
+                DoDrawTextVertical(num, func);
                 break;
             case ftDrawTextBox: {
                 int floating = func->GetNumericParameter(ptFloat);
@@ -288,8 +360,7 @@ void cView::DrawLoop(int numPixmap, cTemplateFunction *func, map < string, vecto
     int columnWidth = loopFunc->GetNumericParameter(ptColumnWidth);
     int rowHeight = loopFunc->GetNumericParameter(ptRowHeight);
     int overflow = loopFunc->GetNumericParameter(ptOverflow);
-    int maxItems = loopFunc->GetNumericParameter(ptNumElements);
-
+    
     int x0 = loopX0;
     int y0 = loopY0;
 
@@ -438,6 +509,52 @@ void cView::DoDrawText(int num, cTemplateFunction *func, int x0, int y0) {
     DrawText(num, pos, text.c_str(), clr, clrBack, fontName, fontSize);
 }
 
+void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0) {
+    string fontName = func->GetFontName();
+    int fontSize = func->GetNumericParameter(ptFontSize);
+    int direction = func->GetNumericParameter(ptDirection);
+    tColor clr = func->GetColorParameter(ptColor);
+    string text = func->GetText(false);
+    cImage *textVertical = imgCache->GetVerticalText(text, clr, fontName, fontSize, direction);
+    if (!textVertical)
+        return;
+
+    //align has to be set here because here we know the image size
+    int x = 0;
+    int y = 0;
+    int align = func->GetNumericParameter(ptAlign);
+    if (align == alCenter) {
+        int containerWidth = func->GetContainerWidth();
+        x = (containerWidth - textVertical->Width()) / 2;
+    } else if (align == alLeft) {
+        x = 0;
+    } else if (align == alRight) {
+        int containerWidth = func->GetContainerWidth();
+        x = (containerWidth - textVertical->Width());
+    } else {
+        x = func->GetNumericParameter(ptX);
+    }
+
+    int valign = func->GetNumericParameter(ptValign);
+    if (valign == alCenter) {
+        int containerHeight = func->GetContainerHeight();
+        y = (containerHeight - textVertical->Height()) / 2;
+    } else if (align == alTop) {
+        y = 0;
+    } else if (align == alBottom) {
+        int containerHeight = func->GetContainerHeight();
+        y = (containerHeight - textVertical->Height());
+    } else {
+        y = func->GetNumericParameter(ptY);
+    }
+    if (x < 0) x = 0;
+    x += x0;
+    if (y < 0) y = func->GetContainerHeight() - textVertical->Height() - 5;
+    y += y0;
+    cPoint pos(x,y);
+    DrawImage(num, pos, *textVertical);
+}
+
 void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
     string text = func->GetText(false);
     if (text.size() < 3)
@@ -459,8 +576,10 @@ void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
     const cFont *font = fontManager->Font(fontName, fontSize);
     if (!font)
         return;
+    fontManager->Lock();
     cTextWrapper wrapper;
     wrapper.Set(text.c_str(), font, width);
+    fontManager->Unlock();
     int fontHeight = fontManager->Height(fontName, fontSize);
     int lines = wrapper.Lines();
     int yLine = y;
@@ -530,7 +649,7 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
     std::stringstream sstrTextTall;
     std::stringstream sstrTextFull;
 
-    for (int i=0; i<flds.size(); i++) {
+    for (int i=0; i < (int)flds.size(); i++) {
         if (!flds[i].size()) {
             //empty line
             linesDrawn++;
@@ -542,7 +661,9 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
         } else {
             cTextWrapper wrapper;
             if (drawNarrow) {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, widthNarrow);
+                fontManager->Unlock();
                 int newLines = wrapper.Lines();
                 //check if wrapper fits completely into narrow area
                 if (linesDrawn + newLines < linesNarrow) {
@@ -564,7 +685,9 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
                     drawNarrow = false;
                 }
             } else {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, width);
+                fontManager->Unlock();
                 for (int line = 0; line < wrapper.Lines(); line++) {
                     sstrTextFull << wrapper.GetLine(line) << " ";        
                 }
@@ -580,9 +703,12 @@ void cView::DoDrawFloatingTextBox(int num, cTemplateFunction *func) {
     if (posLastCarriageReturn != string::npos && (posLastCarriageReturn < textTall.size() - 1)) {
         numLinesToAddAtTall = textTall.size() - posLastCarriageReturn - 2;
     }
-
+    fontManager->Lock();
     wTextTall.Set(textTall.c_str(), font, widthNarrow);
+    fontManager->Unlock();
+    fontManager->Lock();
     wTextFull.Set(sstrTextFull.str().c_str(), font, width);
+    fontManager->Unlock();
 
     int textLinesTall = wTextTall.Lines();
     int textLinesFull = wTextFull.Lines();
@@ -722,6 +848,42 @@ void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
 }
 
 /***********************************************************************
+* cViewElement
+************************************************************************/
+
+cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
+    tmplViewElement->SetPixOffset(0);
+    delay = tmplViewElement->GetNumericParameter(ptDelay);
+    SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
+}
+
+cViewElement::~cViewElement() {
+    CancelSave();
+}
+
+void cViewElement::Action(void) {
+    SetInitFinished();
+    DoSleep(delay);
+    Render();
+    FadeIn();
+    DoFlush();
+    if (scrolling) {
+        DoSleep(scrollDelay);
+        if (scrollOrientation == orHorizontal) {
+            ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
+        } else {
+            ScrollVertical(scrollingPix, scrollDelay, scrollSpeed);
+        }
+    }
+}
+
+void cViewElement::ClearTokens(void) {
+    stringTokens.clear();
+    intTokens.clear();
+}
+
+
+/***********************************************************************
 * cViewListItem
 ************************************************************************/
 
@@ -738,18 +900,18 @@ cViewListItem::~cViewListItem() {
 
 cRect cViewListItem::DrawListItem(map <string,string> *stringTokens, map <string,int> *intTokens) {
     cRect posItem;
-    if (!tmplItem)
+    if (!tmplViewElement)
         return posItem;
 
-    if (tmplItem->DebugTokens()) {
+    if (tmplViewElement->DebugTokens()) {
         DebugTokens("ListItem", stringTokens, intTokens);
     }
 
-    tmplItem->InitIterator();
+    tmplViewElement->InitIterator();
     cTemplatePixmap *pix = NULL;
     int pixCurrent = 0;
 
-    while(pix = tmplItem->GetNextPixmap()) {
+    while(pix = tmplViewElement->GetNextPixmap()) {
         SetListElementPosition(pix);
         if (pixCurrent == 0) {
             posItem = pix->GetPixmapSize();
@@ -837,3 +999,141 @@ void cViewListItem::SetListElementPosition(cTemplatePixmap *pix) {
     pix->SetY(y);
 }
 
+/***********************************************************************
+* cGrid
+************************************************************************/
+
+cGrid::cGrid(cTemplateViewElement *tmplGrid) : cView(tmplGrid) {
+    dirty = true;
+    moved = true;
+    resized = true;
+    current = false;
+    x = 0.0;
+    y = 0.0;
+    width = 0.0;
+    height = 0.0;
+}
+
+cGrid::~cGrid() {
+
+}
+
+void cGrid::Set(double x, double y, double width, double height,
+                map <string,int> *intTokens, map <string,string> *stringTokens) {
+
+    if ((width != this->width) || (height != this->height)) {
+        this->width = width;
+        this->height = height;
+        resized = true;
+        dirty = false;
+    } else {
+        resized = false;
+    }
+    if (this->x != x || this->y != y) {
+        this->x = x;
+        this->y = y;
+        moved = true;
+    } else {
+        moved = false;
+    }
+    if (intTokens) {
+        this->intTokens = *intTokens;
+        SetCurrent(current);
+        dirty = true;
+    }
+    if (stringTokens) {
+        this->stringTokens = *stringTokens;
+        dirty = true;
+    }
+}
+
+void cGrid::SetCurrent(bool current) { 
+    this->current = current;
+    if (!resized)
+        dirty = true;
+    intTokens.erase("current");
+    intTokens.insert(pair<string,int>("current", current)); 
+}
+
+void cGrid::Move(void) {
+    if (!tmplViewElement)
+        return;
+    tmplViewElement->InitIterator();
+    cTemplatePixmap *pix = NULL;
+    int pixCurrent = 0;
+
+    while(pix = tmplViewElement->GetNextPixmap()) {
+        PositionPixmap(pix);
+        cRect pixViewPort = pix->GetPixmapSize();
+        SetViewPort(pixCurrent, pixViewPort);
+        pixCurrent++;
+    }
+    dirty = false;
+    resized = false;
+    moved = false;
+}
+
+void cGrid::Draw(void) {
+    if (!tmplViewElement)
+        return;
+    if (tmplViewElement->DebugTokens()) {
+        DebugTokens("Grid", &stringTokens, &intTokens);
+    }
+
+    tmplViewElement->InitIterator();
+    cTemplatePixmap *pix = NULL;
+    int pixCurrent = 0;
+
+    while(pix = tmplViewElement->GetNextPixmap()) {
+        PositionPixmap(pix);
+        if (!PixmapExists(pixCurrent)) {
+            pix->ParseDynamicParameters(&intTokens, true);
+        } else {
+            pix->ParseDynamicParameters(&intTokens, false);
+        }
+        if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
+            CreateViewPixmap(pixCurrent, pix);
+        }
+        //if pixmap still not valid, skip
+        if (!pix->Ready()  && !pix->Scrolling()) {
+            pixCurrent++;
+            continue;
+        }
+        //if condition for pixmap set, check if cond is true 
+        if (!pix->DoExecute()) {
+            pixCurrent++;
+            continue;
+        }
+    
+        pix->ClearDynamicFunctionParameters();
+        pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens);
+        //pix->Debug();
+        DrawPixmap(pixCurrent, pix);
+        pixCurrent++;
+    }
+    dirty = false;
+    resized = false;
+    moved = false;
+}
+
+void cGrid::Clear(void) {
+    int pixMax = NumPixmaps();
+    for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
+        Fill(pixCurrent, clrTransparent);
+    }
+}
+
+void cGrid::DeletePixmaps(void) {
+    int pixMax = NumPixmaps();
+    for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
+        DestroyPixmap(pixCurrent);
+    }
+}
+
+void cGrid::PositionPixmap(cTemplatePixmap *pix) {
+    pix->SetXPercent(x);
+    pix->SetYPercent(y);
+    pix->SetWidthPercent(width);
+    pix->SetHeightPercent(height);
+    pix->CalculateParameters();
+}

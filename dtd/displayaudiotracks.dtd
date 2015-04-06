@@ -18,11 +18,13 @@
 <!ELEMENT background (area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT header (area|areascroll)*>
 <!ATTLIST header
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT menuitems (listelement)>

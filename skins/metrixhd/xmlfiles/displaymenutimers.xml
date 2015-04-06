@@ -32,7 +32,7 @@
             <area x="1%" width="58%" layer="2">
                 <drawimage condition="{flagactive}" name="active" imagetype="icon" path="ico_timer_active" x="0" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
                 <drawimage condition="not{flagactive}" name="active" imagetype="icon" path="ico_timer_inactive" x="0" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
-                <drawimage condition="{flagrecording}" name="active" imagetype="icon" path="ico_timer_recording" x="0" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
+                <drawimage condition="{flagrecording}" name="active" imagetype="icon" path="ico_timer_recording" x="0.9*{areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
             </area>
             <areascroll scrollelement="timertext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" x="5%" width="54%" layer="3">
                 <drawtext name="timertext" x="10" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{dayname} {day}. {timerstart} - {timerstop}: {title}" />

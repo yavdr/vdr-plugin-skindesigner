@@ -134,7 +134,7 @@ public:
     cConditionalParameter(cGlobals *globals, string value);
     virtual ~cConditionalParameter(void);
     void Tokenize(void);
-    bool Evaluate(map < string, int > *intTokens, map < string, string > *stringTokens);
+    void Evaluate(map < string, int > *intTokens, map < string, string > *stringTokens);
     bool IsTrue(void) { return isTrue; };
     void Debug(void);
 };

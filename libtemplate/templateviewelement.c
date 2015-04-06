@@ -46,7 +46,7 @@ bool cTemplateViewElement::CalculateParameters(void) {
     parameters->SetContainer(containerX, containerY, containerWidth, containerHeight);
     parameters->SetGlobals(globals);
     paramsValid = parameters->CalculateParameters();
-
+    parameters->ParseParameters();
     return paramsValid;
 }
 
@@ -118,6 +118,27 @@ cTemplateFunction *cTemplateViewElement::GetFunction(string name) {
     return NULL;
 }
 
+bool cTemplateViewElement::Execute(void) {
+    if (!parameters)
+        return true;
+    return parameters->DoExecute();
+}
+
+bool cTemplateViewElement::Detach(void) {
+    if (!parameters)
+        return false;
+    int detached = parameters->GetNumericParameter(ptDetached);
+    if (detached == 1)
+        return true;
+    return false;
+}
+
+string cTemplateViewElement::GetMode(void) {
+    if (!parameters)
+        return "";
+    return parameters->GetParameter(ptMode);
+}
+
 bool cTemplateViewElement::DebugTokens(void) {
     if (!parameters)
         return false;
@@ -129,6 +150,7 @@ void cTemplateViewElement::Debug(void) {
     esyslog("skindesigner: viewelement container size x: %d, y: %d, width: %d, height %d", containerX, containerY, containerWidth, containerHeight);
     if (parameters)
         parameters->Debug();
+    return;
     for (vector<cTemplatePixmap*>::iterator it = viewPixmaps.begin(); it != viewPixmaps.end(); it++) {
         (*it)->Debug();
     }

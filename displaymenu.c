@@ -1,3 +1,4 @@
+#include <vdr/player.h>
 #include "displaymenu.h"
 #include "libcore/helpers.h"
 
@@ -11,7 +12,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
     pluginMenuType = mtUnknown;
     if (!menuTemplate) {
         doOutput = false;
-        esyslog("skindesigner: displayMenu no valid template - aborting");
+        dsyslog("skindesigner: displayMenu no valid template - aborting");
         return;
     } 
     rootView = new cDisplayMenuRootView(menuTemplate->GetRootView());
@@ -19,6 +20,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         doOutput = false;
         return;
     }
+    SetCurrentRecording();
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
@@ -54,6 +56,12 @@ void cSDDisplayMenu::SetMenuCategory(eMenuCategory MenuCat) {
     cSkinDisplayMenu::SetMenuCategory(MenuCat);
     if (state != vsInit)
         state = vsMenuInit;
+}
+
+void cSDDisplayMenu::SetMenuSortMode(eMenuSortMode MenuSortMode) {
+    if (!doOutput)
+        return;
+    rootView->SetSortMode(MenuSortMode);
 }
 
 void cSDDisplayMenu::SetPluginMenu(string name, int menu, int type, bool init) {
@@ -194,7 +202,10 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
         rootView->LockFlush();
     eMenuCategory cat = MenuCategory();
     if (cat == mcMain && rootView->SubViewAvailable()) {
-        list->AddMainMenuItem(Index, Text, Current, Selectable);
+        string plugName = list->AddMainMenuItem(Index, Text, Current, Selectable);
+        if (Current) {
+            rootView->SetSelectedPluginMainMenu(plugName);
+        }
     } else if (cat == mcSetup && rootView->SubViewAvailable()) {
         list->AddSetupMenuItem(Index, Text, Current, Selectable);        
     } else {
@@ -305,4 +316,20 @@ void cSDDisplayMenu::Flush(void) {
         rootView->DoFlush();
     }
     state = vsIdle;
+}
+
+void cSDDisplayMenu::SetCurrentRecording(void) {
+    cControl *control = cControl::Control();
+    if (!control) {
+        return;
+    }
+    const cRecording *recording = control->GetRecording();
+    if (!recording) {
+        return;
+    }
+    string recFileName = "";
+    if (recording->FileName()) {
+        recFileName = recording->FileName();
+    }
+    rootView->SetCurrentRecording(recFileName);
 }

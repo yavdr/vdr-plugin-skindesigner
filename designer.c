@@ -107,6 +107,21 @@ cSkinDisplayMessage *cSkinDesigner::DisplayMessage(void) {
     return displayMessage;
 }
 
+cSkinDisplayPlugin *cSkinDesigner::DisplayPlugin(string pluginName, int viewID, int subViewID) {
+    currentMenu = NULL;
+    if (useBackupSkin) 
+        return NULL;
+    Init();
+    map< string, map <int, cTemplate*> >::iterator hit = pluginTemplates.find(pluginName);
+    if (hit == pluginTemplates.end())
+        return NULL;
+    map <int, cTemplate*>::iterator hit2 = (hit->second).find(viewID);
+    if (hit2 == (hit->second).end())
+        return NULL;
+    return new cSkinDisplayPlugin(hit2->second, subViewID);
+}
+
+
 void cSkinDesigner::Reload(void) {
     dsyslog("skindesigner: forcing full reload of templates");
     if (cOsd::IsOpen()) {
@@ -163,8 +178,8 @@ void cSkinDesigner::ListCustomTokens(void) {
 * PRIVATE FUNCTIONS
 *********************************************************************************/    
 void cSkinDesigner::Init(void) {
-    if (init || config.OsdSizeChanged() || config.SkinChanged() || config.OsdLanguageChanged()) {
-        
+    if (init || config.OsdSizeChanged() || config.SkinChanged() || config.OsdLanguageChanged() || config.setupCloseDoReload) {
+        config.setupCloseDoReload = false;
         if (init) {
             config.SetSkin();
             config.SetOSDSize();
@@ -236,6 +251,13 @@ void cSkinDesigner::DeleteTemplates(void) {
         delete audiotracksTemplate;
         audiotracksTemplate = NULL;
     }
+    for (map< string, map <int, cTemplate*> >::iterator plugs = pluginTemplates.begin(); plugs !=pluginTemplates.end(); plugs++) {
+        map <int, cTemplate*> plugTpls = plugs->second;
+        for (map <int, cTemplate*>::iterator tpl = plugTpls.begin(); tpl != plugTpls.end(); tpl++) {
+            delete tpl->second;
+        }
+    }
+    pluginTemplates.clear();
 }
 
 bool cSkinDesigner::LoadTemplates(void) {
@@ -316,6 +338,41 @@ bool cSkinDesigner::LoadTemplates(void) {
     }
     audiotracksTemplate->Translate();
 
+    config.InitPluginViewIterator();
+    map <int,string> *plugViews = NULL;
+    string plugName;
+    while ( plugViews = config.GetPluginViews(plugName) ) {
+        for (map <int,string>::iterator v = plugViews->begin(); v != plugViews->end(); v++) {
+            int viewID = v->first;
+            stringstream templateName;
+            templateName << "plug-" << plugName << "-" << v->second.c_str();
+            cTemplate *plgTemplate = new cTemplate(vtDisplayPlugin, plugName, viewID);
+            plgTemplate->SetGlobals(globals);
+            ok = plgTemplate->ReadFromXML(templateName.str());
+            if (!ok) {
+                esyslog("skindesigner: error reading plugin %s template", plugName.c_str());
+                delete plgTemplate;
+                pluginTemplates.erase(plugName);
+                break;
+            }
+            ok = plgTemplate->SetSubViews(plugName, viewID);
+            if (!ok) {
+                delete plgTemplate;
+                pluginTemplates.erase(plugName);
+                break;
+            }
+            plgTemplate->Translate();
+            map< string, map <int, cTemplate*> >::iterator hit = pluginTemplates.find(plugName);
+            if (hit == pluginTemplates.end()) {
+                map <int, cTemplate*> plugTemplates;
+                plugTemplates.insert(pair<int, cTemplate*>(v->first, plgTemplate));
+                pluginTemplates.insert(pair<string, map <int, cTemplate*> >(plugName, plugTemplates));
+            } else {
+                (hit->second).insert(pair<int, cTemplate*>(v->first, plgTemplate));
+            }
+        }
+    }
+
     dsyslog("skindesigner: templates successfully validated and parsed");        
     return true;
 }
@@ -327,6 +384,11 @@ void cSkinDesigner::CacheTemplates(void) {
     replayTemplate->PreCache();
     volumeTemplate->PreCache();
     audiotracksTemplate->PreCache();
+    for (map< string, map <int, cTemplate*> >::iterator plugs = pluginTemplates.begin(); plugs != pluginTemplates.end(); plugs++) {
+        for (map <int, cTemplate*>::iterator plugTplts = plugs->second.begin(); plugTplts != plugs->second.end(); plugTplts++) {
+            (plugTplts->second)->PreCache();
+        }
+    }
     dsyslog("skindesigner: templates cached");
     fontManager->CacheFonts(channelTemplate);
     fontManager->CacheFonts(menuTemplate);
@@ -344,6 +406,11 @@ void cSkinDesigner::CacheTemplates(void) {
     replayTemplate->CacheImages();
     volumeTemplate->CacheImages();
     audiotracksTemplate->CacheImages();
+    for (map< string, map <int, cTemplate*> >::iterator plugs = pluginTemplates.begin(); plugs != pluginTemplates.end(); plugs++) {
+        for (map <int, cTemplate*>::iterator plugTplts = plugs->second.begin(); plugTplts != plugs->second.end(); plugTplts++) {
+            (plugTplts->second)->CacheImages();
+        }
+    }
     imgCache->Debug(false);
 }
 

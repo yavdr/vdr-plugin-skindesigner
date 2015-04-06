@@ -1,4 +1,5 @@
 #define __STL_CONFIG_H
+#include <vdr/player.h>
 #include "displayreplay.h"
 
 cSDDisplayReplay::cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly) {
@@ -24,18 +25,33 @@ cSDDisplayReplay::~cSDDisplayReplay() {
 }
 
 void cSDDisplayReplay::SetRecording(const cRecording *Recording) {
-    if (!doOutput)
+    if (!doOutput || !Recording)
         return;
+    if (initial)
+        replayView->SetRecordingLength(Recording->LengthInSeconds());
     replayView->DrawTitle(Recording);
     replayView->DrawRecordingInformation(Recording);
     replayView->DrawScraperContent(Recording);
+}
+
+void cSDDisplayReplay::SetTitle(const char *Title) {
+    if (!doOutput || !Title)
+        return;
+    replayView->DrawTitle(Title);
 }
 
 void cSDDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
     if (!doOutput)
         return;
     if (!Play && Speed < 0) {
-        replayView->DrawOnPause(modeOnly);
+        string recFileName = "";
+        cControl *control = cControl::Control();
+        if (control) {
+            const cRecording *recording = control->GetRecording();
+            if (recording && recording->FileName())
+                recFileName = recording->FileName();
+        }
+        replayView->DrawOnPause(recFileName, modeOnly);
     } else {
         replayView->ClearOnPause();
     }
@@ -48,6 +64,7 @@ void cSDDisplayReplay::SetProgress(int Current, int Total) {
     replayView->DelayOnPause();
     replayView->DrawProgressBar(Current, Total);
     replayView->DrawMarks(marks, Current, Total);
+    replayView->DrawEndTime(Current, Total);
 }
 
 void cSDDisplayReplay::SetCurrent(const char *Current) {

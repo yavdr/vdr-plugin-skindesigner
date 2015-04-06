@@ -5,6 +5,8 @@
 #include "../libcore/helpers.h"
 
 cDisplayReplayView::cDisplayReplayView(cTemplateView *tmplView) : cView(tmplView) {
+    length = 0;
+    endLast = "";
     onPauseView = NULL;
     numMarksLast = 0;
     lastMarks = NULL;
@@ -43,7 +45,7 @@ void cDisplayReplayView::DrawBackground(bool modeOnly) {
 }
 
 void cDisplayReplayView::DrawDate(void) {
-    if (!ViewElementImplemented(veDateTime)) {
+    if (!ExecuteViewElement(veDateTime)) {
         return;
     }
 
@@ -53,13 +55,12 @@ void cDisplayReplayView::DrawDate(void) {
     if (!SetDate(stringTokens, intTokens)) {
         return;
     }
-
     ClearViewElement(veDateTime);
     DrawViewElement(veDateTime, &stringTokens, &intTokens);
 }
 
 void cDisplayReplayView::DrawTime(void) {
-    if (!ViewElementImplemented(veTime)) {
+    if (!ExecuteViewElement(veTime)) {
         return;
     }
 
@@ -76,7 +77,7 @@ void cDisplayReplayView::DrawTime(void) {
 void cDisplayReplayView::DrawTitle(const cRecording *recording) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
-    
+
     const char *recName = NULL;
     const cRecordingInfo *recInfo = recording->Info();
     if (recInfo) {
@@ -95,6 +96,19 @@ void cDisplayReplayView::DrawTitle(const cRecording *recording) {
 
     DrawViewElement(veRecTitle, &stringTokens, &intTokens);
 }
+
+void cDisplayReplayView::DrawTitle(const char *title) {
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    stringTokens.insert(pair<string,string>("rectitle", title));
+    stringTokens.insert(pair<string,string>("recsubtitle", ""));
+    stringTokens.insert(pair<string,string>("recdate", ""));
+    stringTokens.insert(pair<string,string>("rectime", ""));
+
+    DrawViewElement(veRecTitle, &stringTokens, &intTokens);
+}
+
 
 void cDisplayReplayView::DrawRecordingInformation(const cRecording *recording) {
     map < string, string > stringTokens;
@@ -124,7 +138,7 @@ void cDisplayReplayView::DrawScraperContent(const cRecording *recording) {
     if (!recording)
         return;
 
-    if (!ViewElementImplemented(veScraperContent)) {
+    if (!ExecuteViewElement(veScraperContent)) {
         return;
     }
 
@@ -213,6 +227,25 @@ void cDisplayReplayView::DrawTotal(const char *total) {
     DrawViewElement(veRecTotal, &stringTokens, &intTokens);
 }
 
+void cDisplayReplayView::DrawEndTime(int current, int total) {
+    if (!current)
+        return;
+    double rest = (double)(total - current) / (double)total;
+    time_t end = time(0) + rest*length;
+    string endTime = *TimeString(end);
+    if (!endTime.compare(endLast)) {
+        return;
+    }
+    endLast = endTime;
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    stringTokens.insert(pair<string,string>("recend", endTime));
+
+    ClearViewElement(veRecEnd);
+    DrawViewElement(veRecEnd, &stringTokens, &intTokens);
+}
+
 void cDisplayReplayView::DrawProgressBar(int current, int total) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
@@ -228,6 +261,7 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) 
         return;
     if (!MarksChanged(marks, current))
         return;
+
     map < string, string > stringTokens;
     map < string, int > intTokens;
     map < string, vector< map< string, string > > > loopTokens;
@@ -363,12 +397,12 @@ void cDisplayReplayView::DrawMessage(eMessageType type, const char *text) {
     DrawViewElement(veMessage, &stringTokens, &intTokens);
 }
 
-void cDisplayReplayView::DrawOnPause(bool modeOnly) {
+void cDisplayReplayView::DrawOnPause(string recFileName, bool modeOnly) {
     eViewElement veTmplOnPause = modeOnly ? veOnPauseModeOnly : veOnPause;
     cTemplateViewElement *tmplOnPause = tmplView->GetViewElement(veTmplOnPause);
     if (!tmplOnPause)
         return;
-    onPauseView = new cDisplayReplayOnPauseView(tmplOnPause);
+    onPauseView = new cDisplayReplayOnPauseView(recFileName, tmplOnPause);
     onPauseView->Start();
 }
 
@@ -386,7 +420,7 @@ void cDisplayReplayView::DelayOnPause(void) {
 }
 
 void cDisplayReplayView::DrawCustomTokens(void) {
-    if (!ViewElementImplemented(veCustomTokens)) {
+    if (!ExecuteViewElement(veCustomTokens)) {
         return;
     }
     if (!tmplView)

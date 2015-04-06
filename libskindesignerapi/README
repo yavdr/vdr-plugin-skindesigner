@@ -1,0 +1,22 @@
+Description
+-----------
+
+Library which provides the Skindesigner API to other Plugins. Plugins using
+this API are able to use all Skindesigner facilities to display their OSD
+representation.
+
+Thanks @ Lars Hanisch for providing an exemplarily implementation on which
+the code of this library is based on.  
+
+Installation
+------------
+
+cd <PLUGINSOURCEDIR>/libskindesignerapi
+make clean
+make install
+
+After installation check if libskindesignerapi.pc is correctly found in your
+PKG_CONFIG_PATH. If not, you should do something like this in your .bashrc:
+
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+

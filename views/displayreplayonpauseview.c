@@ -1,8 +1,8 @@
 #define __STL_CONFIG_H
-#include <vdr/player.h>
 #include "displayreplayonpauseview.h"
 
-cDisplayReplayOnPauseView::cDisplayReplayOnPauseView(cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
+cDisplayReplayOnPauseView::cDisplayReplayOnPauseView(string recFileName, cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
+    this->recFileName = recFileName;
     tmplViewElement->SetPixOffset(0);
     delay = tmplViewElement->GetNumericParameter(ptDelay) * 1000;
     SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
@@ -18,11 +18,10 @@ void cDisplayReplayOnPauseView::Render(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
     map < string, vector< map< string, string > > > loopTokens;
-    const cRecording *recording = NULL;
-    cControl *control = cControl::Control();
-    if (control) {
-        recording = control->GetRecording();
-    }
+    if (recFileName.size() == 0)
+        return;
+    const cRecording *recording = new cRecording(recFileName.c_str());
+
     if (recording) {
         string name = recording->Name() ? recording->Name() : "";
         stringTokens.insert(pair<string,string>("name", name));
@@ -81,6 +80,8 @@ void cDisplayReplayOnPauseView::Render(void) {
     }
     SetScraperTokens(NULL, recording, stringTokens, intTokens, loopTokens);
     DrawViewElement(veOnPause, &stringTokens, &intTokens, &loopTokens);
+    if (recording)
+        delete recording;
 }
 
 void cDisplayReplayOnPauseView::Action(void) {

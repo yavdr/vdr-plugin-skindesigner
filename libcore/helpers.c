@@ -51,8 +51,10 @@ int Minimum(int a, int b, int c, int d, int e, int f) {
 string CutText(string &text, int width, string fontName, int fontSize) {
     if (width <= fontManager->Font(fontName, fontSize)->Size())
         return text.c_str();
+    fontManager->Lock();
     cTextWrapper twText;
     twText.Set(text.c_str(), fontManager->Font(fontName, fontSize), width);
+    fontManager->Unlock();
     string cuttedTextNative = twText.GetLine(0);
     stringstream sstrText;
     sstrText << cuttedTextNative << "...";
@@ -156,7 +158,7 @@ vector<string>& splitstring::split(char delim, int rep) {
     string work = data();
     string buf = "";
     int i = 0;
-    while (i < work.length()) {
+    while (i < (int)work.length()) {
         if (work[i] != delim)
             buf += work[i];
         else if (rep == 1) {

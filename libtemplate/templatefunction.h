@@ -29,6 +29,7 @@ enum eFuncType {
     ftFill,
     ftDrawText,
     ftDrawTextBox,
+    ftDrawTextVertical,
     ftDrawImage,
     ftDrawRectangle,
     ftDrawEllipse,
@@ -39,11 +40,13 @@ enum eFuncType {
 enum eParamType {
     ptCond,
     ptName,
+    ptMode,
     ptX,
     ptY,
     ptWidth,
     ptHeight,
     ptMenuItemWidth,
+    ptDetached,
     ptFadeTime,
     ptDelay,
     ptImageType,
@@ -54,6 +57,7 @@ enum eParamType {
     ptText,
     ptLayer,
     ptTransparency,
+    ptBackground,
     ptQuadrant,
     ptType,
     ptAlign,
@@ -75,8 +79,10 @@ enum eParamType {
     ptScaleTvY,
     ptScaleTvWidth,
     ptScaleTvHeight,
+    ptHideRoot,
     ptCache,
     ptDeterminateFont,
+    ptDirection,
     ptNone
 };
 
@@ -99,6 +105,12 @@ enum eOverflowType {
     otNone,
     otWrap,
     otCut
+};
+
+enum eDirection {
+    diNone,
+    diBottomUp,
+    diTopDown
 };
 
 class cTemplateFunction {
@@ -149,6 +161,10 @@ protected:
     bool SetOrientation(string value);
     bool SetFloating(string value);
     bool SetOverflow(string value);
+    bool SetHideRoot(string value);
+    bool SetDetached(string value);
+    bool SetBackground(string value);
+    bool SetDirection(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);
@@ -198,6 +214,8 @@ public:
     //Dynamic width or height parameter
     int GetWidth(bool cutted = true);
     int GetHeight(void);
+    int GetContainerWidth(void) { return containerWidth; };
+    int GetContainerHeight(void) { return containerHeight; };
     void GetNeededWidths(multimap<eParamType,string> *widths);
     void GetNeededHeights(multimap<eParamType,string> *heights);
     void GetNeededPosX(multimap<eParamType,string> *posXs);

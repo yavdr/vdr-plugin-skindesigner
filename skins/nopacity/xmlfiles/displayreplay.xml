@@ -106,7 +106,7 @@
     {total}                     total frames of recording
     -->
     <progressbar>
-        <area x="3%" y="83%" width="94%" height="2%" layer="2">
+        <area x="3%" y="83%" width="94%" height="2%" layer="3">
             <drawellipse x="1" y="1" width="{areaheight}-2" height="{areaheight}-2" color="{clrProgressbar}" quadrant="0" />
             <drawrectangle x="{areaheight}/2" y="1" width="{current}/{total}*{areawidth} - {current}/{total}*{areaheight}" height="{areaheight}-2" color="{clrProgressbar}" />
         </area>
@@ -120,7 +120,7 @@
     {marks[startmark]}          true if mark is start mark
     -->
     <cutmarks>
-        <area x="3%" y="82%" width="94%" height="4%" layer="3">
+        <area x="3%" y="82%" width="94%" height="4%" layer="4">
             <loop name="marks" x="0" y="0" orientation="absolute">
                 <drawrectangle x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="1" height="100%" color="{clrTransWhite}" />
                 <drawrectangle condition="{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="5" height="1" color="{clrTransWhite}" />

@@ -21,6 +21,7 @@ using namespace std;
 class cTemplatePixmap {
 protected:
     bool scrolling;
+    bool background;
     cTemplateFunction *parameters;
     vector<cTemplateFunction*> functions;
     vector<cTemplateFunction*>::iterator funcIt;
@@ -30,11 +31,11 @@ protected:
     int containerHeight;
     cGlobals *globals;
     //functions replacing {width(label)} and {height(label)} tokens
-    void ReplaceWidthFunctions(void);
-    void ReplaceHeightFunctions(void);
+    bool ReplaceWidthFunctions(void);
+    bool ReplaceHeightFunctions(void);
     //functions replacing {posx(label)} and {posy(label)} tokens
-    void ReplacePosXFunctions(void);
-    void ReplacePosYFunctions(void);
+    bool ReplacePosXFunctions(void);
+    bool ReplacePosYFunctions(void);
     //Get Scrolling Function
     cTemplateFunction *GetScrollFunction(void);
 public:
@@ -47,6 +48,10 @@ public:
     void SetHeight(int height);
     void SetX(int x);
     void SetY(int y);
+    void SetWidthPercent(double width);
+    void SetHeightPercent(double height);
+    void SetXPercent(double x);
+    void SetYPercent(double y);
     void SetContainer(int x, int y, int w, int h);
     void SetGlobals(cGlobals *globals) { this->globals = globals; };
     void AddFunction(string name, vector<pair<string, string> > &params);
@@ -72,6 +77,7 @@ public:
     bool DoExecute(void) { return parameters->DoExecute(); };
     bool DoDebug(void) { return parameters->DoDebug(); };
     bool Ready(void);
+    bool BackgroundArea(void) { return background; };
     //Traverse Functions
     void InitIterator(void);
     cTemplateFunction *GetNextFunction(void);

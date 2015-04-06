@@ -254,7 +254,7 @@ void cConditionalParameter::Tokenize(void) {
     }
 }
 
-bool cConditionalParameter::Evaluate(map < string, int > *intTokens, map < string, string > *stringTokens) {
+void cConditionalParameter::Evaluate(map < string, int > *intTokens, map < string, string > *stringTokens) {
     isTrue = false;
     bool first = true;
     for (vector<sCondition>::iterator cond = conditions.begin(); cond != conditions.end(); cond++) {

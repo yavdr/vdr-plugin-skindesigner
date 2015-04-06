@@ -25,6 +25,7 @@ enum eViewElement {
     veDateTime,
     veTime,
     veMessage,
+    veSortMode,
     veDevices,
     veCurrentWeather,
     veCustomTokens,
@@ -45,8 +46,10 @@ enum eViewElement {
     veButtons,
     veDiscUsage,
     veSystemLoad,
+    veSystemMemory,
     veTemperatures,
     veTimers,
+    veLastRecordings,
     veCurrentSchedule,
     veMenuItem,
     veMenuCurrentItemDetail,
@@ -58,6 +61,7 @@ enum eViewElement {
     veRecInfo,
     veRecCurrent,
     veRecTotal,
+    veRecEnd,
     veRecProgressBar,
     veCuttingMarks,
     veControlIcons,
@@ -68,6 +72,12 @@ enum eViewElement {
     veOnPauseModeOnly,
     //DisplayVolume ViewElements
     veVolume
+};
+
+enum ePluginInteralViewElements {
+    pveScrollbar = -1,
+    pveTablabels = -2,
+    pveUndefined = 0
 };
 
 class cTemplateViewElement {
@@ -87,7 +97,7 @@ public:
     virtual ~cTemplateViewElement(void);
     void SetParameters(vector<pair<string, string> > &params);
     bool CalculateParameters(void);
-    bool CalculatePixmapParameters(void);
+    virtual bool CalculatePixmapParameters(void);
     bool CalculatePixmapParametersList(int orientation, int numElements);    
     int GetNumericParameter(eParamType type);
     void AddPixmap(cTemplatePixmap *pix) { viewPixmaps.push_back(pix); };
@@ -99,6 +109,9 @@ public:
     void InitIterator(void);
     cTemplatePixmap *GetNextPixmap(void);
     cTemplateFunction *GetFunction(string name);
+    bool Execute(void);
+    bool Detach(void);
+    string GetMode(void);
     bool DebugTokens(void);
     virtual void Debug(void);
 };

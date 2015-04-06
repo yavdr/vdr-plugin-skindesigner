@@ -258,6 +258,10 @@
             <trans lang="en_EN">for</trans>
             <trans lang="de_DE">für</trans>
         </token>
+        <token name="tr(endsat)">
+            <trans lang="en_EN">ends at</trans>
+            <trans lang="de_DE">endet um</trans>
+        </token>
     </translations>
     <!--
     The three Fonts FontOSD, FontFix and FontSml configured in VDR

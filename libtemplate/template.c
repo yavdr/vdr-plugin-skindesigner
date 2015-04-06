@@ -4,11 +4,11 @@
 
 // --- cTemplate -------------------------------------------------------------
 
-cTemplate::cTemplate(eViewType viewType) {
+cTemplate::cTemplate(eViewType viewType, string pluginName, int viewID) {
     globals = NULL;
     rootView = NULL;
     this->viewType = viewType;
-    CreateView();
+    CreateView(pluginName, viewID);
 }
 
 cTemplate::~cTemplate() {
@@ -21,8 +21,8 @@ cTemplate::~cTemplate() {
 /*******************************************************************
 * Public Functions
 *******************************************************************/
-bool cTemplate::ReadFromXML(void) {
-    std::string xmlFile;
+bool cTemplate::ReadFromXML(string xmlfile) {
+    string xmlFile;
     switch (viewType) {
         case vtDisplayChannel:
             xmlFile = "displaychannel.xml";
@@ -42,6 +42,9 @@ bool cTemplate::ReadFromXML(void) {
         case vtDisplayAudioTracks:
             xmlFile = "displayaudiotracks.xml";
             break;
+        case vtDisplayPlugin:
+            xmlFile = xmlfile;
+            break;
         default:
             return false;
     }
@@ -53,10 +56,11 @@ bool cTemplate::ReadFromXML(void) {
     if (!parser.ParseView()) {
         return false;
     }
-    //read additional plugin templates
+    
+    //read additional plugin menu templates
     bool ok = true;
     if (viewType == vtDisplayMenu) {
-        config.InitPluginIterator();
+        config.InitPluginMenuIterator();
         map <int,string> *plugTemplates = NULL;
         string plugName;
         while ( plugTemplates = config.GetPluginTemplates(plugName) ) {
@@ -111,6 +115,39 @@ void cTemplate::CacheImages(void) {
     }
 }
 
+bool cTemplate::SetSubViews(string plugName, int viewID) {
+    map <int,string> subViews = config.GetPluginSubViews(plugName, viewID);
+
+    if (subViews.size() == 0) {
+        return true;
+    }
+
+    for (map<int,string>::iterator it = subViews.begin(); it != subViews.end(); it ++) {
+        int subViewID = it->first;
+        stringstream templateName;
+        templateName << "plug-" << plugName << "-" << it->second;
+        string subViewTemplate = templateName.str();
+        cTemplateView *plgTemplateView = new cTemplateViewPlugin(plugName, subViewID);
+        plgTemplateView->SetGlobals(globals);
+        cXmlParser parser;
+        if (!parser.ReadView(plgTemplateView, subViewTemplate)) {
+            esyslog("skindesigner: error reading plugin %s template", plugName.c_str());
+            delete plgTemplateView;
+            return false;
+        }
+        if (!parser.ParseView()) {
+            esyslog("skindesigner: error reading plugin %s template", plugName.c_str());
+            delete plgTemplateView;
+            return false;
+        }
+        stringstream svid;
+        svid << subViewID;
+        rootView->AddSubView(svid.str(), plgTemplateView);
+    }
+    return true;
+}
+
+
 void cTemplate::Debug(void) {
     rootView->Debug();
 }
@@ -119,7 +156,7 @@ void cTemplate::Debug(void) {
 * Private Functions
 *******************************************************************/
 
-void cTemplate::CreateView(void) {
+void cTemplate::CreateView(string pluginName, int viewID) {
     switch (viewType) {
         case vtDisplayChannel:
             rootView = new cTemplateViewChannel();
@@ -138,7 +175,10 @@ void cTemplate::CreateView(void) {
             break;
         case vtDisplayMessage:
             rootView = new cTemplateViewMessage();
-            break;      
+            break;
+        case vtDisplayPlugin:
+            rootView = new cTemplateViewPlugin(pluginName, viewID);
+            break;
         default:
             esyslog("skindesigner: unknown view %d", viewType);
     }

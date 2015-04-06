@@ -4,7 +4,7 @@
 
 <!ELEMENT displayreplay (background | backgroundmodeonly |datetime | time | 
                          scrapercontent | rectitle | recinfo | currenttime | 
-                         totaltime | progressbar | cutmarks | controlicons | 
+                         totaltime | endtime | progressbar | cutmarks | controlicons | 
                          controliconsmodeonly | jump | message | onpause | 
                          onpausemodeonly | customtokens)*>
 <!ATTLIST displayreplay
@@ -32,66 +32,85 @@
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT time (area|areascroll)*>
 <!ATTLIST time
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT scrapercontent (area|areascroll)*>
 <!ATTLIST scrapercontent
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT rectitle (area|areascroll)*>
 <!ATTLIST rectitle
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT recinfo (area|areascroll)*>
 <!ATTLIST recinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT currenttime (area|areascroll)*>
 <!ATTLIST currenttime
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT totaltime (area|areascroll)*>
 <!ATTLIST totaltime
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT endtime (area|areascroll)*>
+<!ATTLIST endtime
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT progressbar (area|areascroll)*>
 <!ATTLIST progressbar
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT cutmarks (area|areascroll)*>
 <!ATTLIST cutmarks
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT controlicons (area|areascroll)*>
 <!ATTLIST controlicons
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT controliconsmodeonly (area|areascroll)*>
 <!ATTLIST controliconsmodeonly
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT jump (area|areascroll)*>
 <!ATTLIST jump
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT onpause (area|areascroll)*>
@@ -99,6 +118,7 @@
   debug CDATA #IMPLIED
   delay CDATA #REQUIRED
   fadetime CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT onpausemodeonly (area|areascroll)*>
@@ -106,11 +126,13 @@
   debug CDATA #IMPLIED
   delay CDATA #REQUIRED
   fadetime CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 %functions;

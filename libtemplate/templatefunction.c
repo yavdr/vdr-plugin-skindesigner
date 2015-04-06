@@ -53,6 +53,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptCond;
         } else if (!name.compare("name")) {
             p.first = ptName;
+        } else if (!name.compare("mode")) {
+            p.first = ptMode;
         } else if (!name.compare("x")) {
             p.first = ptX;
         } else if (!name.compare("y")) {
@@ -63,6 +65,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptHeight;
         } else if (!name.compare("menuitemwidth")) {
             p.first = ptMenuItemWidth;
+        } else if (!name.compare("detached")) {
+            p.first = ptDetached;
         } else if (!name.compare("fadetime")) {
             p.first = ptFadeTime;
         } else if (!name.compare("imagetype")) {
@@ -81,6 +85,8 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptLayer;
         } else if (!name.compare("transparency")) {
             p.first = ptTransparency;
+        } else if (!name.compare("background")) {
+            p.first = ptBackground;
         } else if (!name.compare("quadrant")) {
             p.first = ptQuadrant;
         } else if (!name.compare("type")) {
@@ -125,10 +131,14 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptScaleTvWidth;
         } else if (!name.compare("scaletvheight")) {
             p.first = ptScaleTvHeight;
+        } else if (!name.compare("hideroot")) {
+            p.first = ptHideRoot;
         } else if (!name.compare("cache")) {
             p.first = ptCache;
         } else if (!name.compare("determinatefont")) {
             p.first = ptDeterminateFont;
+        } else if (!name.compare("direction")) {
+            p.first = ptDirection;
         } else {
             p.first = ptNone;
         }
@@ -180,7 +190,7 @@ void cTemplateFunction::SetTextboxHeight(int boxHeight) {
 }
 
 void cTemplateFunction::SetTranslatedText(string translation) {
-    if (type != ftDrawText && type != ftDrawTextBox)
+    if (type != ftDrawText && type != ftDrawTextBox && type != ftDrawTextVertical)
         return;
     if (translation.size() == 0)
         return;
@@ -260,6 +270,19 @@ bool cTemplateFunction::CalculateParameters(void) {
                 break;
             case ptOverflow:
                 paramValid = SetOverflow(value);
+                break;
+            case ptHideRoot:
+                paramValid = SetHideRoot(value);
+                break;
+            case ptDetached:
+                paramValid = SetDetached(value);
+                break;
+            case ptBackground:
+                paramValid = SetBackground(value);
+                break;
+            case ptDirection:
+                paramValid = SetDirection(value);
+                break;
             default:
                 paramValid = true;
                 break;
@@ -292,6 +315,8 @@ bool cTemplateFunction::ReCalculateParameters(void) {
             case ptColumnWidth:
             case ptRowHeight:
                 SetNumericParameter(type, value);
+                break;
+            default:
                 break;
         }
         if (!paramValid) {
@@ -398,6 +423,14 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptMenuItemWidth)
             return 0;
+        else if (type == ptHideRoot)
+            return 0;
+        else if (type == ptDetached)
+            return 0;
+        else if (type == ptBackground)
+            return 0;
+        else if (type == ptDirection)
+            return diBottomUp;
         return -1;
     }
     return hit->second;
@@ -453,6 +486,9 @@ int cTemplateFunction::GetWidth(bool cutted) {
             else
                 funcWidth = fontManager->Width(fontName, GetNumericParameter(ptFontSize), parsedText.c_str());
             break; }
+        case ftDrawTextVertical:
+            funcWidth = GetNumericParameter(ptFontSize)*1.2;
+            break;
         case ftFill:
         case ftDrawImage:
         case ftDrawRectangle:
@@ -473,6 +509,9 @@ int cTemplateFunction::GetHeight(void) {
     switch (type) {
         case ftDrawText:
             funcHeight = fontManager->Height(fontName, GetNumericParameter(ptFontSize));
+            break;
+        case ftDrawTextVertical:
+            funcHeight = fontManager->Width(fontName, GetNumericParameter(ptFontSize), parsedText.c_str());
             break;
         case ftFill:
         case ftDrawImage:
@@ -725,11 +764,16 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
             break;
         case ptY:
         case ptHeight:
-        case ptFontSize:
         case ptScaleTvY:
         case ptScaleTvHeight:
             param.SetVertical();
             break;
+        case ptFontSize: {
+            if (this->type == ftDrawTextVertical)
+                param.SetHorizontal();
+            else 
+                param.SetVertical();
+            break; }
         case ptLayer:
             param.SetDefault(1);
             break;
@@ -1041,6 +1085,40 @@ bool cTemplateFunction::SetOverflow(string value) {
     return ok;
 }
 
+bool cTemplateFunction::SetHideRoot(string value) {
+    int hideRoot = 0;
+    if (!value.compare("true"))
+        hideRoot = 1;
+    numericParameters.insert(pair<eParamType, int>(ptHideRoot, hideRoot));
+    return true;
+}
+
+bool cTemplateFunction::SetDetached(string value) {
+    int detached = 0;
+    if (!value.compare("true"))
+        detached = 1;
+    numericParameters.insert(pair<eParamType, int>(ptDetached, detached));
+    return true;    
+}
+
+bool cTemplateFunction::SetBackground(string value) {
+    int back = 0;
+    if (!value.compare("true"))
+        back = 1;
+    numericParameters.insert(pair<eParamType, int>(ptBackground, back));
+    return true;    
+}
+
+bool cTemplateFunction::SetDirection(string value) {
+    int direction = diNone;
+    if (!value.compare("bottomup"))
+        direction = diBottomUp;
+    else if (!value.compare("topdown"))
+        direction = diTopDown;
+    numericParameters.insert(pair<eParamType, int>(ptDirection, direction));
+    return true;
+}
+
 void cTemplateFunction::ParseStringParameters(void) {
     //first replace stringtokens in Text (drawText)
     stringstream text;
@@ -1253,8 +1331,10 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
     int floatType = GetNumericParameter(ptFloat);
 
     if (floatType == flNone) {
+        fontManager->Lock();
         cTextWrapper wrapper;
         wrapper.Set(text.c_str(), font, width);
+        fontManager->Unlock();
         int lines = wrapper.Lines();
         return (lines * fontHeight);
     }
@@ -1280,7 +1360,7 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
     stringstream sstrTextTall;
     stringstream sstrTextFull;
 
-    for (int i=0; i<flds.size(); i++) {
+    for (int i=0; i < (int)flds.size(); i++) {
         if (!flds[i].size()) {
             //empty line
             linesDrawn++;
@@ -1292,7 +1372,9 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
         } else {
             cTextWrapper wrapper;
             if (drawNarrow) {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, widthNarrow);
+                fontManager->Unlock();
                 int newLines = wrapper.Lines();
                 //check if wrapper fits completely into narrow area
                 if (linesDrawn + newLines < linesNarrow) {
@@ -1314,7 +1396,9 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
                     drawNarrow = false;
                 }
             } else {
+                fontManager->Lock();
                 wrapper.Set((flds[i].c_str()), font, width);
+                fontManager->Unlock();
                 for (int line = 0; line < wrapper.Lines(); line++) {
                     sstrTextFull << wrapper.GetLine(line) << " ";        
                 }
@@ -1322,8 +1406,12 @@ int cTemplateFunction::CalculateTextBoxHeight(void) {
             }
         }
     }
+    fontManager->Lock();
     wTextTall.Set(sstrTextTall.str().c_str(), font, widthNarrow);
+    fontManager->Unlock();
+    fontManager->Lock();
     wTextFull.Set(sstrTextFull.str().c_str(), font, width);
+    fontManager->Unlock();
 
     int textLinesTall = wTextTall.Lines();
     int textLinesFull = wTextFull.Lines();
@@ -1380,6 +1468,9 @@ string cTemplateFunction::GetFuncName(void) {
         case ftDrawTextBox:
             name = "Function DrawTextBox";
             break;
+        case ftDrawTextVertical:
+            name = "Function DrawTextVertical";
+            break;
         case ftDrawImage:
             name = "Function DrawImage";
             break;
@@ -1411,6 +1502,9 @@ string cTemplateFunction::GetParamName(eParamType pt) {
         case ptName:
             name = "Name";
             break;
+        case ptMode:
+            name = "Mode";
+            break;
         case ptX:
             name = "X";
             break;
@@ -1425,7 +1519,10 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptMenuItemWidth:
             name = "Menu Item Width";
-            break;          
+            break;
+        case ptDetached:
+            name = "Detached";
+            break;       
         case ptFadeTime:
             name = "Fade Time";
             break;
@@ -1519,12 +1616,18 @@ string cTemplateFunction::GetParamName(eParamType pt) {
         case ptScaleTvHeight:
             name = "Scale TV Picture Height";
             break;
+        case ptHideRoot:
+            name = "Hide Root View";
+            break;
         case ptCache:
             name = "Cache Image";
             break;
         case ptDeterminateFont:
             name = "Determinate Font";
-            break;    
+            break;
+        case ptDirection:
+            name = "Text Direction";
+            break;
         default:
             name = "Unknown";
             break;

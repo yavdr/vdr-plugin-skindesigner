@@ -25,11 +25,13 @@ public:
     //icons
     void CacheIcon(eImageType type, string path, int width, int height);
     cImage *GetIcon(eImageType type, string name, int width, int height);
-    string GetIconName(string label, eMenuCategory cat = mcUndefined);
+    string GetIconName(string label, eMenuCategory cat = mcUndefined, string plugName = "");
     bool MenuIconExists(string name);
     //skinparts
     void CacheSkinpart(string path, int width, int height);
     cImage *GetSkinpart(string name, int width, int height);
+    //cairo special images
+    cImage *GetVerticalText(string text, tColor color, string font, int size, int direction);
     //helpers
     void Clear(void);
     void Debug(bool full);
@@ -48,6 +50,7 @@ private:
     map<string, cImage*> iconCache;
     map<string, cImage*> channelLogoCache;
     map<string, cImage*> skinPartsCache;
+    map<string, cImage*> cairoImageCache;
     bool LoadIcon(eImageType type, string name);
     bool LoadLogo(const cChannel *channel);
     bool LoadSeparatorLogo(string name);

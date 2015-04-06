@@ -15,7 +15,7 @@ VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ pri
 ### The directory environment:
 
 # Use package data if installed...otherwise assume we're under the VDR source directory:
-PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
+PKGCFG = $(if $(VDRDIR),$(shell pkg-config --silence-errors --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --silence-errors --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
 LIBDIR = $(call PKGCFG,libdir)
 LOCDIR = $(call PKGCFG,locdir)
 PLGCFG  = $(call PKGCFG,plgcfg)
@@ -54,6 +54,10 @@ LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
+INCLUDES += $(shell pkg-config --cflags libskindesignerapi)
+LIBS += $(shell pkg-config --libs libskindesignerapi)
+DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(shell pkg-config --modversion libskindesignerapi)"'
+
 ### The object files:
 OBJS = $(PLUGIN).o \
        config.o \
@@ -65,6 +69,8 @@ OBJS = $(PLUGIN).o \
        displayreplay.o \
        displaytracks.o \
        displayvolume.o \
+       displayplugin.o \
+       libcore/cairoimage.o \
        libcore/pixmapcontainer.o \
        libcore/fontmanager.o \
        libcore/imagecache.o \
@@ -80,13 +86,16 @@ OBJS = $(PLUGIN).o \
        libtemplate/templateview.o \
        libtemplate/templateviewelement.o \
        libtemplate/templateviewlist.o \
+       libtemplate/templateviewgrid.o \
        libtemplate/templatepixmap.o \
        libtemplate/templateviewtab.o \
        libtemplate/templatefunction.o \
        libtemplate/templateloopfunction.o \
        libtemplate/xmlparser.o \
        views/view.o \
+       views/viewgrid.o \
        views/viewhelpers.o \
+       views/displayviewelements.o \
        views/displaychannelview.o \
        views/displaymenurootview.o \
        views/displaymenuview.o \
@@ -99,7 +108,8 @@ OBJS = $(PLUGIN).o \
        views/displayreplayview.o \
        views/displayreplayonpauseview.o \
        views/displayvolumeview.o \
-       views/displayaudiotracksview.o
+       views/displayaudiotracksview.o \
+       views/displaypluginview.o
 
 ### The main target:
 

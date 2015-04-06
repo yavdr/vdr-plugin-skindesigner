@@ -5,15 +5,20 @@
     <!--
     define all your parameters here which should be configurable via
     OSD and the skindesigner setup menu.
+    <submenu> and <parameter> tags are allowed, <submenu> can be nested
+    with arbitrary depth.
+    Submenus must carry the attributes "name" and "displaytext". "name"
+    is for internal usage, "displaytext" is used for displaying the submenu
+    in the menu and can be an translation token
     Parameters must have type "bool" or "integer". For "bool" Parameters
     a choice yes/no is shown in the setup menu, a "integer" parameter
     can be configured to a value between "min" and "max". If "min" is not
     set, "0" is the minimum, if "max" is not set, "1000" is maximum.
-    "displayname" is used to display the option in the setup menu.
+    "displaytext" is used to display the option in the setup menu.
     The configured parameter value is the default value.
     -->
-    <parameters>
-    </parameters>
+    <menu>
+    </menu>
 
     <!--
     translations of displaytexts

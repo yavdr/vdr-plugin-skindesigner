@@ -16,6 +16,7 @@ cPixmapContainer::cPixmapContainer(int numPixmaps) {
         pixmaps[i] = NULL;
         pixmapsTransparency[i] = 0;
     }
+    pixmapsLayer = NULL;
     mutex.Unlock();
     checkRunning = false;
     fadeTime = 0;
@@ -33,6 +34,9 @@ cPixmapContainer::~cPixmapContainer(void) {
     }
     delete[] pixmaps;
     delete[] pixmapsTransparency;
+    if (pixmapsLayer)
+        delete[] pixmapsLayer;
+
     if (deleteOsdOnExit && osd) {
         mutex.Lock();
         delete osd;
@@ -48,7 +52,7 @@ bool cPixmapContainer::CreateOsd(int Left, int Top, int Width, int Height) {
     }
     cOsd *newOsd = cOsdProvider::NewOsd(Left, Top);
     if (newOsd) {
-        tArea Area = { 0, 0, Width, Height,  32 };
+        tArea Area = { 0, 0, Width - 1, Height - 1,  32 };
         if (newOsd->SetAreas(&Area, 1) == oeOk) {
             osd = newOsd;
             return true;
@@ -65,12 +69,6 @@ void cPixmapContainer::OpenFlush(void) {
     flushState = fsOpen; 
 }
 
-bool cPixmapContainer::PixmapExists(int num) {
-    cMutexLock MutexLock(&mutex);
-    if (pixmaps[num])
-        return true;
-    return false;
-}
 
 void cPixmapContainer::DoFlush(void) {
     cMutexLock MutexLock(&mutex);
@@ -81,11 +79,48 @@ void cPixmapContainer::DoFlush(void) {
     }
 }
 
+void cPixmapContainer::HidePixmaps(void) {
+    cMutexLock MutexLock(&mutex);
+    pixmapsLayer = new int[numPixmaps];
+    for(int i=0; i < numPixmaps; i++) {
+        if (!pixmaps[i]) {
+            pixmapsLayer[i] = 0;
+            continue;
+        }
+        pixmapsLayer[i] = pixmaps[i]->Layer();
+        pixmaps[i]->SetLayer(-1);
+    }
+}
+
+void cPixmapContainer::ShowPixmaps(void) {
+    cMutexLock MutexLock(&mutex);
+    if (!pixmapsLayer)
+        return;
+    for(int i=0; i < numPixmaps; i++) {
+        if (!pixmaps[i])
+            continue;
+        pixmaps[i]->SetLayer(pixmapsLayer[i]);
+    }
+}
+
+/******************************************************************************************************
+* Protected Functions
+******************************************************************************************************/
+
+bool cPixmapContainer::PixmapExists(int num) {
+    cMutexLock MutexLock(&mutex);
+    if (pixmaps[num])
+        return true;
+    return false;
+}
+
 void cPixmapContainer::CreatePixmap(int num, int Layer, const cRect &ViewPort, const cRect &DrawPort) {
     cMutexLock MutexLock(&mutex);
     if (!osd || (checkRunning && !Running()))
         return;
     pixmaps[num] = osd->CreatePixmap(Layer, ViewPort, DrawPort);
+    if (!pixmaps[num])
+        return;
     pixmaps[num]->Fill(clrTransparent);
     if (pixContainerInit && fadeTime) {
         pixmaps[num]->SetAlpha(0);
@@ -193,6 +228,13 @@ void cPixmapContainer::SetLayer(int num, int Layer) {
     if (!pixmaps[num])
         return;
     pixmaps[num]->SetLayer(Layer);
+}
+
+void cPixmapContainer::SetViewPort(int num, const cRect &rect) {
+    cMutexLock MutexLock(&mutex);
+    if (!pixmaps[num])
+        return;
+    pixmaps[num]->SetViewPort(rect);    
 }
 
 int cPixmapContainer::Width(int num) {
@@ -318,7 +360,7 @@ void cPixmapContainer::FadeOut(void) {
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
-        if (Running() && (Delta < FadeFrameTime))
+        if (Delta < FadeFrameTime)
             cCondWait::SleepMs(FadeFrameTime - Delta);
         if ((int)(Now - Start) > fadeTime)
             break;

@@ -15,6 +15,9 @@ enum ePluginMenuType {
 class cDisplayMenuRootView : public cView, public cViewHelpers  {
 private:
     eMenuCategory cat;
+    string selectedPluginMainMenu;
+    eMenuSortMode sortMode;
+    eMenuSortMode sortModeLast;
     eSubView viewType;
     cTemplateView *subView;
     bool subViewAvailable;
@@ -25,17 +28,21 @@ private:
     cDisplayMenuView *view;
     cDisplayMenuListView *listView;
     cDisplayMenuDetailView *detailView;
+    string currentRecording;
     string menuTitle;
     string buttonTexts[4];
     bool defaultBackgroundDrawn;
     bool defaultHeaderDrawn;
     bool defaultButtonsDrawn;
     bool defaultDateTimeDrawn;
+    bool defaultTimeDrawn;
     bool defaultMessageDrawn;
+    bool defaultSortmodeDrawn;
     void DrawBackground(void);
     void DrawHeader(void);
     void DrawDateTime(void);
     bool DrawTime(void);
+    void DrawSortMode(void);
     void DrawColorButtons(void);
     void DrawMessage(eMessageType type, const char *text);
     void ClearRootView(void);
@@ -45,6 +52,9 @@ public:
     virtual ~cDisplayMenuRootView();
     bool createOsd(void);
     void SetMenu(eMenuCategory menuCat, bool menuInit);
+    void SetSelectedPluginMainMenu(string name) { selectedPluginMainMenu = name; };
+    void SetSortMode(eMenuSortMode sortMode);
+    void SetCurrentRecording(string rec) { currentRecording = rec; };
     void CorrectDefaultMenu(void);
     void SetPluginMenu(string name, int menu, int type);
     void SetTitle(const char *title);

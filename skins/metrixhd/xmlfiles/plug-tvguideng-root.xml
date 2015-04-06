@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE displayplugin SYSTEM "../../../dtd/displayplugin.dtd">
+
+<displayplugin x="3%" y="5%" width="94%" height="90%">
+
+    <viewelement name="background_hor">
+        <area x="0" y="0" width="100%" height="100%" layer="1">
+            <fill color="{clrTransBlack}" />
+        </area>
+        <area x="70%" y="0" width="15%" height="12%" layer="1">
+            <fill color="{clrTransBlueLight}" />
+        </area>
+        <area x="0" y="20%" width="15%" height="5%" layer="2">
+            <drawrectangle x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}"/>
+        </area>
+    </viewelement>
+
+    <viewelement name="background_ver">
+        <area x="0" y="0" width="100%" height="100%" layer="1">
+            <fill color="{clrTransBlack}" />
+        </area>
+        <area x="70%" y="0" width="15%" height="12%" layer="1">
+            <fill color="{clrTransBlueLight}" />
+        </area>
+        <area x="0" y="20%" width="8%" height="15%" layer="2">
+            <drawrectangle x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}"/>
+        </area>
+    </viewelement>
+
+    <!-- Tokens available in Header
+    {isdummy}                 true if active element is a dummy element
+    {title}                   title of event of active grid
+    {shorttext}               shorttext of event of active grid
+    {description}             detailed description of event of active grid
+    {start}                   event start time in hh::mm
+    {stop}                    event stop time
+    {day}                     day of event of active grid
+    {date}                    date of  event  of active grid in dd.mm.yy
+    {daynumeric}              day as number
+    {month}                   month as number
+    {year}                    year as number
+    {running}                 true if event is currently running
+    {elapsed}                 elapsed time of event, if not running 0
+    {duration}                duration of event
+    {durationhours}           duration, full hours
+    {durationminutes}         duration, rest of minutes
+    {channelname}             Channel Name
+    {channelnumber}           Channel Number
+    {channelid}               ChannelID as path to display channel logo
+    {channellogoexists}       true if channel logo exists
+    {hasposter}               true if a scraped poster is available for this element
+    {posterwidth}             width of scraped poster
+    {posterheight}            height of scraped poster
+    {posterpath}              absolute path of scraped poster
+    -->
+    <viewelement name="header_hor">
+        <areascroll condition="not{isdummy}++not{hasposter}" orientation="vertical" mode="forthandback" delay="1000" scrollspeed="medium" x="1%" y="1%" width="68%" height="19%" layer="2">
+            <drawtext x="0" y="0" font="{semibold}" width="100%" fontsize="25%" color="{clrWhite}" text="{day} {daynumeric}.{month} {start} - {stop}" />
+            <drawtext x="0" y="20%" font="{semibold}" width="100%" fontsize="30%" color="{clrWhite}" text="{title}" />
+            <drawtextbox name="shorttext" x="0" y="50%" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{shorttext}" />
+            <drawtextbox x="0" y="{posy(shorttext)} + {height(shorttext)} - {areaheight}*0.15" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{description}" />
+        </areascroll>
+        <area condition="not{isdummy}++{hasposter}" x="1%" y="1%" width="{areaheight}*0.2*{posterwidth}/{posterheight}" height="19%" layer="2">
+            <drawimage imagetype="image" path="{posterpath}" x="0" y="0" width="100%" height="100%"/>
+        </area>
+        <areascroll condition="not{isdummy}++{hasposter}" orientation="vertical" mode="forthandback" delay="1000" scrollspeed="medium" x="12%" y="1%" width="56%" height="19%" layer="2">
+            <drawtext x="0" y="0" font="{semibold}" width="100%" fontsize="25%" color="{clrWhite}" text="{day} {daynumeric}.{month} {start} - {stop}" />
+            <drawtext x="0" y="20%" font="{semibold}" width="100%" fontsize="30%" color="{clrWhite}" text="{title}" />
+            <drawtextbox name="shorttext" x="0" y="50%" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{shorttext}" />
+            <drawtextbox x="0" y="{posy(shorttext)} + {height(shorttext)} - {areaheight}*0.15" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{description}" />
+        </areascroll>
+        <area condition="{isdummy}" x="1%" y="1%" width="68%" height="19%" layer="2">
+            <drawtext x="0" y="20%" font="{semibold}" width="100%" fontsize="35%" color="{clrWhite}" text="{title}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="header_ver">
+        <areascroll condition="not{isdummy}++not{hasposter}" orientation="vertical" mode="forthandback" delay="1000" scrollspeed="medium" x="1%" y="1%" width="68%" height="19%" layer="2">
+            <drawtext x="0" y="0" font="{semibold}" width="100%" fontsize="25%" color="{clrWhite}" text="{day} {daynumeric}.{month} {start} - {stop}" />
+            <drawtext x="0" y="20%" font="{semibold}" width="100%" fontsize="30%" color="{clrWhite}" text="{title}" />
+            <drawtextbox name="shorttext" x="0" y="50%" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{shorttext}" />
+            <drawtextbox x="0" y="{posy(shorttext)} + {height(shorttext)} - {areaheight}*0.15" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{description}" />
+        </areascroll>
+        <area condition="not{isdummy}++{hasposter}" x="1%" y="1%" width="{areaheight}*0.2*{posterwidth}/{posterheight}" height="19%" layer="2">
+            <drawimage imagetype="image" path="{posterpath}" x="0" y="0" width="100%" height="100%"/>
+        </area>
+        <areascroll condition="not{isdummy}++{hasposter}" orientation="vertical" mode="forthandback" delay="1000" scrollspeed="medium" x="12%" y="1%" width="56%" height="19%" layer="2">
+            <drawtext x="0" y="0" font="{semibold}" width="100%" fontsize="25%" color="{clrWhite}" text="{day} {daynumeric}.{month} {start} - {stop}" />
+            <drawtext x="0" y="20%" font="{semibold}" width="100%" fontsize="30%" color="{clrWhite}" text="{title}" />
+            <drawtextbox name="shorttext" x="0" y="50%" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{shorttext}" />
+            <drawtextbox x="0" y="{posy(shorttext)} + {height(shorttext)} - {areaheight}*0.15" width="100%" font="{light}" fontsize="20%" color="{clrWhite}" text="{description}" />
+        </areascroll>
+        <area condition="{isdummy}" x="1%" y="1%" width="68%" height="19%" layer="2">
+            <drawtext x="0" y="20%" font="{semibold}" width="100%" fontsize="35%" color="{clrWhite}" text="{title}" />
+        </area>
+    </viewelement>
+
+    <!-- Available Variables Footer:
+    {red1}                    true if red button is button 1
+    {red2}                    true if red button is button 2
+    {red3}                    true if red button is button 3
+    {red4}                    true if red button is button 4
+    {green1}                  true if green button is button 1
+    {green2}                  true if green button is button 2
+    {green3}                  true if green button is button 3
+    {green4}                  true if green button is button 4
+    {yellow1}                 true if yellow button is button 1
+    {yellow2}                 true if yellow button is button 2
+    {yellow3}                 true if yellow button is button 3
+    {yellow4}                 true if yellow button is button 4
+    {blue1}                   true if blue button is button 1
+    {blue2}                   true if blue button is button 2
+    {blue3}                   true if blue button is button 3
+    {blue4}                   true if blue button is button 4
+    {red}                     label of red button
+    {green}                   label of green button
+    {yellow}                  label of yellow button
+    {blue}                    label of blue button
+    -->
+    <viewelement name="footer_hor">
+        <area x="0" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red1}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green1}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow1}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue1}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="25%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red2}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green2}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow2}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue2}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="50%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red3}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green3}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow3}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue3}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="75%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red4}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green4}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow4}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue4}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>    
+    </viewelement>
+
+    <viewelement name="footer_ver">
+        <area x="0" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red1}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green1}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow1}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue1}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="25%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red2}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green2}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow2}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue2}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="50%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red3}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green3}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow3}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue3}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="75%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red4}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green4}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow4}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue4}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>    
+    </viewelement>
+    <!-- Available Variables time:
+    {time}                   timestring in hh:mm
+    {sec}                    current seconds
+    {min}                    current minutes
+    {hour}                   current hours
+    {hmins}                  current "hourminutes" to display an hour hand
+    {day}                    day in digits
+    {dayleadingzero}         day in digits with leading 0
+    {dayname}                Full name of the day
+    {daynameshort}           Short 3 char name of the day
+    {month}                  month in digits with leading 0
+    {monthname}              Full name of the month
+    {monthnameshort}         3 letter abbrivation of month name
+    {year}                   year in yyyy
+    -->
+    <viewelement name="time_hor">
+       <area x="70%" y="0" width="{areawidth}*0.145" height="12%" layer="2">
+            <drawtext align="right" y="5%" font="{light}" fontsize="45%" color="{clrWhite}" text="{dayname}" />
+            <drawtext align="right" y="45%" font="{light}" fontsize="45%" color="{clrWhite}" text="{day}. {monthnameshort}" />
+        </area>
+        <area x="85%" y="0" width="15%" height="12%" layer="2">
+            <drawtext align="center" valign="center" font="{light}" fontsize="75%" color="{clrWhite}" text="{time}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="time_ver">
+       <area x="70%" y="0" width="{areawidth}*0.145" height="12%" layer="2">
+            <drawtext align="right" y="5%" font="{light}" fontsize="45%" color="{clrWhite}" text="{dayname}" />
+            <drawtext align="right" y="45%" font="{light}" fontsize="45%" color="{clrWhite}" text="{day}. {monthnameshort}" />
+        </area>
+        <area x="85%" y="0" width="15%" height="12%" layer="2">
+            <drawtext align="center" valign="center" font="{light}" fontsize="75%" color="{clrWhite}" text="{time}" />
+        </area>
+    </viewelement>
+    
+    <!-- Tokens available in datetimeline
+    {weekday}                weekday of current display
+    {date}                   date of current display
+    -->
+    <viewelement name="datetimeline_hor">
+        <area x="0" y="20%" width="15%" height="5%" layer="3">
+            <drawtext align="center" valign="center" font="{semibold}" fontsize="90%" color="{clrWhite}" text="{weekday} {date}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="datetimeline_ver">
+        <area x="0" y="20%" width="8%" height="15%" layer="2">
+            <drawtext align="center" y="10%" font="{light}" fontsize="40%" color="{clrWhite}" text="{weekday}" />
+            <drawtext align="center" y="50%" font="{light}" fontsize="40%" color="{clrWhite}" text="{date}" />
+        </area>
+    </viewelement>
+
+    <!-- Tokens available in timeindicator
+    {percenttotal}            position of current time indicator in tenth of a percent of complete time shown
+    -->
+    <viewelement name="timeindicator_hor">
+        <area x="15%" y="20%" width="85%" height="72%" layer="4">
+            <drawrectangle x="{percenttotal}*{areawidth}/1000" y="0" width="1" height="100%" color="{clrRed}" />
+        </area>
+    </viewelement>
+
+    <viewelement name="timeindicator_ver">
+        <area x="0" y="35%" width="100%" height="57%" layer="3">
+            <drawrectangle x="0" y="{percenttotal}*{areaheight}/1000" width="100%" height="1" color="{clrRed}" />
+        </area>
+    </viewelement>
+
+    <!-- Tokens available in timeline
+    {timestring}             time of grid in hh:mm
+    -->
+    <grid name="timeline_hor" x="15%" y="20%" width="85%" height="5%">
+        <area layer="1">
+            <drawrectangle condition="{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransWhite}"/>
+            <drawrectangle condition="not{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
+        </area>
+        <area layer="2">
+            <drawtext condition="{fullhour}" x="5%" valign="center" font="{light}" fontsize="80%" color="{clrBlack}" text="{timestring}" />
+            <drawtext condition="not{fullhour}" x="5%" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{timestring}" />
+        </area>
+    </grid>
+
+    <grid name="timeline_ver" x="0" y="35%" width="8%" height="57%">
+       <area layer="1">
+            <drawrectangle condition="{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransWhite}"/>
+            <drawrectangle condition="not{fullhour}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
+        </area>
+        <area layer="2">
+            <drawtext condition="{fullhour}" align="center" y="5%" font="{light}" fontsize="70%" color="{clrBlack}" text="{timestring}" />
+            <drawtext condition="not{fullhour}" align="center" y="5%" font="{light}" fontsize="70%" color="{clrWhite}" text="{timestring}" />
+        </area>
+    </grid>
+
+    <!-- Tokens available in channels
+    {name}                   name of channel
+    {number}                 number of channel
+    {channelid}              id of channel to display channel logo
+    {channellogoexists}       true if channel logo exists
+    -->
+    <grid name="channels_hor" x="5%" y="25%" width="10%" height="67%">
+        <area layer="2">
+            <drawimage condition="{channellogoexists}" imagetype="channellogo" path="{channelid}" align="center" valign="center" width="80%" height="80%" />
+            <drawtext condition="not{channellogoexists}" x="1%" valign="center" width="98%" font="{light}" fontsize="45%" color="{clrWhite}" text="{name}" />
+        </area>
+    </grid>
+
+    <grid name="channels_ver" x="8%" y="25%" width="92%" height="10%">
+        <area layer="2">
+            <drawimage condition="{channellogoexists}" imagetype="channellogo" path="{channelid}" align="center" valign="center" width="80%" height="80%" />
+            <drawtext condition="not{channellogoexists}" align="center" valign="center" width="98%" font="{light}" fontsize="45%" color="{clrWhite}" text="{name}" />
+        </area>
+    </grid>
+
+    <!-- Tokens available in channelgroups
+    {color}                  alternates grid by grid from true to false
+    {group}                  name of channel group
+    -->
+    <grid name="channelgroups_hor" x="0" y="25%" width="5%" height="67%">
+        <area layer="2">
+            <drawrectangle condition="{color}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
+            <drawrectangle condition="not{color}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrDarkGray}" />
+        </area>
+        <area layer="3">
+            <drawtextvertical align="center" valign="center" font="{semibold}" fontsize="50%" color="{clrWhite}" text="{group}" />
+        </area>
+    </grid>
+
+    <grid name="channelgroups_ver" x="8%" y="20%" width="92%" height="5%">
+        <area layer="2">
+            <drawrectangle condition="{color}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
+            <drawrectangle condition="not{color}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrDarkGray}" />
+        </area>
+        <area layer="3">
+            <drawtext align="center" valign="center" font="{semibold}" fontsize="90%" color="{clrWhite}" text="{group}" />
+        </area>
+    </grid>
+
+    <!-- Tokens available in schedules
+    {color}                  alternates grid by grid from true to false
+    {dummy}                  true if grid is a dummy grid
+    {timer}                  true if a timer is set for the according event
+    {switchtimer}            true if a switchtimer is set for the according event
+    {title}                  title of grid 
+    {shorttext}              shorttext of grid 
+    {start}                  start time in hh:mm
+    {stop}                   stop time in hh:dd
+    -->
+    <grid name="schedules_hor" x="15%" y="25%" width="85%" height="67%">
+        <area layer="2">
+            <drawrectangle condition="{color}++not{current}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
+            <drawrectangle condition="not{color}++not{current}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrDarkGray}" />
+            <drawrectangle condition="{current}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlueLight}" />
+        </area>
+        <area layer="3">
+            <drawtext condition="not{dummy}" x="3" y="2%" font="{light}" fontsize="45%" color="{clrWhite}" text="{start} - {stop}" />
+            <drawtext condition="not{dummy}" x="3" y="40%" width="{areawidth}-6" font="{semibold}" fontsize="55%" color="{clrWhite}" text="{title}" />
+            <drawtext condition="{dummy}" x="3" valign="center" width="98%" font="{semibold}" fontsize="55%" color="{clrWhite}" text="{title}" />
+            <drawimage condition="{timer}" imagetype="icon" path="ico_rec_on" x="{areawidth} - {areaheight}*0.32*45/23" y="68%" width="{areaheight}*0.3*45/23" height="{areaheight}*0.3"/>
+            <drawimage condition="{switchtimer}++not{timer}" imagetype="icon" path="ico_switchtimer" x="{areawidth} - {areaheight}*0.32*45/23" y="68%" width="{areaheight}*0.3*45/23" height="{areaheight}*0.3"/>
+            <drawimage condition="{switchtimer}++{timer}" imagetype="icon" path="ico_switchtimer" x="{areawidth} - {areaheight}*0.32*45/23*2 - 5" y="68%" width="{areaheight}*0.3*45/23" height="{areaheight}*0.3" />
+        </area>
+    </grid>
+
+    <grid name="schedules_ver" x="8%" y="35%" width="92%" height="57%">
+        <area layer="2">
+            <drawrectangle condition="{color}++not{current}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlack}" />
+            <drawrectangle condition="not{color}++not{current}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrDarkGray}" />
+            <drawrectangle condition="{current}" x="1" y="1" width="{areawidth}-2" height="{areaheight}-2" color="{clrTransBlueLight}" />
+        </area>
+        <area layer="3">
+            <drawtext condition="not{dummy}" x="3" y="2%" font="{light}" fontsize="{areawidth}*0.16" color="{clrWhite}" text="{start} - {stop}" />
+            <drawtextbox name="title" condition="not{dummy}" x="2%" y="{areawidth}*0.16" width="96%" font="{semibold}" fontsize="{areawidth}*0.15" color="{clrWhite}" text="{title}" />
+            <drawtextbox condition="not{dummy}" x="2%" y="{posy(title)} + {height(title)} - {areawidth}*0.1" width="96%" height="{areaheight}*1.1 - {posy(title)} - {height(title)}" font="{light}" fontsize="{areawidth}*0.12" color="{clrWhite}" text="{shorttext}" />
+            <drawtextbox condition="{dummy}" x="2%" y="5%" width="96%" font="{regular}" fontsize="{areawidth}*0.2" color="{clrWhite}" text="{title}" />
+            <drawimage condition="{timer}" imagetype="icon" path="ico_rec_on" x="{areawidth} - {areaheight}*0.32*45/23" y="68%" width="{areaheight}*0.3*45/23" height="{areaheight}*0.3"/>
+            <drawimage condition="{switchtimer}++not{timer}" imagetype="icon" path="ico_switchtimer" x="{areawidth} - {areaheight}*0.32*45/23" y="68%" width="{areaheight}*0.3*45/23" height="{areaheight}*0.3"/>
+            <drawimage condition="{switchtimer}++{timer}" imagetype="icon" path="ico_switchtimer" x="{areawidth} - {areaheight}*0.32*45/23*2 - 5" y="68%" width="{areaheight}*0.3*45/23" height="{areaheight}*0.3" />
+        </area>
+    </grid>
+
+    <!-- Tokens available in channeljump
+    {channel}                current user input for channel jump
+    -->
+    <viewelement name="channeljump">
+    </viewelement>
+
+</displayplugin>

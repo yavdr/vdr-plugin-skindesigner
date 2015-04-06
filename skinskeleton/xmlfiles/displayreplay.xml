@@ -74,6 +74,12 @@
     <totaltime>
     </totaltime>
 
+    <!-- Available Variables endtime:
+    {recend}                     End Time in hh:mm
+    -->
+    <endtime>
+    </endtime>
+
     <!-- Available Variables progressbar:
     {current}                   current frame of recording
     {total}                     total frames of recording

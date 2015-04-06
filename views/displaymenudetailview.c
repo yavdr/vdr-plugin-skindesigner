@@ -805,7 +805,7 @@ void cDisplayMenuDetailView::DrawScrollbar(void) {
 }
 
 void cDisplayMenuDetailView::DrawTabLabels(void) {
-    if (!ViewElementImplemented(veTabLabels)) {
+    if (!ExecuteViewElement(veTabLabels)) {
         return;
     }
     map < string, string > labelStringTokens;

@@ -9,6 +9,7 @@ void SkinDesignerXMLErrorHandler (void * userData, xmlErrorPtr error) {
 }
 
 cXmlParser::cXmlParser(void) {
+    view = NULL;
     doc = NULL;
     root = NULL;
     ctxt = NULL;
@@ -134,28 +135,27 @@ bool cXmlParser::ReadGlobals(cGlobals *globals, string xmlFile, bool mandatory) 
     return true;
 }
 
-bool cXmlParser::ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFile) {
+bool cXmlParser::ReadSkinSetup(cSkinSetup *skinSetup, string xmlFile) {
     this->skinSetup = skinSetup;
-    string xmlPath = *cString::sprintf("%s%s/%s", *config.skinPath, skin.c_str(), xmlFile.c_str());
 
-    if (!FileExists(xmlPath))
+    if (!FileExists(xmlFile))
         return false;
     if (ctxt == NULL) {
         esyslog("skindesigner: Failed to allocate parser context");
         return false;
     }
     
-    doc = xmlCtxtReadFile(ctxt, xmlPath.c_str(), NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
+    doc = xmlCtxtReadFile(ctxt, xmlFile.c_str(), NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
 
     if (doc == NULL ) {
-        esyslog("skindesigner: ERROR: skin setup %s not parsed successfully.", xmlPath.c_str());
+        esyslog("skindesigner: ERROR: skin setup %s not parsed successfully.", xmlFile.c_str());
         return false;
     }
 
     root = xmlDocGetRootElement(doc);
 
     if (ctxt->valid == 0) {
-        esyslog("skindesigner: Failed to validate %s", xmlPath.c_str());
+        esyslog("skindesigner: Failed to validate %s", xmlFile.c_str());
         return false;
     }
     if (root == NULL) {
@@ -191,10 +191,17 @@ bool cXmlParser::ParseView(void) {
         } else if (view->ValidViewElement((const char*)node->name)) {
             xmlAttrPtr attr = node->properties;
             vector<pair<string, string> > attribs;
-            ParseAttributes(attr, node, attribs);
+            ParseAttributes(attr, node, attribs, true);
             ParseViewElement(node->name, node->xmlChildrenNode, attribs);
         } else if (view->ValidViewList((const char*)node->name)) {
             ParseViewList(node);
+        } else if (view->ValidViewGrid((const char*)node->name)) {
+            xmlAttrPtr attr = node->properties;
+            vector<pair<string, string> > attribs;
+            ParseAttributes(attr, node, attribs);
+            ParseGrid(node->xmlChildrenNode, attribs);
+        } else if (!xmlStrcmp(node->name, (const xmlChar *) "tab")) {
+            ParseViewTab(node, view);
         } else {
             return false;
         }
@@ -281,8 +288,8 @@ bool cXmlParser::ParseSkinSetup(string skin) {
             node = node->next;
             continue;
         }
-        if (!xmlStrcmp(node->name, (const xmlChar *) "parameters")) {
-            ParseSetupParameter(node->xmlChildrenNode);
+        if (!xmlStrcmp(node->name, (const xmlChar *) "menu")) {
+            ParseSetupMenu(node->xmlChildrenNode);
             node = node->next;
             continue;
         } else if (!xmlStrcmp(node->name, (const xmlChar *) "translations")) {
@@ -324,64 +331,88 @@ string cXmlParser::GetPath(string xmlFile) {
     return path;
 }
 
-void cXmlParser::ParseSetupParameter(xmlNodePtr node) {
+void cXmlParser::ParseSetupMenu(xmlNodePtr node) {
     if (!node)
         return;
     if (!skinSetup)
         return;
 
     while (node != NULL) {
-
         if (node->type != XML_ELEMENT_NODE) {
             node = node->next;
             continue;
         }
-        if (xmlStrcmp(node->name, (const xmlChar *) "parameter")) {
-            node = node->next;
-            continue;
-        }
-        xmlAttrPtr attr = node->properties;
-        if (attr == NULL) {
-            node = node->next;
-            continue;
-        }
-        xmlChar *paramType = NULL;
-        xmlChar *paramName = NULL;
-        xmlChar *paramDisplayText = NULL;
-        xmlChar *paramMin = NULL;
-        xmlChar *paramMax = NULL;
-        xmlChar *paramValue = NULL;
-        while (NULL != attr) {
-            if (!xmlStrcmp(attr->name, (const xmlChar *) "type")) {
-                paramType = xmlGetProp(node, attr->name);
-            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "name")) {
-                paramName = xmlGetProp(node, attr->name);
-            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "displaytext")) {
-                paramDisplayText = xmlGetProp(node, attr->name);
-            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "min")) {
-                paramMin = xmlGetProp(node, attr->name);
-            } else if (!xmlStrcmp(attr->name, (const xmlChar *) "max")) {
-                paramMax = xmlGetProp(node, attr->name);
-            }
-            attr = attr->next;
-        }
-        paramValue = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
-        skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramMin, paramMax, paramValue);
 
-        if (paramType)
-            xmlFree(paramType);
-        if (paramName)
-            xmlFree(paramName);
-        if (paramDisplayText)
-            xmlFree(paramDisplayText);
-        if (paramMin)
-            xmlFree(paramMin);
-        if (paramMax)
-            xmlFree(paramMax);
-        if (paramValue)
-            xmlFree(paramValue);
+        if (!xmlStrcmp(node->name, (const xmlChar *) "parameter")) {
+            ParseSetupParameter(node);
+        } else if (!xmlStrcmp(node->name, (const xmlChar *) "submenu")) {
+            xmlAttrPtr attr = node->properties;
+            xmlChar *subMenuName = NULL;
+            xmlChar *subDisplayText = NULL;
+            while (NULL != attr) {
+                if (!xmlStrcmp(attr->name, (const xmlChar *) "name")) {
+                    subMenuName = xmlGetProp(node, attr->name);
+                } else if (!xmlStrcmp(attr->name, (const xmlChar *) "displaytext")) {
+                    subDisplayText = xmlGetProp(node, attr->name);
+                }
+                attr = attr->next;
+            }
+            skinSetup->SetSubMenu(subMenuName, subDisplayText);
+            ParseSetupMenu(node->xmlChildrenNode);
+            if (subMenuName)
+                xmlFree(subMenuName);
+            if (subDisplayText)
+                xmlFree(subDisplayText);
+        }
         node = node->next;
     }
+    skinSetup->SubMenuDone();
+}
+
+void cXmlParser::ParseSetupParameter(xmlNodePtr node) {
+    if (!node)
+        return;
+    if (!skinSetup)
+        return;
+
+    xmlAttrPtr attr = node->properties;
+    if (attr == NULL) {
+        return;
+    }
+    xmlChar *paramType = NULL;
+    xmlChar *paramName = NULL;
+    xmlChar *paramDisplayText = NULL;
+    xmlChar *paramMin = NULL;
+    xmlChar *paramMax = NULL;
+    xmlChar *paramValue = NULL;
+    while (NULL != attr) {
+        if (!xmlStrcmp(attr->name, (const xmlChar *) "type")) {
+            paramType = xmlGetProp(node, attr->name);
+        } else if (!xmlStrcmp(attr->name, (const xmlChar *) "name")) {
+            paramName = xmlGetProp(node, attr->name);
+        } else if (!xmlStrcmp(attr->name, (const xmlChar *) "displaytext")) {
+            paramDisplayText = xmlGetProp(node, attr->name);
+        } else if (!xmlStrcmp(attr->name, (const xmlChar *) "min")) {
+            paramMin = xmlGetProp(node, attr->name);
+        } else if (!xmlStrcmp(attr->name, (const xmlChar *) "max")) {
+            paramMax = xmlGetProp(node, attr->name);
+        }
+        attr = attr->next;
+    }
+    paramValue = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
+    skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramMin, paramMax, paramValue);
+    if (paramType)
+        xmlFree(paramType);
+    if (paramName)
+        xmlFree(paramName);
+    if (paramDisplayText)
+        xmlFree(paramDisplayText);
+    if (paramMin)
+        xmlFree(paramMin);
+    if (paramMax)
+        xmlFree(paramMax);
+    if (paramValue)
+        xmlFree(paramValue);
 }
 
 void cXmlParser::ParseGlobalColors(xmlNodePtr node) {
@@ -651,7 +682,7 @@ bool cXmlParser::ParseSubView(xmlNodePtr node) {
         if (subView->ValidViewElement((const char*)childNode->name)) {
             xmlAttrPtr attr = childNode->properties;
             vector<pair<string, string> > attribs;
-            ParseAttributes(attr, childNode, attribs);
+            ParseAttributes(attr, childNode, attribs, true);
             ParseViewElement(childNode->name, childNode->xmlChildrenNode, attribs, subView);
         } else if (subView->ValidViewList((const char*)childNode->name)) {
             ParseViewList(childNode, subView);
@@ -820,6 +851,42 @@ void cXmlParser::ParseViewTab(xmlNodePtr parentNode, cTemplateView *subView) {
     subView->AddViewTab(viewTab);
 }
 
+void cXmlParser::ParseGrid(xmlNodePtr node, vector<pair<string, string> > &attributes) {
+    if (!node)
+        return;
+    
+    if (!view)
+        return;
+
+    while (node != NULL) {
+
+        if (node->type != XML_ELEMENT_NODE) {
+            node = node->next;
+            continue;
+        }
+
+        if (xmlStrcmp(node->name, (const xmlChar *) "area") && xmlStrcmp(node->name, (const xmlChar *) "areascroll")) {
+            esyslog("skindesigner: invalid tag \"%s\"", node->name);
+            node = node->next;
+            continue;
+        }
+
+        xmlAttrPtr attr = node->properties;
+        vector<pair<string, string> > attribs;
+        ParseAttributes(attr, node, attribs);
+
+        cTemplatePixmap *pix = new cTemplatePixmap();
+        if (!xmlStrcmp(node->name, (const xmlChar *) "areascroll")) {
+            pix->SetScrolling();
+        }
+        pix->SetParameters(attribs);
+        ParseFunctionCalls(node->xmlChildrenNode, pix);
+        view->AddPixmapGrid(pix, attributes);
+        
+        node = node->next;
+    }
+}
+
 void cXmlParser::ParseFunctionCalls(xmlNodePtr node, cTemplatePixmap *pix) {
     if (!node)
         return;
@@ -887,7 +954,7 @@ void cXmlParser::ParseLoopFunctionCalls(xmlNodePtr node, cTemplateLoopFunction *
     }
 }
 
-bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs) {
+bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs, bool isViewElement) {
     if (attr == NULL) {
         return false;
     }
@@ -898,15 +965,9 @@ bool cXmlParser::ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<s
     while (NULL != attr) {
 
         string name = (const char*)attr->name;
-        if (!name.compare("debug")) {
-            attribs.push_back(pair<string, string>((const char*)attr->name, "true"));
-            attr = attr->next;
-            continue;
-        }
-
         xmlChar *value = NULL;
         value = xmlGetProp(node, attr->name);
-        if (!view->ValidAttribute((const char*)node->name, (const char*)attr->name)) {
+        if (!view->ValidAttribute(isViewElement ? "viewelement" : (const char*)node->name, (const char*)attr->name)) {
             esyslog("skindesigner: unknown attribute %s in %s", (const char*)attr->name, (const char*)node->name);
             attr = attr->next;
             if (value)

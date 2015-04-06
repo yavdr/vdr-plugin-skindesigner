@@ -2,7 +2,7 @@
 
 <!ENTITY % functions SYSTEM "functions.dtd">
 
-<!ELEMENT displaymenu (background,header,datetime,time*,message,colorbuttons,
+<!ELEMENT displaymenu (background,header,datetime,time*,message,sortmode*,colorbuttons,
                        menudefault,menumain*,menusetup*,menuschedules*,
                        menutimers*,menuchannels*,menurecordings*,
                        menudetailedepg,menudetailedrecording,
@@ -18,89 +18,155 @@
 <!ELEMENT background (area)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT header (area|areascroll)*>
 <!ATTLIST header
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT time (area|areascroll)*>
 <!ATTLIST time
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT sortmode (area|areascroll)*>
+<!ATTLIST sortmode
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT colorbuttons (area|areascroll)*>
 <!ATTLIST colorbuttons
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT timers (area|areascroll)*>
 <!ATTLIST timers
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT discusage (area|areascroll)*>
 <!ATTLIST discusage
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT devices (area|areascroll)*>
 <!ATTLIST devices
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+  mode CDATA #IMPLIED
 >
 
 <!ELEMENT systemload (area|areascroll)*>
 <!ATTLIST systemload
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT systemmemory (area|areascroll)*>
+<!ATTLIST systemmemory
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT temperatures (area|areascroll)*>
 <!ATTLIST temperatures
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT currentschedule (area|areascroll)*>
 <!ATTLIST currentschedule
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT currentweather (area|areascroll)*>
 <!ATTLIST currentweather
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT lastrecordings (area|areascroll)*>
+<!ATTLIST lastrecordings
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT scrollbar (area|areascroll)*>
 <!ATTLIST scrollbar
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT detailheader (area|areascroll)*>
 <!ATTLIST detailheader
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT tablabels (area|areascroll)*>
 <!ATTLIST tablabels
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
-<!ELEMENT menudefault (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menudefault (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menudefault
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -113,8 +179,9 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | timers | 
-                    discusage | devices | systemload | temperatures | currentschedule | currentweather | customtokens | menuitems)*>
+<!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | sortmode | timers | 
+                    discusage | devices | systemload | systemmemory | temperatures | currentschedule | 
+                    currentweather | lastrecordings | customtokens | menuitems)*>
 <!ATTLIST menumain
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -127,7 +194,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menusetup (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menusetup (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menusetup
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -140,7 +207,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menuschedules (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menuschedules (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menuschedules
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -153,7 +220,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menutimers (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menutimers (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menutimers
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -166,7 +233,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menuchannels (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menuchannels (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menuchannels
   x CDATA #REQUIRED
   y CDATA #REQUIRED
@@ -179,7 +246,7 @@
   scaletvheight CDATA #IMPLIED
 >
 
-<!ELEMENT menurecordings (background | header | datetime | time | colorbuttons | scrollbar | menuitems)*>
+<!ELEMENT menurecordings (background | header | datetime | time | colorbuttons | scrollbar | sortmode | menuitems)*>
 <!ATTLIST menurecordings
   x CDATA #REQUIRED
   y CDATA #REQUIRED

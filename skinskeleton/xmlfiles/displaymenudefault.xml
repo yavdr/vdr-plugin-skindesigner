@@ -28,7 +28,16 @@
         {column5width}              proposed width of column5
         {column6width}              proposed width of column6
         {current}                   true if column is currently selected 
-        {separator}                 true if column is a list separator 
+        {separator}                 true if column is a list separator
+        
+        A dynamic token is set to indicate the current menu category or the plugin which is currently running.
+        With that it is possible to display different default menus with an individual style.
+        If a setup menu is diplayed, the token
+        {setup}                     is set to true
+        For the commands menu
+        {commands}                  is set to true
+        If a plugin is running, a token called as the name of the plugin is set to true
+        {pluginname}                is set to true
         -->
         <listelement>
         </listelement>

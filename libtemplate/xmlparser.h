@@ -15,6 +15,7 @@
 
 #include "templateview.h"
 #include "templateviewlist.h"
+#include "templateviewgrid.h"
 #include "templateviewtab.h"
 #include "../libcore/skinsetup.h"
 
@@ -31,6 +32,7 @@ private:
     xmlDocPtr doc;
     xmlNodePtr root;
     string GetPath(string xmlFile);
+    void ParseSetupMenu(xmlNodePtr node);
     void ParseSetupParameter(xmlNodePtr node);
     void ParseGlobalColors(xmlNodePtr node);
     void InsertColor(string name, string value);
@@ -42,16 +44,17 @@ private:
     void ParseViewElement(const xmlChar * viewElement, xmlNodePtr node, vector<pair<string, string> > &attributes, cTemplateView *subView = NULL);
     void ParseViewList(xmlNodePtr parentNode, cTemplateView *subView = NULL);
     void ParseViewTab(xmlNodePtr parentNode, cTemplateView *subView);
+    void ParseGrid(xmlNodePtr node, vector<pair<string, string> > &attributes);
     void ParseFunctionCalls(xmlNodePtr node, cTemplatePixmap *pix);
     void ParseLoopFunctionCalls(xmlNodePtr node, cTemplateLoopFunction *loopFunc);
-    bool ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs);
+    bool ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs, bool isViewElement = false);
 public:
     cXmlParser(void);
     virtual ~cXmlParser(void);
     bool ReadView(cTemplateView *view, string xmlFile);
     bool ReadPluginView(string plugName, int templateNumber, string templateName);
     bool ReadGlobals(cGlobals *globals, string xmlFile, bool mandatory);
-    bool ReadSkinSetup(cSkinSetup *skinSetup, string skin, string xmlFile);
+    bool ReadSkinSetup(cSkinSetup *skinSetup, string xmlFile);
     bool ParseView(void);
     bool ParsePluginView(string plugName, int templateNumber);
     bool ParseGlobals(void);

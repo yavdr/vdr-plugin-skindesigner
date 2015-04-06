@@ -1,12 +1,17 @@
 #define __STL_CONFIG_H
 #include <vdr/menu.h>
-#include <vdr/videodir.h>
 #include "displaymenurootview.h"
+#include "displayviewelements.h"
 #include "../config.h"
 #include "../libcore/helpers.h"
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
     cat = mcUndefined;
+    selectedPluginMainMenu = "";
+    sortMode = msmUnknown;
+    sortModeLast = msmUnknown;
+    menuTitle = "";
+    currentRecording = "";
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
@@ -25,12 +30,15 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     defaultHeaderDrawn = false;
     defaultButtonsDrawn = false;
     defaultDateTimeDrawn = false;
+    defaultTimeDrawn = false;
     defaultMessageDrawn = false;
+    defaultSortmodeDrawn = false;
     DeleteOsdOnExit();
     SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayMenuRootView::~cDisplayMenuRootView() {
+    CancelSave();
     if (view) {
         delete view;
         view = NULL;
@@ -181,7 +189,7 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
         //Create new View
         switch (newViewType) {
             case svMenuMain:
-                view = new cDisplayMenuMainView(subView, menuInit);
+                view = new cDisplayMenuMainView(subView, menuInit, currentRecording);
                 break;
             case svMenuSchedules:
                 if (subViewAvailable)
@@ -201,13 +209,20 @@ void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
             cTemplateViewList *tmplMenuItems = subView->GetViewList(vlMenuItem);
             if (!tmplMenuItems)
                 return;
-            listView = new cDisplayMenuListView(tmplMenuItems);
+            listView = new cDisplayMenuListView(tmplMenuItems, -1, menuCat, selectedPluginMainMenu);
         } else {
             //Create detailed view
             detailView = new cDisplayMenuDetailView(subView);
         }
         viewType = newViewType;
     }
+}
+
+void cDisplayMenuRootView::SetSortMode(eMenuSortMode sortMode) {
+    this->sortMode = sortMode;
+    if (!view)
+        return;
+    view->SetSortMode(sortMode);
 }
 
 void cDisplayMenuRootView::CorrectDefaultMenu(void) {
@@ -351,8 +366,12 @@ void cDisplayMenuRootView::ClearRootView(void) {
         ClearViewElement(veButtons);
     if (defaultDateTimeDrawn)
         ClearViewElement(veDateTime);
+    if (defaultTimeDrawn)
+        ClearViewElement(veTime);
     if (defaultMessageDrawn)
         ClearViewElement(veMessage);
+    if (defaultSortmodeDrawn)
+        ClearViewElement(veSortMode);
 }
 
 int cDisplayMenuRootView::GetMaxItems(void) {
@@ -415,6 +434,13 @@ void cDisplayMenuRootView::Render(void) {
         defaultHeaderDrawn = false;
     }
 
+    if (!view->DrawSortMode()) {
+        defaultSortmodeDrawn = true;
+        DrawSortMode();
+    } else {
+        defaultSortmodeDrawn = false;
+    }
+
     if (!view->DrawColorButtons()) {
         defaultButtonsDrawn = true;
         DrawColorButtons();
@@ -446,20 +472,25 @@ bool cDisplayMenuRootView::RenderDynamicElements(void) {
     if (!view)
         return false;
     bool updated = false;
-    if (view->DrawTime()) {
+    bool implemented = false;
+    if (view->DrawTime(implemented)) {
+        defaultTimeDrawn = false;
         updated = true;
-    } else if (DrawTime()) {
-        updated = true;
-    }
-    if (view->DrawDynamicViewElements()){
+    } else if (!implemented && DrawTime()) {
+        defaultTimeDrawn = true;
         updated = true;
     }
 
-    if (!view->DrawDateTime()) {
-        defaultDateTimeDrawn = true;
-        DrawDateTime();
-    } else {
+    implemented = false;
+    if (view->DrawDateTime(implemented)) {
         defaultDateTimeDrawn = false;
+    } else if (!implemented) {
+        DrawDateTime();
+        defaultDateTimeDrawn = true;
+    }
+
+    if (view->DrawDynamicViewElements()){
+        updated = true;
     }
 
     return updated;
@@ -474,47 +505,20 @@ void cDisplayMenuRootView::DrawBackground(void) {
     map < string, int > intTokens;
     DrawViewElement(veBackground, &stringTokens, &intTokens);
 }
+
 void cDisplayMenuRootView::DrawHeader(void) {
-    if (!ViewElementImplemented(veHeader)) {
+    if (!ExecuteViewElement(veHeader)) {
         return;
     }
-
     map < string, string > stringTokens;
     map < string, int > intTokens;
-
-    stringTokens.insert(pair<string,string>("title", menuTitle));
-    stringTokens.insert(pair<string,string>("vdrversion", VDRVERSION));
-
-    //check for standard menu entries
-    bool hasIcon = false;
-
-    string icon = imgCache->GetIconName(menuTitle, cat);
-    if (imgCache->MenuIconExists(icon))
-        hasIcon = true;
-
-    stringTokens.insert(pair<string,string>("icon", icon));
-    intTokens.insert(pair<string,int>("hasicon", hasIcon));
-
-    //Disc Usage
-    string vdrUsageString = *cVideoDiskUsage::String();
-    int discUsage = cVideoDiskUsage::UsedPercent();
-    bool discAlert = (discUsage > 95) ? true : false;
-    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
-    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
-
-    intTokens.insert(pair<string, int>("usedpercent", discUsage));
-    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
-    intTokens.insert(pair<string, int>("discalert", discAlert));
-    intTokens.insert(pair<string, int>("freegb", freeGB));
-    stringTokens.insert(pair<string,string>("freetime", freeTime));
-    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
-
+    SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
     ClearViewElement(veHeader);
     DrawViewElement(veHeader, &stringTokens, &intTokens);
 }
 
 void cDisplayMenuRootView::DrawDateTime(void) {
-    if (!ViewElementImplemented(veDateTime)) {
+    if (!ExecuteViewElement(veDateTime)) {
         return;
     }
     
@@ -530,7 +534,7 @@ void cDisplayMenuRootView::DrawDateTime(void) {
 }
 
 bool cDisplayMenuRootView::DrawTime(void) {
-    if (!ViewElementImplemented(veTime)) {
+    if (!ExecuteViewElement(veTime)) {
         return false;
     }
     
@@ -546,9 +550,41 @@ bool cDisplayMenuRootView::DrawTime(void) {
     return true;
 }
 
+void cDisplayMenuRootView::DrawSortMode(void) {
+    if (!ExecuteViewElement(veSortMode)) {
+        return;
+    }
+    if (sortMode == msmUnknown) {
+        if (sortModeLast != msmUnknown)
+            ClearViewElement(veSortMode);
+        sortModeLast = msmUnknown;
+        return;
+    }
+    if (sortMode == sortModeLast) {
+        return;
+    }
+    sortModeLast = sortMode;
+
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+
+    bool sortNumber   = (sortMode == msmNumber)   ? true : false;
+    bool sortName     = (sortMode == msmName)     ? true : false;
+    bool sortTime     = (sortMode == msmTime)     ? true : false;
+    bool sortProvider = (sortMode == msmProvider) ? true : false;
+
+    intTokens.insert(pair<string, int>("sortnumber", sortNumber));
+    intTokens.insert(pair<string, int>("sortname", sortName));
+    intTokens.insert(pair<string, int>("sorttime", sortTime));
+    intTokens.insert(pair<string, int>("sortprovider", sortProvider));
+
+    ClearViewElement(veSortMode);
+    DrawViewElement(veSortMode, &stringTokens, &intTokens);
+    return;
+}
 
 void cDisplayMenuRootView::DrawColorButtons(void) {
-    if (!ViewElementImplemented(veButtons)) {
+    if (!ExecuteViewElement(veButtons)) {
         return;
     }
 

@@ -15,9 +15,25 @@
     {timers[channelnumber]}      number of channel
     {timers[channelid]}          ChannelID of channel
     {timers[channellogoexists]}  true if channel logo exists
+    {timers[isremotetimer]}      true if timer is a remote timer from remotetimers plugin
     -->
     <timers>
     </timers>
+
+    <!-- Available Variables lastrecordings: 5 newest recordings
+    {recordings[]}               array with 5 newest recordings
+    {recordings[name]}           name of recording
+    {recordings[seriesname]}     series name if available
+    {recordings[date]}           date of recording in dd.mm.yy
+    {recordings[time]}           time of recording in hh:mm
+    {recordings[duration]}       duration of recording in minutes
+    {recordings[hasposter]}      true if poster available
+    {recordings[posterpath]}     path of poster if available
+    {recordings[posterwidth]}    width of poster
+    {recordings[posterheight]}   height of poster
+    -->
+    <lastrecordings>
+    </lastrecordings>
 
     <!-- Available Variables discusage:
     {freetime}                available disc capacity in hh:mm
@@ -31,6 +47,7 @@
     </discusage>
 
     <!-- Available Variables devices:
+    signalstrength and -quality are only set if not mode="light" is used in <devices>
     {numdevices}                number of available devices
     {devices[]}                 array with available devices
     {devices[num]}              number of current device
@@ -48,7 +65,7 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
-    <devices>
+    <devices mode="full|light">
     </devices>
 
     <!-- Available Variables systemload:
@@ -56,6 +73,14 @@
     -->
     <systemload>
     </systemload>
+
+    <!-- Available Variables systemmemory:
+    {totalmem}                  total system memory in MB
+    {usedmem}                   currently used system memory in MB
+    {usedmempercent}            currently used system memory in Percent
+    -->
+    <systemmemory>
+    </systemmemory>
 
     <!-- Available Variables tempreatures:
     {cputemp}                  current cpu temperature in °C
@@ -65,15 +90,17 @@
     </temperatures>
 
     <!-- Available Variables currentschedule:
+    if a recording is displayed, info of this recording is used
+    {islivetv}                  true if info is from livetv, false if recording is displayed
     {title}                     Title of the current Schedule
     {subtitle}                  Subtitle of the current Schedule
-    {start}                     Start of current Schedule in hh:mm
-    {stop}                      End of current Schedule in hh:mm 
+    {start}                     Start of current Schedule in hh:mm (empty for recordings)
+    {stop}                      End of current Schedule in hh:mm (empty for recordings)
     {duration}                  Duration of current Schedule in min
     {durationhours}             Duration, full hours
     {minutes}                   Duration, rest of minutes
-    {elapsed}                   Elapsed time of current Schedule in min
-    {remaining}                 Remaining time of current Schedule in min
+    {elapsed}                   Elapsed time of current Schedule in min (0 for recordings)
+    {remaining}                 Remaining time of current Schedule in min (0 for recordings)
     {hasPoster}                 true if poster is available
     {posterpath}                Full Path of Poster to use in image path attribute
     {posterwidth}               width of poster in pixel

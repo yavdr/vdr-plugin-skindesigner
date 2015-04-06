@@ -21,91 +21,128 @@
 <!ELEMENT background (area)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT channelinfo (area|areascroll)*>
 <!ATTLIST channelinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT epginfo (area|areascroll)*>
 <!ATTLIST epginfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT progressbar (area|areascroll)*>
 <!ATTLIST progressbar
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT progressbarback (area)*>
 <!ATTLIST progressbarback
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT statusinfo (area|areascroll)*>
 <!ATTLIST statusinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT audioinfo (area|areascroll)*>
 <!ATTLIST audioinfo
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT screenresolution (area|areascroll)*>
 <!ATTLIST screenresolution
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT channelgroup (area|areascroll)*>
 <!ATTLIST channelgroup
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT signalquality (area|areascroll)*>
 <!ATTLIST signalquality
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT signalqualityback (area|areascroll)*>
 <!ATTLIST signalqualityback
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT devices (area|areascroll)*>
 <!ATTLIST devices
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+  mode CDATA #IMPLIED
 >
 
 <!ELEMENT currentweather (area|areascroll)*>
 <!ATTLIST currentweather
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT scrapercontent (area|areascroll)*>
 <!ATTLIST scrapercontent
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT time (area|areascroll)*>
 <!ATTLIST time
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT customtokens (area|areascroll)*>
 <!ATTLIST customtokens
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
   debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
 >
 
 %functions;

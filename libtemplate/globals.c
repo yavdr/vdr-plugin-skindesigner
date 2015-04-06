@@ -149,6 +149,7 @@ void cGlobals::ReplaceStringVars(string &value) {
 bool cGlobals::AddTranslation(string name,  map < string, string > transl) {
     translations.erase(name);
     translations.insert(pair<string, map < string, string > >(name, transl));
+    return true;
 }
 
 bool cGlobals::Translate(string text, string &translation) {
