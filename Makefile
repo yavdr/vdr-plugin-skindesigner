@@ -54,10 +54,6 @@ LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
 LIBS += $(shell xml2-config --libs)
 
-INCLUDES += $(shell pkg-config --cflags libskindesignerapi)
-LIBS += $(shell pkg-config --libs libskindesignerapi)
-DEFINES += -DLIBSKINDESIGNERAPIVERSION='"$(shell pkg-config --modversion libskindesignerapi)"'
-
 ### The object files:
 OBJS = $(PLUGIN).o \
        config.o \
@@ -113,12 +109,32 @@ OBJS = $(PLUGIN).o \
 
 ### The main target:
 
-all: $(SOFILE) i18n
+all: subprojects $(SOFILE) i18n
+
+### subprojects:
+
+.PHONY: libskindesignerapi subprojects
+
+libskindesignerapi:
+	$(MAKE) -C libskindesignerapi
+
+subprojects: libskindesignerapi
+
+install-subprojects:
+	$(MAKE) -C libskindesignerapi install
+
+clean-subprojects:
+	$(MAKE) -C libskindesignerapi clean
+
+### get version of subprojects in specific targets when subprojects have been built
+
+%.o: SUB_DEFINES = -DLIBSKINDESIGNERAPIVERSION='"$(shell pkg-config --modversion libskindesignerapi/libskindesignerapi.pc)"'
+$(SOFILE): SUB_LIBS = libskindesignerapi/libskindesignerapi.so.$(shell pkg-config --modversion libskindesignerapi/libskindesignerapi.pc)
 
 ### Implicit rules:
 
 %.o: %.c
-	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) -o $@ $<
+	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(SUB_DEFINES) $(INCLUDES) -o $@ $<
 
 ### Dependencies:
 
@@ -158,7 +174,7 @@ install-i18n: $(I18Nmsgs)
 ### Targets:
 
 $(SOFILE): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LIBS) -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LIBS) $(SUB_LIBS) -o $@
 
 install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
@@ -177,7 +193,7 @@ install-scripts:
 	mkdir -p $(DESTDIR)$(SKINDESIGNER_SCRIPTDIR)
 	cp -r scripts/* $(DESTDIR)$(SKINDESIGNER_SCRIPTDIR)
 
-install: install-lib install-i18n install-themes install-skins install-scripts
+install: install-subprojects install-lib install-i18n install-themes install-skins install-scripts
 
 dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
@@ -187,6 +203,6 @@ dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 
-clean:
+clean: clean-subprojects
 	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
 	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~

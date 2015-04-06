@@ -41,20 +41,25 @@ Requirements
 Installation
 ------------
 
-First you have to install libSkindesignerAPI:
+Skindesigner consists of the Skindesigner Plugin itself and a shared library
+called "libSkindesignerAPI" which allows other Plugins to use the facilities of
+Skindesigner. Since these other Plugins need to have access to the library,
+the library has to be proper installed on your system. 
 
-cd <PLUGINSOURCEDIR>/libskindesignerapi
-make clean
-make install
+With a "make install" both the plugin and the library are installed on your 
+system. The destination where the library will be installed can be set with 
+the PREFIX parameter: "PREFIX=/usr make install". Default of PREFIX is
+/usr/local.  
 
 After installation check if libskindesignerapi.pc is correctly found in your
-PKG_CONFIG_PATH.
+PKG_CONFIG_PATH. Other Plugins using the library issue the following 
+commands in their makefiles which should also work on your commandline:
+pkg-config --cflags libskindesignerapi 
+pkg-config --libs libskindesignerapi
+pkg-config --modversion libskindesignerapi
 
 Note that skindesigner itself and all plugins which use libSkindesignerAPI have to
-be build against the same major verison of this lib to be compatible.
-
-After installing the lib the Skindesigner Plugin has to be installed as any other 
-VDR Plugin has to be installed for your Distribution.
+be build against the same major verison of the library to be compatible.
 
 After installation you have to care about the paths for the XML skins and epg images. 
 The following paths can be set at startup:

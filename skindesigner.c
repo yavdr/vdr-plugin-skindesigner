@@ -7,7 +7,7 @@
  */
 #include <getopt.h>
 #include <vdr/plugin.h>
-#include <libskindesignerapi/skindesignerapi.h>
+#include "libskindesignerapi/skindesignerapi.h"
 
 #define DEFINE_CONFIG 1
 #include "config.h"
@@ -19,7 +19,7 @@
 #endif
 
 
-static const char *VERSION        = "0.4.1";
+static const char *VERSION        = "0.4.2";
 static const char *DESCRIPTION    = trNOOP("Skin Designer");
 
 class cPluginSkinDesigner : public cPlugin, public skindesignerapi::SkindesignerAPI {

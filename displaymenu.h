@@ -1,6 +1,6 @@
 #ifndef __DISPLAYMENU_H
 #define __DISPLAYMENU_H
-#include <libskindesignerapi/skindesignerapi.h>
+#include "libskindesignerapi/skindesignerapi.h"
 #include "libtemplate/template.h"
 #include "views/displaymenurootview.h"
 
