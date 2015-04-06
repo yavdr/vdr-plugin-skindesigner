@@ -1,15 +1,16 @@
 Source: vdr-plugin-skindesigner
 Section: video
 Priority: extra
-Maintainer: Lars Hanisch <dvb@flensrocker.de>
-Uploaders: Lars Hanisch <dvb@flensrocker.de>
+Maintainer: Frodo <frodo.vdr@gmx.net> 
+Uploaders: Frodo <frodo.vdr@gmx.net> 
 Build-Depends: debhelper (>= 9), vdr-dev (>= 2.0.0), pkg-config, gettext, libjpeg-dev, librsvg2-dev, libcairo2-dev, libxml2-dev
 Standards-Version: 3.9.3
 Homepage: http://projects.vdr-developer.org/projects/plg-skindesigner
 
 Package: vdr-plugin-skindesigner
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${vdr:Depends}, ttf-ubuntu-font-family
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${vdr:Depends}
+Recommends: fonts-ds-digital, skindesigner-logos, fonts-vdropensans, fonts-sourcesanspro, ttf-ubuntu-font-family
 Description: skindesigner skin template for VDR
  skindesigner is a highly customizable true color skin for the
  on-screen-display (OSD) of the Linux Video Disc Recorder VDR.
@@ -24,3 +25,4 @@ Description: skindesigner skin template for VDR - debugging symbols
  on-screen-display (OSD) of the Linux Video Disc Recorder VDR.
  .
  This package contains the debugging symbols.
+

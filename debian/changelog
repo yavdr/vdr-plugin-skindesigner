@@ -1,174 +1,150 @@
-vdr-plugin-skindesigner (0.2.1-5-g304f592-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.4.1-1-gf316b26-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot
+  * f316b26: removed old stuff
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 28 Jan 2015 18:57:19 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 05 Apr 2015 18:02:39 +0200
 
-vdr-plugin-skindesigner (0.2.1-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.4.1-1-gf316b26-0yavdr0~precise) precise; urgency=low
 
-  * new upstream version
+  * f316b26: removed old stuff
 
- -- Lars Hanisch <dvb@flensrocker.de>  Mon, 26 Jan 2015 18:58:43 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 05 Apr 2015 18:01:42 +0200
 
-vdr-plugin-skindesigner (0.2.0-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.3-2-g335f57f-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream version
+  * 335f57f: don't display active recordings
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 25 Jan 2015 16:22:19 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 30 Mar 2015 13:32:42 +0200
 
-vdr-plugin-skindesigner (0.1.6-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.3-2-g335f57f-0yavdr0~precise) precise; urgency=low
 
-  * new upstream version
+  * 335f57f: don't display active recordings
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 21 Jan 2015 19:18:21 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 30 Mar 2015 13:31:45 +0200
 
-vdr-plugin-skindesigner (0.1.5-1-g07fa0e7-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.3-0-g05912ad-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot
+  * 05912ad: Version 0.3.3
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 21 Jan 2015 18:17:45 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 28 Mar 2015 15:44:09 +0100
 
-vdr-plugin-skindesigner (0.1.2-8-gd844476-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.3-0-g05912ad-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot
+  * 05912ad: Version 0.3.3
 
- -- Lars Hanisch <dvb@flensrocker.de>  Mon, 12 Jan 2015 17:58:31 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 28 Mar 2015 15:43:06 +0100
 
-vdr-plugin-skindesigner (0.1.2-2-g85d3f0e-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.2-3-g23448ab-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot
+  * 23448ab: removed startup check again
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 07 Jan 2015 23:06:42 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 16:13:33 +0100
 
-vdr-plugin-skindesigner (0.1.1-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.2-3-g23448ab-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot
+  * 23448ab: removed startup check again
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 21 Dec 2014 13:39:49 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 16:12:40 +0100
 
-vdr-plugin-skindesigner (0.1.0-3-g84756db-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.2-1-g03f3789-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot
+  * 03f3789: fixed crash if number of dvb devices changes
 
- -- Lars Hanisch <dvb@flensrocker.de>  Fri, 12 Dec 2014 22:07:39 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 12:03:37 +0100
 
-vdr-plugin-skindesigner (0.1.0-1-gd870026-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.2-1-g03f3789-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot
+  * 03f3789: fixed crash if number of dvb devices changes
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 07 Dec 2014 17:08:21 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 12:02:40 +0100
 
-vdr-plugin-skindesigner (0.0.8-2-g28fd2f5-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.2-0-g9c93fbc-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot
+  * 9c93fbc: Version 0.3.2
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 03 Dec 2014 21:10:33 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 20 Mar 2015 17:56:42 +0100
 
-vdr-plugin-skindesigner (0.0.8-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.2-0-g9c93fbc-0yavdr0~precise) precise; urgency=low
 
-  * new upstream version
+  * 9c93fbc: Version 0.3.2
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 30 Nov 2014 11:44:29 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 20 Mar 2015 17:55:48 +0100
 
-vdr-plugin-skindesigner (0.0.6-2-ga3d636c-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-8-g19dfd1a-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream version
+  * 19dfd1a: added possibility to hide root menu from a subview template
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 23 Nov 2014 14:38:39 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 16 Mar 2015 15:51:24 +0100
 
-vdr-plugin-skindesigner (0.0.5-3-g5d715ed-1yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-8-g19dfd1a-0yavdr0~precise) precise; urgency=low
 
-  * refactor dependencies, links and dirs
+  * 19dfd1a: added possibility to hide root menu from a subview template
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 16 Nov 2014 12:37:40 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 16 Mar 2015 15:50:33 +0100
 
-vdr-plugin-skindesigner (0.0.5-3-g5d715ed-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-6-ga7d0138-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot
+  * a7d0138: fixed recording progress bar in nopacity
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 16 Nov 2014 11:50:23 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 14 Mar 2015 11:12:14 +0100
 
-vdr-plugin-skindesigner (0.0.3.git20141102.1141-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-6-ga7d0138-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot (commit ef4502cc02b4a1b287b6710826f04f953fd4691b)
+  * a7d0138: fixed recording progress bar in nopacity
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 02 Nov 2014 12:16:37 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 14 Mar 2015 11:11:20 +0100
 
-vdr-plugin-skindesigner (0.0.3.git20141102.1058-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-3-gd5a91f3-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot (commit e258e9d9a6e221bfc5782dca176316a64d33c6cb)
+  * d5a91f3: fixed FadeOut bug
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 02 Nov 2014 11:26:52 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 13 Mar 2015 22:46:34 +0100
 
-vdr-plugin-skindesigner (0.0.3.git20141101.1602-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-3-gd5a91f3-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot (commit f478ad10bbac192819c98a2edab464fb6347d5e9)
+  * d5a91f3: fixed FadeOut bug
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sat, 01 Nov 2014 17:01:12 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 13 Mar 2015 22:45:35 +0100
 
-vdr-plugin-skindesigner (0.0.3.git20141026.1115-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-1-gb84af82-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot (commit c53dbf7cd63785a4e23b9d85faf6ac8493a7a9c3)
+  * b84af82: changed CAIRO_ANTIALIAS_BEST to CAIRO_ANTIALIAS_SUBPIXEL
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 26 Oct 2014 16:11:28 +0100
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:57:23 +0100
 
-vdr-plugin-skindesigner (0.0.2.git20141025.1508-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-1-gb84af82-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot (commit ee39eb8066f977d2adb3be71b6c34a7d6af4a22c)
+  * b84af82: changed CAIRO_ANTIALIAS_BEST to CAIRO_ANTIALIAS_SUBPIXEL
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sat, 25 Oct 2014 15:43:06 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:56:34 +0100
 
-vdr-plugin-skindesigner (0.0.2.git20141025.1247-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-0-g44680b6-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot (commit 1d5a75af58aa2f3ce87a6ae32c357c948b872f0d)
+  * 44680b6: version 0.3.0
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sat, 25 Oct 2014 15:01:13 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:15:09 +0100
 
-vdr-plugin-skindesigner (0.0.2.git20141020.1749-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.3.0-0-g44680b6-0yavdr0~precise) precise; urgency=low
 
-  * new upstream snapshot (commit 1809656e5826ebea73ce8f337ef5b6a75ce2714f)
+  * 44680b6: version 0.3.0
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 22 Oct 2014 19:35:24 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:14:12 +0100
 
-vdr-plugin-skindesigner (0.0.2.git20141019.1540-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.2.2-3-gf3ad276-0yavdr0~trusty) trusty; urgency=low
 
-  * new upstream snapshot (commit 49c6ef552c7964bd60d19380605c14ec21c36e7e)
+  * f3ad276: fixed header icon for plugin menus
 
- -- Lars Hanisch <dvb@flensrocker.de>  Sun, 19 Oct 2014 17:18:20 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 21 Feb 2015 18:46:31 +0100
 
-vdr-plugin-skindesigner (0.0.1.git20140929.1514-0yavdr0~precise) precise; urgency=medium
+vdr-plugin-skindesigner (0.2.2-3-gf3ad276-1yavdr0~precise) precise; urgency=low
 
-  * rebuild for precise
+  * f3ad276: fixed header icon for plugin menus
 
- -- Lars Hanisch <dvb@flensrocker.de>  Fri, 03 Oct 2014 12:08:40 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 21 Feb 2015 18:45:40 +0100
 
-vdr-plugin-skindesigner (0.0.1.git20140929.1514-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.2.2-3-gf3ad276-0yavdr0~precise) precise; urgency=low
 
-  * rebuild for yaVDR PPA 
+  * f3ad276: fixed header icon for plugin menus
 
- -- Alexander Grothe <seahawk1986@hotmail.com>  Wed, 01 Oct 2014 23:38:20 +0200
-
-vdr-plugin-skindesigner (0.0.1.git20140929.1514-0frodo0~trusty) trusty; urgency=low
-
-  * New upstream snapshot (commit 45d84b7), build 0005
-
- -- Frodo <frodo.vdr@gmx.net>  Mon, 29 Sep 2014 17:14:35 +0200
-
-vdr-plugin-skindesigner (0.0.1.git20140929.1513-0frodo0~precise) precise; urgency=low
-
-  * New upstream snapshot (commit 45d84b7), build 0005
-
- -- Frodo <frodo.vdr@gmx.net>  Mon, 29 Sep 2014 17:13:54 +0200
-
-vdr-plugin-skindesigner (0.0.1.git20140927.2217-0frodo0~trusty) trusty; urgency=low
-
-  * New upstream snapshot (commit 073af3b), build 0003
-
- -- Frodo <frodo.vdr@gmx.net>  Sun, 28 Sep 2014 00:17:17 +0200
-
-vdr-plugin-skindesigner (0.0.1.git20140927.2147-0frodo0~precise) precise; urgency=low
-
-  * Initial release (commit 073af3b), build 0003
-
- -- Frodo <frodo.vdr@gmx.net>  Sat, 27 Sep 2014 23:47:08 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 20 Feb 2015 18:53:41 +0100
 
