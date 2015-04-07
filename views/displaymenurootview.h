@@ -21,6 +21,7 @@ private:
     eSubView viewType;
     cTemplateView *subView;
     bool subViewAvailable;
+    bool subViewInit;
     string pluginName;
     int pluginMenu;
     ePluginMenuType pluginMenuType;
@@ -40,8 +41,8 @@ private:
     bool defaultSortmodeDrawn;
     void DrawBackground(void);
     void DrawHeader(void);
-    void DrawDateTime(void);
-    bool DrawTime(void);
+    void DrawDateTime(bool forced);
+    bool DrawTime(bool forced);
     void DrawSortMode(void);
     void DrawColorButtons(void);
     void DrawMessage(eMessageType type, const char *text);

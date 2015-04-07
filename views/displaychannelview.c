@@ -76,7 +76,7 @@ void cDisplayChannelView::DrawDate(void) {
         map < string, string > stringTokens;
         map < string, int > intTokens;
         
-        if (!SetDate(stringTokens, intTokens)) {
+        if (!SetDate(false, stringTokens, intTokens)) {
             return;
         }
 
@@ -104,7 +104,7 @@ void cDisplayChannelView::DrawTime(void) {
         map < string, string > stringTokens;
         map < string, int > intTokens;
 
-        if (!SetTime(stringTokens, intTokens)) {
+        if (!SetTime(false, stringTokens, intTokens)) {
             return;
         }    
         ClearViewElement(veTime);

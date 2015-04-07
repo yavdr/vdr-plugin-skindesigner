@@ -15,6 +15,7 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     viewType = svUndefined;
     subView = NULL;
     subViewAvailable = false;
+    subViewInit = true;
     pluginName = "";
     pluginMenu = -1;
     pluginMenuType = mtUnknown;
@@ -102,6 +103,7 @@ bool cDisplayMenuRootView::createOsd(void) {
 void cDisplayMenuRootView::SetMenu(eMenuCategory menuCat, bool menuInit) {
     eSubView newViewType = svUndefined;
     cat = menuCat;
+    subViewInit = true;
     bool isListView = true;
     if (menuCat != mcPlugin) {
         pluginName = "";
@@ -473,26 +475,31 @@ bool cDisplayMenuRootView::RenderDynamicElements(void) {
         return false;
     bool updated = false;
     bool implemented = false;
-    if (view->DrawTime(implemented)) {
+    if (view->DrawTime(subViewInit, implemented)) {
         defaultTimeDrawn = false;
         updated = true;
-    } else if (!implemented && DrawTime()) {
+    } else if (!implemented && DrawTime(subViewInit)) {
         defaultTimeDrawn = true;
         updated = true;
     }
 
     implemented = false;
-    if (view->DrawDateTime(implemented)) {
+    if (view->DrawDateTime(subViewInit, implemented)) {
         defaultDateTimeDrawn = false;
     } else if (!implemented) {
-        DrawDateTime();
+        DrawDateTime(subViewInit);
         defaultDateTimeDrawn = true;
     }
 
-    if (view->DrawDynamicViewElements()){
+    if (view->DrawDynamicViewElements()) {
         updated = true;
     }
 
+    if (subViewInit) {
+        subViewInit = false;
+        return true;
+    }
+    subViewInit = false;
     return updated;
 }
 
@@ -517,7 +524,7 @@ void cDisplayMenuRootView::DrawHeader(void) {
     DrawViewElement(veHeader, &stringTokens, &intTokens);
 }
 
-void cDisplayMenuRootView::DrawDateTime(void) {
+void cDisplayMenuRootView::DrawDateTime(bool forced) {
     if (!ExecuteViewElement(veDateTime)) {
         return;
     }
@@ -525,7 +532,7 @@ void cDisplayMenuRootView::DrawDateTime(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
     
-    if (!SetDate(stringTokens, intTokens)) {
+    if (!SetDate(forced, stringTokens, intTokens)) {
         return;
     }
 
@@ -533,7 +540,7 @@ void cDisplayMenuRootView::DrawDateTime(void) {
     DrawViewElement(veDateTime, &stringTokens, &intTokens);
 }
 
-bool cDisplayMenuRootView::DrawTime(void) {
+bool cDisplayMenuRootView::DrawTime(bool forced) {
     if (!ExecuteViewElement(veTime)) {
         return false;
     }
@@ -541,7 +548,7 @@ bool cDisplayMenuRootView::DrawTime(void) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
 
-    if (!SetTime(stringTokens, intTokens)) {
+    if (!SetTime(forced, stringTokens, intTokens)) {
         return false;
     }
 

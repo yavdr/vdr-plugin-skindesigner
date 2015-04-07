@@ -26,8 +26,8 @@ protected:
     bool CheckNewMails(void);
     void SetScraperTokens(const cEvent *event, const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens, map < string, vector< map< string, string > > > &loopTokens);
     void SetPosterBanner(const cEvent *event, map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetTime(map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetDate(map < string, string > &stringTokens, map < string, int > &intTokens);
+    bool SetTime(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens);
+    bool SetDate(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens);
     void SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *timers);
     void SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *lastRecordings);
