@@ -1,14 +1,14 @@
+vdr-plugin-skindesigner (0.4.2-0-g5f1ae51-0yavdr0~trusty) trusty; urgency=low
+
+  * 5f1ae51: Version 0.4.2
+
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 06 Apr 2015 20:41:26 +0200
+
 vdr-plugin-skindesigner (0.4.1-1-gf316b26-0yavdr0~trusty) trusty; urgency=low
 
   * f316b26: removed old stuff
 
  -- Frodo <frodo.vdr@gmx.net>  Sun, 05 Apr 2015 18:02:39 +0200
-
-vdr-plugin-skindesigner (0.4.1-1-gf316b26-0yavdr0~precise) precise; urgency=low
-
-  * f316b26: removed old stuff
-
- -- Frodo <frodo.vdr@gmx.net>  Sun, 05 Apr 2015 18:01:42 +0200
 
 vdr-plugin-skindesigner (0.3.3-2-g335f57f-0yavdr0~trusty) trusty; urgency=low
 
@@ -16,23 +16,11 @@ vdr-plugin-skindesigner (0.3.3-2-g335f57f-0yavdr0~trusty) trusty; urgency=low
 
  -- Frodo <frodo.vdr@gmx.net>  Mon, 30 Mar 2015 13:32:42 +0200
 
-vdr-plugin-skindesigner (0.3.3-2-g335f57f-0yavdr0~precise) precise; urgency=low
-
-  * 335f57f: don't display active recordings
-
- -- Frodo <frodo.vdr@gmx.net>  Mon, 30 Mar 2015 13:31:45 +0200
-
 vdr-plugin-skindesigner (0.3.3-0-g05912ad-0yavdr0~trusty) trusty; urgency=low
 
   * 05912ad: Version 0.3.3
 
  -- Frodo <frodo.vdr@gmx.net>  Sat, 28 Mar 2015 15:44:09 +0100
-
-vdr-plugin-skindesigner (0.3.3-0-g05912ad-0yavdr0~precise) precise; urgency=low
-
-  * 05912ad: Version 0.3.3
-
- -- Frodo <frodo.vdr@gmx.net>  Sat, 28 Mar 2015 15:43:06 +0100
 
 vdr-plugin-skindesigner (0.3.2-3-g23448ab-0yavdr0~trusty) trusty; urgency=low
 
@@ -40,19 +28,7 @@ vdr-plugin-skindesigner (0.3.2-3-g23448ab-0yavdr0~trusty) trusty; urgency=low
 
  -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 16:13:33 +0100
 
-vdr-plugin-skindesigner (0.3.2-3-g23448ab-0yavdr0~precise) precise; urgency=low
-
-  * 23448ab: removed startup check again
-
- -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 16:12:40 +0100
-
 vdr-plugin-skindesigner (0.3.2-1-g03f3789-0yavdr0~trusty) trusty; urgency=low
-
-  * 03f3789: fixed crash if number of dvb devices changes
-
- -- Frodo <frodo.vdr@gmx.net>  Sun, 22 Mar 2015 12:03:37 +0100
-
-vdr-plugin-skindesigner (0.3.2-1-g03f3789-0yavdr0~precise) precise; urgency=low
 
   * 03f3789: fixed crash if number of dvb devices changes
 
@@ -76,31 +52,13 @@ vdr-plugin-skindesigner (0.3.0-8-g19dfd1a-0yavdr0~trusty) trusty; urgency=low
 
  -- Frodo <frodo.vdr@gmx.net>  Mon, 16 Mar 2015 15:51:24 +0100
 
-vdr-plugin-skindesigner (0.3.0-8-g19dfd1a-0yavdr0~precise) precise; urgency=low
-
-  * 19dfd1a: added possibility to hide root menu from a subview template
-
- -- Frodo <frodo.vdr@gmx.net>  Mon, 16 Mar 2015 15:50:33 +0100
-
 vdr-plugin-skindesigner (0.3.0-6-ga7d0138-0yavdr0~trusty) trusty; urgency=low
 
   * a7d0138: fixed recording progress bar in nopacity
 
  -- Frodo <frodo.vdr@gmx.net>  Sat, 14 Mar 2015 11:12:14 +0100
 
-vdr-plugin-skindesigner (0.3.0-6-ga7d0138-0yavdr0~precise) precise; urgency=low
-
-  * a7d0138: fixed recording progress bar in nopacity
-
- -- Frodo <frodo.vdr@gmx.net>  Sat, 14 Mar 2015 11:11:20 +0100
-
 vdr-plugin-skindesigner (0.3.0-3-gd5a91f3-0yavdr0~trusty) trusty; urgency=low
-
-  * d5a91f3: fixed FadeOut bug
-
- -- Frodo <frodo.vdr@gmx.net>  Fri, 13 Mar 2015 22:46:34 +0100
-
-vdr-plugin-skindesigner (0.3.0-3-gd5a91f3-0yavdr0~precise) precise; urgency=low
 
   * d5a91f3: fixed FadeOut bug
 
@@ -112,39 +70,15 @@ vdr-plugin-skindesigner (0.3.0-1-gb84af82-0yavdr0~trusty) trusty; urgency=low
 
  -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:57:23 +0100
 
-vdr-plugin-skindesigner (0.3.0-1-gb84af82-0yavdr0~precise) precise; urgency=low
-
-  * b84af82: changed CAIRO_ANTIALIAS_BEST to CAIRO_ANTIALIAS_SUBPIXEL
-
- -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:56:34 +0100
-
 vdr-plugin-skindesigner (0.3.0-0-g44680b6-0yavdr0~trusty) trusty; urgency=low
 
   * 44680b6: version 0.3.0
 
  -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:15:09 +0100
 
-vdr-plugin-skindesigner (0.3.0-0-g44680b6-0yavdr0~precise) precise; urgency=low
-
-  * 44680b6: version 0.3.0
-
- -- Frodo <frodo.vdr@gmx.net>  Thu, 12 Mar 2015 22:14:12 +0100
-
 vdr-plugin-skindesigner (0.2.2-3-gf3ad276-0yavdr0~trusty) trusty; urgency=low
 
   * f3ad276: fixed header icon for plugin menus
 
  -- Frodo <frodo.vdr@gmx.net>  Sat, 21 Feb 2015 18:46:31 +0100
-
-vdr-plugin-skindesigner (0.2.2-3-gf3ad276-1yavdr0~precise) precise; urgency=low
-
-  * f3ad276: fixed header icon for plugin menus
-
- -- Frodo <frodo.vdr@gmx.net>  Sat, 21 Feb 2015 18:45:40 +0100
-
-vdr-plugin-skindesigner (0.2.2-3-gf3ad276-0yavdr0~precise) precise; urgency=low
-
-  * f3ad276: fixed header icon for plugin menus
-
- -- Frodo <frodo.vdr@gmx.net>  Fri, 20 Feb 2015 18:53:41 +0100
 

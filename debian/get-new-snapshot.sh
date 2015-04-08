@@ -46,6 +46,8 @@ if [ "x${GIT_SHA_OLD}" == "x${GIT_SHA}" ] ; then
         echo "Keine neue Version von ${DEB_SOURCE_PACKAGE} gefunden: ${GIT_SHA_OLD} = ${GIT_SHA}" | tee ${CHKFILE}
 fi
 
+cp ./debian/changelog ./debian/changelog.${DISTRIBUTION}
+
 if [ $DISTRIBUTION != 'trusty' ] ; then
         DISTRIBUTION='trusty'
 else
@@ -55,6 +57,8 @@ fi
 if [ ! -z $BUILDDISTRIBUTION ] ; then
 	DISTRIBUTION=$BUILDDISTRIBUTION
 fi
+
+cp ./debian/changelog.${DISTRIBUTION} ./debian/changelog
 
 test=$(grep ${GIT_SHA} debian/changelog | grep $DISTRIBUTION)
 if [ $? -eq 0 ] ; then

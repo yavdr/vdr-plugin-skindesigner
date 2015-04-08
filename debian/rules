@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
 #DH_VERBOSE=1
+export PREFIX=/usr
 
 PLG_PACKAGE = $(filter-out %-dbg, $(shell dh_listpackages))
 DBG_PACKAGE = $(filter %-dbg, $(shell dh_listpackages))
