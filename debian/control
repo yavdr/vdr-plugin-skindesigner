@@ -25,7 +25,7 @@ Description: Library which provides the Skindesigner API to other Plugins. (deve
 
 Package: vdr-plugin-skindesigner
 Architecture: any
-Depends: libskindesignerapi0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, ${vdr:Depends}
+Depends: libskindesignerapi0 (>= 0.0.1), ${shlibs:Depends}, ${misc:Depends}, ${vdr:Depends}
 Recommends: fonts-ds-digital, skindesigner-logos, fonts-vdropensans, fonts-sourcesanspro, ttf-ubuntu-font-family
 Description: skindesigner skin template for VDR
  skindesigner is a highly customizable true color skin for the
