@@ -1,10 +1,12 @@
 #!/usr/bin/make -f
 
-DH_VERBOSE=1
+#DH_VERBOSE=1
 export PREFIX=/usr
 
 PLG_PACKAGE = vdr-plugin-skindesigner
 DBG_PACKAGE = $(PLG_PACKAGE)-dbg
+LIB_PACKAGES = $(filter libskindesignerapi%, $(shell dh_listpackages))
+NON_LIB_PACKAGES = $(filter-out libskindesignerapi%, $(shell dh_listpackages))
 
 %:
 	dh $@
@@ -17,4 +19,9 @@ override_dh_strip:
 
 override_dh_gencontrol:
 	sh /usr/share/vdr-dev/dependencies.sh
-	dh_gencontrol
+	for lib in $(LIB_PACKAGES); do \
+		dh_gencontrol -p$$lib -- -v0.0.1-0yavdr0~trusty ; \
+	done
+	for nonlib in $(NON_LIB_PACKAGES); do \
+		dh_gencontrol -p$$nonlib -- ; \
+	done
