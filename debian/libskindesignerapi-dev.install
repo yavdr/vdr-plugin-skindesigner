@@ -1,0 +1,5 @@
+usr/lib/pkgconfig/libskindesignerapi.pc
+
+usr/include/libskindesignerapi/skindesignerosdbase.h
+usr/include/libskindesignerapi/osdelements.h
+usr/include/libskindesignerapi/skindesignerapi.h

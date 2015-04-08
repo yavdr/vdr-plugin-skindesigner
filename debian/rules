@@ -1,16 +1,16 @@
 #!/usr/bin/make -f
 
-#DH_VERBOSE=1
+DH_VERBOSE=1
 export PREFIX=/usr
 
-PLG_PACKAGE = $(filter-out %-dbg, $(shell dh_listpackages))
-DBG_PACKAGE = $(filter %-dbg, $(shell dh_listpackages))
+PLG_PACKAGE = vdr-plugin-skindesigner
+DBG_PACKAGE = $(PLG_PACKAGE)-dbg
 
 %:
 	dh $@
 
-override_dh_auto_install:
-	dh_auto_install --destdir=debian/$(PLG_PACKAGE)
+#override_dh_auto_install:
+#	dh_auto_install --destdir=debian/$(PLG_PACKAGE)
 
 override_dh_strip:
 	dh_strip --dbg-package=$(DBG_PACKAGE)
@@ -18,4 +18,3 @@ override_dh_strip:
 override_dh_gencontrol:
 	sh /usr/share/vdr-dev/dependencies.sh
 	dh_gencontrol
-

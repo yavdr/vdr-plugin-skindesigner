@@ -1,3 +1,9 @@
+vdr-plugin-skindesigner (0.4.2-1-g97f3d37-0yavdr0~trusty) trusty; urgency=medium
+
+  * split libskindesignerapi in own package
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Wed, 08 Apr 2015 19:18:58 +0200
+
 vdr-plugin-skindesigner (0.4.2-0-g5f1ae51-0yavdr0~trusty) trusty; urgency=low
 
   * 5f1ae51: Version 0.4.2
