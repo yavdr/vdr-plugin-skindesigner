@@ -1,6 +1,8 @@
-vdr-plugin-skindesigner (0.4.2-1-g97f3d37-0yavdr2~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.4.2-1-g97f3d37-0yavdr3~trusty) trusty; urgency=medium
 
   * split libskindesignerapi in own package
+  * get the right version on the lib packages
+  * add proper Replaces/Breaks for older packages
 
  -- Lars Hanisch <dvb@flensrocker.de>  Wed, 08 Apr 2015 19:18:58 +0200
 
