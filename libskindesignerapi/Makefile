@@ -12,7 +12,7 @@ TARGET_LIB = $(SONAME).$(MINOR)
 PREFIX ?= /usr/local
 INCDIR ?= $(PREFIX)/include
 LIBDIR ?= $(PREFIX)/lib
-PCDIR  ?= $(shell pkg-config --variable pc_path pkg-config |cut -d ':' -f1)
+PCDIR  ?= $(PREFIX)/lib/pkgconfig
 TMPDIR ?= /tmp
 
 ### The name of the distribution archive:

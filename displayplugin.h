@@ -1,7 +1,7 @@
 #ifndef __DISPLAYPLUGIN_H
 #define __DISPLAYPLUGIN_H
 
-#include <libskindesignerapi/skindesignerapi.h>
+#include "libskindesignerapi/skindesignerapi.h"
 #include "libtemplate/template.h"
 #include "views/displaypluginview.h"
 

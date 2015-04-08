@@ -59,13 +59,15 @@ bool cViewElementWeather::Render(void) {
 /********************************************************************************************************************/
 
 cViewElementDate::cViewElementDate(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+    init = true;
 }
 
 bool cViewElementDate::Render(void) {
     ClearTokens();
-    if (!SetDate(stringTokens, intTokens)) {
+    if (!SetDate(init, stringTokens, intTokens)) {
         return false;
     }
+    init = false;
     ClearViewElement(veDateTime);
     DrawViewElement(veDateTime, &stringTokens, &intTokens);
     return true;
@@ -74,13 +76,15 @@ bool cViewElementDate::Render(void) {
 /********************************************************************************************************************/
 
 cViewElementTime::cViewElementTime(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+    init = true;
 }
 
 bool cViewElementTime::Render(void) {
     ClearTokens();
-    if (!SetTime(stringTokens, intTokens)) {
+    if (!SetTime(init, stringTokens, intTokens)) {
         return false;
     }    
+    init = false;
     ClearViewElement(veTime);
     DrawViewElement(veTime, &stringTokens, &intTokens);
     return true;

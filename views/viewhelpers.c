@@ -465,11 +465,11 @@ void cViewHelpers::SetPosterBanner(const cEvent *event, map < string, string > &
     }
 }
 
-bool cViewHelpers::SetTime(map < string, string > &stringTokens, map < string, int > &intTokens) {
+bool cViewHelpers::SetTime(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens) {
     time_t t = time(0);   // get time now
     struct tm * now = localtime(&t);
     int sec = now->tm_sec;
-    if (sec == lastSecond) {
+    if (!forced && sec == lastSecond) {
         return false;
     }
     int min = now->tm_min;
@@ -485,12 +485,13 @@ bool cViewHelpers::SetTime(map < string, string > &stringTokens, map < string, i
     return true;
 }
 
-bool cViewHelpers::SetDate(map < string, string > &stringTokens, map < string, int > &intTokens) {
+bool cViewHelpers::SetDate(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens) {
     time_t t = time(0);   // get time now
     struct tm * now = localtime(&t);
     int min = now->tm_min;
-    if (min == lastMinute)
+    if (!forced && min == lastMinute) {
         return false;
+    }
     lastMinute = min;
 
     intTokens.insert(pair<string, int>("year", now->tm_year + 1900));

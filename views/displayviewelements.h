@@ -33,6 +33,7 @@ public:
 
 class cViewElementDate : public cViewElement, public cViewHelpers {
 private:
+    bool init;
 public:
     cViewElementDate(cTemplateViewElement *tmplViewElement);
     virtual ~cViewElementDate() {};
@@ -41,6 +42,7 @@ public:
 
 class cViewElementTime : public cViewElement, public cViewHelpers {
 private:
+    bool init;
 public:
     cViewElementTime(cTemplateViewElement *tmplViewElement);
     virtual ~cViewElementTime() {};
