@@ -224,7 +224,7 @@ void cDisplayMenuDetailView::InitTabs(void) {
     tmplView->InitViewTabIterator();
     cTemplateViewTab *tmplTab = NULL;
     while(tmplTab = tmplView->GetNextViewTab()) {
-        tmplTab->ParseDynamicParameters(&intTokens, true);
+        tmplTab->ParseDynamicParameters(&stringTokens, &intTokens, true);
         tmplTab->ClearDynamicFunctionParameters();
         tmplTab->ParseDynamicFunctionParameters(&stringTokens, &intTokens);
         if (tmplTab->DoExecute()) {
