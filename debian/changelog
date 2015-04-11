@@ -1,3 +1,9 @@
+vdr-plugin-skindesigner (0.4.2-2-g5146f15-3yavdr0~trusty) trusty; urgency=medium
+
+  * derive build-number for libskindesignerapi from binary version
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Sat, 11 Apr 2015 16:30:55 +0200
+
 vdr-plugin-skindesigner (0.4.2-2-g5146f15-2yavdr0~trusty) trusty; urgency=low
 
   * 5146f15: fixed bug that string tokens are not evaluated in area
