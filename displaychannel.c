@@ -22,6 +22,7 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
         doOutput = false;
         return;
     }
+    channelView->DrawDebugGrid();
 }
 
 cSDDisplayChannel::~cSDDisplayChannel() {

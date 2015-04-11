@@ -422,6 +422,7 @@ cFont *cDisplayMenuRootView::GetTextAreaFont(void) {
 void cDisplayMenuRootView::Render(void) {
     if (!view)
         return;
+    view->DrawDebugGrid();
     if (!view->DrawBackground()) {
         defaultBackgroundDrawn = true;
         DrawBackground();

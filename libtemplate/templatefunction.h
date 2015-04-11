@@ -41,6 +41,9 @@ enum eParamType {
     ptCond,
     ptName,
     ptMode,
+    ptDrawDebugGrid,
+    ptDebugGridX,
+    ptDebugGridY,
     ptX,
     ptY,
     ptWidth,
@@ -165,6 +168,7 @@ protected:
     bool SetDetached(string value);
     bool SetBackground(string value);
     bool SetDirection(string value);
+    void SetDebugGrid(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
     void CalculateAlign(int elementWidth, int elementHeight);

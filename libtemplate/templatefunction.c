@@ -49,6 +49,10 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
                 debug = true;
             }
             continue;
+        } else if (!name.compare("debuggrid")) {
+            string value = it->second;
+            SetDebugGrid(value);
+            continue;
         } else if (!name.compare("condition")) {
             p.first = ptCond;
         } else if (!name.compare("name")) {
@@ -428,6 +432,8 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
         else if (type == ptDetached)
             return 0;
         else if (type == ptBackground)
+            return 0;
+        else if (type == ptDrawDebugGrid)
             return 0;
         else if (type == ptDirection)
             return diBottomUp;
@@ -1117,6 +1123,25 @@ bool cTemplateFunction::SetDirection(string value) {
         direction = diTopDown;
     numericParameters.insert(pair<eParamType, int>(ptDirection, direction));
     return true;
+}
+
+void cTemplateFunction::SetDebugGrid(string value) {
+    int numGridsX = 0;
+    int numGridsY = 0;
+    size_t posSep = value.find("x");
+    if (posSep != string::npos) {
+        string x = value.substr(0, posSep);
+        string y = value.substr(posSep+1);
+        numGridsX = atoi(x.c_str());
+        numGridsY = atoi(y.c_str());
+    }
+    if (numGridsX < 1)
+        numGridsX = 10;
+    if (numGridsY < 1)
+        numGridsY = 10;
+    numericParameters.insert(pair<eParamType, int>(ptDebugGridX, numGridsX));
+    numericParameters.insert(pair<eParamType, int>(ptDebugGridY, numGridsY));
+    numericParameters.insert(pair<eParamType, int>(ptDrawDebugGrid, 1));
 }
 
 void cTemplateFunction::ParseStringParameters(void) {

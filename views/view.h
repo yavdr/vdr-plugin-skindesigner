@@ -13,6 +13,7 @@ class cViewElement;
 class cView : public cPixmapContainer {
 private:
     void Init(void);
+    void DoDrawDebugGrid(void);
     void DoFill(int num, cTemplateFunction *func);
     void DoDrawText(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawTextVertical(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
@@ -61,6 +62,7 @@ public:
     cView(cTemplateView *tmplView);
     cView(cTemplateViewElement *tmplViewElement);
     cView(cTemplateViewTab *tmplTab);
+    void DrawDebugGrid(void);
     virtual ~cView();
     virtual void Stop(void);
 };

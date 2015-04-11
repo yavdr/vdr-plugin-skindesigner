@@ -21,6 +21,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         return;
     }
     SetCurrentRecording();
+    rootView->DrawDebugGrid();
 }
 
 cSDDisplayMenu::~cSDDisplayMenu() {
