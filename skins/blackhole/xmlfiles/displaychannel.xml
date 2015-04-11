@@ -60,17 +60,27 @@
     {nextrecording}                    true if next Schedule will be recorded
     -->
     <epginfo>
-        <area x="17%" y="80%" width="66%" height="7%" layer="3">
+        <area condition="isset{currentsubtitle}" x="17%" y="80%" width="66%" height="7%" layer="3">
             <drawtext name="starttime" x="1%" valign="center" font="{regular}" fontsize="80%" color="{clrWhite}" text="{currentstart}" />
             <drawtext align="right" name="elapsed" valign="center" font="{regular}" fontsize="75%" color="{clrWhite}" text="{currentelapsed}/{currentduration}min" />
             <drawtext x="{width(starttime)} + 40" y="0" width="{areawidth} - {width(starttime)} - {width(elapsed)} - 45" font="{regular}" fontsize="70%" color="{clrWhite}" text="{currenttitle}" />
             <drawtext x="{width(starttime)} + 40" y="56%" width="{areawidth} - {width(starttime)} - {width(elapsed)} - 45" font="{regular}" fontsize="45%" color="{clrWhite}" text="{currentsubtitle}" />
         </area>
-        <area x="17%" y="87%" width="66%" height="7%" layer="3">
+        <area condition="empty{currentsubtitle}" x="17%" y="80%" width="66%" height="7%" layer="3">
+            <drawtext name="starttime" x="1%" valign="center" font="{regular}" fontsize="80%" color="{clrWhite}" text="{currentstart}" />
+            <drawtext align="right" name="elapsed" valign="center" font="{regular}" fontsize="75%" color="{clrWhite}" text="{currentelapsed}/{currentduration}min" />
+            <drawtext x="{width(starttime)} + 40" valign="center" width="{areawidth} - {width(starttime)} - {width(elapsed)} - 45" font="{regular}" fontsize="75%" color="{clrWhite}" text="{currenttitle}" />
+        </area>
+        <area condition="isset{nextsubtitle}" x="17%" y="87%" width="66%" height="7%" layer="3">
             <drawtext name="starttime" x="1%" valign="center" font="{regular}" fontsize="80%" color="{clrGray}" text="{nextstart}" />
             <drawtext align="right" name="duration" valign="center" font="{regular}" fontsize="75%" color="{clrGray}" text="{nextduration}min" />
             <drawtext x="{width(starttime)} + 40" y="0" width="{areawidth} - {width(starttime)} - {width(duration)} - 45" font="{regular}" fontsize="70%" color="{clrGray}" text="{nexttitle}" />
             <drawtext x="{width(starttime)} + 40" y="55%" width="{areawidth} - {width(starttime)} - {width(duration)} - 45" font="{regular}" fontsize="40%" color="{clrGray}" text="{nextsubtitle}" />
+        </area>
+        <area condition="empty{nextsubtitle}" x="17%" y="87%" width="66%" height="7%" layer="3">
+            <drawtext name="starttime" x="1%" valign="center" font="{regular}" fontsize="80%" color="{clrGray}" text="{nextstart}" />
+            <drawtext align="right" name="duration" valign="center" font="{regular}" fontsize="75%" color="{clrGray}" text="{nextduration}min" />
+            <drawtext x="{width(starttime)} + 40" valign="center" width="{areawidth} - {width(starttime)} - {width(duration)} - 45" font="{regular}" fontsize="75%" color="{clrGray}" text="{nexttitle}" />
         </area>
     </epginfo>
 

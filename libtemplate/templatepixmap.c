@@ -80,11 +80,13 @@ void cTemplatePixmap::ClearDynamicParameters(void) {
     parameters->ClearDynamicParameters();
 }
 
-void cTemplatePixmap::ParseDynamicParameters(map <string,int> *intTokens, bool initFuncs) {
+void cTemplatePixmap::ParseDynamicParameters(map <string,string> *stringTokens, map <string,int> *intTokens, bool initFuncs) {
     parameters->ClearDynamicParameters();
     parameters->SetIntTokens(intTokens); 
+    parameters->SetStringTokens(stringTokens); 
     parameters->ParseParameters();
     parameters->UnsetIntTokens();
+    parameters->UnsetStringTokens();
     
     if (!DoExecute()) {
         parameters->ClearDynamicParameters();

@@ -63,7 +63,7 @@ public:
     //Clear dynamically set pixmap parameters
     void ClearDynamicParameters(void);
     //Parse pixmap parameters with dynamically set Tokens
-    void ParseDynamicParameters(map <string,int> *intTokens, bool initFuncs);
+    void ParseDynamicParameters(map <string,string> *stringTokens, map <string,int> *intTokens, bool initFuncs);
     //Parse all function parameters with dynamically set Tokens
     void ParseDynamicFunctionParameters(map <string,string> *stringTokens, map <string,int> *intTokens);
     //Calculate size of drawport in case area scrolls

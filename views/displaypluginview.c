@@ -143,7 +143,7 @@ void cDisplayPluginView::SetTabs(void) {
     tmplView->InitViewTabIterator();
     cTemplateViewTab *tmplTab = NULL;
     while(tmplTab = tmplView->GetNextViewTab()) {
-        tmplTab->ParseDynamicParameters(&tabIntTokens, true);
+        tmplTab->ParseDynamicParameters(&tabStringTokens, &tabIntTokens, true);
         tmplTab->ClearDynamicFunctionParameters();
         tmplTab->ParseDynamicFunctionParameters(&tabStringTokens, &tabIntTokens);
         if (tmplTab->DoExecute()) {

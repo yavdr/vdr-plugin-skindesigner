@@ -109,13 +109,13 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
         //check if pixmap needs dynamic parameters  
         if ((!pix->Ready() || !pix->DoExecute()) && !pix->Scrolling()) {
             //parse dynamic parameters and initiate functions
-            pix->ParseDynamicParameters(intTokens, true);
+            pix->ParseDynamicParameters(stringTokens, intTokens, true);
             if (pix->Ready() && pix->DoExecute()) {
                 CreateViewPixmap(pixCurrent, pix);
             }
         } else {
             //parse dynamic parameters but not initiate functions
-            pix->ParseDynamicParameters(intTokens, false);
+            pix->ParseDynamicParameters(stringTokens, intTokens, false);
         }
         //if pixmap still not valid, skip
         if (!pix->Ready() && !pix->Scrolling()) {
@@ -917,9 +917,9 @@ cRect cViewListItem::DrawListItem(map <string,string> *stringTokens, map <string
             posItem = pix->GetPixmapSize();
         }
         if (!PixmapExists(pixCurrent)) {
-            pix->ParseDynamicParameters(intTokens, true);
+            pix->ParseDynamicParameters(stringTokens, intTokens, true);
         } else {
-            pix->ParseDynamicParameters(intTokens, false);            
+            pix->ParseDynamicParameters(stringTokens, intTokens, false);
         }
         if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
             CreateViewPixmap(pixCurrent, pix);
@@ -1087,9 +1087,9 @@ void cGrid::Draw(void) {
     while(pix = tmplViewElement->GetNextPixmap()) {
         PositionPixmap(pix);
         if (!PixmapExists(pixCurrent)) {
-            pix->ParseDynamicParameters(&intTokens, true);
+            pix->ParseDynamicParameters(&stringTokens, &intTokens, true);
         } else {
-            pix->ParseDynamicParameters(&intTokens, false);
+            pix->ParseDynamicParameters(&stringTokens, &intTokens, false);
         }
         if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
             CreateViewPixmap(pixCurrent, pix);
