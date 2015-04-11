@@ -1,10 +1,32 @@
-vdr-plugin-skindesigner (0.4.2-1-g97f3d37-0yavdr3~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.4.2-2-g5146f15-2yavdr0~trusty) trusty; urgency=low
 
-  * split libskindesignerapi in own package
-  * get the right version on the lib packages
-  * add proper Replaces/Breaks for older packages
+  * 5146f15: fixed bug that string tokens are not evaluated in area
+    conditions
+  * 5146f15: libskindesignerapi: v0.0.1
 
- -- Lars Hanisch <dvb@flensrocker.de>  Wed, 08 Apr 2015 19:18:58 +0200
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 10 Apr 2015 22:23:15 +0200
+
+vdr-plugin-skindesigner (0.4.2-2-g5146f15-0yavdr0~trusty) trusty; urgency=low
+
+  * 5146f15: fixed bug that string tokens are not evaluated in area
+    conditions
+  * 5146f15: libskindesignerapi: v0.0.1
+
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 10 Apr 2015 22:19:18 +0200
+
+vdr-plugin-skindesigner (0.4.2-1-g97f3d37-1yavdr0~trusty) trusty; urgency=low
+
+  * 97f3d37: fixed bug that datetime was not drawn correctly in menus
+  * 97f3d37: libskindesignerapi: v0.0.1
+
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 09 Apr 2015 20:07:51 +0200
+
+vdr-plugin-skindesigner (0.4.2-1-g97f3d37-0yavdr0~trusty) trusty; urgency=low
+
+  * 97f3d37: fixed bug that datetime was not drawn correctly in menus
+  * 97f3d37: libskindesignerapi: v0.0.1
+
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 09 Apr 2015 20:06:54 +0200
 
 vdr-plugin-skindesigner (0.4.2-0-g5f1ae51-0yavdr0~trusty) trusty; urgency=low
 
