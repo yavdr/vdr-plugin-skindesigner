@@ -14,6 +14,7 @@ cSDDisplayMessage::cSDDisplayMessage(cTemplate *messageTemplate) {
         doOutput = false;
         return;
     }
+    messageView->DrawDebugGrid();
     messageView->DrawBackground();
 }
 

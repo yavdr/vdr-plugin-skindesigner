@@ -13,6 +13,7 @@
   scaletvy CDATA #IMPLIED
   scaletvwidth CDATA #IMPLIED
   scaletvheight CDATA #IMPLIED
+  debuggrid CDATA #IMPLIED
 >
 
 <!ELEMENT background (area)*>

@@ -288,4 +288,6 @@ Version 0.4.2
 
 - fixed bug that datetime was not drawn correctly in menus
 - fixed bug that string tokens are not evaluated in area conditions
+- added possibility to draw a debug grid in views
+- added more info if debugImage is activted in config
 

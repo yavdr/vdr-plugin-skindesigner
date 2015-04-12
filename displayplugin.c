@@ -23,6 +23,7 @@ cSkinDisplayPlugin::cSkinDisplayPlugin(cTemplate *pluginTemplate, int subViewID)
         doOutput = false;
         return;
     }
+    pluginView->DrawDebugGrid();
 }
 
 cSkinDisplayPlugin::~cSkinDisplayPlugin(void) {

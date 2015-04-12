@@ -17,6 +17,7 @@ cSDDisplayReplay::cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly) {
         doOutput = false;
         return;
     }
+    replayView->DrawDebugGrid();
 }
 
 cSDDisplayReplay::~cSDDisplayReplay() {

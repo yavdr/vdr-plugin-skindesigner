@@ -18,6 +18,7 @@ cSDDisplayTracks::cSDDisplayTracks(cTemplate *audiotracksTemplate, const char *T
         doOutput = false;
         return;
     }
+    tracksView->DrawDebugGrid();
     tracksView->DrawBackground();
 
     cDisplayMenuListView *list = tracksView->GetListView();

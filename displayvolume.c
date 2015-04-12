@@ -16,6 +16,7 @@ cSDDisplayVolume::cSDDisplayVolume(cTemplate *volumeTemplate) {
     if (!volumeView->createOsd()) {
         doOutput = false;
     } else {
+        volumeView->DrawDebugGrid();
         volumeView->DrawBackground();
     }
 }

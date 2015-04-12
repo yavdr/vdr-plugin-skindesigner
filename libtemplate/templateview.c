@@ -212,6 +212,41 @@ bool cTemplateView::HideView(void) {
     return parameters->GetNumericParameter(ptHideRoot);
 }
 
+bool cTemplateView::DrawGebugGrid(void) {
+    if (!parameters)
+        return false;
+    return parameters->GetNumericParameter(ptDrawDebugGrid);
+}
+
+int cTemplateView::DebugGridX(void) {
+    if (!parameters)
+        return 0;
+    return parameters->GetNumericParameter(ptDebugGridX);
+}
+
+int cTemplateView::DebugGridY(void) {
+    if (!parameters)
+        return 0;
+    return parameters->GetNumericParameter(ptDebugGridY);
+}
+
+tColor cTemplateView::DebugGridColor(void) {
+    tColor col = 0xFFFF0000;
+    if (!globals)
+        return col;
+    string colName = "{clrDebugGrid}";
+    globals->GetColor(colName, col);
+    return col;
+}
+
+tColor cTemplateView::DebugGridFontColor(void) {
+    tColor col = 0xFFFF0000;
+    if (!globals)
+        return col;
+    string colName = "{clrFontDebugGrid}";
+    globals->GetColor(colName, col);
+    return col;
+}
 
 bool cTemplateView::ExecuteView(eViewElement ve) {
     map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
@@ -829,6 +864,7 @@ cTemplateViewChannel::cTemplateViewChannel(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     SetViewElements();
@@ -995,6 +1031,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("width");
     attributes.insert("height");
     attributes.insert("fadetime");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     string subViewName = "menudefault";
@@ -1008,7 +1045,8 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvx");
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
-    attributes.insert("scaletvheight"); 
+    attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menumain";
@@ -1023,6 +1061,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menusetup";
@@ -1037,6 +1076,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menuschedules";
@@ -1051,6 +1091,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menuchannels";
@@ -1065,6 +1106,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menutimers";
@@ -1079,6 +1121,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menurecordings";
@@ -1093,6 +1136,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menudetailedepg";
@@ -1107,6 +1151,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menudetailedrecording";
@@ -1121,6 +1166,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     subViewName = "menudetailedtext";
@@ -1135,6 +1181,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(subViewName, attributes));
 
     //definition of allowed parameters for menuitems viewlist 
@@ -1182,6 +1229,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >("menuplugin", attributes));
 
     SetSubViews();
@@ -1516,6 +1564,7 @@ cTemplateViewMessage::cTemplateViewMessage(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     SetViewElements();
@@ -1590,6 +1639,7 @@ cTemplateViewReplay::cTemplateViewReplay(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     //definition of allowed parameters for onpause and onpausemodeonly viewelement 
@@ -1772,6 +1822,7 @@ cTemplateViewVolume::cTemplateViewVolume(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     SetViewElements();
@@ -1846,6 +1897,7 @@ cTemplateViewAudioTracks::cTemplateViewAudioTracks(void) {
     attributes.insert("scaletvy");
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     //definition of allowed parameters for menuitems viewlist 
@@ -1968,6 +2020,7 @@ cTemplateViewPlugin::cTemplateViewPlugin(string pluginName, int viewID) {
     attributes.insert("scaletvwidth");
     attributes.insert("scaletvheight");
     attributes.insert("hideroot");
+    attributes.insert("debuggrid");
     funcsAllowed.insert(pair< string, set<string> >(viewName, attributes));
 
     //definition of allowed parameters for viewtab

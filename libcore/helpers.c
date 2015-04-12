@@ -100,14 +100,26 @@ bool IsToken(const string& token) {
 
 bool FileExists(const string &fullpath) {
     struct stat buffer;
-    return (stat (fullpath.c_str(), &buffer) == 0); 
+    if (stat (fullpath.c_str(), &buffer) == 0) {
+        return true;
+    }
+    if (config.debugImageLoading) {
+        dsyslog("skindesigner: did not found %s", fullpath.c_str());
+    }
+    return false;
 }
 
 bool FileExists(const string &path, const string &name, const string &ext) {
     stringstream fileName;
     fileName << path << name << "." << ext;
     struct stat buffer;
-    return (stat (fileName.str().c_str(), &buffer) == 0); 
+    if (stat (fileName.str().c_str(), &buffer) == 0) {
+        return true;
+    }
+    if (config.debugImageLoading) {
+        dsyslog("skindesigner: did not found %s", fileName.str().c_str());
+    }
+    return false; 
 }
 
 bool FolderExists(const string &path) {

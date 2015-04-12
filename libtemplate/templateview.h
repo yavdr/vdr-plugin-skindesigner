@@ -112,6 +112,11 @@ public:
     cRect GetOsdSize(void);
     int GetNumPixmaps(void);
     int GetNumPixmapsViewElement(eViewElement ve);
+    bool DrawGebugGrid(void);
+    int DebugGridX(void);
+    int DebugGridY(void);
+    tColor DebugGridColor(void);
+    tColor DebugGridFontColor(void);
     bool HideView(void);
     bool ExecuteView(eViewElement ve);
     bool DetachViewElement(eViewElement ve);

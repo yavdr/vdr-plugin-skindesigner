@@ -5,7 +5,7 @@
 
 using namespace std;
 
-cView::cView(cTemplateView *tmplView) : cPixmapContainer(tmplView->GetNumPixmaps()) {
+cView::cView(cTemplateView *tmplView) : cPixmapContainer(tmplView->DrawGebugGrid() ? tmplView->GetNumPixmaps() + 1 : tmplView->GetNumPixmaps()) {
     this->tmplView = tmplView;
     tvScaled = tmplView->GetScalingWindow(scalingWindow);
     if (tvScaled) {
@@ -39,6 +39,12 @@ cView::~cView() {
     for (map<eViewElement,cViewElement*>::iterator dVeIt = detachedViewElements.begin(); dVeIt != detachedViewElements.end(); dVeIt++) {
         cViewElement *ve = dVeIt->second;
         delete ve;
+    }
+}
+
+void cView::DrawDebugGrid(void) {
+    if (tmplView && tmplView->DrawGebugGrid()) {
+        DoDrawDebugGrid();
     }
 }
 
@@ -482,6 +488,54 @@ void cView::DebugTokens(string viewElement, map<string,string> *stringTokens, ma
 /*****************************************************************
 * Private Functions
 *****************************************************************/
+
+void cView::DoDrawDebugGrid(void) {
+    int stepsX = tmplView->DebugGridX();
+    int stepsY = tmplView->DebugGridY();
+    cRect osdSize = tmplView->GetOsdSize();
+    tColor col = tmplView->DebugGridColor();
+    tColor colFont = tmplView->DebugGridFontColor();
+
+    cRect size(0, 0, osdSize.Width(), osdSize.Height());
+    //use last pixmap as grid pixmap
+    int numGridPixmap = NumPixmaps() - 1;
+    CreatePixmap(numGridPixmap, 7, size);
+
+    int width = size.Width();
+    int height = size.Height();
+    float stepWidthX = (double)width / (double)stepsX;
+    float stepWidthY = (double)height / (double)stepsY;
+    int fontSize = height / stepsY / 5;
+
+    for (int i = 0; i <= stepsX; i++) {
+        int x = (float)i * stepWidthX;
+        if (i==stepsX)
+            x = x-1;
+        cRect line(x, 0, 1, height);
+        DrawRectangle(numGridPixmap, line, col);
+        if (i==stepsX)
+            continue;
+        float percent = (float)i / (float)stepsX * 100.0;
+        cPoint textPosPerc(x+2, 2);
+        cPoint textPosAbs(x+2, fontSize + 4);
+        DrawText(numGridPixmap, textPosPerc, *cString::sprintf("%.1f%%", percent), colFont, 0x00000000, "vdrOsd", fontSize);
+        DrawText(numGridPixmap, textPosAbs, *cString::sprintf("%dpx", x), colFont, 0x00000000, "vdrOsd", fontSize);
+    }
+    for (int i = 0; i <= stepsY; i++) {
+        int y = (float)i * stepWidthY;
+        if (i==stepsY)
+            y = y-1;
+        cRect line(0, y, width, 1);
+        DrawRectangle(numGridPixmap, line, col);
+        if (i==0 || i==stepsY)
+            continue;
+        float percent = (float)i / (float)stepsY * 100.0;
+        cPoint textPosPerc(2, y + 2);
+        cPoint textPosAbs(2, y + fontSize + 4);
+        DrawText(numGridPixmap, textPosPerc, *cString::sprintf("%.1f%%", percent), colFont, 0x00000000, "vdrOsd", fontSize);
+        DrawText(numGridPixmap, textPosAbs, *cString::sprintf("%dpx", y), colFont, 0x00000000, "vdrOsd", fontSize);
+    }
+}
 
 void cView::DoFill(int num, cTemplateFunction *func) {
     tColor col = func->GetColorParameter(ptColor);
