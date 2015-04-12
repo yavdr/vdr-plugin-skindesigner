@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#set -x
+
+PACKAGE=vdr-plugin-skindesigner
+DISTRIBUTION=trusty
+BUILDPREFIX=yavdr
+PPA=yavdr/unstable-vdr
+
+UPSTREAMURL=git://projects.vdr-developer.org/vdr-plugin-skindesigner.git
+PACKAGEURL=git@github.com:yavdr/${PACKAGE}.git
+
+# prepare:
+# git clone -o upstream ${UPSTREAMURL} ${PACKAGE}
+# cd ${PACKAGE}
+# git remote add origin ${PACKAGEURL}
+
+# get upstream changes
+git fetch upstream
+
+# get debian changes
+git pull origin
+
+PKGVERSION=`dpkg-parsechangelog | sed -n 's/^Version: \(.*\)-.*/\1/p'`
+UPSTREAMVERSION=`git describe upstream/master`
+
+if dpkg --compare-versions ${PKGVERSION} lt ${UPSTREAMVERSION}
+then
+  NEWVERSION=${UPSTREAMVERSION}-0${BUILDPREFIX}0~${DISTRIBUTION}
+  CHANGES=`git log --reverse --pretty=format:%h%s%n%n%n HEAD..upstream/master upstream/master`
+
+  git merge --commit --log -m "Merge branch 'upstream/master'" upstream/master
+  git archive --format=tar.gz --prefix=${PACKAGE}-${UPSTREAMVERSION}/ --output=../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz upstream/master
+  dch -v ${NEWVERSION} -u medium -D ${DISTRIBUTION} --force-distribution "${CHANGES}"
+  git add debian/changelog
+  git commit -m "new upstream snapshot"
+  git push
+  git push --tags
+  debuild -S -sa
+  dput -U ppa:${PPA} ../${PACKAGE}-${NEWVERSION}_source.changes
+fi
