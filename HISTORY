@@ -292,4 +292,5 @@ Version 0.4.2
 - added more info if debugImage is activted in config
 - added possibility for blinking images, texts, rectangles, ellipses 
   and slopes
+- adapted libskindesignerapi makefile for LCLBLD
 
