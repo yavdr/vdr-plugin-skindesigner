@@ -1,3 +1,10 @@
+vdr-plugin-skindesigner (0.4.2-4-g22da0fc-0yavdr0~trusty) trusty; urgency=medium
+
+  * 6872e29added possibility to draw a debug grid in views
+    22da0fcadded more info if debugImage is activted in config
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Sun, 12 Apr 2015 13:22:04 +0200
+
 vdr-plugin-skindesigner (0.4.2-2-g5146f15-3yavdr0~trusty) trusty; urgency=medium
 
   * derive build-number for libskindesignerapi from binary version
