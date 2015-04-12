@@ -38,4 +38,13 @@ then
   git push --tags
   debuild -S -sa
   dput -U ppa:${PPA} ../${PACKAGE}-${NEWVERSION}_source.changes
+
+  # upload to testing/precise
+  OTHERDISTRIBUTION=precise
+  OTHERPPA=yavdr/testing-vdr
+  OTHERVERSION=${UPSTREAMVERSION}-0${BUILDPREFIX}0~${OTHERDISTRIBUTION}
+  dch -v ${OTHERVERSION} --force-bad-version -u medium -D ${OTHERDISTRIBUTION} --force-distribution "rebuild for ${OTHERDISTRIBUTION}"
+  debuild -S -sa
+  dput -U ppa:${OTHERPPA} ../${PACKAGE}-${OTHERVERSION}_source.changes
+  git checkout -- debian/changelog
 fi
