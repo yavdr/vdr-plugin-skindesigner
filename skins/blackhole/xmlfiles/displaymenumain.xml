@@ -81,8 +81,8 @@
         </area>
         <area condition="{numtimers}" x="55%" y="71%" width="44%" height="19%" layer="2">
             <loop name="timers" x="0" y="0" orientation="horizontal" columnwidth="{areawidth}/4" rowheight="{areaheight}" overflow="cut">
-                <drawimage  cache="true" name="logo" imagetype="channellogo" path="{timers[channelid]}" width="{columnwidth}-15" height="40%" align="center" y="10" />
-                <drawrectangle condition="{timers[recording]}" x="0" y="{height(logo)}+10" width="{columnwidth}-5" height="{rowheight} - {height(logo)} - 20" color="{clrRedTrans}" />
+                <drawimage cache="true" name="logo" imagetype="channellogo" path="{timers[channelid]}" width="{columnwidth}-15" height="40%" align="center" y="10" />
+                <drawimage condition="{timers[recording]}" animtype="blink" animfreq="500" imagetype="icon" path="ico_rec_on" x="{columnwidth}*0.75" y="{columnwidth}*0.05" width="{columnwidth}*0.2" height="{columnwidth}*0.2"/>
                 <drawtextbox x="5" y="{height(logo)} + 10" width="{columnwidth}-10" align="center" maxlines="2" font="{regular}" fontsize="15%" color="{clrWhite}" text="{timers[title]}" />
                 <drawtext align="center" y="75%" font="{regular}" fontsize="20%" color="{clrWhite}" text="{timers[datetime]}" />
             </loop>

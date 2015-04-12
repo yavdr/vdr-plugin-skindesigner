@@ -88,6 +88,7 @@ OBJS = $(PLUGIN).o \
        libtemplate/templatefunction.o \
        libtemplate/templateloopfunction.o \
        libtemplate/xmlparser.o \
+       views/animation.o \
        views/view.o \
        views/viewgrid.o \
        views/viewhelpers.o \

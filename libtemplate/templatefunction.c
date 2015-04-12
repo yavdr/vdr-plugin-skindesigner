@@ -143,6 +143,10 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptDeterminateFont;
         } else if (!name.compare("direction")) {
             p.first = ptDirection;
+        } else if (!name.compare("animtype")) {
+            p.first = ptAnimType;
+        } else if (!name.compare("animfreq")) {
+            p.first = ptAnimFreq;
         } else {
             p.first = ptNone;
         }
@@ -242,6 +246,7 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptScaleTvY:
             case ptScaleTvWidth:
             case ptScaleTvHeight:
+            case ptAnimFreq:
                 SetNumericParameter(type, value);
                 break;
             case ptAlign:
@@ -286,6 +291,9 @@ bool cTemplateFunction::CalculateParameters(void) {
                 break;
             case ptDirection:
                 paramValid = SetDirection(value);
+                break;
+            case ptAnimType:
+                paramValid = SetAnimType(value);
                 break;
             default:
                 paramValid = true;
@@ -736,6 +744,16 @@ bool cTemplateFunction::DoExecute(void) {
     return condParam->IsTrue();
 }
 
+bool cTemplateFunction::IsAnimated(void) {
+    map< eParamType, int >::iterator hit = numericParameters.find(ptAnimType);
+    if (hit == numericParameters.end())
+        return false;
+    eAnimType type = (eAnimType)hit->second;
+    if (type > atNone)
+        return true;
+    return false;
+}
+
 /*******************************************************************
 * Private Functions
 *******************************************************************/
@@ -1122,6 +1140,16 @@ bool cTemplateFunction::SetDirection(string value) {
     else if (!value.compare("topdown"))
         direction = diTopDown;
     numericParameters.insert(pair<eParamType, int>(ptDirection, direction));
+    return true;
+}
+
+bool cTemplateFunction::SetAnimType(string value) {
+    int animType = atNone;
+    if (!value.compare("blink"))
+        animType = atBlink;
+    else if (!value.compare("animated"))
+        animType = atAnimated;
+    numericParameters.insert(pair<eParamType, int>(ptAnimType, animType));
     return true;
 }
 
@@ -1652,6 +1680,12 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptDirection:
             name = "Text Direction";
+            break;
+        case ptAnimType:
+            name = "Animation Type";
+            break;
+        case ptAnimFreq:
+            name = "Animation Frequency";
             break;
         default:
             name = "Unknown";

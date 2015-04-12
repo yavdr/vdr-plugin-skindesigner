@@ -86,6 +86,8 @@ enum eParamType {
     ptCache,
     ptDeterminateFont,
     ptDirection,
+    ptAnimType,
+    ptAnimFreq,
     ptNone
 };
 
@@ -96,6 +98,12 @@ enum eImageType {
     itMenuIcon,
     itIcon,
     itImage
+};
+
+enum eAnimType {
+    atNone,
+    atBlink,
+    atAnimated
 };
 
 enum eFloatType {
@@ -168,6 +176,7 @@ protected:
     bool SetDetached(string value);
     bool SetBackground(string value);
     bool SetDirection(string value);
+    bool SetAnimType(string value);
     void SetDebugGrid(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);
@@ -232,6 +241,7 @@ public:
     bool ParsedCompletely(void) { return parsedCompletely; };
     bool DoExecute(void);
     bool Updated(void) { return updated; };
+    bool IsAnimated(void);
     //Debug
     void Debug(void);
 };
