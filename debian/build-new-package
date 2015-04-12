@@ -11,9 +11,9 @@ UPSTREAMURL=git://projects.vdr-developer.org/vdr-plugin-skindesigner.git
 PACKAGEURL=git@github.com:yavdr/${PACKAGE}.git
 
 # prepare:
-# git clone -o upstream ${UPSTREAMURL} ${PACKAGE}
+# git clone -o origin ${PACKAGEURL} ${PACKAGE}
 # cd ${PACKAGE}
-# git remote add origin ${PACKAGEURL}
+# git remote add upstream ${UPSTREAMURL}
 
 # get upstream changes
 git fetch upstream
