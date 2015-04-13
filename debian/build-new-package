@@ -38,7 +38,7 @@ then
   git push
   git push --tags
   debuild -S -sa
-  dput -U ppa:${PPA} ../${PACKAGE}-${NEWVERSION}_source.changes
+  dput -U ppa:${PPA} ../${PACKAGE}_${NEWVERSION}_source.changes
 
   # upload to testing/precise
   OTHERDISTRIBUTION=precise
@@ -46,6 +46,6 @@ then
   OTHERVERSION=${UPSTREAMVERSION}-0${BUILDPREFIX}0~${OTHERDISTRIBUTION}
   dch -v ${OTHERVERSION} --force-bad-version -u medium -D ${OTHERDISTRIBUTION} --force-distribution "rebuild for ${OTHERDISTRIBUTION}"
   debuild -S -sa
-  dput -U ppa:${OTHERPPA} ../${PACKAGE}-${OTHERVERSION}_source.changes
+  dput -U ppa:${OTHERPPA} ../${PACKAGE}_${OTHERVERSION}_source.changes
   git checkout -- debian/changelog
 fi
