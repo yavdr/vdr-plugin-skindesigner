@@ -40,6 +40,11 @@ cView::~cView() {
         cViewElement *ve = dVeIt->second;
         delete ve;
     }
+    for (multimap<int, cAnimation*>::iterator animIt = animations.begin(); animIt != animations.end(); animIt++) {
+        cAnimation *anim = animIt->second;
+        anim->Stop();
+        delete anim;
+    }
 }
 
 void cView::DrawDebugGrid(void) {
@@ -57,6 +62,7 @@ void cView::Init(void) {
     scrollDelay = 0;
     scrollMode = smNone;
     scrollSpeed = ssMedium;
+    animCat = 0;
     currentlyScrolling = false;
 }
 
@@ -85,8 +91,10 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
     cTemplateViewElement *viewElement = NULL;
     if (tmplViewElement) {
         viewElement = tmplViewElement;
+        animCat = 0;
     } else if (tmplView) {
         viewElement = tmplView->GetViewElement(ve);
+        animCat = ve;
     }
     if (!viewElement)
         return;
@@ -164,8 +172,10 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
 
 void cView::ClearViewElement(eViewElement ve) {
     cTemplateViewElement *viewElement = NULL;
+    int currentAnimCat = ve;
     if (tmplViewElement) {
         viewElement = tmplViewElement;
+        currentAnimCat = 0;
     } else if (tmplView) {
         viewElement = tmplView->GetViewElement(ve);
     }
@@ -182,6 +192,7 @@ void cView::ClearViewElement(eViewElement ve) {
         }
         pixCurrent++; 
     }
+    ClearAnimations(currentAnimCat);
 }
 
 void cView::DestroyViewElement(eViewElement ve) {
@@ -199,6 +210,21 @@ void cView::DestroyViewElement(eViewElement ve) {
         DestroyPixmap(pixCurrent);
         pixCurrent++; 
     }
+    ClearAnimations(ve);
+}
+
+void cView::ClearAnimations(int cat) {
+    //stop and delete all animated elements from this viewelement
+    if (animations.size() == 0)
+        return;
+    pair<multimap<int,cAnimation*>::iterator, multimap<int,cAnimation*>::iterator> rangeAnims;
+    rangeAnims = animations.equal_range(cat);
+    for (multimap<int,cAnimation*>::iterator it = rangeAnims.first; it!=rangeAnims.second; ++it) {
+        cAnimation *anim = it->second;
+        anim->Stop();
+        delete anim;
+    }
+    animations.erase(cat);
 }
 
 void cView::ActivateScrolling(void) {
@@ -560,7 +586,11 @@ void cView::DoDrawText(int num, cTemplateFunction *func, int x0, int y0) {
     } else {
         text = func->GetText(false);
     }
-    DrawText(num, pos, text.c_str(), clr, clrBack, fontName, fontSize);
+    if (func->IsAnimated()) {
+        DrawAnimatedText(num, func, pos, text, clr, fontName, fontSize);
+    } else {
+        DrawText(num, pos, text.c_str(), clr, clrBack, fontName, fontSize);
+    }
 }
 
 void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0) {
@@ -606,7 +636,13 @@ void cView::DoDrawTextVertical(int num, cTemplateFunction *func, int x0, int y0)
     if (y < 0) y = func->GetContainerHeight() - textVertical->Height() - 5;
     y += y0;
     cPoint pos(x,y);
-    DrawImage(num, pos, *textVertical);
+
+    if (func->IsAnimated()) {
+        cRect posAnim(x, y, textVertical->Width(), textVertical->Height());
+        DrawAnimatedImage(num, func, posAnim, textVertical);
+    } else {
+        DrawImage(num, pos, *textVertical);
+    }
 }
 
 void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
@@ -804,7 +840,12 @@ void cView::DoDrawRectangle(int num, cTemplateFunction *func, int x0, int y0) {
     int h = func->GetNumericParameter(ptHeight);
     cRect size(x, y, w, h);
     tColor clr = func->GetColorParameter(ptColor);
-    DrawRectangle(num, size, clr);
+    
+    if (func->IsAnimated()) {
+        DrawAnimatedOsdObject(num, func, size, clr, 0);
+    } else {
+        DrawRectangle(num, size, clr);
+    }
 }
 
 void cView::DoDrawEllipse(int num, cTemplateFunction *func, int x0, int y0) {
@@ -823,7 +864,12 @@ void cView::DoDrawEllipse(int num, cTemplateFunction *func, int x0, int y0) {
         esyslog("skindesigner: wrong quadrant %d for drawellipse, allowed values are from -4 to 8", quadrant);
         quadrant = 0;
     }
-    DrawEllipse(num, size, clr, quadrant);
+
+    if (func->IsAnimated()) {
+        DrawAnimatedOsdObject(num, func, size, clr, quadrant);
+    } else {
+        DrawEllipse(num, size, clr, quadrant);
+    }
 }
 
 void cView::DoDrawSlope(int num, cTemplateFunction *func, int x0, int y0) {
@@ -842,7 +888,11 @@ void cView::DoDrawSlope(int num, cTemplateFunction *func, int x0, int y0) {
         esyslog("skindesigner: wrong type %d for drawslope, allowed values are from 0 to 7", type);
         type = 0;
     }
-    DrawSlope(num, size, clr, type);
+    if (func->IsAnimated()) {
+        DrawAnimatedOsdObject(num, func, size, clr, type);
+    } else {
+        DrawSlope(num, size, clr, type);
+    }
 }
 
 void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
@@ -861,31 +911,56 @@ void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
         case itChannelLogo: {
             cImage *logo = imgCache->GetLogo(path, width, height);
             if (logo) {
-                DrawImage(num, pos, *logo);
+                if (func->IsAnimated()) {
+                    cRect posAnim(x, y, width, height);
+                    DrawAnimatedImage(num, func, posAnim, logo);
+                } else {
+                    DrawImage(num, pos, *logo);
+                }
             }
             break; }
         case itSepLogo: {
             cImage *sepLogo = imgCache->GetSeparatorLogo(path, width, height);
             if (sepLogo) {
-                DrawImage(num, pos, *sepLogo);
+                if (func->IsAnimated()) {
+                    cRect posAnim(x, y, width, height);
+                    DrawAnimatedImage(num, func, posAnim, sepLogo);
+                } else {
+                    DrawImage(num, pos, *sepLogo);
+                }
             }
             break; }
         case itSkinPart: {
             cImage *skinpart = imgCache->GetSkinpart(path, width, height);
             if (skinpart) {
-                DrawImage(num, pos, *skinpart);
+                if (func->IsAnimated()) {
+                    cRect posAnim(x, y, width, height);
+                    DrawAnimatedImage(num, func, posAnim, skinpart);
+                } else {
+                    DrawImage(num, pos, *skinpart);
+                }
             }
             break; }
         case itIcon: {
             cImage *icon = imgCache->GetIcon(type, path, width, height);
             if (icon) {
-                DrawImage(num, pos, *icon);
+                if (func->IsAnimated()) {
+                    cRect posAnim(x, y, width, height);
+                    DrawAnimatedImage(num, func, posAnim, icon);
+                } else {
+                    DrawImage(num, pos, *icon);
+                }
             }
             break; }
         case itMenuIcon: {
             cImage *icon = imgCache->GetIcon(type, path, width, height);
             if (icon) {
-                DrawImage(num, pos, *icon);
+                if (func->IsAnimated()) {
+                    cRect posAnim(x, y, width, height);
+                    DrawAnimatedImage(num, func, posAnim, icon);
+                } else {
+                    DrawImage(num, pos, *icon);
+                }
             }
             break; }
         case itImage: {
@@ -899,6 +974,70 @@ void cView::DoDrawImage(int num, cTemplateFunction *func, int x0, int y0) {
         default:
             break;
     }
+}
+
+void cView::DrawAnimatedImage(int numPix, cTemplateFunction *func, cRect &pos, cImage *image) {
+    int layer = Layer(numPix);
+    cRect posAnim = CalculateAnimationClip(numPix, pos);
+    eAnimType animType = (eAnimType)func->GetNumericParameter(ptAnimType);
+    int animFreq = func->GetNumericParameter(ptAnimFreq);
+    
+    cAnimatedImage *anim = new cAnimatedImage(animType, animFreq, posAnim, layer);
+    animations.insert(pair<int, cAnimation*>(animCat, anim));
+    if (tmplView) {
+        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
+    }
+    anim->SetImage(image);
+    anim->Start();
+}
+
+void cView::DrawAnimatedText(int numPix, cTemplateFunction *func, cPoint &pos, string text, tColor col, string fontName, int fontSize) {
+    int layer = Layer(numPix);
+    int textWidth = fontManager->Width(fontName, fontSize, text.c_str());
+    int textHeight = fontManager->Height(fontName, fontSize);
+    cRect posOrig(pos.X(), pos.Y(), textWidth, textHeight);
+    cRect posAnim = CalculateAnimationClip(numPix, posOrig);
+    eAnimType animType = (eAnimType)func->GetNumericParameter(ptAnimType);
+    int animFreq = func->GetNumericParameter(ptAnimFreq);
+    
+    cAnimatedText *anim = new cAnimatedText(animType, animFreq, posAnim, layer);
+    animations.insert(pair<int, cAnimation*>(animCat, anim));
+    if (tmplView) {
+        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
+    }
+    anim->SetText(text);
+    anim->SetFont(fontName);
+    anim->SetFontSize(fontSize);
+    anim->SetFontColor(col);
+    anim->Start();
+}
+
+void cView::DrawAnimatedOsdObject(int numPix, cTemplateFunction *func, cRect &pos, tColor col, int quadrant) {
+    int layer = Layer(numPix);
+    cRect posAnim = CalculateAnimationClip(numPix, pos);
+    eFuncType funcType = func->GetType();
+    eAnimType animType = (eAnimType)func->GetNumericParameter(ptAnimType);
+    int animFreq = func->GetNumericParameter(ptAnimFreq);
+
+    cAnimatedOsdObject *anim = new cAnimatedOsdObject(funcType, animType, animFreq, posAnim, layer);
+    animations.insert(pair<int, cAnimation*>(animCat, anim));
+    if (tmplView) {
+        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
+    }
+    anim->SetColor(col);
+    anim->SetQuadrant(quadrant);
+    anim->Start();
+}
+
+cRect cView::CalculateAnimationClip(int numPix, cRect &pos) {
+    cPoint posPix;
+    Pos(numPix, posPix);
+    cRect posAnim;
+    posAnim.SetX(posPix.X() + pos.X());
+    posAnim.SetY(posPix.Y() + pos.Y());
+    posAnim.SetWidth(pos.Width());
+    posAnim.SetHeight(pos.Height());
+    return posAnim;
 }
 
 /***********************************************************************
@@ -1021,6 +1160,7 @@ void cViewListItem::ClearListItem(void) {
     for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
         Fill(pixCurrent, clrTransparent);
     }
+    ClearAnimations(0);
 }
 
 void cViewListItem::SetListElementPosition(cTemplatePixmap *pix) {
@@ -1069,7 +1209,6 @@ cGrid::cGrid(cTemplateViewElement *tmplGrid) : cView(tmplGrid) {
 }
 
 cGrid::~cGrid() {
-
 }
 
 void cGrid::Set(double x, double y, double width, double height,
@@ -1175,6 +1314,7 @@ void cGrid::Clear(void) {
     for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
         Fill(pixCurrent, clrTransparent);
     }
+    ClearAnimations(0);
 }
 
 void cGrid::DeletePixmaps(void) {
@@ -1182,6 +1322,7 @@ void cGrid::DeletePixmaps(void) {
     for (int pixCurrent = 0; pixCurrent < pixMax; pixCurrent++) {
         DestroyPixmap(pixCurrent);
     }
+    ClearAnimations(0);
 }
 
 void cGrid::PositionPixmap(cTemplatePixmap *pix) {

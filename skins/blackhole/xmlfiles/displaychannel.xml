@@ -120,7 +120,7 @@
             <drawimage condition="{isDolby}" imagetype="icon" path="ico_dolby" x="{areaheight}*6 + 20" y="0" width="{areaheight}*3" height="{areaheight}"/>
             <drawimage condition="{hasVT}" imagetype="icon" path="ico_videotext" x="{areaheight}*9 + 30" y="0" width="{areaheight}" height="{areaheight}"/>
             <drawimage condition="{isEncrypted}" imagetype="icon" path="ico_crypted" x="{areaheight}*10 + 40" y="0" width="{areaheight}*2" height="{areaheight}"/>
-            <drawimage condition="{isRecording}" imagetype="icon" path="ico_rec_on" x="{areaheight}*12 + 50" y="0" width="{areaheight}" height="{areaheight}"/>
+            <drawimage condition="{isRecording}" animtype="blink" animfreq="500" imagetype="icon" path="ico_rec_on" x="{areaheight}*12 + 50" y="0" width="{areaheight}" height="{areaheight}"/>
         </area>
     </statusinfo>
 

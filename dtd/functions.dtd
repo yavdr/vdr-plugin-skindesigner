@@ -73,6 +73,8 @@
   name NMTOKEN #IMPLIED
   text CDATA #REQUIRED
   condition CDATA #IMPLIED
+  animtype CDATA #IMPLIED
+  animfreq CDATA #IMPLIED
   debug (true|false) #IMPLIED  
 >
 
@@ -110,6 +112,8 @@
   text CDATA #REQUIRED
   direction (bottomup|topdown) #IMPLIED
   condition CDATA #IMPLIED
+  animtype CDATA #IMPLIED
+  animfreq CDATA #IMPLIED
   debug (true|false) #IMPLIED  
 >
 
@@ -124,6 +128,8 @@
   color CDATA #REQUIRED
   name NMTOKEN #IMPLIED
   condition CDATA #IMPLIED
+  animtype CDATA #IMPLIED
+  animfreq CDATA #IMPLIED
   debug NMTOKEN #IMPLIED
  >
 
@@ -139,6 +145,8 @@
   quadrant CDATA #REQUIRED
   name NMTOKEN #IMPLIED
   condition CDATA #IMPLIED
+  animtype CDATA #IMPLIED
+  animfreq CDATA #IMPLIED
   debug NMTOKEN #IMPLIED
  >
 
@@ -154,6 +162,8 @@
   type CDATA #REQUIRED
   name NMTOKEN #IMPLIED
   condition CDATA #IMPLIED
+  animtype CDATA #IMPLIED
+  animfreq CDATA #IMPLIED
   debug NMTOKEN #IMPLIED
  >
 
@@ -170,5 +180,7 @@
   path CDATA #REQUIRED
   name CDATA #IMPLIED
   condition CDATA #IMPLIED
+  animtype CDATA #IMPLIED
+  animfreq CDATA #IMPLIED
   debug NMTOKEN #IMPLIED
 >

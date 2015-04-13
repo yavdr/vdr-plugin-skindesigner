@@ -22,7 +22,7 @@ PKGCFG = $(if $(VDRDIR),$(shell pkg-config --silence-errors --variable=$(1) $(VD
 CXXFLAGS = $(call PKGCFG,cxxflags)
 LDFLAGS = -shared -Wl,-soname,$(SONAME)
 
-DEFINES += -DAPIVERSION=$(MAJOR) -DLIBVERSION=\"$(VERSION)\"
+DEFINES += -DLIBAPIVERSION=$(MAJOR) -DLIBVERSION=\"$(VERSION)\"
 INCLUDES +=
  
 SRCS = $(wildcard *.c)
@@ -47,6 +47,10 @@ $(DEPFILE): Makefile
 
 $(TARGET_LIB): $(OBJS)
 	$(CXX) ${LDFLAGS} -o $@ $^
+	if [ -n "$(LCLBLD)" ] ; then \
+		ln -s $(TARGET_LIB) $(LIBNAME).so ; \
+		ln -s $(TARGET_LIB) $(SONAME) ; \
+	fi
 
 # pkg-config
 
@@ -84,7 +88,7 @@ install: install-lib install-pc install-includes
 
 .PHONY: clean
 clean:
-	-rm -f ${TARGET_LIB} ${OBJS} $(DEPFILE) $(LIBNAME).pc $(LIBNAME).so $(ARCHIVE).tgz
+	-rm -f ${TARGET_LIB} ${OBJS} $(DEPFILE) $(LIBNAME).pc $(LIBNAME).so $(SONAME) $(ARCHIVE).tgz
 
 dist: clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)

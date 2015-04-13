@@ -237,6 +237,25 @@ void cPixmapContainer::SetViewPort(int num, const cRect &rect) {
     pixmaps[num]->SetViewPort(rect);    
 }
 
+int cPixmapContainer::Layer(int num) {
+    if (checkRunning && !Running())
+        return 0;
+    cMutexLock MutexLock(&mutex);
+    if (!pixmaps[num])
+        return 0;
+    return pixmaps[num]->Layer();
+}
+
+void cPixmapContainer::Pos(int num, cPoint &pos) {
+    if (checkRunning && !Running())
+        return;
+    cMutexLock MutexLock(&mutex);
+    if (!pixmaps[num])
+        return;
+    pos.SetX(pixmaps[num]->ViewPort().X());
+    pos.SetY(pixmaps[num]->ViewPort().Y());
+}
+
 int cPixmapContainer::Width(int num) {
     if (checkRunning && !Running())
         return 0;

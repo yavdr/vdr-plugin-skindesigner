@@ -290,4 +290,9 @@ Version 0.4.2
 - fixed bug that string tokens are not evaluated in area conditions
 - added possibility to draw a debug grid in views
 - added more info if debugImage is activted in config
+- added possibility for blinking images, texts, rectangles, ellipses 
+  and slopes
+- adapted libskindesignerapi makefile for LCLBLD
+
+Version 0.4.3
 

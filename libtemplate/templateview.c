@@ -744,6 +744,8 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("fontsize");
     attributes.insert("color");
     attributes.insert("text");
+    attributes.insert("animtype");
+    attributes.insert("animfreq");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "drawtextbox";
@@ -781,6 +783,8 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("fontsize");
     attributes.insert("color");
     attributes.insert("text");
+    attributes.insert("animtype");
+    attributes.insert("animfreq");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "drawimage";
@@ -799,6 +803,8 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("align");
     attributes.insert("valign");
     attributes.insert("cache");
+    attributes.insert("animtype");
+    attributes.insert("animfreq");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "drawrectangle";
@@ -813,6 +819,8 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("width");
     attributes.insert("height");
     attributes.insert("color");
+    attributes.insert("animtype");
+    attributes.insert("animfreq");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "drawellipse";
@@ -828,6 +836,8 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("height");
     attributes.insert("color");
     attributes.insert("quadrant");
+    attributes.insert("animtype");
+    attributes.insert("animfreq");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "drawslope";
@@ -843,6 +853,8 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("height");
     attributes.insert("color");
     attributes.insert("type");
+    attributes.insert("animtype");
+    attributes.insert("animfreq");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 }
 

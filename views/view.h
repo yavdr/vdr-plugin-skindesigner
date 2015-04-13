@@ -5,6 +5,7 @@
 #include "map"
 #include "../libcore/pixmapcontainer.h"
 #include "../libtemplate/template.h"
+#include "animation.h"
 
 using namespace std;
 
@@ -23,6 +24,10 @@ private:
     void DoDrawEllipse(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawSlope(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
     void DoDrawImage(int num, cTemplateFunction *func, int x0 = 0, int y0 = 0);
+    void DrawAnimatedImage(int numPix, cTemplateFunction *func, cRect &pos, cImage *image);
+    void DrawAnimatedText(int numPix, cTemplateFunction *func, cPoint &pos, string text, tColor col, string fontName, int fontSize);
+    void DrawAnimatedOsdObject(int numPix, cTemplateFunction *func, cRect &pos, tColor col, int quadrant);
+    cRect CalculateAnimationClip(int numPix, cRect &pos);
     void ActivateScrolling(void);
 protected:
     cTemplateView *tmplView;
@@ -30,6 +35,8 @@ protected:
     cTemplateViewTab *tmplTab;
     //detached viewelements
     map < eViewElement, cViewElement* > detachedViewElements;
+    //animated elements
+    multimap < int, cAnimation* > animations;
     //scaling window
     cRect scalingWindow;
     bool tvScaled;
@@ -44,9 +51,11 @@ protected:
     int scrollDelay;
     int scrollMode;
     int scrollSpeed;
+    int animCat;
     void DrawViewElement(eViewElement ve, map <string,string> *stringTokens = NULL, map <string,int> *intTokens = NULL, map < string, vector< map< string, string > > > *loopTokens = NULL);
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
+    void ClearAnimations(int cat);
     bool ExecuteViewElement(eViewElement ve);
     bool DetachViewElement(eViewElement ve);
     bool ViewElementScrolls(eViewElement ve);
