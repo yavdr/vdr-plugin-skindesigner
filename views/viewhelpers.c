@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <vdr/menu.h>
 #include <vdr/videodir.h>
 #include <sys/sysinfo.h>
@@ -624,10 +625,31 @@ void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *str
 }
 
 void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *lastRecordings) {
-    RecordingsSortMode = rsmTime;
-    Recordings.Sort();
+
+    list<cRecording*> orderedRecs;
+
+    for (cRecording *recording = Recordings.First(); recording; recording = Recordings.Next(recording)) {
+        if (orderedRecs.size() == 0) {
+            orderedRecs.push_back(recording);
+            continue;
+        }
+        bool inserted = false;
+        for (list<cRecording*>::iterator it = orderedRecs.begin(); it != orderedRecs.end(); it++) {
+            const cRecording *orderedRec = *it;
+            if (recording->Start() >= orderedRec->Start()) {
+                orderedRecs.insert(it, recording);
+                inserted = true;
+                break;
+            }
+        }
+        if (!inserted) {
+            orderedRecs.push_back(recording);
+        }
+    }
+
     int found = 0;
-    for (cRecording *recording = Recordings.Last(); recording; recording = Recordings.Prev(recording)) {
+    for (list<cRecording*>::iterator it = orderedRecs.begin(); it != orderedRecs.end(); it++) {
+        const cRecording *recording = *it;
 #if APIVERSNUM >= 20101
         if (recording->IsInUse()) {
             continue;
