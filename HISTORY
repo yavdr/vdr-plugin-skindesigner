@@ -296,3 +296,6 @@ Version 0.4.2
 
 Version 0.4.3
 
+- added strequal, strnotequal, strcontains, strnotcontains functions
+  to compare strings in conditions
+
