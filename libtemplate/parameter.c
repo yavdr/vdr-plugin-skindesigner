@@ -282,6 +282,50 @@ void cConditionalParameter::Evaluate(map < string, int > *intTokens, map < strin
             } else {
                 tokenTrue = true;
             }
+        } else if (cond->type == ctStringEquals) {
+            if (stringTokens) {
+                map < string, string >::iterator hit = stringTokens->find(cond->tokenName);
+                if (hit != stringTokens->end()) {
+                    string value = hit->second;
+                    if (!value.compare(cond->strCompareValue))
+                        tokenTrue = true;
+                }
+            }
+        } else if (cond->type == ctStringNotEquals) {
+            if (stringTokens) {
+                map < string, string >::iterator hit = stringTokens->find(cond->tokenName);
+                if (hit != stringTokens->end()) {
+                    string value = hit->second;
+                    if (value.compare(cond->strCompareValue))
+                        tokenTrue = true;
+                } else {
+                    tokenTrue = true;
+                }
+            } else {
+                tokenTrue = true;
+            }
+        } else if (cond->type == ctStringContains) {
+            if (stringTokens) {
+                map < string, string >::iterator hit = stringTokens->find(cond->tokenName);
+                if (hit != stringTokens->end()) {
+                    string value = hit->second;
+                    if (value.find(cond->strCompareValue) != string::npos)
+                        tokenTrue = true;
+                }
+            }
+        } else if (cond->type == ctStringNotContains) {
+            if (stringTokens) {
+                map < string, string >::iterator hit = stringTokens->find(cond->tokenName);
+                if (hit != stringTokens->end()) {
+                    string value = hit->second;
+                    if (value.find(cond->strCompareValue) == string::npos)
+                        tokenTrue = true;
+                } else {
+                    tokenTrue = true;
+                }
+            } else {
+                tokenTrue = true;
+            }
         } else {
             int tokenValue = EvaluateParameter(cond->tokenName, intTokens, stringTokens);
             if (cond->type == ctBool) {
@@ -352,8 +396,7 @@ void cConditionalParameter::TokenizeValue(string sep) {
 }
 
 void cConditionalParameter::InsertCondition(string cond) {
-    cond.erase( std::remove_if( cond.begin(), cond.end(), ::isspace ), cond.end() );
-
+    cond = StripWhitespaces(cond);
     if (cond.size() < 1)
         return;
 
@@ -370,6 +413,7 @@ void cConditionalParameter::InsertCondition(string cond) {
     sCond.tokenName = tokenName;
     sCond.type = ctBool;
     sCond.compareValue = 0;
+    sCond.strCompareValue = "";
     sCond.isNegated = false;
     if (!rest.compare("not")) {
         sCond.isNegated = true;
@@ -377,6 +421,18 @@ void cConditionalParameter::InsertCondition(string cond) {
         sCond.type = ctStringSet;
     } else if (!rest.compare("empty")) {
         sCond.type = ctStringEmpty;
+    } else if (startswith(rest.c_str(), "strequal(")) {
+        sCond.strCompareValue = rest.substr(10, rest.size() - 11);
+        sCond.type = ctStringEquals;
+    } else if (startswith(rest.c_str(), "strnotequal(")) {
+        sCond.strCompareValue = rest.substr(13, rest.size() - 14);
+        sCond.type = ctStringNotEquals;
+    } else if (startswith(rest.c_str(), "strcontains(")) {
+        sCond.strCompareValue = rest.substr(13, rest.size() - 14);
+        sCond.type = ctStringContains;
+    } else if (startswith(rest.c_str(), "strnotcontains(")) {
+        sCond.strCompareValue = rest.substr(16, rest.size() - 17);
+        sCond.type = ctStringNotContains;
     } else if (startswith(rest.c_str(), "gt(")) {
         string compVal = rest.substr(4, rest.size() - 5);
         sCond.compareValue = atoi(compVal.c_str());
@@ -392,6 +448,25 @@ void cConditionalParameter::InsertCondition(string cond) {
     }
 
     conditions.push_back(sCond);
+}
+
+string cConditionalParameter::StripWhitespaces(string value) {
+    size_t startEqual = value.find("strequal(");
+    size_t startNotEqual = value.find("strnotequal(");
+    size_t startContains = value.find("strcontains(");
+    size_t startNotContains = value.find("strnotcontains(");
+    if (startEqual != string::npos || startContains != string::npos || startNotEqual != string::npos || startNotContains != string::npos) {
+        size_t startString = value.find_first_of('\'');
+        size_t stopString = value.find_last_of('\'');
+        string text = value.substr(startString + 1, stopString - startString - 1);
+        value.replace(startString, stopString - startString + 1, "xxxxxx");
+        value.erase( std::remove_if( value.begin(), value.end(), ::isspace ), value.end() );
+        size_t startPlaceholder = value.find("xxxxxx");
+        value.replace(startPlaceholder, 6, text);
+    } else {
+       value.erase( std::remove_if( value.begin(), value.end(), ::isspace ), value.end() );
+    }   
+    return value;
 }
 
 void cConditionalParameter::Debug(void) {

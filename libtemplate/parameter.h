@@ -110,6 +110,10 @@ enum eCondType {
     ctBool,
     ctStringSet,
     ctStringEmpty,
+    ctStringEquals,
+    ctStringNotEquals,
+    ctStringContains,
+    ctStringNotContains,
     ctNone
 };
 
@@ -118,6 +122,7 @@ struct sCondition {
     bool isNegated;
     eCondType type;
     int compareValue;
+    string strCompareValue;
 };
 
 class cConditionalParameter {
@@ -129,6 +134,7 @@ private:
     vector<sCondition> conditions;
     void TokenizeValue(string sep);
     void InsertCondition(string cond);
+    string StripWhitespaces(string value);
     int EvaluateParameter(string token, map < string, int > *intTokens, map < string, string > *stringTokens);
 public:
     cConditionalParameter(cGlobals *globals, string value);
