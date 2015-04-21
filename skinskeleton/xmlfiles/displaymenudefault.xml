@@ -27,6 +27,15 @@
         {column4width}              proposed width of column4
         {column5width}              proposed width of column5
         {column6width}              proposed width of column6
+        {column1pb}                 true if column 1 is a progressbar
+        ...
+        {column6pb}                 true if column 6 is a progressbar
+        {column1pbtotalsize}        total size of progressbar
+        ...
+        {column6pbtotalsize}        total size of progressbar
+        {column1pbsize}             current size of progressbar
+        ...
+        {column6pbsize}             current size of progressbar
         {current}                   true if column is currently selected 
         {separator}                 true if column is a list separator
         

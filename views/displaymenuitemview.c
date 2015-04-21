@@ -135,6 +135,18 @@ void cDisplayMenuItemDefaultView::SetTokens(void) {
             intTokens.insert(pair<string,int>(nameUsed.str(), (tabTexts[i].size() > 0) ? 1 : 0 ));
         intTokens.insert(pair<string,int>(nameX.str(), tabs[i]));
         intTokens.insert(pair<string,int>(nameWidth.str(), tabWidths[i]));
+        //Progress Bar
+        if (tabTexts[i].find("[") != string::npos & tabTexts[i].find("]") != string::npos) {
+            stringstream nameProgressBar;
+            nameProgressBar << name.str() << "pb";
+            stringstream namePbTotal;
+            namePbTotal << name.str() << "pbtotalsize";
+            stringstream namePbSize;
+            namePbSize << name.str() << "pbsize";
+            intTokens.insert(pair<string,int>(nameProgressBar.str(), 1));
+            intTokens.insert(pair<string,int>(namePbTotal.str(), tabTexts[i].size() - 2));
+            intTokens.insert(pair<string,int>(namePbSize.str(), std::count(tabTexts[i].begin(), tabTexts[i].end(), '|')));
+        }
     }
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("separator", !selectable));
