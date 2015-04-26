@@ -21,6 +21,11 @@ cViewHelpers::cViewHelpers(void) {
     lastMinute = -1;
     lastSystemLoad = 0.0;
     lastMemUsage = -1;
+    lastEcmInfo.hops = -1;
+    lastEcmInfo.ecmtime = -1;
+    lastEcmInfo.caid = -1;
+    lastEcmInfo.pid = -1;
+    lastEcmInfo.prid = -1;
 }
 
 cViewHelpers::~cViewHelpers() {
@@ -854,6 +859,55 @@ void cViewHelpers::SetCurrentSchedule(string recName, map < string, string > &st
         }
     }
 }
+
+bool cViewHelpers::SetEcmInfos(int channelSid, map < string, string > &stringTokens, map < string, int > &intTokens) {
+    static cPlugin *pDVBApi = cPluginManager::GetPlugin("dvbapi");
+    if (!pDVBApi)
+        return false;
+
+    sDVBAPIEcmInfo ecmInfo;
+    ecmInfo.sid = channelSid;
+
+    if (!pDVBApi->Service("GetEcmInfo", &ecmInfo)) {
+        return false;
+    }
+
+    if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0)
+        return false;
+    if (CompareECMInfos(&ecmInfo))
+        return false;
+    lastEcmInfo = ecmInfo;
+
+    intTokens.insert(pair<string,int>("caid", ecmInfo.caid));
+    intTokens.insert(pair<string,int>("pid", ecmInfo.pid));
+    intTokens.insert(pair<string,int>("prid", ecmInfo.prid));
+    intTokens.insert(pair<string,int>("ecmtime", ecmInfo.ecmtime));
+    intTokens.insert(pair<string,int>("hops", ecmInfo.hops));
+
+    stringTokens.insert(pair<string,string>("reader", *ecmInfo.reader ? *ecmInfo.reader : ""));
+    stringTokens.insert(pair<string,string>("from", *ecmInfo.from ? *ecmInfo.from : ""));
+    stringTokens.insert(pair<string,string>("protocol", *ecmInfo.protocol ? *ecmInfo.protocol : ""));
+
+    return true;
+}
+
+bool cViewHelpers::CompareECMInfos(sDVBAPIEcmInfo *ecmInfo) {
+    if (ecmInfo->caid != lastEcmInfo.caid)
+        return false;
+    if (ecmInfo->pid != lastEcmInfo.pid)
+        return false;
+    if (ecmInfo->prid != lastEcmInfo.prid)
+        return false;
+    if (ecmInfo->ecmtime != lastEcmInfo.ecmtime)
+        return false;
+    if (ecmInfo->hops != lastEcmInfo.hops)
+        return false;
+    return true;
+}
+
+/********************************************************************************
+* Private Functions
+********************************************************************************/
 
 void cViewHelpers::RecName(string &path, string &name, string &folder) {
     size_t delim = path.find_last_of('~');

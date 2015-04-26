@@ -41,6 +41,7 @@ enum eViewElement {
     veSignalQuality,
     veSignalQualityBack,
     veScraperContent,
+    veEcmInfo,
     //DisplayMenu ViewElements
     veHeader,
     veButtons,

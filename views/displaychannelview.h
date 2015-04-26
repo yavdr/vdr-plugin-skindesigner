@@ -34,6 +34,8 @@ public:
     void ClearStatusIcons(void);
     void DrawAudioInfo(void);
     void ClearAudioInfo(void);
+    void DrawEncryptionInfo(int channelSid);
+    void ClearEncryptionInfo(void);
     void DrawScreenResolution(void);
     void ClearScreenResolution(void);
     void DrawScraperContent(const cEvent *event);

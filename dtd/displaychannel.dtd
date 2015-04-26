@@ -3,7 +3,7 @@
 <!ENTITY % functions SYSTEM "functions.dtd">
 
 <!ELEMENT displaychannel (background | channelinfo | epginfo | progressbar | progressbarback |  
-                          statusinfo | audioinfo | screenresolution | channelgroup | 
+                          statusinfo | audioinfo | ecminfo | screenresolution | channelgroup | 
                           signalquality | signalqualityback | devices | currentweather | scrapercontent |  
                           datetime | time | message | customtokens)* >
 <!ATTLIST displaychannel
@@ -57,6 +57,12 @@
 
 <!ELEMENT audioinfo (area|areascroll)*>
 <!ATTLIST audioinfo
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
+<!ELEMENT ecminfo (area|areascroll)*>
+<!ATTLIST ecminfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >

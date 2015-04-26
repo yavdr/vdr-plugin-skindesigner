@@ -1,6 +1,8 @@
 #ifndef __VIEWHELPERS_H
 #define __VIEWHELPERS_H
 
+#include "../services/dvbapi.h"
+
 class cViewHelpers {
 private:
     int numDevices;
@@ -15,10 +17,12 @@ private:
     int lastMinute;
     double lastSystemLoad;
     int lastMemUsage;
+    sDVBAPIEcmInfo lastEcmInfo;
     void RecName(string &path, string &name, string &folder);
     void RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster);
     void SetCurrentScheduleFromChannel(const cChannel *channel, map < string, string > &stringTokens, map < string, int > &intTokens);
     void SetCurrentScheduleFromRecording(const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens);
+    bool CompareECMInfos(sDVBAPIEcmInfo *ecmInfo);
 protected:
     void InitDevices(void);
     bool SetDevices(bool initial, bool light, map<string,int> *intTokens, vector<map<string,string> > *devices);
@@ -37,6 +41,7 @@ protected:
     bool SetSystemMemory(map < string, string > &stringTokens, map < string, int > &intTokens);
     bool SetSystemTemperatures(map < string, string > &stringTokens, map < string, int > &intTokens);
     void SetCurrentSchedule(string recName, map < string, string > &stringTokens, map < string, int > &intTokens);
+    bool SetEcmInfos(int channelSid, map < string, string > &stringTokens, map < string, int > &intTokens);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);

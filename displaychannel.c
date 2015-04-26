@@ -16,6 +16,8 @@ cSDDisplayChannel::cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo) 
     channelChange = false;
     initial = true;
     devicesLast = cTimeMs::Now();
+    currentChannelSid = -1;
+    isEncrypted = false;
 
     channelView = new cDisplayChannelView(channelTemplate->GetRootView());
     if (!channelView->createOsd()) {
@@ -33,17 +35,20 @@ cSDDisplayChannel::~cSDDisplayChannel() {
 void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     if (!doOutput)
         return;
-
     channelChange = true;
     groupSep = false;
 
     cString ChannelNumber("");
     cString ChannelName("");
     cString ChannelID("");
+    currentChannelSid = -1;
+    isEncrypted = false;
 
     if (Channel) {
         ChannelName = Channel->Name() ? Channel->Name() : "";
         ChannelID = Channel->GetChannelID().ToString();
+        currentChannelSid = Channel->Sid();
+        isEncrypted = Channel->Ca();
         if (!Channel->GroupSep()) {
             ChannelNumber = cString::sprintf("%d%s", Channel->Number(), Number ? "-" : "");
         } else {
@@ -54,12 +59,14 @@ void cSDDisplayChannel::SetChannel(const cChannel *Channel, int Number) {
     } else {
         ChannelName = ChannelString(NULL, 0);
     }
+
     channelView->ClearChannel();
     channelView->ClearEPGInfo();
     channelView->ClearStatusIcons();
     channelView->ClearChannelGroups();
     channelView->ClearScraperContent();
     channelView->ClearAudioInfo();
+    channelView->ClearEncryptionInfo();
     if (!groupSep) {
         channelView->DrawChannel(ChannelNumber, ChannelName, ChannelID, (Number > 0)?true:false);
         channelView->DrawProgressBarBack();
@@ -188,6 +195,9 @@ void cSDDisplayChannel::Flush(void) {
         if (initial || cTimeMs::Now() - devicesLast  > 500) {
             channelView->DrawDevices(initial);
             devicesLast = cTimeMs::Now();
+        }
+        if (isEncrypted) {
+            channelView->DrawEncryptionInfo(currentChannelSid);
         }
     } else {
         channelView->ClearStatusIcons();

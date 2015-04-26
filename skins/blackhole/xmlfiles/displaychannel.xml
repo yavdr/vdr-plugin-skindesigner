@@ -133,6 +133,24 @@
     <audioinfo>
     </audioinfo>
 
+    <!-- Available Variables ecminfo:
+    {caid}                              id of currently used CA
+    {pid}                               pID
+    {prid}                              provider ID
+    {ecmtime}                           ecm time in ms
+    {hops}                              number of hops
+    {reader}                            name of used reader
+    {from}                              name of originating host
+    {protocol}                          used protocol of reader
+    -->
+
+    <ecminfo>
+        <area x="60%" y="95%" width="24%" height="5%" layer="4">
+            <drawtext x="0" y="5%" font="{semibold}" fontsize="40%" color="{clrWhite}" text="CAID: {caid} Reader: {reader}" />
+            <drawtext x="0" y="50%" font="{semibold}" fontsize="40%" color="{clrWhite}" text="ECM Time: {ecmtime} ms" />
+        </area>
+    </ecminfo>
+
     <!-- Available Variables screenresolution:
     {screenwidth}                      width of currently displayed channel in px
     {screenheight}                     height of currently displayed channel in px
@@ -194,6 +212,7 @@
     {devices[channelid]}        ID of the currently tuned channel
     {devices[source]}           source of the currently tuned channel
     -->
+    <!--
     <devices condition="{showdevices}">
         <area x="56%" y="94%" width="28%" height="6%" layer="2">
             <loop name="devices" x="0" y="0" orientation="horizontal" columnwidth="{areawidth}/{numdevices}" rowheight="{areaheight}">
@@ -207,7 +226,7 @@
             </loop>  
         </area>
     </devices>
-
+    -->
     <!-- Available Variables scrapercontent:
     {posterpath}                        Full Path of Poster to use in image path attribute
     {posterwidth}                       width of poster in pixel

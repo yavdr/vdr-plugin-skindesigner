@@ -71,6 +71,18 @@
     <audioinfo>
     </audioinfo>
 
+    <!-- Available Variables ecminfo:
+    {caid}                              id of currently used CA
+    {pid}                               pID
+    {prid}                              provider ID
+    {ecmtime}                           ecm time in ms
+    {hops}                              number of hops
+    {reader}                            name of used reader
+    {from}                              name of originating host
+    {protocol}                          used protocol of reader
+    -->
+    <ecminfo>
+    </ecminfo>
 
     <!-- Available Variables screenresolution:
     {screenwidth}                      width of currently displayed channel in px

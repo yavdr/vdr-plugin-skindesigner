@@ -20,6 +20,8 @@ private:
     int currentLast;
     uint64_t devicesLast;
     const cEvent *present;
+    int currentChannelSid;
+    int isEncrypted;
     void SetProgressBar(const cEvent *present);
 public:
     cSDDisplayChannel(cTemplate *channelTemplate, bool WithInfo);
