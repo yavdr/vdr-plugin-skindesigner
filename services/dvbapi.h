@@ -9,6 +9,7 @@ struct sDVBAPIEcmInfo {
   uint16_t pid;
   uint32_t prid;
   uint32_t ecmtime;
+  cString cardsystem;
   cString reader;
   cString from;
   cString protocol;

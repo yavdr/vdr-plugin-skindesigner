@@ -884,6 +884,7 @@ bool cViewHelpers::SetEcmInfos(int channelSid, map < string, string > &stringTok
     intTokens.insert(pair<string,int>("ecmtime", ecmInfo.ecmtime));
     intTokens.insert(pair<string,int>("hops", ecmInfo.hops));
 
+    stringTokens.insert(pair<string,string>("cardsystem", *ecmInfo.cardsystem ? *ecmInfo.cardsystem : ""));
     stringTokens.insert(pair<string,string>("reader", *ecmInfo.reader ? *ecmInfo.reader : ""));
     stringTokens.insert(pair<string,string>("from", *ecmInfo.from ? *ecmInfo.from : ""));
     stringTokens.insert(pair<string,string>("protocol", *ecmInfo.protocol ? *ecmInfo.protocol : ""));

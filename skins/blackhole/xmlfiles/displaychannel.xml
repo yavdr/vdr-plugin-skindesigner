@@ -135,6 +135,7 @@
 
     <!-- Available Variables ecminfo:
     {caid}                              id of currently used CA
+    {cardsystem}                        name of currently used CA
     {pid}                               pID
     {prid}                              provider ID
     {ecmtime}                           ecm time in ms
@@ -146,7 +147,7 @@
 
     <ecminfo>
         <area x="60%" y="95%" width="24%" height="5%" layer="4">
-            <drawtext x="0" y="5%" font="{semibold}" fontsize="40%" color="{clrWhite}" text="CAID: {caid} Reader: {reader}" />
+            <drawtext x="0" y="5%" font="{semibold}" fontsize="40%" color="{clrWhite}" text="{cardsystem} Reader: {reader}" />
             <drawtext x="0" y="50%" font="{semibold}" fontsize="40%" color="{clrWhite}" text="ECM Time: {ecmtime} ms" />
         </area>
     </ecminfo>

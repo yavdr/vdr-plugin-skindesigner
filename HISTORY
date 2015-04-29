@@ -302,4 +302,6 @@ Version 0.4.3
 - added tokens for progressbars in displamenudefault
 - implemented dvbapi service interface, added viewelement ecminfo
   in displaychannel
+- added cardsystem name to ecm info
+
 

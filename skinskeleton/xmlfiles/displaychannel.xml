@@ -73,6 +73,7 @@
 
     <!-- Available Variables ecminfo:
     {caid}                              id of currently used CA
+    {cardsystem}                        name of currently used CA
     {pid}                               pID
     {prid}                              provider ID
     {ecmtime}                           ecm time in ms
