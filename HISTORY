@@ -303,5 +303,6 @@ Version 0.4.3
 - implemented dvbapi service interface, added viewelement ecminfo
   in displaychannel
 - added cardsystem name to ecm info
+- added correct menucategory for skin setups
 
 
