@@ -304,5 +304,6 @@ Version 0.4.3
   in displaychannel
 - added cardsystem name to ecm info
 - added correct menucategory for skin setups
+- fixed bug that tokens in image pathes are not replaced correctly
 
 
