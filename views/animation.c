@@ -47,7 +47,6 @@ cAnimatedImage::cAnimatedImage(eAnimType animType, int animFreq, cRect &pos, int
 }
 
 cAnimatedImage::~cAnimatedImage() {
-    esyslog("skindesigner: killing animation");
 }
 
 void cAnimatedImage::DrawBlink(void) {
