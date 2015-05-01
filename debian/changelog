@@ -1,3 +1,16 @@
+vdr-plugin-skindesigner (0.4.4-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * e7d8a19: implemented dvbapi service interface, added viewelement
+    ecminfo in displaychannel
+  * 72f445f: added cardsystem name to ecm info
+  * 4fe74f8: added correct menucategory for skin setups
+  * 563a048: fixed bug that tokens in image pathes are not replaced
+    correctly
+  * 5cacee0: Version 0.4.4
+
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 01 May 2015 18:43:21 +0200
+
 vdr-plugin-skindesigner (0.4.3-3-g4fb0b9d-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
