@@ -300,4 +300,10 @@ Version 0.4.3
   to compare strings in conditions
 - fixed sort order in lastrecordings viewelement
 - added tokens for progressbars in displamenudefault
+- implemented dvbapi service interface, added viewelement ecminfo
+  in displaychannel
+- added cardsystem name to ecm info
+- added correct menucategory for skin setups
+- fixed bug that tokens in image pathes are not replaced correctly
 
+Version 0.4.4

@@ -894,6 +894,7 @@ void cTemplateViewChannel::SetViewElements(void) {
     viewElementsAllowed.insert("progressbarback");
     viewElementsAllowed.insert("statusinfo");
     viewElementsAllowed.insert("audioinfo");
+    viewElementsAllowed.insert("ecminfo");
     viewElementsAllowed.insert("screenresolution");
     viewElementsAllowed.insert("signalquality");
     viewElementsAllowed.insert("signalqualityback");
@@ -935,6 +936,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
             break;
         case veScreenResolution:
             name = "Screen Resolution";
+            break;
+        case veEcmInfo:
+            name = "ECM Info";
             break;
         case veSignalQuality:
             name = "Signal Quality";
@@ -989,6 +993,8 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
         ve = veStatusInfo;
     } else if (!sViewElement.compare("audioinfo")) {
         ve = veAudioInfo;
+    } else if (!sViewElement.compare("ecminfo")) {
+        ve = veEcmInfo;
     } else if (!sViewElement.compare("screenresolution")) {
         ve = veScreenResolution;
     } else if (!sViewElement.compare("signalquality")) {

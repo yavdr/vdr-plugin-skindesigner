@@ -1292,6 +1292,12 @@ void cTemplateFunction::ParseStringParameters(void) {
         for (map < string, string >::iterator it = stringTokens->begin(); it != stringTokens->end(); it++) {
             size_t found = path.find(it->first);
             if (found != string::npos) {
+                size_t posEndBracket = found + (it->first).size();
+                if (posEndBracket < path.size()) {
+                    string endChar = path.substr(posEndBracket, 1);
+                    if (endChar.compare("}"))
+                        continue;
+                }
                 updated = true;
                 imgPath = path;
                 if (found > 0 && ((it->first).size() + 2 <= imgPath.size()))
@@ -1302,6 +1308,12 @@ void cTemplateFunction::ParseStringParameters(void) {
         for (map < string, int >::iterator it = intTokens->begin(); it != intTokens->end(); it++) {
             size_t found = path.find(it->first);
             if (found != string::npos) {
+                size_t posEndBracket = found + (it->first).size();
+                if (posEndBracket < path.size()) {
+                    string endChar = path.substr(posEndBracket, 1);
+                    if (endChar.compare("}"))
+                        continue;
+                }
                 updated = true;
                 imgPath = path;
                 if (found > 0 && ((it->first).size() + 2 <= imgPath.size())) {

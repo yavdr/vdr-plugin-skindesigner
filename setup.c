@@ -168,6 +168,7 @@ cSkinSetupSubMenu::cSkinSetupSubMenu(string name, string displayText) : cOsdItem
 
 cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin, string name)  : 
 cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.c_str(), name.c_str()), 30) {
+    SetMenuCategory(mcPluginSetup);
     this->skin = skin;
     this->name = name;
     Set();

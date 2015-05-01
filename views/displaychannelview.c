@@ -282,6 +282,23 @@ void cDisplayChannelView::ClearAudioInfo(void) {
     ClearViewElement(veAudioInfo);
 }
 
+void cDisplayChannelView::DrawEncryptionInfo(int channelSid) {
+    if (!ExecuteViewElement(veEcmInfo)) {
+        return;
+    }
+    map < string, int > intTokens;
+    map < string, string > stringTokens;
+
+    if (SetEcmInfos(channelSid, stringTokens, intTokens)) {
+        ClearEncryptionInfo();
+        DrawViewElement(veEcmInfo, &stringTokens, &intTokens);
+    }
+}
+
+void cDisplayChannelView::ClearEncryptionInfo(void) {
+    ClearViewElement(veEcmInfo);
+}
+
 void cDisplayChannelView::DrawScreenResolution(void) {
     if (!ExecuteViewElement(veScreenResolution)) {
         return;
