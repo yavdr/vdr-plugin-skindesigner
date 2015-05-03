@@ -667,6 +667,9 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("detached");
     attributes.insert("delay");
     attributes.insert("fadetime");
+    attributes.insert("shifttime");
+    attributes.insert("startx");
+    attributes.insert("starty");
     attributes.insert("name");
     attributes.insert("condition");
     attributes.insert("mode");

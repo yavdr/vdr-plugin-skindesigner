@@ -307,3 +307,5 @@ Version 0.4.3
 - fixed bug that tokens in image pathes are not replaced correctly
 
 Version 0.4.4
+
+- feature: possibility to move viewelements when starting view

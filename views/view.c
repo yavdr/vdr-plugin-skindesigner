@@ -1048,6 +1048,8 @@ cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplVi
     tmplViewElement->SetPixOffset(0);
     delay = tmplViewElement->GetNumericParameter(ptDelay);
     SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
+    SetShiftTime(tmplViewElement->GetNumericParameter(ptShiftTime));
+    SetStartPos(tmplViewElement->GetNumericParameter(ptStartX), tmplViewElement->GetNumericParameter(ptStartY));
 }
 
 cViewElement::~cViewElement() {
@@ -1055,10 +1057,14 @@ cViewElement::~cViewElement() {
 }
 
 void cViewElement::Action(void) {
-    SetInitFinished();
     DoSleep(delay);
     Render();
-    FadeIn();
+    SetInitFinished();
+    if (IsAnimated()) {
+        ShiftIn();
+    } else {
+        FadeIn();
+    }
     DoFlush();
     if (scrolling) {
         DoSleep(scrollDelay);

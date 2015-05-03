@@ -20,6 +20,7 @@ cPixmapContainer::cPixmapContainer(int numPixmaps) {
     mutex.Unlock();
     checkRunning = false;
     fadeTime = 0;
+    shiftTime = 0;
     deleteOsdOnExit = false;
 }
 
@@ -122,7 +123,7 @@ void cPixmapContainer::CreatePixmap(int num, int Layer, const cRect &ViewPort, c
     if (!pixmaps[num])
         return;
     pixmaps[num]->Fill(clrTransparent);
-    if (pixContainerInit && fadeTime) {
+    if (pixContainerInit && (fadeTime || shiftTime)) {
         pixmaps[num]->SetAlpha(0);
     } else if (pixmapsTransparency[num] > 0) {
         int alpha = (100 - pixmapsTransparency[num])*255/100;
@@ -256,6 +257,16 @@ void cPixmapContainer::Pos(int num, cPoint &pos) {
     pos.SetY(pixmaps[num]->ViewPort().Y());
 }
 
+cRect cPixmapContainer::ViewPort(int num) {
+    cRect vp;
+    if (checkRunning && !Running())
+        return vp;
+    cMutexLock MutexLock(&mutex);
+    if (!pixmaps[num])
+        return vp;
+    return pixmaps[num]->ViewPort();
+}
+
 int cPixmapContainer::Width(int num) {
     if (checkRunning && !Running())
         return 0;
@@ -331,8 +342,13 @@ void cPixmapContainer::SetDrawPortPoint(int num, const cPoint &Point) {
 ****************************************************************************/
 
 void cPixmapContainer::FadeIn(void) {
-    if (!fadeTime)
+    if (!fadeTime) {
+        for (int i = 0; i < numPixmaps; i++) {
+            if (PixmapExists(i))
+                SetAlpha(i, ALPHA_OPAQUE);
+        }
         return;
+    }
     uint64_t Start = cTimeMs::Now();
     int FadeFrameTime = fadeTime / 10;
     while (Running()) {
@@ -384,6 +400,49 @@ void cPixmapContainer::FadeOut(void) {
         if ((int)(Now - Start) > fadeTime)
             break;
     }
+}
+
+void cPixmapContainer::ShiftIn(void) {
+    if (shiftTime < 1)
+        return;
+    cPoint destPos[numPixmaps];
+    for (int i = 0; i < numPixmaps; i++) {
+        if (!PixmapExists(i))
+            continue;
+        cPoint pos;
+        Pos(i, pos);
+        destPos[i] = pos;
+        cRect r = ViewPort(i);
+        r.SetPoint(startPos);
+        SetViewPort(i, r);
+        SetAlpha(i, ALPHA_OPAQUE);
+    }
+    DoFlush();
+
+    int frames = shiftTime / 20;
+    if (frames <= 0) frames = 1;
+    uint64_t Start = cTimeMs::Now();
+    int frameTime = shiftTime / frames;
+    while (true) {
+        uint64_t Now = cTimeMs::Now();
+        double t = min(double(Now - Start) / shiftTime, 1.0);
+        for (int i = 0; i < numPixmaps; i++) {
+            if (!PixmapExists(i))
+                continue;
+            int x = startPos.X() + t * (destPos[i].X() - startPos.X());
+            int y = startPos.Y() + t * (destPos[i].Y() - startPos.Y());
+            cRect r = ViewPort(i);
+            r.SetPoint(x, y);
+            SetViewPort(i, r);
+        }
+        DoFlush();
+        int Delta = cTimeMs::Now() - Now;
+        if (Delta < frameTime)
+            cCondWait::SleepMs(frameTime - Delta);
+        if ((int)(Now - Start) > shiftTime)
+            break;
+    }
+
 }
 
 /*****************************************

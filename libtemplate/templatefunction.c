@@ -73,6 +73,12 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptDetached;
         } else if (!name.compare("fadetime")) {
             p.first = ptFadeTime;
+        } else if (!name.compare("shifttime")) {
+            p.first = ptShiftTime;
+        } else if (!name.compare("startx")) {
+            p.first = ptStartX;
+        } else if (!name.compare("starty")) {
+            p.first = ptStartY;
         } else if (!name.compare("imagetype")) {
             p.first = ptImageType;
         } else if (!name.compare("path")) {
@@ -230,7 +236,10 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptHeight:
             case ptMenuItemWidth:
             case ptFadeTime:
+            case ptShiftTime:
             case ptDelay:
+            case ptStartX:
+            case ptStartY:
             case ptFontSize:
             case ptLayer:
             case ptTransparency:
@@ -780,6 +789,7 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
     param.SetGlobals(globals);
     switch (type) {
         case ptX:
+        case ptStartX:
         case ptWidth:
         case ptMenuItemWidth:
         case ptScaleTvX:
@@ -787,6 +797,7 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
             param.SetHorizontal();
             break;
         case ptY:
+        case ptStartY:
         case ptHeight:
         case ptScaleTvY:
         case ptScaleTvHeight:
@@ -1590,6 +1601,15 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;       
         case ptFadeTime:
             name = "Fade Time";
+            break;
+        case ptShiftTime:
+            name = "Shift Time";
+            break;
+        case ptStartX:
+            name = "Startpos X";
+            break;
+        case ptStartY:
+            name = "Startpos Y";
             break;
         case ptDelay:
             name = "Delay";
