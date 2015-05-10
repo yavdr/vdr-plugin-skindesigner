@@ -760,6 +760,11 @@ void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *str
 
 void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<stringmap> *lastRecordings) {
 
+    cGlobalSortedTimers SortedTimers;// local and remote timers
+    int numTimers = SortedTimers.Size();
+    //set number of timers so that it is possible to adapt this viewelement accordingly
+    intTokens->insert(pair<string, int>("numtimers", numTimers));
+
     list<cRecording*> orderedRecs;
 
     for (cRecording *recording = Recordings.First(); recording; recording = Recordings.Next(recording)) {
