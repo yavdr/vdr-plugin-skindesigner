@@ -35,7 +35,6 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
     defaultMessageDrawn = false;
     defaultSortmodeDrawn = false;
     DeleteOsdOnExit();
-    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayMenuRootView::~cDisplayMenuRootView() {
@@ -518,11 +517,23 @@ void cDisplayMenuRootView::DrawHeader(void) {
     if (!ExecuteViewElement(veHeader)) {
         return;
     }
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
-    ClearViewElement(veHeader);
-    DrawViewElement(veHeader, &stringTokens, &intTokens);
+    if (DetachViewElement(veHeader)) {
+        cViewElement *viewElement = GetViewElement(veHeader);
+        if (!viewElement) {
+            viewElement = new cViewElementMenuHeader(tmplView->GetViewElement(veHeader), cat, menuTitle);
+            AddViewElement(veHeader, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
+        ClearViewElement(veHeader);
+        DrawViewElement(veHeader, &stringTokens, &intTokens);
+    }
 }
 
 void cDisplayMenuRootView::DrawDateTime(bool forced) {
@@ -530,15 +541,26 @@ void cDisplayMenuRootView::DrawDateTime(bool forced) {
         return;
     }
     
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    
-    if (!SetDate(forced, stringTokens, intTokens)) {
-        return;
+    if (DetachViewElement(veDateTime)) {
+        cViewElement *viewElement = GetViewElement(veDateTime);
+        if (!viewElement) {
+            viewElement = new cViewElement(tmplView->GetViewElement(veDateTime), this);
+            viewElement->SetCallback(veDateTime, &cDisplayMenuRootView::SetDate);
+            AddViewElement(veDateTime, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        
+        if (!SetDate(forced, stringTokens, intTokens))
+            return;
+        ClearViewElement(veDateTime);
+        DrawViewElement(veDateTime, &stringTokens, &intTokens);
     }
-
-    ClearViewElement(veDateTime);
-    DrawViewElement(veDateTime, &stringTokens, &intTokens);
 }
 
 bool cDisplayMenuRootView::DrawTime(bool forced) {
@@ -546,15 +568,30 @@ bool cDisplayMenuRootView::DrawTime(bool forced) {
         return false;
     }
     
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
+    if (DetachViewElement(veTime)) {
+        cViewElement *viewElement = GetViewElement(veTime);
+        if (!viewElement) {
+            viewElement = new cViewElement(tmplView->GetViewElement(veTime), this);
+            viewElement->SetCallback(veTime, &cDisplayMenuRootView::SetTime);
+            AddViewElement(veTime, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                if (!viewElement->Render())
+                    return false;
+        }
+    } else {
 
-    if (!SetTime(forced, stringTokens, intTokens)) {
-        return false;
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+
+        if (!SetTime(forced, stringTokens, intTokens)) {
+            return false;
+        }
+
+        ClearViewElement(veTime);
+        DrawViewElement(veTime, &stringTokens, &intTokens);
     }
-
-    ClearViewElement(veTime);
-    DrawViewElement(veTime, &stringTokens, &intTokens);
     return true;
 }
 

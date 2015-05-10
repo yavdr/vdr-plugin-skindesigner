@@ -4,7 +4,6 @@
 
 cDisplayMessageView::cDisplayMessageView(cTemplateView *tmplView) : cView(tmplView) {
     DeleteOsdOnExit();
-    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayMessageView::~cDisplayMessageView() {
@@ -46,11 +45,4 @@ void cDisplayMessageView::DrawMessage(eMessageType type, const char *text) {
 
 void cDisplayMessageView::ClearMessage(void) {
     ClearViewElement(veMessage);
-}
-
-void cDisplayMessageView::Action(void) {
-    SetInitFinished();
-    FadeIn();
-    DoFlush();
-    cView::Action();
 }

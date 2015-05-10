@@ -51,6 +51,11 @@ enum eParamType {
     ptMenuItemWidth,
     ptDetached,
     ptFadeTime,
+    ptShiftTime,
+    ptShiftType,
+    ptShiftMode,
+    ptStartX,
+    ptStartY,
     ptDelay,
     ptImageType,
     ptPath,
@@ -98,6 +103,19 @@ enum eImageType {
     itMenuIcon,
     itIcon,
     itImage
+};
+
+enum eShiftType {
+    stNone,
+    stLeft,
+    stRight,
+    stTop,
+    stBottom
+};
+
+enum eShiftMode {
+    smLinear,
+    smSlowedDown
 };
 
 enum eAnimType {
@@ -177,6 +195,8 @@ protected:
     bool SetBackground(string value);
     bool SetDirection(string value);
     bool SetAnimType(string value);
+    bool SetShiftType(string value);
+    bool SetShiftMode(string value);
     void SetDebugGrid(string value);
     void ParseStringParameters(void);
     void ParseNumericalParameters(void);

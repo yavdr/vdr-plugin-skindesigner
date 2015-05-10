@@ -8,7 +8,6 @@ class cDisplayVolumeView : public cView {
 private:
     int volumeLast;
     bool muteLast;
-    virtual void Action(void);
 public:
     cDisplayVolumeView(cTemplateView *tmplView);
     virtual ~cDisplayVolumeView();

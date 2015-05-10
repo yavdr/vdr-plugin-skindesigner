@@ -4,7 +4,6 @@
 
 cDisplayAudiotracksView::cDisplayAudiotracksView(int numTracks, cTemplateView *tmplView) : cView(tmplView) {
     DeleteOsdOnExit();
-    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 
     this->numTracks = numTracks;
 
@@ -69,11 +68,4 @@ void cDisplayAudiotracksView::DrawHeader(const char *title, int audioChannel) {
 void cDisplayAudiotracksView::RenderMenuItems(void) {
     if (listView)
         listView->Render();
-}
-
-void cDisplayAudiotracksView::Action(void) {
-    SetInitFinished();
-    FadeIn();
-    DoFlush();
-    cView::Action();
 }

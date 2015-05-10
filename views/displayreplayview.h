@@ -15,7 +15,6 @@ private:
     int markActive;
     bool MarksChanged(const cMarks *marks, int current);
     void RememberMarks(const cMarks *marks);
-    virtual void Action(void);
 public:
     cDisplayReplayView(cTemplateView *tmplView);
     virtual ~cDisplayReplayView();

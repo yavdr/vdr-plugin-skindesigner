@@ -15,7 +15,6 @@ cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplVi
     lastTrackLang = "";
     InitDevices();
     DeleteOsdOnExit();
-    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayChannelView::~cDisplayChannelView() {
@@ -61,11 +60,11 @@ void cDisplayChannelView::DrawDate(void) {
     if (!ExecuteViewElement(veDateTime)) {
         return;
     }
-
     if (DetachViewElement(veDateTime)) {
         cViewElement *viewElement = GetViewElement(veDateTime);
         if (!viewElement) {
-            viewElement = new cViewElementDate(tmplView->GetViewElement(veDateTime));
+            viewElement = new cViewElement(tmplView->GetViewElement(veDateTime), this);
+            viewElement->SetCallback(veDateTime, &cDisplayChannelView::SetDate);
             AddViewElement(veDateTime, viewElement);
             viewElement->Start();
         } else {
@@ -89,11 +88,11 @@ void cDisplayChannelView::DrawTime(void) {
     if (!ExecuteViewElement(veTime)) {
         return;
     }
-
     if (DetachViewElement(veTime)) {
         cViewElement *viewElement = GetViewElement(veTime);
         if (!viewElement) {
-            viewElement = new cViewElementTime(tmplView->GetViewElement(veTime));
+            viewElement = new cViewElement(tmplView->GetViewElement(veTime), this);
+            viewElement->SetCallback(veTime, &cDisplayChannelView::SetTime);
             AddViewElement(veTime, viewElement);
             viewElement->Start();
         } else {
@@ -386,7 +385,8 @@ void cDisplayChannelView::DrawSignal(void) {
     if (DetachViewElement(veSignalQuality)) {
         cViewElement *viewElement = GetViewElement(veSignalQuality);
         if (!viewElement) {
-            viewElement = new cViewElementSignal(tmplView->GetViewElement(veSignalQuality));
+            viewElement = new cViewElement(tmplView->GetViewElement(veSignalQuality), this);
+            viewElement->SetCallback(veSignalQuality, &cDisplayChannelView::SetSignal);
             AddViewElement(veSignalQuality, viewElement);
             viewElement->Start();
         } else {
@@ -397,7 +397,7 @@ void cDisplayChannelView::DrawSignal(void) {
         map < string, string > stringTokens;
         map < string, int > intTokens;
 
-        bool changed = SetSignal(intTokens);
+        bool changed = SetSignal(false, stringTokens, intTokens);
         if (!changed)
             return;
 
@@ -559,7 +559,8 @@ void cDisplayChannelView::DrawCurrentWeather(void) {
     if (DetachViewElement(veCurrentWeather)) {
         cViewElement *viewElement = GetViewElement(veCurrentWeather);
         if (!viewElement) {
-            viewElement = new cViewElementWeather(tmplView->GetViewElement(veCurrentWeather));
+            viewElement = new cViewElement(tmplView->GetViewElement(veCurrentWeather), this);
+            viewElement->SetCallback(veCurrentWeather, &cDisplayChannelView::SetCurrentWeatherTokens);
             AddViewElement(veCurrentWeather, viewElement);
             viewElement->Start();
         } else {
@@ -569,19 +570,10 @@ void cDisplayChannelView::DrawCurrentWeather(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
-            ClearViewElement(veCurrentWeather);
+        ClearViewElement(veCurrentWeather);
+        if (!SetCurrentWeatherTokens(false, stringTokens, intTokens)){
             return;
         }
-        ClearViewElement(veCurrentWeather);
         DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
     }
-}
-
-
-void cDisplayChannelView::Action(void) {
-    SetInitFinished();
-    FadeIn();
-    DoFlush();
-    cView::Action();
 }

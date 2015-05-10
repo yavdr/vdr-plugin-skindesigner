@@ -11,6 +11,7 @@ class cSDDisplayReplay : public cSkinDisplayReplay {
 private:
     cDisplayReplayView *replayView;
     bool initial;
+    bool initialModeSet;
     bool doOutput;
     bool modeOnly;
 public:

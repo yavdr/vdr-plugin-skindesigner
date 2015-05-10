@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE displaychannel SYSTEM "../../../dtd/displaychannel.dtd">
 
-<displaychannel x="0" y="0" width="100%" height="100%" fadetime="{fadetime}">
+<displaychannel x="0" y="0" width="100%" height="100%" fadetime="{fadetime}" shifttime="{shifttimechannel}" shifttype="bottom" shiftmode="slowed">
 
     <background>
         <!-- global background -->

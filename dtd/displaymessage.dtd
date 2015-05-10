@@ -9,6 +9,11 @@
   width CDATA #REQUIRED
   height CDATA #REQUIRED
   fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
   scaletvx CDATA #IMPLIED
   scaletvy CDATA #IMPLIED
   scaletvwidth CDATA #IMPLIED

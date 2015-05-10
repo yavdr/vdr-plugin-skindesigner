@@ -307,3 +307,12 @@ Version 0.4.3
 - fixed bug that tokens in image pathes are not replaced correctly
 
 Version 0.4.4
+
+- feature: possibility to move viewelements when starting view
+- expanded shifting features
+
+Version 0.4.5
+
+- added {numtimers} Token to lastrecordings viewelement
+- fixed time display bug in displaymenurecordings
+- added token {watched} to displaymenurecordings

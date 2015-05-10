@@ -73,6 +73,16 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptDetached;
         } else if (!name.compare("fadetime")) {
             p.first = ptFadeTime;
+        } else if (!name.compare("shifttime")) {
+            p.first = ptShiftTime;
+        } else if (!name.compare("shifttype")) {
+            p.first = ptShiftType;
+        } else if (!name.compare("shiftmode")) {
+            p.first = ptShiftMode;
+        } else if (!name.compare("startx")) {
+            p.first = ptStartX;
+        } else if (!name.compare("starty")) {
+            p.first = ptStartY;
         } else if (!name.compare("imagetype")) {
             p.first = ptImageType;
         } else if (!name.compare("path")) {
@@ -230,7 +240,10 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptHeight:
             case ptMenuItemWidth:
             case ptFadeTime:
+            case ptShiftTime:
             case ptDelay:
+            case ptStartX:
+            case ptStartY:
             case ptFontSize:
             case ptLayer:
             case ptTransparency:
@@ -294,6 +307,12 @@ bool cTemplateFunction::CalculateParameters(void) {
                 break;
             case ptAnimType:
                 paramValid = SetAnimType(value);
+                break;
+            case ptShiftType:
+                paramValid = SetShiftType(value);
+                break;
+            case ptShiftMode:
+                paramValid = SetShiftMode(value);
                 break;
             default:
                 paramValid = true;
@@ -433,6 +452,8 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptFadeTime)
             return 0;
+        else if (type == ptShiftTime)
+            return 0;
         else if (type == ptMenuItemWidth)
             return 0;
         else if (type == ptHideRoot)
@@ -445,6 +466,15 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptDirection)
             return diBottomUp;
+        else if (type == ptStartX)
+            return 0;
+        else if (type == ptStartY)
+            return 0;
+        else if (type == ptShiftType)
+            return stNone;
+        else if (type == ptShiftMode)
+            return smLinear;
+        //default default ;)
         return -1;
     }
     return hit->second;
@@ -780,6 +810,7 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
     param.SetGlobals(globals);
     switch (type) {
         case ptX:
+        case ptStartX:
         case ptWidth:
         case ptMenuItemWidth:
         case ptScaleTvX:
@@ -787,6 +818,7 @@ bool cTemplateFunction::SetNumericParameter(eParamType type, string value) {
             param.SetHorizontal();
             break;
         case ptY:
+        case ptStartY:
         case ptHeight:
         case ptScaleTvY:
         case ptScaleTvHeight:
@@ -1150,6 +1182,28 @@ bool cTemplateFunction::SetAnimType(string value) {
     else if (!value.compare("animated"))
         animType = atAnimated;
     numericParameters.insert(pair<eParamType, int>(ptAnimType, animType));
+    return true;
+}
+
+bool cTemplateFunction::SetShiftType(string value) {
+    int shiftType = stNone;
+    if (!value.compare("left"))
+        shiftType = stLeft;
+    else if (!value.compare("right"))
+        shiftType = stRight;
+    else if (!value.compare("top"))
+        shiftType = stTop;
+    else if (!value.compare("bottom"))
+        shiftType = stBottom;
+    numericParameters.insert(pair<eParamType, int>(ptShiftType, shiftType));
+    return true;
+}
+
+bool cTemplateFunction::SetShiftMode(string value) {
+    int shiftMode = smLinear;
+    if (!value.compare("slowed"))
+        shiftMode = smSlowedDown;
+    numericParameters.insert(pair<eParamType, int>(ptShiftMode, shiftMode));
     return true;
 }
 
@@ -1590,6 +1644,21 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;       
         case ptFadeTime:
             name = "Fade Time";
+            break;
+        case ptShiftTime:
+            name = "Shift Time";
+            break;
+        case ptShiftType:
+            name = "Shift Type";
+            break;
+        case ptShiftMode:
+            name = "Shift Mode";
+            break;
+        case ptStartX:
+            name = "Startpos X";
+            break;
+        case ptStartY:
+            name = "Startpos Y";
             break;
         case ptDelay:
             name = "Delay";

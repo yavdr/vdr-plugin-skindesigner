@@ -4,14 +4,29 @@
 <setup>
     <menu>
         <parameter type="int" name="fadetime" min="0" max="1000" displaytext="{tr(fadetext)}">0</parameter>
+        <parameter type="int" name="shifttimechannel" min="0" max="1000" displaytext="{tr(shifttimechanneltext)}">0</parameter>
+        <parameter type="int" name="shifttimedatetime" min="0" max="1000" displaytext="{tr(shifttimedatetimetext)}">0</parameter>
+        <parameter type="int" name="shifttimetimers" min="0" max="1000" displaytext="{tr(shifttimetimerstext)}">0</parameter>
         <parameter type="bool" name="showdevices" displaytext="{tr(showdevices)}">0</parameter>
     </menu>
 
     <translations>
         <token name="tr(fadetext)">
-            <trans lang="en_EN">Fade time in ms</trans>
-            <trans lang="de_DE">Einblendzeit in ms</trans>
+            <trans lang="en_EN">Fade time [ms]</trans>
+            <trans lang="de_DE">Einblendzeit [ms]</trans>
             <trans lang="fi_FI">Häivytyksen kesto [ms]</trans>
+        </token>
+        <token name="tr(shifttimechanneltext)">
+            <trans lang="en_EN">Shift time Channel Display [ms]</trans>
+            <trans lang="de_DE">Einfahrzeit Channel Display [ms]</trans>
+        </token>
+        <token name="tr(shifttimedatetimetext)">
+            <trans lang="en_EN">Shift time Channel Date, Time, Weather [ms]</trans>
+            <trans lang="de_DE">Einfahrzeit Channel Date, Time, Wetter [ms]</trans>
+        </token>
+        <token name="tr(shifttimetimerstext)">
+            <trans lang="en_EN">Shift time Timers Main Menu [ms]</trans>
+            <trans lang="de_DE">Einfahrzeit Timer Hauptmenü [ms]</trans>
         </token>
         <token name="tr(showdevices)">
             <trans lang="en_EN">Show DVB device info when switching channel</trans>

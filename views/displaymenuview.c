@@ -8,9 +8,7 @@
 #include "../services/scraper2vdr.h"
 
 cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cView(tmplView) {
-    if (menuInit)
-        SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    else
+    if (!menuInit)
         SetFadeTime(0);
     cat = mcUndefined;
     sortMode = msmUnknown;
@@ -38,11 +36,23 @@ bool cDisplayMenuView::DrawHeader(void) {
     if (!ExecuteViewElement(veHeader)) {
         return false;
     }
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
-    ClearViewElement(veHeader);
-    DrawViewElement(veHeader, &stringTokens, &intTokens);
+    if (DetachViewElement(veHeader)) {
+        cViewElement *viewElement = GetViewElement(veHeader);
+        if (!viewElement) {
+            viewElement = new cViewElementMenuHeader(tmplView->GetViewElement(veHeader), cat, menuTitle);
+            AddViewElement(veHeader, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
+        ClearViewElement(veHeader);
+        DrawViewElement(veHeader, &stringTokens, &intTokens);
+    }
     return true;
 }
 
@@ -51,15 +61,29 @@ bool cDisplayMenuView::DrawDateTime(bool forced, bool &implemented) {
         return false;
     }
     implemented = true;
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
-    
-    if (!SetDate(forced, stringTokens, intTokens)) {
-        return false;
-    }
+    if (DetachViewElement(veDateTime)) {
+        cViewElement *viewElement = GetViewElement(veDateTime);
+        if (!viewElement) {
+            viewElement = new cViewElement(tmplView->GetViewElement(veDateTime), this);
+            viewElement->SetCallback(veDateTime, &cDisplayMenuView::SetDate);
+            AddViewElement(veDateTime, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                if (!viewElement->Render())
+                    return false;
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        
+        if (!SetDate(forced, stringTokens, intTokens)) {
+            return false;
+        }
 
-    ClearViewElement(veDateTime);
-    DrawViewElement(veDateTime, &stringTokens, &intTokens);
+        ClearViewElement(veDateTime);
+        DrawViewElement(veDateTime, &stringTokens, &intTokens);
+    }
     return true;
 }
 
@@ -68,16 +92,31 @@ bool cDisplayMenuView::DrawTime(bool forced, bool &implemented) {
         return false;
     }
     implemented = true;
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
 
-    if (!SetTime(forced, stringTokens, intTokens)) {
-        return false;
-    }    
+    if (DetachViewElement(veTime)) {
+        cViewElement *viewElement = GetViewElement(veTime);
+        if (!viewElement) {
+            viewElement = new cViewElement(tmplView->GetViewElement(veTime), this);
+            viewElement->SetCallback(veTime, &cDisplayMenuView::SetTime);
+            AddViewElement(veTime, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                if (!viewElement->Render())
+                    return false;
+        }
+    } else {
 
-    ClearViewElement(veTime);
-    DrawViewElement(veTime, &stringTokens, &intTokens);
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
 
+        if (!SetTime(forced, stringTokens, intTokens)) {
+            return false;
+        }    
+
+        ClearViewElement(veTime);
+        DrawViewElement(veTime, &stringTokens, &intTokens);
+    }
     return true;
 }
 
@@ -322,7 +361,8 @@ void cDisplayMenuMainView::DrawDiscUsage(void) {
     if (DetachViewElement(veDiscUsage)) {
         cViewElement *viewElement = GetViewElement(veDiscUsage);
         if (!viewElement) {
-            viewElement = new cViewElementDiscUsage(tmplView->GetViewElement(veDiscUsage));
+            viewElement = new cViewElement(tmplView->GetViewElement(veDiscUsage), this);
+            viewElement->SetCallback(veDiscUsage, &cDisplayMenuMainView::SetDiscUsage);
             AddViewElement(veDiscUsage, viewElement);
             viewElement->Start();
         } else {
@@ -332,7 +372,7 @@ void cDisplayMenuMainView::DrawDiscUsage(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        SetDiscUsage(stringTokens, intTokens);
+        SetDiscUsage(false, stringTokens, intTokens);
         ClearViewElement(veDiscUsage);
         DrawViewElement(veDiscUsage, &stringTokens, &intTokens);
     }
@@ -346,7 +386,8 @@ bool cDisplayMenuMainView::DrawLoad(void) {
     if (DetachViewElement(veSystemLoad)) {
         cViewElement *viewElement = GetViewElement(veSystemLoad);
         if (!viewElement) {
-            viewElement = new cViewElementSystemLoad(tmplView->GetViewElement(veSystemLoad));
+            viewElement = new cViewElement(tmplView->GetViewElement(veSystemLoad), this);
+            viewElement->SetCallback(veSystemLoad, &cDisplayMenuMainView::SetSystemLoad);
             AddViewElement(veSystemLoad, viewElement);
             viewElement->Start();
             changed = true;
@@ -357,7 +398,7 @@ bool cDisplayMenuMainView::DrawLoad(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        changed = SetSystemLoad(stringTokens, intTokens);
+        changed = SetSystemLoad(false, stringTokens, intTokens);
         if (changed) {
             ClearViewElement(veSystemLoad);
             DrawViewElement(veSystemLoad, &stringTokens, &intTokens);
@@ -374,7 +415,8 @@ bool cDisplayMenuMainView::DrawMemory(void) {
     if (DetachViewElement(veSystemMemory)) {
         cViewElement *viewElement = GetViewElement(veSystemMemory);
         if (!viewElement) {
-            viewElement = new cViewElementSystemMemory(tmplView->GetViewElement(veSystemMemory));
+            viewElement = new cViewElement(tmplView->GetViewElement(veSystemMemory), this);
+            viewElement->SetCallback(veSystemMemory, &cDisplayMenuMainView::SetSystemMemory);
             AddViewElement(veSystemMemory, viewElement);
             viewElement->Start();
             changed = true;
@@ -385,7 +427,7 @@ bool cDisplayMenuMainView::DrawMemory(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        changed = SetSystemMemory(stringTokens, intTokens);
+        changed = SetSystemMemory(false, stringTokens, intTokens);
         if (changed) {
             ClearViewElement(veSystemMemory);
             DrawViewElement(veSystemMemory, &stringTokens, &intTokens);
@@ -401,7 +443,8 @@ void cDisplayMenuMainView::DrawTemperatures(void) {
     if (DetachViewElement(veTemperatures)) {
         cViewElement *viewElement = GetViewElement(veTemperatures);
         if (!viewElement) {
-            viewElement = new cViewElementTemperature(tmplView->GetViewElement(veTemperatures));
+            viewElement = new cViewElement(tmplView->GetViewElement(veTemperatures), this);
+            viewElement->SetCallback(veTemperatures, &cDisplayMenuMainView::SetSystemTemperatures);
             AddViewElement(veTemperatures, viewElement);
             viewElement->Start();
         } else {
@@ -411,7 +454,7 @@ void cDisplayMenuMainView::DrawTemperatures(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        bool changed = SetSystemTemperatures(stringTokens, intTokens);
+        bool changed = SetSystemTemperatures(false, stringTokens, intTokens);
         if (changed) {
             ClearViewElement(veTemperatures);
             DrawViewElement(veTemperatures, &stringTokens, &intTokens);
@@ -487,7 +530,8 @@ void cDisplayMenuMainView::DrawCurrentWeather(void) {
     if (DetachViewElement(veCurrentWeather)) {
         cViewElement *viewElement = GetViewElement(veCurrentWeather);
         if (!viewElement) {
-            viewElement = new cViewElementWeather(tmplView->GetViewElement(veCurrentWeather));
+            viewElement = new cViewElement(tmplView->GetViewElement(veCurrentWeather), this);
+            viewElement->SetCallback(veCurrentWeather, &cDisplayMenuMainView::SetCurrentWeatherTokens);
             AddViewElement(veCurrentWeather, viewElement);
             viewElement->Start();
         } else {
@@ -497,11 +541,10 @@ void cDisplayMenuMainView::DrawCurrentWeather(void) {
     } else {
         map < string, string > stringTokens;
         map < string, int > intTokens;
-        if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
-            ClearViewElement(veCurrentWeather);
+        ClearViewElement(veCurrentWeather);
+        if (!SetCurrentWeatherTokens(false, stringTokens, intTokens)){
             return;
         }
-        ClearViewElement(veCurrentWeather);
         DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
     }
 }

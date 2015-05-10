@@ -20,6 +20,8 @@ cDesignerConfig::cDesignerConfig() {
     //menu display style, display menu items 
     //one after each other or in one step
     blockFlush = 1;
+    //frames per second for fading and shifting
+    framesPerSecond = 40;
     //remember current skin and theme, osd size and osd fonts
     SetSkin();
     SetOSDSize();
@@ -398,6 +400,7 @@ bool cDesignerConfig::SetupParse(const char *Name, const char *Value) {
     else if (!strcasecmp(Name, "RerunDistance"))           rerunDistance = atoi(Value);
     else if (!strcasecmp(Name, "RerunMaxChannel"))         rerunMaxChannel = atoi(Value);
     else if (!strcasecmp(Name, "BlockFlush"))              blockFlush = atoi(Value);
+    else if (!strcasecmp(Name, "FramesPerSecond"))         framesPerSecond = atoi(Value);
     else pluginSetupParam = false;
 
     if (!pluginSetupParam) {

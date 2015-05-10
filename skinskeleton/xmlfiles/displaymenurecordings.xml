@@ -18,6 +18,7 @@
         {current}               true if item is currently selected
         {new}                   true if recording is new
         {percentseen}           percent already watched, -1 for VDR < 2.1.8
+        {watched}               true if percentseen > 85% including MarginStop of not cutted recording 
         {cutted}                true if recording is cutted
         {folder}                true if item is a folder
         {numrecordingsfolder}   if item is a folder, number of recordings in this folder

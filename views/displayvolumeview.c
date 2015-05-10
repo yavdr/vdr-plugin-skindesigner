@@ -6,7 +6,6 @@ cDisplayVolumeView::cDisplayVolumeView(cTemplateView *tmplView) : cView(tmplView
     volumeLast = -1;
     muteLast = false;
     DeleteOsdOnExit();
-    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayVolumeView::~cDisplayVolumeView() {
@@ -45,11 +44,4 @@ void cDisplayVolumeView::DrawVolume(int current, int total, bool mute) {
 
     ClearViewElement(veVolume);
     DrawViewElement(veVolume, &stringTokens, &intTokens);
-}
-
-void cDisplayVolumeView::Action(void) {
-    SetInitFinished();
-    FadeIn();
-    DoFlush();
-    cView::Action();
 }

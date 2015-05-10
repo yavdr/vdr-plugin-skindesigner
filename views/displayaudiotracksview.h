@@ -8,7 +8,6 @@ class cDisplayAudiotracksView : public cView {
 protected:
     int numTracks;
     cDisplayMenuListView *listView;
-    virtual void Action(void);
 public:
     cDisplayAudiotracksView(int numTracks, cTemplateView *tmplView);
     virtual ~cDisplayAudiotracksView();

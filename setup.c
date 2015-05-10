@@ -9,6 +9,7 @@ cSkinDesignerSetup::cSkinDesignerSetup() {
     rerunDistance = config.rerunDistance;
     rerunMaxChannel = config.rerunMaxChannel;
     blockFlush = config.blockFlush;
+    framesPerSecond = config.framesPerSecond;
     menuDisplayStyle[0] = tr("after one another");
     menuDisplayStyle[1] = tr("at one go");
     Setup();
@@ -65,6 +66,7 @@ void cSkinDesignerSetup::Store(void) {
     config.rerunDistance = rerunDistance;
     config.rerunMaxChannel = rerunMaxChannel;
     config.blockFlush = blockFlush;
+    config.framesPerSecond = framesPerSecond;
 
     config.InitSetupIterator();
     cSkinSetup *skinSetup = NULL;
@@ -88,6 +90,7 @@ void cSkinDesignerSetup::Store(void) {
     SetupStore("RerunDistance", rerunDistance);
     SetupStore("RerunMaxChannel", rerunMaxChannel);
     SetupStore("BlockFlush", blockFlush);
+    SetupStore("FramesPerSecond", framesPerSecond);
 }
 
 cOsdItem *cSkinDesignerSetup::InfoItem(const char *label) {
@@ -101,6 +104,7 @@ void cSkinDesignerSetup::PluginSetup(void) {
     Add(InfoItem(tr("Plugin Setup")));
 
     Add(new cMenuEditStraItem(tr("Menu Item display method"), &blockFlush, 2, menuDisplayStyle));
+    Add(new cMenuEditIntItem(tr("Frames per Second (fading and shifting)"), &framesPerSecond, 10, 100));
 
     Add(InfoItem(tr("Reruns")));
     Add(new cMenuEditIntItem(tr("Maximum number of reruns to display"), &rerunAmount, 1, 100));

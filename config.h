@@ -35,6 +35,8 @@ private:
     map < string, multimap< int, pair <int, string> > > pluginSubViews;
     map < string, map< int, map <int, string> > > pluginViewElements;
     map < string, map< int, map <int, string> > > pluginViewGrids;
+    vector<string> skins;
+    vector<string>::iterator skinIterator;
     map < string, cSkinSetup* > skinSetups;
     map < string, cSkinSetup* >::iterator setupIt;
     vector < pair <string, int> > skinSetupParameters;
@@ -84,8 +86,6 @@ public:
     cString skinPath;
     cString logoPath;
     cString epgImagePath;
-    vector<string> skins;
-    vector<string>::iterator skinIterator;
     bool replaceDecPoint;
     char decPoint;
     //Setup Parameter
@@ -97,6 +97,7 @@ public:
     int rerunDistance;
     int rerunMaxChannel;
     int blockFlush;
+    int framesPerSecond;
     //TemplateReload on Setup Close
     bool setupCloseDoReload;
 };
