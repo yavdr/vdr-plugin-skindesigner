@@ -753,12 +753,24 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     intTokens.insert(pair<string,int>("numrecordingsfolder", total));
     intTokens.insert(pair<string,int>("cutted", usedRecording->IsEdited()));
 
+    int recDuration = usedRecording->LengthInSeconds();
+    bool watched = false;
+    if (usedRecording->IsEdited()) {
+        if (percSeen >= 85)
+            watched = true;
+    } else {
+        int watchedLimit = recDuration * 85 / 100 - (Setup.MarginStop + 5)*60;
+        int watchedTime = percSeen * recDuration / 100;
+        if (watchedLimit > 0 && watchedTime > 0 && (watchedTime > watchedLimit))
+            watched = true;
+    }
+    intTokens.insert(pair<string,int>("watched", watched));
+
     const cEvent *event = NULL;
     const cRecordingInfo *info = usedRecording->Info();
     if (!info) return;
     event = info->GetEvent();
     if (!event) return;
-
 
     string recDate = *(event->GetDateString());
     string recTime = *(event->GetTimeString());
@@ -777,7 +789,6 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     intTokens.insert(pair<string, int>("month", sStartTime->tm_mon+1));
 
     int duration = event->Duration() / 60;
-    int recDuration = usedRecording->LengthInSeconds();
     recDuration = (recDuration>0)?(recDuration / 60):0;
     stringTokens.insert(pair<string,string>("date", recDate.c_str()));
     stringTokens.insert(pair<string,string>("time", recTime.c_str()));

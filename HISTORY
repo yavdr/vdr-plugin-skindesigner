@@ -315,3 +315,4 @@ Version 0.4.5
 
 - added {numtimers} Token to lastrecordings viewelement
 - fixed time display bug in displaymenurecordings
+- added token {watched} to displaymenurecordings
