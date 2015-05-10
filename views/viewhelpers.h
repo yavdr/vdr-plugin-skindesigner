@@ -3,6 +3,9 @@
 
 #include "../services/dvbapi.h"
 
+typedef map<string,string> stringmap;
+typedef map<string,int> intmap;
+
 class cViewHelpers {
 private:
     int numDevices;
@@ -20,31 +23,32 @@ private:
     sDVBAPIEcmInfo lastEcmInfo;
     void RecName(string &path, string &name, string &folder);
     void RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster);
-    void SetCurrentScheduleFromChannel(const cChannel *channel, map < string, string > &stringTokens, map < string, int > &intTokens);
-    void SetCurrentScheduleFromRecording(const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens);
+    void SetCurrentScheduleFromChannel(const cChannel *channel, stringmap &stringTokens, intmap &intTokens);
+    void SetCurrentScheduleFromRecording(const cRecording *recording, stringmap &stringTokens, intmap &intTokens);
     bool CompareECMInfos(sDVBAPIEcmInfo *ecmInfo);
 protected:
     void InitDevices(void);
-    bool SetDevices(bool initial, bool light, map<string,int> *intTokens, vector<map<string,string> > *devices);
-    bool SetSignal(map < string, int > &intTokens);
+    bool SetDevices(bool initial, bool light, intmap *intTokens, vector<stringmap> *devices);
     bool CheckNewMails(void);
-    void SetScraperTokens(const cEvent *event, const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens, map < string, vector< map< string, string > > > &loopTokens);
-    void SetPosterBanner(const cEvent *event, map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetTime(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetDate(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens);
-    void SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *timers);
-    void SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *lastRecordings);
-    void SetMenuHeader(eMenuCategory cat, string menuTitle, map < string, string > &stringTokens, map < string, int > &intTokens);
-    void SetDiscUsage(map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetSystemLoad(map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetSystemMemory(map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetSystemTemperatures(map < string, string > &stringTokens, map < string, int > &intTokens);
-    void SetCurrentSchedule(string recName, map < string, string > &stringTokens, map < string, int > &intTokens);
-    bool SetEcmInfos(int channelSid, map < string, string > &stringTokens, map < string, int > &intTokens);
+    void SetScraperTokens(const cEvent *event, const cRecording *recording, stringmap &stringTokens, intmap &intTokens, map < string, vector<stringmap> > &loopTokens);
+    void SetPosterBanner(const cEvent *event, stringmap &stringTokens, intmap &intTokens);
+    void SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<stringmap> *timers);
+    void SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<stringmap> *lastRecordings);
+    void SetMenuHeader(eMenuCategory cat, string menuTitle, stringmap &stringTokens, intmap &intTokens);
+    void SetCurrentSchedule(string recName, stringmap &stringTokens, intmap &intTokens);
+    bool SetEcmInfos(int channelSid, stringmap &stringTokens, intmap &intTokens);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);
+    bool SetDate                (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetTime                (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetSignal              (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetCurrentWeatherTokens(bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetDiscUsage           (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetSystemLoad          (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetSystemMemory        (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetSystemTemperatures  (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetDummy               (bool forced, stringmap &stringTokens, intmap &intTokens);
 };
 
 #endif //__VIEWHELPERS_H

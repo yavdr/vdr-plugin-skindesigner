@@ -5,6 +5,7 @@
 #include "map"
 #include "../libcore/pixmapcontainer.h"
 #include "../libtemplate/template.h"
+#include "viewhelpers.h"
 #include "animation.h"
 
 using namespace std;
@@ -79,15 +80,21 @@ public:
 class cViewElement : public cView {
 private:
 protected:
+    bool init;
+    eViewElement ve;
     int delay;
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
+    stringmap stringTokens;
+    intmap intTokens;
+    bool (cViewHelpers::*SetTokens)(bool, stringmap&, intmap&);
+    cViewHelpers *helper;
     void Action(void);
     void ClearTokens(void);
 public:
     cViewElement(cTemplateViewElement *tmplViewElement);
+    cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *helper);
     virtual ~cViewElement();
-    virtual bool Render(void) { return false; };
+    void SetCallback(eViewElement ve, bool (cViewHelpers::*SetTokens)(bool, stringmap&, intmap&)) { this->ve = ve; this->SetTokens = SetTokens; };
+    virtual bool Render(void);
     bool Starting(void) { return Running(); };
 };
 

@@ -36,6 +36,234 @@ cViewHelpers::~cViewHelpers() {
     }
 }
 
+/******************************************************************
+* Public Functions
+******************************************************************/
+bool cViewHelpers::SetDate(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    time_t t = time(0);   // get time now
+    struct tm * now = localtime(&t);
+    int min = now->tm_min;
+    if (!forced && min == lastMinute) {
+        return false;
+    }
+    lastMinute = min;
+
+    intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
+    intTokens.insert(pair<string, int>("day", now->tm_mday));
+
+    char monthname[20];
+    char monthshort[10];
+    strftime(monthshort, sizeof(monthshort), "%b", now);
+    strftime(monthname, sizeof(monthname), "%B", now);
+
+    stringTokens.insert(pair<string,string>("monthname", monthname));
+    stringTokens.insert(pair<string,string>("monthnameshort", monthshort));
+    stringTokens.insert(pair<string,string>("month", *cString::sprintf("%02d", now->tm_mon + 1)));
+    stringTokens.insert(pair<string,string>("dayleadingzero", *cString::sprintf("%02d", now->tm_mday)));
+    stringTokens.insert(pair<string,string>("dayname", *WeekDayNameFull(now->tm_wday)));
+    stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
+    stringTokens.insert(pair<string,string>("time", *TimeString(t)));
+
+    return true;
+}
+
+bool cViewHelpers::SetTime(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    time_t t = time(0);   // get time now
+    struct tm * now = localtime(&t);
+    int sec = now->tm_sec;
+    if (!forced && sec == lastSecond) {
+        return false;
+    }
+    int min = now->tm_min;
+    int hour = now->tm_hour;
+    int hourMinutes = hour%12 * 5 + min / 12;
+
+    intTokens.insert(pair<string, int>("sec", sec));
+    intTokens.insert(pair<string, int>("min", min));
+    intTokens.insert(pair<string, int>("hour", hour));
+    intTokens.insert(pair<string, int>("hmins", hourMinutes));
+    
+    lastSecond = sec;
+    return true;
+}
+
+bool cViewHelpers::SetSignal(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    bool done = false;
+    time_t Now = time(NULL);
+    if (Now != lSignalDisplay) {
+        int SignalStrength = cDevice::ActualDevice()->SignalStrength();
+        int SignalQuality = cDevice::ActualDevice()->SignalQuality();
+        if (SignalStrength < 0) SignalStrength = 0;
+        if (SignalQuality < 0) SignalQuality = 0;
+        if ((SignalStrength == 0)&&(SignalQuality==0))
+            return done;
+        if ((lSignalStrength != SignalStrength) || (lSignalQuality != SignalQuality)) {
+            intTokens.insert(pair<string,int>("signalstrength", SignalStrength));
+            intTokens.insert(pair<string,int>("signalquality", SignalQuality));
+            lSignalStrength = SignalStrength;
+            lSignalQuality = SignalQuality;
+            done = true;
+        }
+        lSignalDisplay = Now;
+    }
+    return done;
+}
+
+bool cViewHelpers::SetCurrentWeatherTokens(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    static cPlugin *pWeatherForecast = cPluginManager::GetPlugin("weatherforecast");
+    if (!pWeatherForecast)
+        return false;
+    cServiceCurrentWeather currentWeather;
+    if (!pWeatherForecast->Service("GetCurrentWeather", &currentWeather)) {
+        return false;
+    }
+    stringTokens.insert(pair<string,string>("timestamp", currentWeather.timeStamp));
+    stringTokens.insert(pair<string,string>("temperature", currentWeather.temperature));
+    stringTokens.insert(pair<string,string>("apparenttemperature", currentWeather.apparentTemperature));
+    stringTokens.insert(pair<string,string>("mintemperature", currentWeather.minTemperature));
+    stringTokens.insert(pair<string,string>("maxtemperature", currentWeather.maxTemperature));
+    stringTokens.insert(pair<string,string>("summary", currentWeather.summary));
+    stringTokens.insert(pair<string,string>("icon", currentWeather.icon));
+    stringTokens.insert(pair<string,string>("precipitationintensity", currentWeather.precipitationIntensity));
+    intTokens.insert(pair<string,int>("precipitationprobability", currentWeather.precipitationProbability));
+    stringTokens.insert(pair<string,string>("precipitationtype", currentWeather.precipitationType));
+    intTokens.insert(pair<string,int>("humidity", currentWeather.humidity));
+    stringTokens.insert(pair<string,string>("windspeed", currentWeather.windSpeed));
+    intTokens.insert(pair<string,int>("windbearing", currentWeather.windBearing));
+    stringTokens.insert(pair<string,string>("windbearingstring", currentWeather.windBearingString));
+    stringTokens.insert(pair<string,string>("visibility", currentWeather.visibility));
+    intTokens.insert(pair<string,int>("cloudcover", currentWeather.cloudCover));
+    stringTokens.insert(pair<string,string>("pressure", currentWeather.pressure));
+    stringTokens.insert(pair<string,string>("ozone", currentWeather.ozone));
+    return true;
+}
+
+bool cViewHelpers::SetDiscUsage(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    string vdrUsageString = *cVideoDiskUsage::String();
+    int discUsage = cVideoDiskUsage::UsedPercent();
+    bool discAlert = (discUsage > 95) ? true : false;
+    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
+    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
+
+    intTokens.insert(pair<string, int>("usedpercent", discUsage));
+    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
+    intTokens.insert(pair<string, int>("discalert", discAlert));
+    intTokens.insert(pair<string, int>("freegb", freeGB));
+    stringTokens.insert(pair<string,string>("freetime", freeTime));
+    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
+    return true;
+}
+
+bool cViewHelpers::SetSystemLoad(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    double systemLoad;
+    if (getloadavg(&systemLoad, 1) > 0) {
+        if (lastSystemLoad == systemLoad) {
+            return false;
+        }
+        string load = *cString::sprintf("%.2f", systemLoad);
+        int loadHand = systemLoad * 1000;
+        int loadHandValue = 0;
+        if (loadHand > 2500)
+            loadHandValue = 2525;
+        else {
+
+            int loadHandDec = loadHand - (loadHand / 100) * 100;
+
+            if (loadHandDec <= 12)
+                loadHandDec = 0;
+            else if (loadHandDec <= 37)
+                loadHandDec = 25;
+            else if (loadHandDec <= 62)
+                loadHandDec = 50;
+            else if (loadHandDec <= 87)
+                loadHandDec = 75;
+            else
+                loadHandDec = 0;
+
+            loadHandValue = loadHand / 100 * 100 + loadHandDec;
+        }
+        stringTokens.insert(pair<string,string>("load", load));
+        intTokens.insert(pair<string,int>("loadhand", loadHandValue));
+        lastSystemLoad = systemLoad;
+    } else {
+        return false;
+    }
+    return true;
+}
+
+bool cViewHelpers::SetSystemMemory(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    
+    long long totalMem = memInfo.totalram;
+    totalMem += memInfo.totalswap;
+    totalMem *= memInfo.mem_unit;
+    int totalMemMB = totalMem / 1024 / 1024;
+
+    long long usedMem = memInfo.totalram - memInfo.freeram;
+    usedMem += memInfo.totalswap - memInfo.freeswap;
+    usedMem *= memInfo.mem_unit;
+    int usedMemMB = usedMem / 1024 / 1024;
+
+    if (lastMemUsage == usedMemMB) {
+        return false;
+    }
+    lastMemUsage = usedMemMB;
+
+    intTokens.insert(pair<string,int>("totalmem", totalMemMB));
+    intTokens.insert(pair<string,int>("usedmem", usedMemMB));
+    if (totalMemMB > 0)
+        intTokens.insert(pair<string,int>("usedmempercent", usedMemMB * 100 / totalMemMB));
+    return true;
+}
+
+bool cViewHelpers::SetSystemTemperatures(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
+    system(*execCommand);
+
+    string tempCPU, tempGPU;
+    int cpu, gpu;
+
+    cString itemFilename = cString::sprintf("%s/cpu", SCRIPTOUTPUTPATH );
+    ifstream file(*itemFilename, ifstream::in);
+    if( file.is_open() ) {
+        std::getline(file, tempCPU);
+        if (tempCPU.size() > 2) {
+            cpu = atoi(tempCPU.substr(0,2).c_str());
+        } else
+            cpu = 0;
+        file.close();
+    } else {
+        tempCPU = "0°C";
+        cpu = 0;
+    }
+
+    itemFilename = cString::sprintf("%s/gpu", SCRIPTOUTPUTPATH );
+    ifstream file2(*itemFilename, ifstream::in);
+    if( file2.is_open() ) {
+        std::getline(file2, tempGPU);
+        if (tempGPU.size() > 2) {
+            gpu = atoi(tempGPU.substr(0,2).c_str());
+        } else
+            gpu = 0;
+        file2.close();
+    } else {
+        tempGPU = "0°C";
+        gpu = 0;
+    }
+
+    intTokens.insert(pair<string,int>("cputemp", cpu));
+    intTokens.insert(pair<string,int>("gputemp", gpu));
+    return true;
+}
+
+bool cViewHelpers::SetDummy(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    return true;
+}
+
+/******************************************************************
+* Protected Functions
+******************************************************************/
 void cViewHelpers::InitDevices(void) {
     numDevices = cDevice::NumDevices();
     lastSignalStrength = new int[numDevices];
@@ -49,7 +277,7 @@ void cViewHelpers::InitDevices(void) {
     devicesInit = true;
 }
 
-bool cViewHelpers::SetDevices(bool initial, bool light, map<string,int> *intTokens, vector<map<string,string> > *devices) {
+bool cViewHelpers::SetDevices(bool initial, bool light, intmap *intTokens, vector<stringmap> *devices) {
     if (!initial) {
         if (light)
             return false;
@@ -99,7 +327,7 @@ bool cViewHelpers::SetDevices(bool initial, bool light, map<string,int> *intToke
             continue;
         }
         
-        map< string, string > deviceVals;
+        stringmap deviceVals;
         stringstream strNum;
         strNum << actualNumDevices;
         actualNumDevices++;
@@ -164,28 +392,6 @@ bool cViewHelpers::SetDevices(bool initial, bool light, map<string,int> *intToke
     return true;
 }
 
-bool cViewHelpers::SetSignal(map < string, int > &intTokens) {
-    bool done = false;
-    time_t Now = time(NULL);
-    if (Now != lSignalDisplay) {
-        int SignalStrength = cDevice::ActualDevice()->SignalStrength();
-        int SignalQuality = cDevice::ActualDevice()->SignalQuality();
-        if (SignalStrength < 0) SignalStrength = 0;
-        if (SignalQuality < 0) SignalQuality = 0;
-        if ((SignalStrength == 0)&&(SignalQuality==0))
-            return done;
-        if ((lSignalStrength != SignalStrength) || (lSignalQuality != SignalQuality)) {
-            intTokens.insert(pair<string,int>("signalstrength", SignalStrength));
-            intTokens.insert(pair<string,int>("signalquality", SignalQuality));
-            lSignalStrength = SignalStrength;
-            lSignalQuality = SignalQuality;
-            done = true;
-        }
-        lSignalDisplay = Now;
-    }
-    return done;
-}
-
 bool cViewHelpers::CheckNewMails(void) {
     static cPlugin *pMailbox = cPluginManager::GetPlugin("mailbox");
     if (!pMailbox) {
@@ -198,7 +404,7 @@ bool cViewHelpers::CheckNewMails(void) {
     return false;
 }
 
-void cViewHelpers::SetScraperTokens(const cEvent *event, const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens, map < string, vector< map< string, string > > > &loopTokens) {
+void cViewHelpers::SetScraperTokens(const cEvent *event, const cRecording *recording, stringmap &stringTokens, intmap &intTokens, map < string, vector<stringmap> > &loopTokens) {
     static cPlugin *pScraper = GetScraperPlugin();
     if (!pScraper || (!event && !recording)) {
         intTokens.insert(pair<string,int>("ismovie", false));
@@ -404,7 +610,7 @@ void cViewHelpers::SetScraperTokens(const cEvent *event, const cRecording *recor
 
 }
 
-void cViewHelpers::SetPosterBanner(const cEvent *event, map < string, string > &stringTokens, map < string, int > &intTokens) {
+void cViewHelpers::SetPosterBanner(const cEvent *event, stringmap &stringTokens, intmap &intTokens) {
     static cPlugin *pScraper = GetScraperPlugin();
     if (!pScraper) {
         return;
@@ -469,83 +675,6 @@ void cViewHelpers::SetPosterBanner(const cEvent *event, map < string, string > &
         stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
         intTokens.insert(pair<string,int>("hasbanner", hasBanner));
     }
-}
-
-bool cViewHelpers::SetTime(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens) {
-    time_t t = time(0);   // get time now
-    struct tm * now = localtime(&t);
-    int sec = now->tm_sec;
-    if (!forced && sec == lastSecond) {
-        return false;
-    }
-    int min = now->tm_min;
-    int hour = now->tm_hour;
-    int hourMinutes = hour%12 * 5 + min / 12;
-
-    intTokens.insert(pair<string, int>("sec", sec));
-    intTokens.insert(pair<string, int>("min", min));
-    intTokens.insert(pair<string, int>("hour", hour));
-    intTokens.insert(pair<string, int>("hmins", hourMinutes));
-    
-    lastSecond = sec;
-    return true;
-}
-
-bool cViewHelpers::SetDate(bool forced, map < string, string > &stringTokens, map < string, int > &intTokens) {
-    time_t t = time(0);   // get time now
-    struct tm * now = localtime(&t);
-    int min = now->tm_min;
-    if (!forced && min == lastMinute) {
-        return false;
-    }
-    lastMinute = min;
-
-    intTokens.insert(pair<string, int>("year", now->tm_year + 1900));
-    intTokens.insert(pair<string, int>("day", now->tm_mday));
-
-    char monthname[20];
-    char monthshort[10];
-    strftime(monthshort, sizeof(monthshort), "%b", now);
-    strftime(monthname, sizeof(monthname), "%B", now);
-
-    stringTokens.insert(pair<string,string>("monthname", monthname));
-    stringTokens.insert(pair<string,string>("monthnameshort", monthshort));
-    stringTokens.insert(pair<string,string>("month", *cString::sprintf("%02d", now->tm_mon + 1)));
-    stringTokens.insert(pair<string,string>("dayleadingzero", *cString::sprintf("%02d", now->tm_mday)));
-    stringTokens.insert(pair<string,string>("dayname", *WeekDayNameFull(now->tm_wday)));
-    stringTokens.insert(pair<string,string>("daynameshort", *WeekDayName(now->tm_wday)));
-    stringTokens.insert(pair<string,string>("time", *TimeString(t)));
-
-    return true;
-}
-
-bool cViewHelpers::SetCurrentWeatherTokens(map < string, string > &stringTokens, map < string, int > &intTokens) {
-    static cPlugin *pWeatherForecast = cPluginManager::GetPlugin("weatherforecast");
-    if (!pWeatherForecast)
-        return false;
-    cServiceCurrentWeather currentWeather;
-    if (!pWeatherForecast->Service("GetCurrentWeather", &currentWeather)) {
-        return false;
-    }
-    stringTokens.insert(pair<string,string>("timestamp", currentWeather.timeStamp));
-    stringTokens.insert(pair<string,string>("temperature", currentWeather.temperature));
-    stringTokens.insert(pair<string,string>("apparenttemperature", currentWeather.apparentTemperature));
-    stringTokens.insert(pair<string,string>("mintemperature", currentWeather.minTemperature));
-    stringTokens.insert(pair<string,string>("maxtemperature", currentWeather.maxTemperature));
-    stringTokens.insert(pair<string,string>("summary", currentWeather.summary));
-    stringTokens.insert(pair<string,string>("icon", currentWeather.icon));
-    stringTokens.insert(pair<string,string>("precipitationintensity", currentWeather.precipitationIntensity));
-    intTokens.insert(pair<string,int>("precipitationprobability", currentWeather.precipitationProbability));
-    stringTokens.insert(pair<string,string>("precipitationtype", currentWeather.precipitationType));
-    intTokens.insert(pair<string,int>("humidity", currentWeather.humidity));
-    stringTokens.insert(pair<string,string>("windspeed", currentWeather.windSpeed));
-    intTokens.insert(pair<string,int>("windbearing", currentWeather.windBearing));
-    stringTokens.insert(pair<string,string>("windbearingstring", currentWeather.windBearingString));
-    stringTokens.insert(pair<string,string>("visibility", currentWeather.visibility));
-    intTokens.insert(pair<string,int>("cloudcover", currentWeather.cloudCover));
-    stringTokens.insert(pair<string,string>("pressure", currentWeather.pressure));
-    stringTokens.insert(pair<string,string>("ozone", currentWeather.ozone));
-    return true;
 }
 
 void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *timers) {
@@ -629,7 +758,7 @@ void cViewHelpers::SetTimers(map<string,int> *intTokens, map<string,string> *str
     }
 }
 
-void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<map<string,string> > *lastRecordings) {
+void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<stringmap> *lastRecordings) {
 
     list<cRecording*> orderedRecs;
 
@@ -694,7 +823,7 @@ void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,stri
     }
 }
 
-void cViewHelpers::SetMenuHeader(eMenuCategory cat, string menuTitle, map < string, string > &stringTokens, map < string, int > &intTokens) {
+void cViewHelpers::SetMenuHeader(eMenuCategory cat, string menuTitle, stringmap &stringTokens, intmap &intTokens) {
     stringTokens.insert(pair<string,string>("title", menuTitle));
     stringTokens.insert(pair<string,string>("vdrversion", VDRVERSION));
 
@@ -723,125 +852,7 @@ void cViewHelpers::SetMenuHeader(eMenuCategory cat, string menuTitle, map < stri
     stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
 }
 
-void cViewHelpers::SetDiscUsage(map < string, string > &stringTokens, map < string, int > &intTokens) {
-    string vdrUsageString = *cVideoDiskUsage::String();
-    int discUsage = cVideoDiskUsage::UsedPercent();
-    bool discAlert = (discUsage > 95) ? true : false;
-    string freeTime = *cString::sprintf("%02d:%02d", cVideoDiskUsage::FreeMinutes() / 60, cVideoDiskUsage::FreeMinutes() % 60);
-    int freeGB = cVideoDiskUsage::FreeMB() / 1024;
-
-    intTokens.insert(pair<string, int>("usedpercent", discUsage));
-    intTokens.insert(pair<string, int>("freepercent", 100-discUsage));
-    intTokens.insert(pair<string, int>("discalert", discAlert));
-    intTokens.insert(pair<string, int>("freegb", freeGB));
-    stringTokens.insert(pair<string,string>("freetime", freeTime));
-    stringTokens.insert(pair<string,string>("vdrusagestring", vdrUsageString));
-}
-
-bool cViewHelpers::SetSystemLoad(map < string, string > &stringTokens, map < string, int > &intTokens) {
-    double systemLoad;
-    if (getloadavg(&systemLoad, 1) > 0) {
-        if (lastSystemLoad == systemLoad) {
-            return false;
-        }
-        string load = *cString::sprintf("%.2f", systemLoad);
-        int loadHand = systemLoad * 1000;
-        int loadHandValue = 0;
-        if (loadHand > 2500)
-            loadHandValue = 2525;
-        else {
-
-            int loadHandDec = loadHand - (loadHand / 100) * 100;
-
-            if (loadHandDec <= 12)
-                loadHandDec = 0;
-            else if (loadHandDec <= 37)
-                loadHandDec = 25;
-            else if (loadHandDec <= 62)
-                loadHandDec = 50;
-            else if (loadHandDec <= 87)
-                loadHandDec = 75;
-            else
-                loadHandDec = 0;
-
-            loadHandValue = loadHand / 100 * 100 + loadHandDec;
-        }
-        stringTokens.insert(pair<string,string>("load", load));
-        intTokens.insert(pair<string,int>("loadhand", loadHandValue));
-        lastSystemLoad = systemLoad;
-    } else {
-        return false;
-    }
-    return true;
-}
-
-bool cViewHelpers::SetSystemMemory(map < string, string > &stringTokens, map < string, int > &intTokens) {
-    struct sysinfo memInfo;
-    sysinfo (&memInfo);
-    
-    long long totalMem = memInfo.totalram;
-    totalMem += memInfo.totalswap;
-    totalMem *= memInfo.mem_unit;
-    int totalMemMB = totalMem / 1024 / 1024;
-
-    long long usedMem = memInfo.totalram - memInfo.freeram;
-    usedMem += memInfo.totalswap - memInfo.freeswap;
-    usedMem *= memInfo.mem_unit;
-    int usedMemMB = usedMem / 1024 / 1024;
-
-    if (lastMemUsage == usedMemMB) {
-        return false;
-    }
-    lastMemUsage = usedMemMB;
-
-    intTokens.insert(pair<string,int>("totalmem", totalMemMB));
-    intTokens.insert(pair<string,int>("usedmem", usedMemMB));
-    if (totalMemMB > 0)
-        intTokens.insert(pair<string,int>("usedmempercent", usedMemMB * 100 / totalMemMB));
-    return true;
-}
-
-bool cViewHelpers::SetSystemTemperatures(map < string, string > &stringTokens, map < string, int > &intTokens) {
-    cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
-    system(*execCommand);
-
-    string tempCPU, tempGPU;
-    int cpu, gpu;
-
-    cString itemFilename = cString::sprintf("%s/cpu", SCRIPTOUTPUTPATH );
-    ifstream file(*itemFilename, ifstream::in);
-    if( file.is_open() ) {
-        std::getline(file, tempCPU);
-        if (tempCPU.size() > 2) {
-            cpu = atoi(tempCPU.substr(0,2).c_str());
-        } else
-            cpu = 0;
-        file.close();
-    } else {
-        tempCPU = "0°C";
-        cpu = 0;
-    }
-
-    itemFilename = cString::sprintf("%s/gpu", SCRIPTOUTPUTPATH );
-    ifstream file2(*itemFilename, ifstream::in);
-    if( file2.is_open() ) {
-        std::getline(file2, tempGPU);
-        if (tempGPU.size() > 2) {
-            gpu = atoi(tempGPU.substr(0,2).c_str());
-        } else
-            gpu = 0;
-        file2.close();
-    } else {
-        tempGPU = "0°C";
-        gpu = 0;
-    }
-
-    intTokens.insert(pair<string,int>("cputemp", cpu));
-    intTokens.insert(pair<string,int>("gputemp", gpu));
-    return true;
-}
-
-void cViewHelpers::SetCurrentSchedule(string recName, map < string, string > &stringTokens, map < string, int > &intTokens) {
+void cViewHelpers::SetCurrentSchedule(string recName, stringmap &stringTokens, intmap &intTokens) {
     cDevice *device = cDevice::PrimaryDevice();
     const cChannel *channel = NULL;
     if (!device->Replaying() || device->Transferring()) {
@@ -860,7 +871,7 @@ void cViewHelpers::SetCurrentSchedule(string recName, map < string, string > &st
     }
 }
 
-bool cViewHelpers::SetEcmInfos(int channelSid, map < string, string > &stringTokens, map < string, int > &intTokens) {
+bool cViewHelpers::SetEcmInfos(int channelSid, stringmap &stringTokens, intmap &intTokens) {
     static cPlugin *pDVBApi = cPluginManager::GetPlugin("dvbapi");
     if (!pDVBApi)
         return false;
@@ -889,20 +900,6 @@ bool cViewHelpers::SetEcmInfos(int channelSid, map < string, string > &stringTok
     stringTokens.insert(pair<string,string>("from", *ecmInfo.from ? *ecmInfo.from : ""));
     stringTokens.insert(pair<string,string>("protocol", *ecmInfo.protocol ? *ecmInfo.protocol : ""));
 
-    return true;
-}
-
-bool cViewHelpers::CompareECMInfos(sDVBAPIEcmInfo *ecmInfo) {
-    if (ecmInfo->caid != lastEcmInfo.caid)
-        return false;
-    if (ecmInfo->pid != lastEcmInfo.pid)
-        return false;
-    if (ecmInfo->prid != lastEcmInfo.prid)
-        return false;
-    if (ecmInfo->ecmtime != lastEcmInfo.ecmtime)
-        return false;
-    if (ecmInfo->hops != lastEcmInfo.hops)
-        return false;
     return true;
 }
 
@@ -946,7 +943,7 @@ void cViewHelpers::RecPoster(const cRecording *rec, int &posterWidth, int &poste
     }
 }
 
-void cViewHelpers::SetCurrentScheduleFromChannel(const cChannel *channel, map < string, string > &stringTokens, map < string, int > &intTokens) {
+void cViewHelpers::SetCurrentScheduleFromChannel(const cChannel *channel, stringmap &stringTokens, intmap &intTokens) {
     const cEvent *event = NULL;
     cSchedulesLock SchedulesLock;
     if (const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock))
@@ -1026,7 +1023,7 @@ void cViewHelpers::SetCurrentScheduleFromChannel(const cChannel *channel, map < 
     intTokens.insert(pair<string,int>("hasbanner", hasBanner));
 }
 
-void cViewHelpers::SetCurrentScheduleFromRecording(const cRecording *recording, map < string, string > &stringTokens, map < string, int > &intTokens) {
+void cViewHelpers::SetCurrentScheduleFromRecording(const cRecording *recording, stringmap &stringTokens, intmap &intTokens) {
     intTokens.insert(pair<string,int>("islivetv", 0));
 
     string recFullName = recording->Name() ? recording->Name() : "";
@@ -1108,4 +1105,18 @@ void cViewHelpers::SetCurrentScheduleFromRecording(const cRecording *recording, 
     intTokens.insert(pair<string,int>("bannerheight", bannerHeight));
     stringTokens.insert(pair<string,string>("bannerpath", bannerPath));
     intTokens.insert(pair<string,int>("hasbanner", hasBanner));
+}
+
+bool cViewHelpers::CompareECMInfos(sDVBAPIEcmInfo *ecmInfo) {
+    if (ecmInfo->caid != lastEcmInfo.caid)
+        return false;
+    if (ecmInfo->pid != lastEcmInfo.pid)
+        return false;
+    if (ecmInfo->prid != lastEcmInfo.prid)
+        return false;
+    if (ecmInfo->ecmtime != lastEcmInfo.ecmtime)
+        return false;
+    if (ecmInfo->hops != lastEcmInfo.hops)
+        return false;
+    return true;
 }

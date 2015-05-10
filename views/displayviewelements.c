@@ -7,8 +7,8 @@ cViewElementDevices::cViewElementDevices(bool light, cTemplateViewElement *tmplV
 
 bool cViewElementDevices::Render(void) {
     ClearTokens();
-    map < string, vector< map< string, string > > > deviceLoopTokens;
-    vector< map< string, string > > devices;
+    map < string, vector<stringmap> > deviceLoopTokens;
+    vector<stringmap> devices;
 
     if (init)
         InitDevices();
@@ -22,71 +22,6 @@ bool cViewElementDevices::Render(void) {
     
     ClearViewElement(veDevices);
     DrawViewElement(veDevices, &stringTokens, &intTokens, &deviceLoopTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementSignal::cViewElementSignal(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-}
-
-bool cViewElementSignal::Render(void) {
-    ClearTokens();
-    bool changed = SetSignal(intTokens);
-    if (!changed)
-        return false;
-    ClearViewElement(veSignalQuality);
-    DrawViewElement(veSignalQuality, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementWeather::cViewElementWeather(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-}
-
-bool cViewElementWeather::Render(void) {
-    ClearTokens();
-    if (!SetCurrentWeatherTokens(stringTokens, intTokens)){
-        ClearViewElement(veCurrentWeather);
-        return false;
-    }
-    ClearViewElement(veCurrentWeather);
-    DrawViewElement(veCurrentWeather, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementDate::cViewElementDate(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-    init = true;
-}
-
-bool cViewElementDate::Render(void) {
-    ClearTokens();
-    if (!SetDate(init, stringTokens, intTokens)) {
-        return false;
-    }
-    init = false;
-    ClearViewElement(veDateTime);
-    DrawViewElement(veDateTime, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementTime::cViewElementTime(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-    init = true;
-}
-
-bool cViewElementTime::Render(void) {
-    ClearTokens();
-    if (!SetTime(init, stringTokens, intTokens)) {
-        return false;
-    }    
-    init = false;
-    ClearViewElement(veTime);
-    DrawViewElement(veTime, &stringTokens, &intTokens);
     return true;
 }
 
@@ -161,62 +96,6 @@ bool cViewElementLastRecordings::Render(void) {
 
 /********************************************************************************************************************/
 
-cViewElementDiscUsage::cViewElementDiscUsage(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-}
-
-bool cViewElementDiscUsage::Render(void) {
-    ClearTokens();
-    SetDiscUsage(stringTokens, intTokens);
-
-    ClearViewElement(veDiscUsage);
-    DrawViewElement(veDiscUsage, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementSystemLoad::cViewElementSystemLoad(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-}
-
-bool cViewElementSystemLoad::Render(void) {
-    ClearTokens();
-    if (!SetSystemLoad(stringTokens, intTokens))
-        return false;
-    ClearViewElement(veSystemLoad);
-    DrawViewElement(veSystemLoad, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementSystemMemory::cViewElementSystemMemory(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-}
-
-bool cViewElementSystemMemory::Render(void) {
-    ClearTokens();
-    if (!SetSystemMemory(stringTokens, intTokens))
-        return false;
-    ClearViewElement(veSystemMemory);
-    DrawViewElement(veSystemMemory, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
-cViewElementTemperature::cViewElementTemperature(cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
-}
-
-bool cViewElementTemperature::Render(void) {
-    ClearTokens();
-    if (!SetSystemTemperatures(stringTokens, intTokens))
-        return false;
-    ClearViewElement(veTemperatures);
-    DrawViewElement(veTemperatures, &stringTokens, &intTokens);
-    return true;
-}
-
-/********************************************************************************************************************/
-
 cViewElementCurrentSchedule::cViewElementCurrentSchedule(cTemplateViewElement *tmplViewElement, string currentRecording) : cViewElement(tmplViewElement) {
     this->currentRecording = currentRecording;
 }
@@ -226,5 +105,20 @@ bool cViewElementCurrentSchedule::Render(void) {
     SetCurrentSchedule(currentRecording, stringTokens, intTokens);
     ClearViewElement(veCurrentSchedule);
     DrawViewElement(veCurrentSchedule, &stringTokens, &intTokens);
+    return true;
+}
+
+/********************************************************************************************************************/
+
+cViewElementMenuHeader::cViewElementMenuHeader(cTemplateViewElement *tmplViewElement, eMenuCategory cat, string menuTitle) : cViewElement(tmplViewElement) {
+    this->cat = cat;
+    this->menuTitle = menuTitle;
+}
+
+bool cViewElementMenuHeader::Render(void) {
+    ClearTokens();
+    SetMenuHeader(cat, menuTitle, stringTokens, intTokens);
+    ClearViewElement(veHeader);
+    DrawViewElement(veHeader, &stringTokens, &intTokens);
     return true;
 }

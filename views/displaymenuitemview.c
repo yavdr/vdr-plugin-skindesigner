@@ -322,6 +322,7 @@ cDisplayMenuItemSchedulesView::cDisplayMenuItemSchedulesView(cTemplateViewList *
                                                              eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable) 
                                                             : cDisplayMenuItemView(tmplList, current, selectable) {
     this->event = event;
+    esyslog("skindesigner: constructor cDisplayMenuItemSchedulesView event %s", event->Title());
     this->channel = channel;
     this->timerMatch = timerMatch;
     this->cat = cat;
@@ -354,6 +355,7 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
     }
 
     if (event) {
+        esyslog("skindesigner: setting Tokens for event %s", event->Title());
         if (selectable) {
             stringTokens.insert(pair<string,string>("title", event->Title() ? event->Title() : ""));
             stringTokens.insert(pair<string,string>("shorttext", event->ShortText() ? event->ShortText() : ""));
@@ -408,7 +410,6 @@ void cDisplayMenuItemSchedulesView::Prepare(void) {
 }
 
 void cDisplayMenuItemSchedulesView::Render(void) {
-
     DrawListItem(&stringTokens, &intTokens);
     
     if (current) {

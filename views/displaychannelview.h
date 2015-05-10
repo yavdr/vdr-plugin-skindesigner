@@ -14,7 +14,6 @@ private:
     string lastTracDesc;
     string lastTrackLang;
     string GetChannelSep(const cChannel *channel, bool prev);
-    virtual void Action(void);
 public:
     cDisplayChannelView(cTemplateView *tmplView);
     virtual ~cDisplayChannelView();

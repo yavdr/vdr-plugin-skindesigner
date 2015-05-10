@@ -1,4 +1,5 @@
 #define __STL_CONFIG_H
+#include <math.h>
 #include "pixmapcontainer.h"
 #include "../config.h"
 
@@ -21,6 +22,8 @@ cPixmapContainer::cPixmapContainer(int numPixmaps) {
     checkRunning = false;
     fadeTime = 0;
     shiftTime = 0;
+    shiftType = stNone;
+    shiftMode = smLinear;
     deleteOsdOnExit = false;
 }
 
@@ -349,8 +352,10 @@ void cPixmapContainer::FadeIn(void) {
         }
         return;
     }
+    int frames = fadeTime * config.framesPerSecond / 1000;
+    if (frames <= 0) frames = 1;
+    int frameTime = fadeTime / frames;
     uint64_t Start = cTimeMs::Now();
-    int FadeFrameTime = fadeTime / 10;
     while (Running()) {
         uint64_t Now = cTimeMs::Now();
         double t = min(double(Now - Start) / fadeTime, 1.0);
@@ -367,18 +372,20 @@ void cPixmapContainer::FadeIn(void) {
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
-        if (Running() && (Delta < FadeFrameTime))
-            cCondWait::SleepMs(FadeFrameTime - Delta);
+        if (Running() && (Delta < frameTime))
+            cCondWait::SleepMs(frameTime - Delta);
         if ((int)(Now - Start) > fadeTime)
             break;
     }
 }
 
 void cPixmapContainer::FadeOut(void) {
-    if (!fadeTime)
+    if (!fadeTime || IsAnimated())
         return;
+    int frames = fadeTime * config.framesPerSecond / 1000;
+    if (frames <= 0) frames = 1;
+    int frameTime = fadeTime / frames;
     uint64_t Start = cTimeMs::Now();
-    int FadeFrameTime = fadeTime / 10;
     while (true) {
         uint64_t Now = cTimeMs::Now();
         double t = min(double(Now - Start) / fadeTime, 1.0);
@@ -395,8 +402,8 @@ void cPixmapContainer::FadeOut(void) {
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
-        if (Delta < FadeFrameTime)
-            cCondWait::SleepMs(FadeFrameTime - Delta);
+        if (Delta < frameTime)
+            cCondWait::SleepMs(frameTime - Delta);
         if ((int)(Now - Start) > fadeTime)
             break;
     }
@@ -405,6 +412,137 @@ void cPixmapContainer::FadeOut(void) {
 void cPixmapContainer::ShiftIn(void) {
     if (shiftTime < 1)
         return;
+
+    int frames = shiftTime * config.framesPerSecond / 1000;
+    if (frames <= 0) frames = 1;
+    int frameTime = shiftTime / frames;
+
+    if (shiftType > stNone) {
+        ShiftInFromBorder(frames, frameTime);
+    } else {
+        ShiftInFromPoint(frames, frameTime);
+    }
+}
+
+void cPixmapContainer::ShiftInFromBorder(int frames, int frameTime) {
+    //calculating union rectangle of all pixmaps viewports 
+    cRect unionArea;
+    bool isNew = true;
+    for (int i = 0; i < numPixmaps; i++) {
+        if (!PixmapExists(i))
+            continue;
+        if (isNew) {
+            unionArea = ViewPort(i);
+            isNew = false;
+        } else {
+            unionArea.Combine(ViewPort(i));
+        }
+    }
+    //shifthing all pixmaps to dedicated start positions
+    cPoint startPositions[numPixmaps];
+    int osdWidth = osd->Width();
+    int osdHeight = osd->Height();
+    int xStart = 0;
+    int yStart = 0;
+    for (int i = 0; i < numPixmaps; i++) {
+        if (!PixmapExists(i))
+            continue;
+        cPoint pos;
+        Pos(i, pos);
+        switch (shiftType) {
+            case stLeft:
+                xStart = pos.X() - (unionArea.X() + unionArea.Width());
+                pos.SetX(xStart);
+                break;
+            case stRight:
+                xStart = osdWidth + (pos.X() - unionArea.X());
+                pos.SetX(xStart);
+                break;
+            case stTop:
+                yStart = pos.Y() - (unionArea.Y() + unionArea.Height());
+                pos.SetY(yStart);
+                break;
+            case stBottom:
+                yStart = osdHeight + (pos.Y() - unionArea.Y());
+                pos.SetY(yStart);
+                break;
+            default:
+                break;
+        }
+        startPositions[i] = pos;
+        cRect r = ViewPort(i);
+        r.SetPoint(pos.X(), pos.Y());
+        SetViewPort(i, r);
+        SetAlpha(i, ALPHA_OPAQUE);
+    }
+    DoFlush();
+    //Calculating total shifting distance
+    int shiftTotal = 0;
+    switch (shiftType) {
+        case stLeft:
+            shiftTotal = unionArea.X() + unionArea.Width();
+            break;
+        case stRight:
+            shiftTotal = unionArea.Width() + (osdWidth - (unionArea.X() + unionArea.Width())); 
+            break;
+        case stTop:
+            shiftTotal = unionArea.Y() + unionArea.Height();
+            break;
+        case stBottom:
+            shiftTotal = unionArea.Height() + (osdHeight - (unionArea.Y() + unionArea.Height())); 
+            break;
+        default:
+            break;
+    }
+    //Moving In
+    uint64_t Start = cTimeMs::Now();
+    while (Running()) {
+        uint64_t Now = cTimeMs::Now();
+        double t = min(double(Now - Start) / shiftTime, 1.0);
+        if (shiftMode == smSlowedDown) {
+            //using f(x) = -(x-1)^2 + 1 as mapping function
+            t = (-1)*pow(t - 1, 2) + 1;
+        }
+        int xNew = 0;
+        int yNew = 0;
+        for (int i = 0; i < numPixmaps; i++) {
+            if (!PixmapExists(i))
+                continue;
+            cRect r = ViewPort(i);
+            switch (shiftType) {
+                case stLeft:
+                    xNew = startPositions[i].X() + t * shiftTotal;
+                    r.SetPoint(xNew, r.Y());
+                    break;
+                case stRight:
+                    xNew = startPositions[i].X() - t * shiftTotal;
+                    r.SetPoint(xNew, r.Y());
+                    break;
+                case stTop:
+                    yNew = startPositions[i].Y() + t * shiftTotal;
+                    r.SetPoint(r.X(), yNew);
+                    break;
+                case stBottom:
+                    yNew = startPositions[i].Y() - t * shiftTotal;
+                    r.SetPoint(r.X(), yNew);
+                    break;
+                default:
+                    break;
+            }
+            SetViewPort(i, r);
+        }
+        DoFlush();
+        int Delta = cTimeMs::Now() - Now;
+        if (Running() && (Delta < frameTime)) {
+            cCondWait::SleepMs(frameTime - Delta);
+        }
+        if ((int)(Now - Start) > shiftTime)
+            break;
+    }
+}
+
+void cPixmapContainer::ShiftInFromPoint(int frames, int frameTime) {
+    //store original positions of pixmaps and move to StartPosition
     cPoint destPos[numPixmaps];
     for (int i = 0; i < numPixmaps; i++) {
         if (!PixmapExists(i))
@@ -418,12 +556,9 @@ void cPixmapContainer::ShiftIn(void) {
         SetAlpha(i, ALPHA_OPAQUE);
     }
     DoFlush();
-
-    int frames = shiftTime / 20;
-    if (frames <= 0) frames = 1;
+    //Move In
     uint64_t Start = cTimeMs::Now();
-    int frameTime = shiftTime / frames;
-    while (true) {
+    while (Running()) {
         uint64_t Now = cTimeMs::Now();
         double t = min(double(Now - Start) / shiftTime, 1.0);
         for (int i = 0; i < numPixmaps; i++) {
@@ -437,13 +572,13 @@ void cPixmapContainer::ShiftIn(void) {
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
-        if (Delta < frameTime)
+        if (Running() && (Delta < frameTime))
             cCondWait::SleepMs(frameTime - Delta);
         if ((int)(Now - Start) > shiftTime)
             break;
     }
-
 }
+
 
 /*****************************************
 * scrollSpeed: 1 slow

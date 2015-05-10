@@ -75,6 +75,10 @@ void cTemplateFunction::SetParameters(vector<pair<string, string> > params) {
             p.first = ptFadeTime;
         } else if (!name.compare("shifttime")) {
             p.first = ptShiftTime;
+        } else if (!name.compare("shifttype")) {
+            p.first = ptShiftType;
+        } else if (!name.compare("shiftmode")) {
+            p.first = ptShiftMode;
         } else if (!name.compare("startx")) {
             p.first = ptStartX;
         } else if (!name.compare("starty")) {
@@ -304,6 +308,12 @@ bool cTemplateFunction::CalculateParameters(void) {
             case ptAnimType:
                 paramValid = SetAnimType(value);
                 break;
+            case ptShiftType:
+                paramValid = SetShiftType(value);
+                break;
+            case ptShiftMode:
+                paramValid = SetShiftMode(value);
+                break;
             default:
                 paramValid = true;
                 break;
@@ -442,6 +452,8 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptFadeTime)
             return 0;
+        else if (type == ptShiftTime)
+            return 0;
         else if (type == ptMenuItemWidth)
             return 0;
         else if (type == ptHideRoot)
@@ -454,6 +466,15 @@ int cTemplateFunction::GetNumericParameter(eParamType type) {
             return 0;
         else if (type == ptDirection)
             return diBottomUp;
+        else if (type == ptStartX)
+            return 0;
+        else if (type == ptStartY)
+            return 0;
+        else if (type == ptShiftType)
+            return stNone;
+        else if (type == ptShiftMode)
+            return smLinear;
+        //default default ;)
         return -1;
     }
     return hit->second;
@@ -1164,6 +1185,28 @@ bool cTemplateFunction::SetAnimType(string value) {
     return true;
 }
 
+bool cTemplateFunction::SetShiftType(string value) {
+    int shiftType = stNone;
+    if (!value.compare("left"))
+        shiftType = stLeft;
+    else if (!value.compare("right"))
+        shiftType = stRight;
+    else if (!value.compare("top"))
+        shiftType = stTop;
+    else if (!value.compare("bottom"))
+        shiftType = stBottom;
+    numericParameters.insert(pair<eParamType, int>(ptShiftType, shiftType));
+    return true;
+}
+
+bool cTemplateFunction::SetShiftMode(string value) {
+    int shiftMode = smLinear;
+    if (!value.compare("slowed"))
+        shiftMode = smSlowedDown;
+    numericParameters.insert(pair<eParamType, int>(ptShiftMode, shiftMode));
+    return true;
+}
+
 void cTemplateFunction::SetDebugGrid(string value) {
     int numGridsX = 0;
     int numGridsY = 0;
@@ -1604,6 +1647,12 @@ string cTemplateFunction::GetParamName(eParamType pt) {
             break;
         case ptShiftTime:
             name = "Shift Time";
+            break;
+        case ptShiftType:
+            name = "Shift Type";
+            break;
+        case ptShiftMode:
+            name = "Shift Mode";
             break;
         case ptStartX:
             name = "Startpos X";

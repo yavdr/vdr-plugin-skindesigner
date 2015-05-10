@@ -7,6 +7,11 @@ using namespace std;
 
 cView::cView(cTemplateView *tmplView) : cPixmapContainer(tmplView->DrawGebugGrid() ? tmplView->GetNumPixmaps() + 1 : tmplView->GetNumPixmaps()) {
     this->tmplView = tmplView;
+    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
+    SetShiftTime(tmplView->GetNumericParameter(ptShiftTime));
+    SetStartPos(tmplView->GetNumericParameter(ptStartX), tmplView->GetNumericParameter(ptStartY));
+    SetShiftType(tmplView->GetNumericParameter(ptShiftType));
+    SetShiftMode(tmplView->GetNumericParameter(ptShiftMode));
     tvScaled = tmplView->GetScalingWindow(scalingWindow);
     if (tvScaled) {
         cDevice::PrimaryDevice()->ScaleVideo(scalingWindow);
@@ -67,6 +72,13 @@ void cView::Init(void) {
 }
 
 void cView::Action(void) {
+    SetInitFinished();
+    if (IsAnimated()) {
+        ShiftIn();
+    } else {
+        FadeIn();
+    }
+    DoFlush();
     if (scrolling) {
         DoSleep(scrollDelay);
         if (scrollOrientation == orHorizontal) {
@@ -1045,20 +1057,57 @@ cRect cView::CalculateAnimationClip(int numPix, cRect &pos) {
 ************************************************************************/
 
 cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
+    init = true;
+    ve = veUndefined;
+    helper = NULL;
+    SetTokens = NULL;
     tmplViewElement->SetPixOffset(0);
     delay = tmplViewElement->GetNumericParameter(ptDelay);
     SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
     SetShiftTime(tmplViewElement->GetNumericParameter(ptShiftTime));
     SetStartPos(tmplViewElement->GetNumericParameter(ptStartX), tmplViewElement->GetNumericParameter(ptStartY));
+    SetShiftType(tmplViewElement->GetNumericParameter(ptShiftType));
+    SetShiftMode(tmplViewElement->GetNumericParameter(ptShiftMode));
 }
+
+cViewElement::cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *helper) : cView(tmplViewElement) {
+    init = true;
+    ve = veUndefined;
+    this->helper = helper;
+    SetTokens = NULL;
+    tmplViewElement->SetPixOffset(0);
+    delay = tmplViewElement->GetNumericParameter(ptDelay);
+    SetFadeTime(tmplViewElement->GetNumericParameter(ptFadeTime));
+    SetShiftTime(tmplViewElement->GetNumericParameter(ptShiftTime));
+    SetStartPos(tmplViewElement->GetNumericParameter(ptStartX), tmplViewElement->GetNumericParameter(ptStartY));
+    SetShiftType(tmplViewElement->GetNumericParameter(ptShiftType));
+    SetShiftMode(tmplViewElement->GetNumericParameter(ptShiftMode));
+} 
 
 cViewElement::~cViewElement() {
     CancelSave();
 }
 
+bool cViewElement::Render(void) {
+    if (!helper || !SetTokens) {
+        return false;
+    }
+    ClearTokens();
+    bool done = (helper->*SetTokens)(init, stringTokens, intTokens);
+    if (!done) {
+        return false;
+    }
+    init = false;
+    ClearViewElement(ve);
+    DrawViewElement(ve, &stringTokens, &intTokens);
+    return true;
+}
+
 void cViewElement::Action(void) {
     DoSleep(delay);
-    Render();
+    if (!Running())
+        return;
+    Render();        
     SetInitFinished();
     if (IsAnimated()) {
         ShiftIn();

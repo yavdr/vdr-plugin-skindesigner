@@ -24,8 +24,12 @@ private:
     bool checkRunning;
     int fadeTime;
     int shiftTime;
+    int shiftType;
+    int shiftMode;
     cPoint startPos;
     bool deleteOsdOnExit;
+    void ShiftInFromBorder(int frames, int frameTime);
+    void ShiftInFromPoint(int frames, int frameTime);
 protected:
     void SetInitFinished(void) { pixContainerInit = false; };
     bool CreateOsd(int Left, int Top, int Width, int Height);
@@ -61,6 +65,8 @@ protected:
     //HELPERS -- do not access the pixmaps array directly, use wrapper functions
     void SetFadeTime(int fade) { fadeTime = fade; };
     void SetShiftTime(int shift) { shiftTime = shift; };
+    void SetShiftType(int type) { shiftType = type; };
+    void SetShiftMode(int mode) { shiftMode = mode; };
     void SetStartPos(int posX, int posY) { startPos.SetX(posX); startPos.SetY(posY); };
     bool IsAnimated(void) { return (shiftTime > 0); };
     void FadeIn(void);

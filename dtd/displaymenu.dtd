@@ -24,18 +24,42 @@
 
 <!ELEMENT header (area|areascroll)*>
 <!ATTLIST header
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT datetime (area|areascroll)*>
 <!ATTLIST datetime
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
 <!ELEMENT time (area|areascroll)*>
 <!ATTLIST time
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
@@ -64,6 +88,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -76,6 +102,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -88,6 +116,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -101,6 +131,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -113,6 +145,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -125,6 +159,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -137,6 +173,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -149,6 +187,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -161,6 +201,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED
@@ -173,6 +215,8 @@
   delay CDATA #IMPLIED
   fadetime CDATA #IMPLIED
   shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
   startx CDATA #IMPLIED
   starty CDATA #IMPLIED
   debug CDATA #IMPLIED

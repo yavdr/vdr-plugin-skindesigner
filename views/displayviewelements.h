@@ -15,40 +15,6 @@ public:
     bool Render(void);
 };
 
-class cViewElementSignal : public cViewElement, public cViewHelpers {
-private:
-public:
-    cViewElementSignal(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementSignal() {};
-    bool Render(void);
-};
-
-class cViewElementWeather : public cViewElement, public cViewHelpers {
-private:
-public:
-    cViewElementWeather(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementWeather() {};
-    bool Render(void);
-};
-
-class cViewElementDate : public cViewElement, public cViewHelpers {
-private:
-    bool init;
-public:
-    cViewElementDate(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementDate() {};
-    bool Render(void);
-};
-
-class cViewElementTime : public cViewElement, public cViewHelpers {
-private:
-    bool init;
-public:
-    cViewElementTime(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementTime() {};
-    bool Render(void);
-};
-
 enum ScraperContentType {
     ctPosterBanner,
     ctFull
@@ -89,44 +55,22 @@ public:
     bool Render(void);
 };
 
-class cViewElementDiscUsage : public cViewElement, public cViewHelpers {
-private:
-public:
-    cViewElementDiscUsage(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementDiscUsage() {};
-    bool Render(void);
-};
-
-class cViewElementSystemLoad : public cViewElement, public cViewHelpers {
-private:
-public:
-    cViewElementSystemLoad(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementSystemLoad() {};
-    bool Render(void);
-};
-
-class cViewElementSystemMemory : public cViewElement, public cViewHelpers {
-private:
-public:
-    cViewElementSystemMemory(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementSystemMemory() {};
-    bool Render(void);
-};
-
-class cViewElementTemperature : public cViewElement, public cViewHelpers {
-private:
-public:
-    cViewElementTemperature(cTemplateViewElement *tmplViewElement);
-    virtual ~cViewElementTemperature() {};
-    bool Render(void);
-};
-
 class cViewElementCurrentSchedule : public cViewElement, public cViewHelpers {
 private:
     string currentRecording;
 public:
     cViewElementCurrentSchedule(cTemplateViewElement *tmplViewElement, string currentRecording);
     virtual ~cViewElementCurrentSchedule() {};
+    bool Render(void);
+};
+
+class cViewElementMenuHeader : public cViewElement, public cViewHelpers {
+private:
+    eMenuCategory cat;
+    string menuTitle;
+public:
+    cViewElementMenuHeader(cTemplateViewElement *tmplViewElement, eMenuCategory cat, string menuTitle);
+    virtual ~cViewElementMenuHeader() {};
     bool Render(void);
 };
 

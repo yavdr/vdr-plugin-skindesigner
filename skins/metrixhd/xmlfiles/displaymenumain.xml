@@ -121,7 +121,7 @@
     {timers[channellogoexists]}  true if channel logo exists
     {timers[isremotetimer]}      true if timer is a remote timer from remotetimers plugin
     -->
-    <timers detached="true" delay="100" shifttime="500" startx="0" starty="100%">
+    <timers detached="true" delay="100" shifttime="{shifttimetimers}" startx="0" starty="100%">
         <area x="0" y="75%" width="{areawidth}/8 - 5" height="25%" layer="1">
             <fill color="{clrTransBlack}" />
         </area>

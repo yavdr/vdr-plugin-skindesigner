@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-01-19 17:09+0100\n"
+"POT-Creation-Date: 2015-05-09 10:38+0200\n"
 "PO-Revision-Date: 2014-09-27 11:02+0200\n"
 "Last-Translator: Louis Braun <louis.braun@gmx.de>\n"
 "Language-Team: \n"
@@ -29,6 +29,9 @@ msgstr ""
 
 msgid "Menu Item display method"
 msgstr "Art der Ausgabe der Menüelemente"
+
+msgid "Frames per Second (fading and shifting)"
+msgstr "Frames pro Sekunde (fading und shifting)"
 
 msgid "Reruns"
 msgstr "Wiederholungen"

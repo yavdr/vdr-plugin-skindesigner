@@ -286,7 +286,6 @@ bool cSDDisplayMenu::SetPluginText(map<string,string> *stringTokens, map<string,
 void cSDDisplayMenu::Flush(void) {
     if (!doOutput)
         return;
-
     bool doFlush = false;
     if (state == vsInit) {
         rootView->Start();

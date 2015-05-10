@@ -97,6 +97,7 @@ public:
     int rerunDistance;
     int rerunMaxChannel;
     int blockFlush;
+    int framesPerSecond;
     //TemplateReload on Setup Close
     bool setupCloseDoReload;
 };

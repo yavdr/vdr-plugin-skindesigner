@@ -12,7 +12,6 @@ cDisplayReplayView::cDisplayReplayView(cTemplateView *tmplView) : cView(tmplView
     lastMarks = NULL;
     markActive = -1;
     DeleteOsdOnExit();
-    SetFadeTime(tmplView->GetNumericParameter(ptFadeTime));
 }
 
 cDisplayReplayView::~cDisplayReplayView() {
@@ -489,11 +488,4 @@ void cDisplayReplayView::RememberMarks(const cMarks *marks) {
         lastMarks[i] = m->Position();
         i++;
     }
-}
-
-void cDisplayReplayView::Action(void) {
-    SetInitFinished();
-    FadeIn();
-    DoFlush();
-    cView::Action();
 }

@@ -15,6 +15,7 @@ private:
     int rerunDistance;
     int rerunMaxChannel;
     int blockFlush;
+    int framesPerSecond;
     const char *menuDisplayStyle[2];
 
     void Setup(void);

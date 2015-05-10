@@ -5,8 +5,6 @@
 #include "view.h"
 
 class cDisplayMessageView : public cView {
-private:
-    virtual void Action(void);
 public:
     cDisplayMessageView(cTemplateView *tmplView);
     virtual ~cDisplayMessageView();
