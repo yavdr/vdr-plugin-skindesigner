@@ -769,6 +769,8 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     }
 
     time_t startTime = event->StartTime();
+    if (!startTime)
+        startTime = usedRecording->Start();
     struct tm * sStartTime = localtime(&startTime);
     intTokens.insert(pair<string, int>("year", sStartTime->tm_year + 1900));
     intTokens.insert(pair<string, int>("daynumeric", sStartTime->tm_mday));

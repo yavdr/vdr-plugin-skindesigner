@@ -312,3 +312,6 @@ Version 0.4.4
 - expanded shifting features
 
 Version 0.4.5
+
+- added {numtimers} Token to lastrecordings viewelement
+- fixed time display bug in displaymenurecordings
