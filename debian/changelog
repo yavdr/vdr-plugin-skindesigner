@@ -1,3 +1,16 @@
+vdr-plugin-skindesigner (0.4.5-3-g57999a4-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 918a331: cosmetics
+  * c5edc10: possibility to move viewelements when starting view
+  * 2874341: expanded shifting features
+  * 896ff99: Version 0.4.5
+  * 5dbe3d8: added {numtimers} Token to lastrecordings viewelement
+  * 71fa86f: fixed time display bug in displaymenurecordings
+  * 57999a4: added token {watched} to displaymenurecordings
+
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 10 May 2015 15:53:11 +0200
+
 vdr-plugin-skindesigner (0.4.4-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
