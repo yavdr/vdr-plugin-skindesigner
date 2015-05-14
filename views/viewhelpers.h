@@ -20,6 +20,8 @@ private:
     int lastMinute;
     double lastSystemLoad;
     int lastMemUsage;
+    string lastVdrCPU;
+    string lastVdrMEM;
     sDVBAPIEcmInfo lastEcmInfo;
     void RecName(string &path, string &name, string &folder);
     void RecPoster(const cRecording *rec, int &posterWidth, int &posterHeight, string &path, bool &hasPoster);
@@ -49,6 +51,7 @@ public:
     bool SetSystemLoad          (bool forced, stringmap &stringTokens, intmap &intTokens);
     bool SetSystemMemory        (bool forced, stringmap &stringTokens, intmap &intTokens);
     bool SetSystemTemperatures  (bool forced, stringmap &stringTokens, intmap &intTokens);
+    bool SetVDRStats            (bool forced, stringmap &stringTokens, intmap &intTokens);
     bool SetDummy               (bool forced, stringmap &stringTokens, intmap &intTokens);
 };
 

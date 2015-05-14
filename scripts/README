@@ -1,10 +1,11 @@
-This Widget provide information about the system temperatures.
+Scripts for:
+- system temperatures - "temperatures" is called
+- vdr statistics (vdr cpu load and memory usage) "vdrstats" is called
 
-You must manually create a link to the corresponding script, for example:
+You must manually create a link for each script to the script you want to use, for example:
 ln -s temperatures.default temperatures
+ln -s vdrstats.default vdrstats
 
-The command "temperatures" will be executed every time the widget is drawn, so please keep it short and fast.
-The command can provide three temperatures: cpu, pc case and gpu temperature
-The command can also be called from system information widget. So the output files must also begin with 01_ - 99_ for sort/position. 
+The scripts will be executed every time the according viewelement is displayed, so please keep it short and fast.
 
-Please install lm-sensors and configure it for your system. See the default script for an example.
+Please install lm-sensors and configure it for your system. 

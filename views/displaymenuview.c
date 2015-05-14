@@ -299,9 +299,10 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
 bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
     bool loadChanged = DrawLoad();
     bool memChanged = DrawMemory();
+    bool vdrChanged = DrawVdrStats();
     bool devicesChanged = DrawDevices();
     initial = false;
-    return loadChanged || memChanged || devicesChanged;
+    return loadChanged || memChanged || vdrChanged || devicesChanged;
 
 }
 
@@ -440,6 +441,35 @@ bool cDisplayMenuMainView::DrawMemory(void) {
         if (changed) {
             ClearViewElement(veSystemMemory);
             DrawViewElement(veSystemMemory, &stringTokens, &intTokens);
+        }
+    }
+    return changed;
+}
+
+bool cDisplayMenuMainView::DrawVdrStats(void) {
+    if (!ExecuteViewElement(veVDRStats)) {
+        return false;
+    }
+    bool changed = false;
+    if (DetachViewElement(veVDRStats)) {
+        cViewElement *viewElement = GetViewElement(veVDRStats);
+        if (!viewElement) {
+            viewElement = new cViewElement(tmplView->GetViewElement(veVDRStats), this);
+            viewElement->SetCallback(veVDRStats, &cDisplayMenuMainView::SetVDRStats);
+            AddViewElement(veVDRStats, viewElement);
+            viewElement->Start();
+            changed = true;
+        } else {
+            if (!viewElement->Starting())
+                changed = viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        changed = SetVDRStats(false, stringTokens, intTokens);
+        if (changed) {
+            ClearViewElement(veVDRStats);
+            DrawViewElement(veVDRStats, &stringTokens, &intTokens);
         }
     }
     return changed;

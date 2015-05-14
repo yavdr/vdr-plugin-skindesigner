@@ -57,6 +57,7 @@ private:
     void DrawDiscUsage(void);
     bool DrawLoad(void);
     bool DrawMemory(void);
+    bool DrawVdrStats(void);
     void DrawTemperatures(void);
     bool DrawDevices(void);
     void DrawCurrentSchedule(void);

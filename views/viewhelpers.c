@@ -26,6 +26,8 @@ cViewHelpers::cViewHelpers(void) {
     lastEcmInfo.caid = -1;
     lastEcmInfo.pid = -1;
     lastEcmInfo.prid = -1;
+    lastVdrCPU = "undefined";
+    lastVdrMEM = "undefined";
 }
 
 cViewHelpers::~cViewHelpers() {
@@ -256,6 +258,42 @@ bool cViewHelpers::SetSystemTemperatures(bool forced, stringmap &stringTokens, i
     intTokens.insert(pair<string,int>("gputemp", gpu));
     return true;
 }
+
+bool cViewHelpers::SetVDRStats(bool forced, stringmap &stringTokens, intmap &intTokens) {
+    cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/vdrstats\"", SCRIPTFOLDER, SCRIPTFOLDER);
+    system(*execCommand);
+
+    string vdrCPU = "";
+    string vdrMEM = "";
+
+    cString itemFilename = cString::sprintf("%s/vdrcpu", SCRIPTOUTPUTPATH );
+    ifstream file(*itemFilename, ifstream::in);
+    if( file.is_open() ) {
+        std::getline(file, vdrCPU);
+        file.close();
+    }
+
+    itemFilename = cString::sprintf("%s/vdrmem", SCRIPTOUTPUTPATH );
+    ifstream file2(*itemFilename, ifstream::in);
+    if( file2.is_open() ) {
+        std::getline(file2, vdrMEM);
+        file2.close();
+    }
+
+    if (vdrCPU.size() == 0 || vdrMEM.size() == 0)
+        return false;
+
+    if (!lastVdrCPU.compare(vdrCPU) && !lastVdrMEM.compare(vdrMEM)) {
+        return false;
+    }
+    lastVdrCPU = vdrCPU;
+    lastVdrMEM = vdrMEM;
+
+    stringTokens.insert(pair<string,string>("vdrcpu", vdrCPU));
+    stringTokens.insert(pair<string,string>("vdrmem", vdrMEM));
+    return true;    
+}
+
 
 bool cViewHelpers::SetDummy(bool forced, stringmap &stringTokens, intmap &intTokens) {
     return true;

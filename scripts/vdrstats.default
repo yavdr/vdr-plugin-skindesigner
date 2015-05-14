@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# please update this script to fit your needs
+# this script is call every time the according viewelement will be drawn, so keep it short and fast ;)
+
+OUTPUTFLDR="/tmp/skindesigner/"
+mkdir -p ${OUTPUTFLDR}
+
+# there can be 2 files, vdrcpu and vdrmem
+
+rm -f ${OUTPUTFLDR}/vdrcpu ${OUTPUTFLDR}/vdrmem
+
+# vdr cpu usage, is 10th element in "top" list
+top -n 1 | grep " vdr " | awk -F " " '{ print $10;}' > ${OUTPUTFLDR}/vdrcpu
+
+# vdr memory usage, is 11th element in "top" list
+top -n 1 | grep " vdr " | awk -F " " '{ print $11;}' > ${OUTPUTFLDR}/vdrmem
