@@ -66,6 +66,14 @@
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >

@@ -58,6 +58,7 @@ protected:
     void DrawViewElement(eViewElement ve, map <string,string> *stringTokens = NULL, map <string,int> *intTokens = NULL, map < string, vector< map< string, string > > > *loopTokens = NULL);
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
+    void DestroyDetachedViewElement(eViewElement ve);
     void ClearAnimations(int cat);
     bool ExecuteViewElement(eViewElement ve);
     bool DetachViewElement(eViewElement ve);

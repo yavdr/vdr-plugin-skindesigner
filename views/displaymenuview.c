@@ -173,20 +173,31 @@ bool cDisplayMenuView::DrawMessage(eMessageType type, const char *text) {
         return false;
     }
     if (!text) {
-        ClearViewElement(veMessage);
+        if (DetachViewElement(veMessage))
+            DestroyDetachedViewElement(veMessage);
+        else
+            ClearViewElement(veMessage);
         return true;
     }
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
 
-    intTokens.insert(pair<string, int>("status",  (type == mtStatus)  ? true : false));
-    intTokens.insert(pair<string, int>("info",    (type == mtInfo)    ? true : false));
-    intTokens.insert(pair<string, int>("warning", (type == mtWarning) ? true : false));
-    intTokens.insert(pair<string, int>("error",   (type == mtError)   ? true : false));
-    stringTokens.insert(pair<string,string>("text", text));
-    
-    ClearViewElement(veMessage);
-    DrawViewElement(veMessage, &stringTokens, &intTokens);
+   if (DetachViewElement(veMessage)) {
+        cViewElement *viewElement = GetViewElement(veMessage);
+        if (!viewElement) {
+            viewElement = new cViewElementMenuMessage(tmplView->GetViewElement(veMessage), type, text);
+            AddViewElement(veMessage, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+
+        SetMenuMessage(type, text, stringTokens, intTokens);
+        ClearViewElement(veMessage);
+        DrawViewElement(veMessage, &stringTokens, &intTokens);
+    }
     return true;
 }
 

@@ -75,4 +75,14 @@ public:
     bool Render(void);
 };
 
+class cViewElementMenuMessage : public cViewElement, public cViewHelpers {
+private:
+    eMessageType type;
+    string text;
+public:
+    cViewElementMenuMessage(cTemplateViewElement *tmplViewElement, eMessageType type, string text);
+    virtual ~cViewElementMenuMessage() {};
+    bool Render(void);
+};
+
 #endif //__DISPLAYCHANNELVIEWELEMENTS_H

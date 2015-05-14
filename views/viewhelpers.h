@@ -37,6 +37,7 @@ protected:
     void SetMenuHeader(eMenuCategory cat, string menuTitle, stringmap &stringTokens, intmap &intTokens);
     void SetCurrentSchedule(string recName, stringmap &stringTokens, intmap &intTokens);
     bool SetEcmInfos(int channelSid, stringmap &stringTokens, intmap &intTokens);
+    void SetMenuMessage(eMessageType type, string text, stringmap &stringTokens, intmap &intTokens);
 public:
     cViewHelpers(void);
     virtual ~cViewHelpers(void);

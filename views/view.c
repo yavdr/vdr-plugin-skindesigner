@@ -245,6 +245,16 @@ void cView::DestroyViewElement(eViewElement ve) {
     ClearAnimations(ve);
 }
 
+void cView::DestroyDetachedViewElement(eViewElement ve) {
+    map < eViewElement, cViewElement* >::iterator hit = detachedViewElements.find(ve);
+    if (hit == detachedViewElements.end())
+        return;
+    cViewElement *viewElement = hit->second;
+    delete viewElement;
+    detachedViewElements.erase(hit);    
+}
+
+
 void cView::ClearAnimations(int cat) {
     //stop and delete all animated elements from this viewelement
     if (animations.size() == 0)

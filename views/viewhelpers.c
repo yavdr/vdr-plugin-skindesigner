@@ -1125,3 +1125,11 @@ bool cViewHelpers::CompareECMInfos(sDVBAPIEcmInfo *ecmInfo) {
         return false;
     return true;
 }
+
+void cViewHelpers::SetMenuMessage(eMessageType type, string text, stringmap &stringTokens, intmap &intTokens) {
+    intTokens.insert(pair<string, int>("status",  (type == mtStatus)  ? true : false));
+    intTokens.insert(pair<string, int>("info",    (type == mtInfo)    ? true : false));
+    intTokens.insert(pair<string, int>("warning", (type == mtWarning) ? true : false));
+    intTokens.insert(pair<string, int>("error",   (type == mtError)   ? true : false));
+    stringTokens.insert(pair<string,string>("text", text));
+}

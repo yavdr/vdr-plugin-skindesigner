@@ -322,4 +322,5 @@ Version 0.4.5
   correctly
 - implemented shiftout for views
 - fixed blinking for animated views
+- chachged displaymessage in menus to detachable
 
