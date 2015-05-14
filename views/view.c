@@ -187,6 +187,9 @@ void cView::ClearViewElement(eViewElement ve) {
     if (detachedVE) {
         detachedVE->Clear();
         return;
+    } else {
+        if (DetachViewElement(ve))
+            return;
     }
     cTemplateViewElement *viewElement = NULL;
     int currentAnimCat = ve;

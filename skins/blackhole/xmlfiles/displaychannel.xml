@@ -244,7 +244,7 @@
     {mediaheight}                       height of image in pixel
     {isbanner}                          true if image is a banner, false if it is a poster
     -->
-    <scrapercontent>
+    <scrapercontent detached="true" delay="0" fadetime="0" shifttime="{shifttimechannel}" shifttype="left" shiftmode="slowed">
         <area condition="{showposter}++{isbanner}" x="1%" y="3%" width="{areaheight}*0.13*{mediawidth}/{mediaheight}" height="13%" layer="7">
             <drawimage imagetype="image" path="{mediapath}" align="center" valign="center"  width="{areawidth}" height="{areaheight}"/>
         </area>
