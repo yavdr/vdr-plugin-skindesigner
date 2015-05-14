@@ -1013,12 +1013,10 @@ void cView::DrawAnimatedImage(int numPix, cTemplateFunction *func, cRect &pos, c
     cRect posAnim = CalculateAnimationClip(numPix, pos);
     eAnimType animType = (eAnimType)func->GetNumericParameter(ptAnimType);
     int animFreq = func->GetNumericParameter(ptAnimFreq);
-    
+
     cAnimatedImage *anim = new cAnimatedImage(animType, animFreq, posAnim, layer);
     animations.insert(pair<int, cAnimation*>(animCat, anim));
-    if (tmplView) {
-        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    }
+    anim->SetDelay(AnimationDelay());
     anim->SetImage(image);
     anim->Start();
 }
@@ -1034,9 +1032,7 @@ void cView::DrawAnimatedText(int numPix, cTemplateFunction *func, cPoint &pos, s
     
     cAnimatedText *anim = new cAnimatedText(animType, animFreq, posAnim, layer);
     animations.insert(pair<int, cAnimation*>(animCat, anim));
-    if (tmplView) {
-        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    }
+    anim->SetDelay(AnimationDelay());
     anim->SetText(text);
     anim->SetFont(fontName);
     anim->SetFontSize(fontSize);
@@ -1053,9 +1049,7 @@ void cView::DrawAnimatedOsdObject(int numPix, cTemplateFunction *func, cRect &po
 
     cAnimatedOsdObject *anim = new cAnimatedOsdObject(funcType, animType, animFreq, posAnim, layer);
     animations.insert(pair<int, cAnimation*>(animCat, anim));
-    if (tmplView) {
-        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    }
+    anim->SetDelay(AnimationDelay());
     anim->SetColor(col);
     anim->SetQuadrant(quadrant);
     anim->Start();

@@ -72,6 +72,7 @@ protected:
     void SetShiftMode(int mode) { shiftMode = mode; };
     void SetStartPos(int posX, int posY) { startPos.SetX(posX); startPos.SetY(posY); };
     bool IsAnimated(void) { return (shiftTime > 0); };
+    int AnimationDelay(void);
     void FadeIn(void);
     void FadeOut(void);
     void ShiftIn(void);

@@ -344,6 +344,11 @@ void cPixmapContainer::SetDrawPortPoint(int num, const cPoint &Point) {
 *            to ensure that a proper lock is set before accessing pixmaps
 ****************************************************************************/
 
+int cPixmapContainer::AnimationDelay(void) {
+    int animTime = max(shiftTime, fadeTime);
+    return animTime + 100;
+}
+
 void cPixmapContainer::FadeIn(void) {
     if (!fadeTime) {
         for (int i = 0; i < numPixmaps; i++) {
