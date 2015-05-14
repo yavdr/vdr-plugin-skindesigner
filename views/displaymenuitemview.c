@@ -376,8 +376,10 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
             intTokens.insert(pair<string,int>("running", isRunning));
             if (isRunning) {
                 intTokens.insert(pair<string,int>("elapsed", (now - event->StartTime())/60));
+                intTokens.insert(pair<string,int>("startsin", 0));
             } else {
                 intTokens.insert(pair<string,int>("elapsed", 0));
+                intTokens.insert(pair<string,int>("startsin", (event->StartTime() - now)/60));
             }
             intTokens.insert(pair<string,int>("duration", event->Duration() / 60));
             intTokens.insert(pair<string,int>("durationhours", event->Duration() / 3600));

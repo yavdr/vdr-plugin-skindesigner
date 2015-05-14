@@ -44,6 +44,7 @@
         {year}                    year as number
         {running}                 true if event is currently running
         {elapsed}                 elapsed time of event, if not running 0
+        {startsin}                minutes till event starts, if running 0
         {duration}                duration of event
         {durationhours}           duration, full hours
         {durationminutes}         duration, rest of minutes
