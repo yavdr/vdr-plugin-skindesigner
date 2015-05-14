@@ -216,11 +216,11 @@
             <drawimage imagetype="icon" path="{icon}" align="center" valign="center" width="{areaheight}*0.9" height="{areaheight}*0.9"/>
         </area>
         <area x="89%" y="13%" width="10%" height="10%" layer="2">
-            <drawtext x="0" y="0" font="{light}" fontsize="25%" color="{clrWhite}" text="{mintemperature}°C" />
-            <drawtext x="0" y="75%" font="{light}" fontsize="25%" color="{clrWhite}" text="{maxtemperature}°C" />
+            <drawtext x="0" y="0" font="{light}" fontsize="35%" color="{clrWhite}" text="{mintemperature}°C" />
+            <drawtext x="0" y="70%" font="{light}" fontsize="35%" color="{clrWhite}" text="{maxtemperature}°C" />
         </area>
         <area x="89%" y="13%" width="10%" height="10%" layer="3">
-            <drawtext align="right" valign="center" font="{light}" fontsize="60%" color="{clrWhite}" text="{temperature}°C" />
+            <drawtext align="right" valign="center" font="{light}" fontsize="65%" color="{clrWhite}" text="{temperature}°C" />
         </area>
     </currentweather>
 
@@ -247,14 +247,14 @@
         </area>
         <area x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="2">
             <loop name="devices" x="0" y="0" orientation="vertical" columnwidth="{areawidth}" rowheight="{areaheight} / {numdevices}" overflow="cut">
-                <drawtext name="label" x="5" y="0" font="{light}" fontsize="{rowheight}*0.4" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
-                <drawtext condition="{devices[hascam]}" x="{width(label)} + 15" y="0" font="{light}" fontsize="{rowheight}*0.40" color="{clrWhite}" text="(CAM {devices[cam]})" />
-                <drawtext condition="{devices[recording]} ++ {devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.40" color="{clrRed}" text="LiveTV, Recording ({devices[channelname]}) " />
-                <drawtext condition="{devices[recording]} ++ not{devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.40" color="{clrRed}" text="Recording ({devices[channelname]}) " />
-                <drawtext condition="not{devices[recording]} ++ {devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.40" color="{clrWhite}" text="LiveTV ({devices[channelname]}) " />
+                <drawtext name="label" x="5" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="{devices[num]}: {devices[type]}" />
+                <drawtext condition="{devices[hascam]}" x="{width(label)} + 15" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="(CAM {devices[cam]})" />
+                <drawtext condition="{devices[recording]} ++ {devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrRed}" text="LiveTV, Recording ({devices[channelname]}) " />
+                <drawtext condition="{devices[recording]} ++ not{devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrRed}" text="Recording ({devices[channelname]}) " />
+                <drawtext condition="not{devices[recording]} ++ {devices[livetv]}" align="right" y="0" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="LiveTV ({devices[channelname]}) " />
                 <drawrectangle condition="{devices[istuned]}" x="5" y="{rowheight}/3 + 5" width="{areawidth} * {devices[signalstrength]} / 100 - 10 * {devices[signalstrength]} / 100" height="{rowheight}/3 - 10" color="{clrTransWhite}" />
                 <drawrectangle condition="{devices[istuned]}" x="5" y="2*{rowheight}/3 + 5" width="{areawidth} * {devices[signalquality]} / 100 - 10 * {devices[signalquality]} / 100" height="{rowheight}/3 - 10" color="{clrTransWhite}" />
-                <drawtext condition="not{devices[istuned]}" align="center" y="{rowheight}/2" font="{light}" fontsize="{rowheight}*0.40" color="{clrWhite}" text="not tuned" />
+                <drawtext condition="not{devices[istuned]}" align="center" y="{rowheight}/2" font="{light}" fontsize="{rowheight}*0.35" color="{clrWhite}" text="not tuned" />
             </loop>
         </area>
     </devices>
