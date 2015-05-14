@@ -29,7 +29,10 @@ private:
     cPoint startPos;
     bool deleteOsdOnExit;
     void ShiftInFromBorder(int frames, int frameTime);
+    void ShiftOutToBorder(int frames, int frameTime);
     void ShiftInFromPoint(int frames, int frameTime);
+    void ShiftOutToPoint(int frames, int frameTime);
+    cRect UnionPixmaps(void);
 protected:
     void SetInitFinished(void) { pixContainerInit = false; };
     bool CreateOsd(int Left, int Top, int Width, int Height);
@@ -72,6 +75,7 @@ protected:
     void FadeIn(void);
     void FadeOut(void);
     void ShiftIn(void);
+    void ShiftOut(void);
     void ScrollVertical(int num, int scrollDelay, int scrollSpeed);
     void ScrollHorizontal(int num, int scrollDelay, int scrollSpeed, int scrollMode);
     void CancelSave(void);

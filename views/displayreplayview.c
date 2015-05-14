@@ -21,8 +21,6 @@ cDisplayReplayView::~cDisplayReplayView() {
     if (onPauseView) {
         delete onPauseView;
     }
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayReplayView::createOsd(void) {

@@ -5,7 +5,6 @@ cDisplayMenuTabView::cDisplayMenuTabView(cTemplateViewTab *tmplTab) : cView(tmpl
 }
 
 cDisplayMenuTabView::~cDisplayMenuTabView() {
-    CancelSave();
 }
 
 void cDisplayMenuTabView::SetTokens(map < string, int > *intTokens, map < string, string > *stringTokens, map < string, vector< map< string, string > > > *loopTokens) {

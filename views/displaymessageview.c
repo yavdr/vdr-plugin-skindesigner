@@ -7,8 +7,6 @@ cDisplayMessageView::cDisplayMessageView(cTemplateView *tmplView) : cView(tmplVi
 }
 
 cDisplayMessageView::~cDisplayMessageView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayMessageView::createOsd(void) {

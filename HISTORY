@@ -320,3 +320,4 @@ Version 0.4.5
   updated if detached
 - fixed bug that detached viewelements were not cleared
   correctly
+- implemented shiftout for views

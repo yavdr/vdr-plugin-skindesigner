@@ -17,8 +17,6 @@ cDisplayPluginView::cDisplayPluginView(cTemplateView *tmplView, bool isRootView)
 }
 
 cDisplayPluginView::~cDisplayPluginView() {
-    CancelSave();
-    FadeOut();
     if (tabView)
         delete tabView;
 }

@@ -9,8 +9,6 @@ cDisplayVolumeView::cDisplayVolumeView(cTemplateView *tmplView) : cView(tmplView
 }
 
 cDisplayVolumeView::~cDisplayVolumeView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayVolumeView::createOsd(void) {

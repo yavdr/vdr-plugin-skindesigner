@@ -17,8 +17,6 @@ cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cVi
 }
 
 cDisplayMenuView::~cDisplayMenuView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayMenuView::DrawBackground(void) {

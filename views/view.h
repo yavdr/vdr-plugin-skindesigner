@@ -42,6 +42,8 @@ protected:
     cRect scalingWindow;
     bool tvScaled;
     bool viewInit;
+    //do fadeout or shiftout only for views, not for childs
+    bool fadeOut;
     //true if view is scrollable in general
     bool scrolling;
     //true if view is actually starting scrolling

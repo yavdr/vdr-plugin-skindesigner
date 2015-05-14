@@ -18,8 +18,6 @@ cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplVi
 }
 
 cDisplayChannelView::~cDisplayChannelView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayChannelView::createOsd(void) {

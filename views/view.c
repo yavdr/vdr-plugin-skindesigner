@@ -38,17 +38,28 @@ cView::cView(cTemplateViewTab *tmplTab) : cPixmapContainer(1) {
 }
 
 cView::~cView() {
+    CancelSave();
+
     if (tvScaled) {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
+    //clear detached views
     for (map<eViewElement,cViewElement*>::iterator dVeIt = detachedViewElements.begin(); dVeIt != detachedViewElements.end(); dVeIt++) {
         cViewElement *ve = dVeIt->second;
         delete ve;
     }
+    //clear animations
     for (multimap<int, cAnimation*>::iterator animIt = animations.begin(); animIt != animations.end(); animIt++) {
         cAnimation *anim = animIt->second;
         anim->Stop();
         delete anim;
+    }
+    //shift or fade out
+    if (fadeOut) {
+        if (IsAnimated())
+            ShiftOut();
+        else
+            FadeOut();
     }
 }
 
@@ -59,6 +70,7 @@ void cView::DrawDebugGrid(void) {
 }
 
 void cView::Init(void) {
+    fadeOut = true;
     viewInit = true;
     scrolling = false;
     veScroll = veUndefined;
@@ -1066,6 +1078,7 @@ cRect cView::CalculateAnimationClip(int numPix, cRect &pos) {
 
 cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
     init = true;
+    fadeOut = false;
     ve = veUndefined;
     helper = NULL;
     SetTokens = NULL;
@@ -1080,6 +1093,7 @@ cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplVi
 
 cViewElement::cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *helper) : cView(tmplViewElement) {
     init = true;
+    fadeOut = false;
     ve = veUndefined;
     this->helper = helper;
     SetTokens = NULL;
@@ -1093,7 +1107,6 @@ cViewElement::cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *
 } 
 
 cViewElement::~cViewElement() {
-    CancelSave();
 }
 
 bool cViewElement::Render(void) {
@@ -1148,6 +1161,7 @@ void cViewElement::ClearTokens(void) {
 ************************************************************************/
 
 cViewListItem::cViewListItem(cTemplateViewElement *tmplItem) : cView(tmplItem) {
+    fadeOut = false;
     pos = -1;
     numTotal = 0;
     align = alLeft;
@@ -1265,6 +1279,7 @@ void cViewListItem::SetListElementPosition(cTemplatePixmap *pix) {
 ************************************************************************/
 
 cGrid::cGrid(cTemplateViewElement *tmplGrid) : cView(tmplGrid) {
+    fadeOut = false;
     dirty = true;
     moved = true;
     resized = true;

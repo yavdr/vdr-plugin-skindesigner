@@ -424,20 +424,23 @@ void cPixmapContainer::ShiftIn(void) {
     }
 }
 
-void cPixmapContainer::ShiftInFromBorder(int frames, int frameTime) {
-    //calculating union rectangle of all pixmaps viewports 
-    cRect unionArea;
-    bool isNew = true;
-    for (int i = 0; i < numPixmaps; i++) {
-        if (!PixmapExists(i))
-            continue;
-        if (isNew) {
-            unionArea = ViewPort(i);
-            isNew = false;
-        } else {
-            unionArea.Combine(ViewPort(i));
-        }
+void cPixmapContainer::ShiftOut(void) {
+    if (shiftTime < 1)
+        return;
+
+    int frames = shiftTime * config.framesPerSecond / 1000;
+    if (frames <= 0) frames = 1;
+    int frameTime = shiftTime / frames;
+
+    if (shiftType > stNone) {
+        ShiftOutToBorder(frames, frameTime);
+    } else {
+        ShiftOutToPoint(frames, frameTime);
     }
+}
+
+void cPixmapContainer::ShiftInFromBorder(int frames, int frameTime) {
+    cRect unionArea = UnionPixmaps();
     //shifthing all pixmaps to dedicated start positions
     cPoint startPositions[numPixmaps];
     int osdWidth = osd->Width();
@@ -541,6 +544,80 @@ void cPixmapContainer::ShiftInFromBorder(int frames, int frameTime) {
     }
 }
 
+void cPixmapContainer::ShiftOutToBorder(int frames, int frameTime) {
+    cRect unionArea = UnionPixmaps();
+    //calculating end positions
+    cPoint startPositions[numPixmaps];
+    int osdWidth = osd->Width();
+    int osdHeight = osd->Height();
+    for (int i = 0; i < numPixmaps; i++) {
+        if (!PixmapExists(i))
+            continue;
+        cPoint pos;
+        Pos(i, pos);
+        startPositions[i] = pos;
+    }
+    //Calculating total shifting distance
+    int shiftTotal = 0;
+    switch (shiftType) {
+        case stLeft:
+            shiftTotal = unionArea.X() + unionArea.Width();
+            break;
+        case stRight:
+            shiftTotal = unionArea.Width() + (osdWidth - (unionArea.X() + unionArea.Width())); 
+            break;
+        case stTop:
+            shiftTotal = unionArea.Y() + unionArea.Height();
+            break;
+        case stBottom:
+            shiftTotal = unionArea.Height() + (osdHeight - (unionArea.Y() + unionArea.Height())); 
+            break;
+        default:
+            break;
+    }
+    //Moving Out
+    uint64_t Start = cTimeMs::Now();
+    while (true) {
+        uint64_t Now = cTimeMs::Now();
+        double t = min(double(Now - Start) / shiftTime, 1.0);
+        int xNew = 0;
+        int yNew = 0;
+        for (int i = 0; i < numPixmaps; i++) {
+            if (!PixmapExists(i))
+                continue;
+            cRect r = ViewPort(i);
+            switch (shiftType) {
+                case stLeft:
+                    xNew = startPositions[i].X() - t * shiftTotal;
+                    r.SetPoint(xNew, r.Y());
+                    break;
+                case stRight:
+                    xNew = startPositions[i].X() + t * shiftTotal;
+                    r.SetPoint(xNew, r.Y());
+                    break;
+                case stTop:
+                    yNew = startPositions[i].Y() - t * shiftTotal;
+                    r.SetPoint(r.X(), yNew);
+                    break;
+                case stBottom:
+                    yNew = startPositions[i].Y() + t * shiftTotal;
+                    r.SetPoint(r.X(), yNew);
+                    break;
+                default:
+                    break;
+            }
+            SetViewPort(i, r);
+        }
+        DoFlush();
+        int Delta = cTimeMs::Now() - Now;
+        if ((Delta < frameTime)) {
+            cCondWait::SleepMs(frameTime - Delta);
+        }
+        if ((int)(Now - Start) > shiftTime)
+            break;
+    }    
+}
+
 void cPixmapContainer::ShiftInFromPoint(int frames, int frameTime) {
     //store original positions of pixmaps and move to StartPosition
     cPoint destPos[numPixmaps];
@@ -579,6 +656,25 @@ void cPixmapContainer::ShiftInFromPoint(int frames, int frameTime) {
     }
 }
 
+void cPixmapContainer::ShiftOutToPoint(int frames, int frameTime) {
+    //TODO
+}
+
+cRect cPixmapContainer::UnionPixmaps(void) {
+    cRect unionArea;
+    bool isNew = true;
+    for (int i = 0; i < numPixmaps; i++) {
+        if (!PixmapExists(i))
+            continue;
+        if (isNew) {
+            unionArea = ViewPort(i);
+            isNew = false;
+        } else {
+            unionArea.Combine(ViewPort(i));
+        }
+    }
+    return unionArea;
+}
 
 /*****************************************
 * scrollSpeed: 1 slow
