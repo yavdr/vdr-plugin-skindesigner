@@ -122,3 +122,18 @@ bool cViewElementMenuHeader::Render(void) {
     DrawViewElement(veHeader, &stringTokens, &intTokens);
     return true;
 }
+
+/********************************************************************************************************************/
+
+cViewElementMenuMessage::cViewElementMenuMessage(cTemplateViewElement *tmplViewElement, eMessageType type, string text) : cViewElement(tmplViewElement) {
+    this->type = type;
+    this->text = text;
+}
+
+bool cViewElementMenuMessage::Render(void) {
+    ClearTokens();
+    SetMenuMessage(type, text, stringTokens, intTokens);
+    ClearViewElement(veMessage);
+    DrawViewElement(veMessage, &stringTokens, &intTokens);
+    return true;
+}

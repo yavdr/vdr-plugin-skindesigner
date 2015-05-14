@@ -316,3 +316,19 @@ Version 0.4.5
 - added {numtimers} Token to lastrecordings viewelement
 - fixed time display bug in displaymenurecordings
 - added token {watched} to displaymenurecordings
+- fixed bug that scrapercontent in displaychannel was not
+  updated if detached
+- fixed bug that detached viewelements were not cleared
+  correctly
+- implemented shiftout for views
+- fixed blinking for animated views
+- chachged displaymessage in menus to detachable
+- fixed dayseparators in schedules menu
+- small fixes in metrixhd main menu
+
+Version 0.4.6
+
+- added token {startsin} in displaymenuschedules
+- added viewelement <vdrstatistics> in main menu
+
+

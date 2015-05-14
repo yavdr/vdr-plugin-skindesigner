@@ -48,6 +48,7 @@ enum eViewElement {
     veDiscUsage,
     veSystemLoad,
     veSystemMemory,
+    veVDRStats,
     veTemperatures,
     veTimers,
     veLastRecordings,

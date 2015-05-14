@@ -1293,6 +1293,7 @@ void cTemplateViewMenu::SetViewElements(void) {
     viewElementsAllowed.insert("discusage");
     viewElementsAllowed.insert("systemload");
     viewElementsAllowed.insert("systemmemory");
+    viewElementsAllowed.insert("vdrstatistics");
     viewElementsAllowed.insert("temperatures");
     viewElementsAllowed.insert("timers");
     viewElementsAllowed.insert("lastrecordings");
@@ -1382,6 +1383,9 @@ string cTemplateViewMenu::GetViewElementName(eViewElement ve) {
             break;
         case veSystemMemory:
             name = "System Memory";
+            break;
+        case veVDRStats:
+            name = "VDR Statistics";
             break;
         case veTemperatures:
             name = "Temperatures";
@@ -1511,6 +1515,8 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vec
         ve = veSystemLoad;
     } else if (!sViewElement.compare("systemmemory")) {
         ve = veSystemMemory;
+    } else if (!sViewElement.compare("vdrstatistics")) {
+        ve = veVDRStats;
     } else if (!sViewElement.compare("temperatures")) {
         ve = veTemperatures;
     } else if (!sViewElement.compare("timers")) {

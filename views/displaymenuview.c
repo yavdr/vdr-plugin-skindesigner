@@ -17,8 +17,6 @@ cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cVi
 }
 
 cDisplayMenuView::~cDisplayMenuView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayMenuView::DrawBackground(void) {
@@ -175,20 +173,31 @@ bool cDisplayMenuView::DrawMessage(eMessageType type, const char *text) {
         return false;
     }
     if (!text) {
-        ClearViewElement(veMessage);
+        if (DetachViewElement(veMessage))
+            DestroyDetachedViewElement(veMessage);
+        else
+            ClearViewElement(veMessage);
         return true;
     }
-    map < string, string > stringTokens;
-    map < string, int > intTokens;
 
-    intTokens.insert(pair<string, int>("status",  (type == mtStatus)  ? true : false));
-    intTokens.insert(pair<string, int>("info",    (type == mtInfo)    ? true : false));
-    intTokens.insert(pair<string, int>("warning", (type == mtWarning) ? true : false));
-    intTokens.insert(pair<string, int>("error",   (type == mtError)   ? true : false));
-    stringTokens.insert(pair<string,string>("text", text));
-    
-    ClearViewElement(veMessage);
-    DrawViewElement(veMessage, &stringTokens, &intTokens);
+   if (DetachViewElement(veMessage)) {
+        cViewElement *viewElement = GetViewElement(veMessage);
+        if (!viewElement) {
+            viewElement = new cViewElementMenuMessage(tmplView->GetViewElement(veMessage), type, text);
+            AddViewElement(veMessage, viewElement);
+            viewElement->Start();
+        } else {
+            if (!viewElement->Starting())
+                viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+
+        SetMenuMessage(type, text, stringTokens, intTokens);
+        ClearViewElement(veMessage);
+        DrawViewElement(veMessage, &stringTokens, &intTokens);
+    }
     return true;
 }
 
@@ -290,9 +299,10 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
 bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
     bool loadChanged = DrawLoad();
     bool memChanged = DrawMemory();
+    bool vdrChanged = DrawVdrStats();
     bool devicesChanged = DrawDevices();
     initial = false;
-    return loadChanged || memChanged || devicesChanged;
+    return loadChanged || memChanged || vdrChanged || devicesChanged;
 
 }
 
@@ -431,6 +441,35 @@ bool cDisplayMenuMainView::DrawMemory(void) {
         if (changed) {
             ClearViewElement(veSystemMemory);
             DrawViewElement(veSystemMemory, &stringTokens, &intTokens);
+        }
+    }
+    return changed;
+}
+
+bool cDisplayMenuMainView::DrawVdrStats(void) {
+    if (!ExecuteViewElement(veVDRStats)) {
+        return false;
+    }
+    bool changed = false;
+    if (DetachViewElement(veVDRStats)) {
+        cViewElement *viewElement = GetViewElement(veVDRStats);
+        if (!viewElement) {
+            viewElement = new cViewElement(tmplView->GetViewElement(veVDRStats), this);
+            viewElement->SetCallback(veVDRStats, &cDisplayMenuMainView::SetVDRStats);
+            AddViewElement(veVDRStats, viewElement);
+            viewElement->Start();
+            changed = true;
+        } else {
+            if (!viewElement->Starting())
+                changed = viewElement->Render();
+        }
+    } else {
+        map < string, string > stringTokens;
+        map < string, int > intTokens;
+        changed = SetVDRStats(false, stringTokens, intTokens);
+        if (changed) {
+            ClearViewElement(veVDRStats);
+            DrawViewElement(veVDRStats, &stringTokens, &intTokens);
         }
     }
     return changed;

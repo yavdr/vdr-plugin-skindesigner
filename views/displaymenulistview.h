@@ -26,7 +26,7 @@ public:
     void AddDefaultMenuItem(int index, string *tabTexts, bool current, bool selectable);
     string AddMainMenuItem(int index, const char *itemText, bool current, bool selectable);
     void AddSetupMenuItem(int index, const char *itemText, bool current, bool selectable);
-    void AddSchedulesMenuItem(int index, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable);
+    void AddSchedulesMenuItem(int index, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable, string dayseparator);
     void AddChannelsMenuItem(int index, const cChannel *channel, bool withProvider, bool current, bool selectable);
     void AddTimersMenuItem(int index, const cTimer *timer, bool current, bool selectable);
     void AddRecordingMenuItem(int index, const cRecording *recording, int level, int total, int isNew, bool current, bool selectable);

@@ -66,6 +66,14 @@
 
 <!ELEMENT message (area|areascroll)*>
 <!ATTLIST message
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
@@ -167,6 +175,20 @@
   condition CDATA #IMPLIED
 >
 
+<!ELEMENT vdrstatistics (area|areascroll)*>
+<!ATTLIST vdrstatistics
+  detached CDATA #IMPLIED
+  delay CDATA #IMPLIED
+  fadetime CDATA #IMPLIED
+  shifttime CDATA #IMPLIED
+  shifttype CDATA #IMPLIED
+  shiftmode CDATA #IMPLIED
+  startx CDATA #IMPLIED
+  starty CDATA #IMPLIED
+  debug CDATA #IMPLIED
+  condition CDATA #IMPLIED
+>
+
 <!ELEMENT currentschedule (area|areascroll)*>
 <!ATTLIST currentschedule
   detached CDATA #IMPLIED
@@ -256,7 +278,7 @@
 >
 
 <!ELEMENT menumain (background | header | datetime | time | colorbuttons | scrollbar | sortmode | timers | 
-                    discusage | devices | systemload | systemmemory | temperatures | currentschedule | 
+                    discusage | devices | systemload | systemmemory | vdrstatistics | temperatures | currentschedule | 
                     currentweather | lastrecordings | customtokens | menuitems)*>
 <!ATTLIST menumain
   x CDATA #REQUIRED

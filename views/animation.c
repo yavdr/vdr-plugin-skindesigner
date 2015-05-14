@@ -3,6 +3,7 @@
 using namespace std;
 
 cAnimation::cAnimation(eAnimType animType, int animFreq, cRect &pos, int layer) : cPixmapContainer(1) {
+    delay = 0;
     this->animType = animType;
     this->animFreq = animFreq;
     this->pos = pos;
@@ -16,6 +17,7 @@ cAnimation::~cAnimation() {
 void cAnimation::Action(void) {
     CreatePixmap(0, layer+1, pos);
     bool init = true;
+    DoSleep(delay);
     while (Running()) {
         if (animType == atBlink) {
             if (!blinkOn) {

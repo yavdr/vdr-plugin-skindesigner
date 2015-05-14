@@ -42,6 +42,8 @@ protected:
     cRect scalingWindow;
     bool tvScaled;
     bool viewInit;
+    //do fadeout or shiftout only for views, not for childs
+    bool fadeOut;
     //true if view is scrollable in general
     bool scrolling;
     //true if view is actually starting scrolling
@@ -56,6 +58,7 @@ protected:
     void DrawViewElement(eViewElement ve, map <string,string> *stringTokens = NULL, map <string,int> *intTokens = NULL, map < string, vector< map< string, string > > > *loopTokens = NULL);
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
+    void DestroyDetachedViewElement(eViewElement ve);
     void ClearAnimations(int cat);
     bool ExecuteViewElement(eViewElement ve);
     bool DetachViewElement(eViewElement ve);
@@ -95,6 +98,7 @@ public:
     virtual ~cViewElement();
     void SetCallback(eViewElement ve, bool (cViewHelpers::*SetTokens)(bool, stringmap&, intmap&)) { this->ve = ve; this->SetTokens = SetTokens; };
     virtual bool Render(void);
+    void Clear(void);
     bool Starting(void) { return Running(); };
 };
 

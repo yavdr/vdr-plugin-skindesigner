@@ -4,7 +4,7 @@
 #include "../libtemplate/template.h"
 #include "view.h"
 
-class cDisplayMessageView : public cView {
+class cDisplayMessageView : public cView, public cViewHelpers {
 public:
     cDisplayMessageView(cTemplateView *tmplView);
     virtual ~cDisplayMessageView();

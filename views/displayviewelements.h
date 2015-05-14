@@ -27,6 +27,7 @@ private:
 public:
     cViewElementScraperContent(const cEvent *event, ScraperContentType type, cTemplateViewElement *tmplViewElement);
     virtual ~cViewElementScraperContent() {};
+    void SetEvent(const cEvent *event) { this->event = event; };
     bool Render(void);
 };
 
@@ -71,6 +72,16 @@ private:
 public:
     cViewElementMenuHeader(cTemplateViewElement *tmplViewElement, eMenuCategory cat, string menuTitle);
     virtual ~cViewElementMenuHeader() {};
+    bool Render(void);
+};
+
+class cViewElementMenuMessage : public cViewElement, public cViewHelpers {
+private:
+    eMessageType type;
+    string text;
+public:
+    cViewElementMenuMessage(cTemplateViewElement *tmplViewElement, eMessageType type, string text);
+    virtual ~cViewElementMenuMessage() {};
     bool Render(void);
 };
 

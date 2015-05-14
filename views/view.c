@@ -38,17 +38,28 @@ cView::cView(cTemplateViewTab *tmplTab) : cPixmapContainer(1) {
 }
 
 cView::~cView() {
+    CancelSave();
+
     if (tvScaled) {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
+    //clear detached views
     for (map<eViewElement,cViewElement*>::iterator dVeIt = detachedViewElements.begin(); dVeIt != detachedViewElements.end(); dVeIt++) {
         cViewElement *ve = dVeIt->second;
         delete ve;
     }
+    //clear animations
     for (multimap<int, cAnimation*>::iterator animIt = animations.begin(); animIt != animations.end(); animIt++) {
         cAnimation *anim = animIt->second;
         anim->Stop();
         delete anim;
+    }
+    //shift or fade out
+    if (fadeOut) {
+        if (IsAnimated())
+            ShiftOut();
+        else
+            FadeOut();
     }
 }
 
@@ -59,6 +70,7 @@ void cView::DrawDebugGrid(void) {
 }
 
 void cView::Init(void) {
+    fadeOut = true;
     viewInit = true;
     scrolling = false;
     veScroll = veUndefined;
@@ -183,6 +195,14 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
 }
 
 void cView::ClearViewElement(eViewElement ve) {
+    cViewElement *detachedVE = GetViewElement(ve);
+    if (detachedVE) {
+        detachedVE->Clear();
+        return;
+    } else {
+        if (DetachViewElement(ve))
+            return;
+    }
     cTemplateViewElement *viewElement = NULL;
     int currentAnimCat = ve;
     if (tmplViewElement) {
@@ -224,6 +244,16 @@ void cView::DestroyViewElement(eViewElement ve) {
     }
     ClearAnimations(ve);
 }
+
+void cView::DestroyDetachedViewElement(eViewElement ve) {
+    map < eViewElement, cViewElement* >::iterator hit = detachedViewElements.find(ve);
+    if (hit == detachedViewElements.end())
+        return;
+    cViewElement *viewElement = hit->second;
+    delete viewElement;
+    detachedViewElements.erase(hit);    
+}
+
 
 void cView::ClearAnimations(int cat) {
     //stop and delete all animated elements from this viewelement
@@ -993,12 +1023,10 @@ void cView::DrawAnimatedImage(int numPix, cTemplateFunction *func, cRect &pos, c
     cRect posAnim = CalculateAnimationClip(numPix, pos);
     eAnimType animType = (eAnimType)func->GetNumericParameter(ptAnimType);
     int animFreq = func->GetNumericParameter(ptAnimFreq);
-    
+
     cAnimatedImage *anim = new cAnimatedImage(animType, animFreq, posAnim, layer);
     animations.insert(pair<int, cAnimation*>(animCat, anim));
-    if (tmplView) {
-        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    }
+    anim->SetDelay(AnimationDelay());
     anim->SetImage(image);
     anim->Start();
 }
@@ -1014,9 +1042,7 @@ void cView::DrawAnimatedText(int numPix, cTemplateFunction *func, cPoint &pos, s
     
     cAnimatedText *anim = new cAnimatedText(animType, animFreq, posAnim, layer);
     animations.insert(pair<int, cAnimation*>(animCat, anim));
-    if (tmplView) {
-        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    }
+    anim->SetDelay(AnimationDelay());
     anim->SetText(text);
     anim->SetFont(fontName);
     anim->SetFontSize(fontSize);
@@ -1033,9 +1059,7 @@ void cView::DrawAnimatedOsdObject(int numPix, cTemplateFunction *func, cRect &po
 
     cAnimatedOsdObject *anim = new cAnimatedOsdObject(funcType, animType, animFreq, posAnim, layer);
     animations.insert(pair<int, cAnimation*>(animCat, anim));
-    if (tmplView) {
-        anim->SetAnimationFadeTime(tmplView->GetNumericParameter(ptFadeTime));
-    }
+    anim->SetDelay(AnimationDelay());
     anim->SetColor(col);
     anim->SetQuadrant(quadrant);
     anim->Start();
@@ -1058,6 +1082,7 @@ cRect cView::CalculateAnimationClip(int numPix, cRect &pos) {
 
 cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplViewElement) {
     init = true;
+    fadeOut = false;
     ve = veUndefined;
     helper = NULL;
     SetTokens = NULL;
@@ -1072,6 +1097,7 @@ cViewElement::cViewElement(cTemplateViewElement *tmplViewElement) : cView(tmplVi
 
 cViewElement::cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *helper) : cView(tmplViewElement) {
     init = true;
+    fadeOut = false;
     ve = veUndefined;
     this->helper = helper;
     SetTokens = NULL;
@@ -1085,7 +1111,6 @@ cViewElement::cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *
 } 
 
 cViewElement::~cViewElement() {
-    CancelSave();
 }
 
 bool cViewElement::Render(void) {
@@ -1101,6 +1126,10 @@ bool cViewElement::Render(void) {
     ClearViewElement(ve);
     DrawViewElement(ve, &stringTokens, &intTokens);
     return true;
+}
+
+void cViewElement::Clear(void) {
+    ClearViewElement(ve);
 }
 
 void cViewElement::Action(void) {
@@ -1136,6 +1165,7 @@ void cViewElement::ClearTokens(void) {
 ************************************************************************/
 
 cViewListItem::cViewListItem(cTemplateViewElement *tmplItem) : cView(tmplItem) {
+    fadeOut = false;
     pos = -1;
     numTotal = 0;
     align = alLeft;
@@ -1253,6 +1283,7 @@ void cViewListItem::SetListElementPosition(cTemplatePixmap *pix) {
 ************************************************************************/
 
 cGrid::cGrid(cTemplateViewElement *tmplGrid) : cView(tmplGrid) {
+    fadeOut = false;
     dirty = true;
     moved = true;
     resized = true;

@@ -18,8 +18,6 @@ cDisplayChannelView::cDisplayChannelView(cTemplateView *tmplView) : cView(tmplVi
 }
 
 cDisplayChannelView::~cDisplayChannelView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayChannelView::createOsd(void) {
@@ -354,14 +352,16 @@ void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
     }
 
     if (DetachViewElement(veScraperContent)) {
-        cViewElement *viewElement = GetViewElement(veScraperContent);
+        cViewElementScraperContent *viewElement = dynamic_cast<cViewElementScraperContent*>(GetViewElement(veScraperContent));
         if (!viewElement) {
             viewElement = new cViewElementScraperContent(event, ctPosterBanner, tmplView->GetViewElement(veScraperContent));
             AddViewElement(veScraperContent, viewElement);
             viewElement->Start();
         } else {
-            if (!viewElement->Starting())
+            if (!viewElement->Starting()) {
+                viewElement->SetEvent(event);
                 viewElement->Render();
+            }
         }
     } else {
         map < string, string > stringTokens;

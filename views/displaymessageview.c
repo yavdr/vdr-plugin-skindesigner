@@ -7,8 +7,6 @@ cDisplayMessageView::cDisplayMessageView(cTemplateView *tmplView) : cView(tmplVi
 }
 
 cDisplayMessageView::~cDisplayMessageView() {
-    CancelSave();
-    FadeOut();
 }
 
 bool cDisplayMessageView::createOsd(void) {
@@ -32,14 +30,7 @@ void cDisplayMessageView::DrawBackground(void) {
 void cDisplayMessageView::DrawMessage(eMessageType type, const char *text) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
-
-    stringTokens.insert(pair<string,string>("text", text));
-
-    intTokens.insert(pair<string,int>("status",  (type == mtStatus)  ? true : false));
-    intTokens.insert(pair<string,int>("info",    (type == mtInfo)    ? true : false));
-    intTokens.insert(pair<string,int>("warning", (type == mtWarning) ? true : false));
-    intTokens.insert(pair<string,int>("error",   (type == mtError)   ? true : false));
-
+    SetMenuMessage(type, text, stringTokens, intTokens);
     DrawViewElement(veMessage, &stringTokens, &intTokens);
 }
 

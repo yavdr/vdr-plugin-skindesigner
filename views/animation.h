@@ -8,6 +8,7 @@
 using namespace std;
 
 class cAnimation : public cPixmapContainer {
+    int delay;
 protected:
     eAnimType animType;
     int animFreq;
@@ -19,7 +20,7 @@ protected:
 public:
     cAnimation(eAnimType animType, int animFreq, cRect &pos, int layer);
     virtual ~cAnimation();
-    void SetAnimationFadeTime(int fadeTime) { SetFadeTime(fadeTime); };
+    void SetDelay(int delay) { this->delay = delay; };
     virtual void Stop(void);
 };
 
