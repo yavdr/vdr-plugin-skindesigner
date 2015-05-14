@@ -319,10 +319,12 @@ void cDisplayMenuItemMainView::CheckPlugins(void) {
 
 cDisplayMenuItemSchedulesView::cDisplayMenuItemSchedulesView(cTemplateViewList *tmplList, const cEvent *event, 
                                                              const cChannel *channel, eTimerMatch timerMatch, 
-                                                             eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable) 
+                                                             eMenuCategory cat, bool isEpgSearchFav, bool current, 
+                                                             bool selectable, string dayseparator) 
                                                             : cDisplayMenuItemView(tmplList, current, selectable) {
     this->event = event;
     this->channel = channel;
+    this->dayseparator = dayseparator;
     this->timerMatch = timerMatch;
     this->cat = cat;
     this->isEpgSearchFav = isEpgSearchFav;
@@ -384,6 +386,8 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
         } else {
             stringTokens.insert(pair<string,string>("title", event->Title() ? ParseSeparator(event->Title()) : ""));
         }
+    } else {
+        stringTokens.insert(pair<string,string>("title", dayseparator));        
     }
     if (channel) {
         stringTokens.insert(pair<string,string>("channelname", channel->Name() ? channel->Name() : ""));

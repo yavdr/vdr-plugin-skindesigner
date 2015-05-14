@@ -122,7 +122,7 @@ bool cSDDisplayMenu::SetItemEvent(const cEvent *Event, int Index, bool Current, 
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
-    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), isFav, Current, Selectable);
+    list->AddSchedulesMenuItem(Index, Event, channel, TimerMatch, MenuCategory(), isFav, Current, Selectable, "");
     if (state == vsIdle)
         state = vsMenuUpdate;
     return true;
@@ -209,6 +209,8 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
         }
     } else if (cat == mcSetup && rootView->SubViewAvailable()) {
         list->AddSetupMenuItem(Index, Text, Current, Selectable);        
+    } else if ((cat == mcSchedule || cat == mcScheduleNow || cat == mcScheduleNext) && rootView->SubViewAvailable()) {
+        list->AddSchedulesMenuItem(Index, NULL, NULL, tmNone, MenuCategory(), false, Current, Selectable, Text);
     } else {
         rootView->CorrectDefaultMenu();
         string *tabTexts = new string[MaxTabs];

@@ -78,13 +78,14 @@ class cDisplayMenuItemSchedulesView: public cDisplayMenuItemView {
 private:
     const cEvent *event;
     const cChannel *channel;
+    string dayseparator;
     eTimerMatch timerMatch;
     eMenuCategory cat;
     bool isEpgSearchFav;
     string ParseSeparator(string sep);
 public:
     cDisplayMenuItemSchedulesView(cTemplateViewList *tmplList, const cEvent *event, const cChannel *channel, eTimerMatch timerMatch, 
-                                  eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable);
+                                  eMenuCategory cat, bool isEpgSearchFav, bool current, bool selectable, string dayseparator);
     virtual ~cDisplayMenuItemSchedulesView();
     void SetTokens(void);
     void Prepare(void);

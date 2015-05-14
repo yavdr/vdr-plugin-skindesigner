@@ -323,4 +323,5 @@ Version 0.4.5
 - implemented shiftout for views
 - fixed blinking for animated views
 - chachged displaymessage in menus to detachable
+- fixed dayseparators in schedules menu
 
