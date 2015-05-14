@@ -1,3 +1,20 @@
+vdr-plugin-skindesigner (0.4.6-2-g5a0155d-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * f33354b: fixed bug that detached viewelements were not cleared
+    correctly
+  * e9ab094: detached scrapercontent in blackhole displaychannel
+  * 01b09d7: implemented shiftout for views
+  * 9a02175: fixed blinking for animated views
+  * 8d7584d: chachged displaymessage in menus to detachable
+  * 4ef2c61: fixed dayseparators in schedules menu
+  * 20371ce: small fixes in metrixhd main menu
+  * e03a6c2: Version 0.4.6
+  * af59c46: added token {startsin} in displaymenuschedules
+  * 5a0155d: added viewelement <vdrstatistics> in main menu
+
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 14 May 2015 22:54:47 +0200
+
 vdr-plugin-skindesigner (0.4.5-3-g57999a4-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
