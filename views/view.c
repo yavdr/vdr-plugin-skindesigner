@@ -183,6 +183,11 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
 }
 
 void cView::ClearViewElement(eViewElement ve) {
+    cViewElement *detachedVE = GetViewElement(ve);
+    if (detachedVE) {
+        detachedVE->Clear();
+        return;
+    }
     cTemplateViewElement *viewElement = NULL;
     int currentAnimCat = ve;
     if (tmplViewElement) {
@@ -1101,6 +1106,10 @@ bool cViewElement::Render(void) {
     ClearViewElement(ve);
     DrawViewElement(ve, &stringTokens, &intTokens);
     return true;
+}
+
+void cViewElement::Clear(void) {
+    ClearViewElement(ve);
 }
 
 void cViewElement::Action(void) {

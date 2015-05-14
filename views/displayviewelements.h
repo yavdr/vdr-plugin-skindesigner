@@ -27,6 +27,7 @@ private:
 public:
     cViewElementScraperContent(const cEvent *event, ScraperContentType type, cTemplateViewElement *tmplViewElement);
     virtual ~cViewElementScraperContent() {};
+    void SetEvent(const cEvent *event) { this->event = event; };
     bool Render(void);
 };
 

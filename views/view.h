@@ -95,6 +95,7 @@ public:
     virtual ~cViewElement();
     void SetCallback(eViewElement ve, bool (cViewHelpers::*SetTokens)(bool, stringmap&, intmap&)) { this->ve = ve; this->SetTokens = SetTokens; };
     virtual bool Render(void);
+    void Clear(void);
     bool Starting(void) { return Running(); };
 };
 
