@@ -124,6 +124,15 @@ void cDisplayChannelView::DrawProgressBar(cString &start, cString &stop, int Cur
     intTokens.insert(pair<string, int>("elapsed", Current));
     intTokens.insert(pair<string, int>("remaining", Total - Current));
 
+    int liveBuffer = GetLiveBuffer();
+    if (liveBuffer >= 0) {
+        intTokens.insert(pair<string, int>("permashift", 1));
+        intTokens.insert(pair<string, int>("livebuffer", liveBuffer));
+    } else {
+        intTokens.insert(pair<string, int>("permashift", 0));
+        intTokens.insert(pair<string, int>("livebuffer", 0));
+    }
+
     ClearProgressBar();
     DrawViewElement(veProgressBar, &stringTokens, &intTokens);
 }

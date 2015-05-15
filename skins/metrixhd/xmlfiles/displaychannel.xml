@@ -70,11 +70,18 @@
     {duration}                         Total Duration of current Schedule in seconds
     {elapsed}                          Elapsed time of current Schedule in seconds
     {remaining}                        Remaining time of current Schedule in seconds
+    {permashift}                       true if permashift plugin is in use
+    {livebuffer}                       current buffered data in seconds
     -->
     <progressbar>
-        <area x="22%" y="87%" width="76%" height="3" layer="2">
+        <area condition="not{permashift}" x="22%" y="87%" width="76%" height="3" layer="2">
             <drawrectangle x="0" y="1" width="100%" height="1" color="{clrWhite}" />
             <drawrectangle x="0" y="0" width="{elapsed}/{duration}*{areawidth}" height="3" color="{clrTransBlueLight}" />
+        </area>
+        <area condition="{permashift}" x="22%" y="87%" width="76%" height="5" layer="2">
+            <drawrectangle x="0" y="2" width="100%" height="1" color="{clrWhite}" />
+            <drawrectangle x="{elapsed}/{duration}*{areawidth} - {livebuffer}/{duration}*{areawidth}" y="0" width="{livebuffer}/{duration}*{areawidth}" height="5" color="{clrRed}" />
+            <drawrectangle x="0" y="1" width="{elapsed}/{duration}*{areawidth}" height="3" color="{clrTransBlueLight}" />
         </area>
     </progressbar>
 

@@ -442,6 +442,18 @@ bool cViewHelpers::CheckNewMails(void) {
     return false;
 }
 
+int cViewHelpers::GetLiveBuffer(void) {
+    static cPlugin *pPermashift = cPluginManager::GetPlugin("permashift");
+    if (!pPermashift) {
+        return -1;
+    }
+    int buffer = 0;
+    if (pPermashift->Service("Permashift-GetUsedBufferSecs-v1", &buffer)) {
+        return buffer;
+    }
+    return -1;
+}
+
 void cViewHelpers::SetScraperTokens(const cEvent *event, const cRecording *recording, stringmap &stringTokens, intmap &intTokens, map < string, vector<stringmap> > &loopTokens) {
     static cPlugin *pScraper = GetScraperPlugin();
     if (!pScraper || (!event && !recording)) {
