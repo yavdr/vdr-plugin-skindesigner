@@ -1,3 +1,10 @@
+vdr-plugin-skindesigner (0.4.6-3-g727f206-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 727f206: added permashift support in displaychannel
+
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 15 May 2015 12:51:44 +0200
+
 vdr-plugin-skindesigner (0.4.6-2-g5a0155d-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
