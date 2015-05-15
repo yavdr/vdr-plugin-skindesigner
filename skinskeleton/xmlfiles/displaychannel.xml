@@ -46,6 +46,8 @@
     {duration}                         Total Duration of current Schedule in seconds
     {elapsed}                          Elapsed time of current Schedule in seconds
     {remaining}                        Remaining time of current Schedule in seconds
+    {permashift}                       true if permashift plugin is in use
+    {livebuffer}                       current buffered data in seconds
     -->
     <progressbar>
     </progressbar>
