@@ -149,15 +149,17 @@
     </progressbar>
 
     <!-- Available Variables cutmarks:
+    {timeshift}                 true if a timeshifted recording is displayed
     {marks[]}                   array of available marks
     {marks[position]}           frame of current mark
     {marks[endposition]}        frame where startmark ends
     {marks[total]}              total number of frames
+    {marks[timeshifttotal]}     total number of frames of timeshift event
     {marks[active]}             true if current replay position hits exactly the mark
     {marks[startmark]}          true if mark is start mark
     -->
     <cutmarks>
-        <area x="5%" y="89%" width="90%" height="3%" layer="3">
+        <area condition="not{timeshift}" x="5%" y="89%" width="90%" height="3%" layer="3">
             <loop name="marks" x="0" y="0" orientation="absolute">
                 <!-- draw mark -->
                 <drawrectangle condition="not{marks[active]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="0" width="1" height="100%" color="{clrWhite}" />
@@ -173,6 +175,24 @@
                 <drawrectangle condition="{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth} - 5" y="{areaheight}-1" width="5" height="1" color="{clrRed}" />
                 <!-- draw bar to next mark if mark is startmark-->                
                 <drawrectangle condition="{marks[startmark]}" x="{marks[position]}/{marks[total]}*{areawidth}" y="30%" width="{marks[endposition]}/{marks[total]}*{areawidth} - {marks[position]}/{marks[total]}*{areawidth}" height="40%" color="{clrWhite}" />
+            </loop>
+        </area>
+        <area condition="{timeshift}" x="5%" y="89%" width="90%" height="3%" layer="3">
+            <loop name="marks" x="0" y="0" orientation="absolute">
+                <!-- draw mark -->
+                <drawrectangle condition="not{marks[active]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="0" width="1" height="100%" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="0" width="5" height="1" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="{areaheight}-1" width="5" height="1" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth} - 5" y="0" width="5" height="1" color="{clrWhite}" />
+                <drawrectangle condition="not{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth} - 5" y="{areaheight}-1" width="5" height="1" color="{clrWhite}" />
+                <!-- draw active mark -->
+                <drawrectangle condition="{marks[active]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="0" width="1" height="100%" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="0" width="5" height="1" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ {marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="{areaheight}-1" width="5" height="1" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth} - 5" y="0" width="5" height="1" color="{clrRed}" />
+                <drawrectangle condition="{marks[active]} ++ not{marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth} - 5" y="{areaheight}-1" width="5" height="1" color="{clrRed}" />
+                <!-- draw bar to next mark if mark is startmark-->                
+                <drawrectangle condition="{marks[startmark]}" x="{marks[position]}/{marks[timeshifttotal]}*{areawidth}" y="30%" width="{marks[endposition]}/{marks[timeshifttotal]}*{areawidth} - {marks[position]}/{marks[timeshifttotal]}*{areawidth}" height="40%" color="{clrWhite}" />
             </loop>
         </area>
     </cutmarks>

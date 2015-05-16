@@ -115,10 +115,14 @@ void cSDDisplayReplay::Flush(void) {
 }
 
 void cSDDisplayReplay::SetTimeShiftValues(const cRecording *recording) {
+    bool isTimeShift = false;
+#if APIVERSNUM >= 20101
     int usage = recording->IsInUse();
-    if (!(usage & ruTimer))
+    if (usage & ruTimer)
+        isTimeShift = true;
+#endif
+    if (!isTimeShift)
         return;
-
     const cRecordingInfo *recInfo = recording->Info();
     if (!recInfo)
         return;

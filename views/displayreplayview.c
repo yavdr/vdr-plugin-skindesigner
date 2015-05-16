@@ -271,7 +271,6 @@ void cDisplayReplayView::DrawProgressBar(int current, int total) {
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("total", total));
     intTokens.insert(pair<string,int>("timeshift", timeShiftActive));
-
     if (timeShiftActive) {
         intTokens.insert(pair<string,int>("timeshifttotal", timeShiftFramesTotal));
     }
@@ -288,13 +287,14 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) 
 
     map < string, string > stringTokens;
     map < string, int > intTokens;
+    intTokens.insert(pair<string,int>("timeshift", timeShiftActive));
+
     map < string, vector< map< string, string > > > loopTokens;
     vector< map< string, string > > markTokens;
     stringstream tot;
-    if (!timeShiftActive)
-        tot << total;
-    else
-        tot << timeShiftFramesTotal;
+    tot << total;
+    stringstream timeshifttot;
+    timeshifttot << timeShiftFramesTotal;
 
     bool isStartMark = true;
     for (const cMark *m = marks->First(); m; m = marks->Next(m)) {
@@ -303,6 +303,9 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) 
         pos << m->Position();
         markVals.insert(pair< string, string >("marks[position]", pos.str()));
         markVals.insert(pair< string, string >("marks[total]", tot.str()));
+        if (timeShiftActive) {
+            markVals.insert(pair< string, string >("marks[timeshifttotal]", timeshifttot.str()));
+        }
         markVals.insert(pair< string, string >("marks[startmark]", isStartMark ? "1" : "0"));
         markVals.insert(pair< string, string >("marks[active]", (m->Position() == current) ? "1" : "0"));
         const cMark *m2 = marks->Next(m);
