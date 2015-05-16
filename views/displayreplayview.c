@@ -6,6 +6,10 @@
 
 cDisplayReplayView::cDisplayReplayView(cTemplateView *tmplView) : cView(tmplView) {
     length = 0;
+    timeShiftActive = false;
+    timeShiftFramesTotal = 0;
+    timeShiftLength = 1;
+    timeShiftDuration = "";
     endLast = "";
     onPauseView = NULL;
     numMarksLast = 0;
@@ -30,6 +34,15 @@ bool cDisplayReplayView::createOsd(void) {
                         osdSize.Width(),
                         osdSize.Height());
     return ok;
+}
+
+void cDisplayReplayView::SetTimeShift(int framesTotal, int timeShiftLength) {
+    timeShiftActive = true;
+    timeShiftFramesTotal = framesTotal;
+    this->timeShiftLength = timeShiftLength;
+    int mins = (timeShiftLength / 60) % 60;
+    int hours = (timeShiftLength / 3600) % 24;
+    timeShiftDuration = *cString::sprintf("%d:%02d", hours, mins);
 }
 
 void cDisplayReplayView::DrawBackground(bool modeOnly) {
@@ -218,7 +231,9 @@ void cDisplayReplayView::DrawCurrent(const char *current) {
 void cDisplayReplayView::DrawTotal(const char *total) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
+    intTokens.insert(pair<string,int>("timeshift", timeShiftActive));
     stringTokens.insert(pair<string,string>("rectotal", total));
+    stringTokens.insert(pair<string,string>("timeshifttotal", timeShiftDuration));
 
     ClearViewElement(veRecTotal);
     DrawViewElement(veRecTotal, &stringTokens, &intTokens);
@@ -227,8 +242,14 @@ void cDisplayReplayView::DrawTotal(const char *total) {
 void cDisplayReplayView::DrawEndTime(int current, int total) {
     if (!current)
         return;
-    double rest = (double)(total - current) / (double)total;
-    time_t end = time(0) + rest*length;
+    int totalLength = total;
+    int recordingLength = length;
+    if (timeShiftActive && timeShiftFramesTotal > 0) {
+        totalLength = timeShiftFramesTotal;
+        recordingLength = timeShiftLength;
+    }
+    double rest = (double)(totalLength - current) / (double)totalLength;
+    time_t end = time(0) + rest*recordingLength;
     string endTime = *TimeString(end);
     if (!endTime.compare(endLast)) {
         return;
@@ -246,9 +267,14 @@ void cDisplayReplayView::DrawEndTime(int current, int total) {
 void cDisplayReplayView::DrawProgressBar(int current, int total) {
     map < string, string > stringTokens;
     map < string, int > intTokens;
+
     intTokens.insert(pair<string,int>("current", current));
     intTokens.insert(pair<string,int>("total", total));
-    stringTokens.insert(pair<string,string>("dummy", ""));
+    intTokens.insert(pair<string,int>("timeshift", timeShiftActive));
+    if (timeShiftActive) {
+        intTokens.insert(pair<string,int>("timeshifttotal", timeShiftFramesTotal));
+    }
+
     ClearViewElement(veRecProgressBar);
     DrawViewElement(veRecProgressBar, &stringTokens, &intTokens);    
 }
@@ -261,10 +287,14 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) 
 
     map < string, string > stringTokens;
     map < string, int > intTokens;
+    intTokens.insert(pair<string,int>("timeshift", timeShiftActive));
+
     map < string, vector< map< string, string > > > loopTokens;
     vector< map< string, string > > markTokens;
     stringstream tot;
     tot << total;
+    stringstream timeshifttot;
+    timeshifttot << timeShiftFramesTotal;
 
     bool isStartMark = true;
     for (const cMark *m = marks->First(); m; m = marks->Next(m)) {
@@ -273,6 +303,9 @@ void cDisplayReplayView::DrawMarks(const cMarks *marks, int current, int total) 
         pos << m->Position();
         markVals.insert(pair< string, string >("marks[position]", pos.str()));
         markVals.insert(pair< string, string >("marks[total]", tot.str()));
+        if (timeShiftActive) {
+            markVals.insert(pair< string, string >("marks[timeshifttotal]", timeshifttot.str()));
+        }
         markVals.insert(pair< string, string >("marks[startmark]", isStartMark ? "1" : "0"));
         markVals.insert(pair< string, string >("marks[active]", (m->Position() == current) ? "1" : "0"));
         const cMark *m2 = marks->Next(m);

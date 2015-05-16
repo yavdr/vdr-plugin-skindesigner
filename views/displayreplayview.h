@@ -8,6 +8,10 @@
 class cDisplayReplayView : public cView, public cViewHelpers {
 private:
     int length;
+    bool timeShiftActive;
+    int timeShiftFramesTotal;
+    int timeShiftLength;
+    string timeShiftDuration;
     string endLast;
     cDisplayReplayOnPauseView *onPauseView;
     int numMarksLast;
@@ -20,6 +24,7 @@ public:
     virtual ~cDisplayReplayView();
     bool createOsd(void);
     void SetRecordingLength(int length) { this->length = length; };
+    void SetTimeShift(int framesTotal, int timeShiftLength);
     void DrawBackground(bool modeOnly);
     void DrawDate(void);
     void DrawTime(void);

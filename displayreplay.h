@@ -14,6 +14,7 @@ private:
     bool initialModeSet;
     bool doOutput;
     bool modeOnly;
+    void SetTimeShiftValues(const cRecording *recording);
 public:
     cSDDisplayReplay(cTemplate *replayTemplate, bool ModeOnly);
     virtual ~cSDDisplayReplay();

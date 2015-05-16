@@ -70,6 +70,8 @@
 
     <!-- Available Variables totaltime:
     {rectotal}                   Total Time in hh:mm:ss
+    {timeshift}                  true if a timeshifted recording is displayed
+    {timeshifttotal}             Total Time of timeshift event in hh:mm
     -->
     <totaltime>
     </totaltime>
@@ -83,15 +85,19 @@
     <!-- Available Variables progressbar:
     {current}                   current frame of recording
     {total}                     total frames of recording
+    {timeshift}                 true if a timeshifted recording is displayed
+    {timeshifttotal}            total number of frames of timeshift event
     -->
     <progressbar>
     </progressbar>
 
     <!-- Available Variables cutmarks:
+    {timeshift}                 true if a timeshifted recording is displayed
     {marks[]}                   array of available marks
     {marks[position]}           frame of current mark
     {marks[endposition]}        frame where startmark ends
     {marks[total]}              total number of frames
+    {marks[timeshifttotal]}     total number of frames of timeshift event
     {marks[active]}             true if current replay position hits exactly the mark
     {marks[startmark]}          true if mark is start mark
     -->
