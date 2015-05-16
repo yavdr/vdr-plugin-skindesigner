@@ -1,3 +1,10 @@
+vdr-plugin-skindesigner (0.4.7-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * dc6b5f4: Version 0.4.7
+
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 16 May 2015 15:37:58 +0200
+
 vdr-plugin-skindesigner (0.4.6-5-g5aa23d2-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
