@@ -1,3 +1,11 @@
+vdr-plugin-skindesigner (0.4.6-5-g5aa23d2-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 5354738: added timeshift support in displayreplay
+  * 5aa23d2: timeshift support
+
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 16 May 2015 11:15:43 +0200
+
 vdr-plugin-skindesigner (0.4.6-3-g727f206-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
