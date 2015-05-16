@@ -112,10 +112,13 @@
 
     <!-- Available Variables totaltime:
     {rectotal}                   Total Time in hh:mm:ss
+    {timeshift}                  true if a timeshifted recording is displayed
+    {timeshifttotal}             Total Time of timeshift event in hh:mm
     -->
     <totaltime>
         <area x="69%" y="92%" width="30%" height="7%" layer="2">
-            <drawtext align="right" valign="center" font="{light}" fontsize="100%" color="{clrWhite}" text="{rectotal}" />
+            <drawtext condition="not{timeshift}" align="right" valign="center" font="{light}" fontsize="100%" color="{clrWhite}" text="{rectotal}" />
+            <drawtext condition="{timeshift}" align="right" valign="center" font="{light}" fontsize="100%" color="{clrWhite}" text="{timeshifttotal} ({rectotal})" />
         </area>
     </totaltime>
 
@@ -130,11 +133,18 @@
     <!-- Available Variables progressbar:
     {current}                   current frame of recording
     {total}                     total frames of recording
+    {timeshift}                 true if a timeshifted recording is displayed
+    {timeshifttotal}            total number of frames of timeshift event
     -->
     <progressbar>
-        <area x="5%" y="89%" width="90%" height="3%" layer="2">
+        <area condition="not{timeshift}" x="5%" y="89%" width="90%" height="3%" layer="2">
             <fill color="{clrDarkGray}" />
             <drawrectangle x="0" y="0" width="{current}/{total}*{areawidth}" height="100%" color="{clrTransBlueLight}" />
+        </area>
+        <area condition="{timeshift}" x="5%" y="89%" width="90%" height="3%" layer="2">
+            <fill color="{clrDarkGray}" />
+            <drawrectangle x="0" y="0" width="{total}/{timeshifttotal}*{areawidth}" height="100%" color="{clrTransWhite}" />
+            <drawrectangle x="0" y="0" width="{current}/{timeshifttotal}*{areawidth}" height="100%" color="{clrTransBlueLight}" />
         </area>
     </progressbar>
 

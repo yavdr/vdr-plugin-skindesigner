@@ -29,8 +29,10 @@ cSDDisplayReplay::~cSDDisplayReplay() {
 void cSDDisplayReplay::SetRecording(const cRecording *Recording) {
     if (!doOutput || !Recording)
         return;
-    if (initial)
+    if (initial) {
         replayView->SetRecordingLength(Recording->LengthInSeconds());
+        SetTimeShiftValues(Recording);
+    }
     replayView->DrawTitle(Recording);
     replayView->DrawRecordingInformation(Recording);
     replayView->DrawScraperContent(Recording);
@@ -110,4 +112,23 @@ void cSDDisplayReplay::Flush(void) {
     } else {
         replayView->Flush();
     }
+}
+
+void cSDDisplayReplay::SetTimeShiftValues(const cRecording *recording) {
+    int usage = recording->IsInUse();
+    if (!(usage & ruTimer))
+        return;
+
+    const cRecordingInfo *recInfo = recording->Info();
+    if (!recInfo)
+        return;
+    const cEvent *event = recInfo->GetEvent();
+    if (!event)
+        return;
+    double fps = recording->FramesPerSecond();
+    time_t liveEventStop = event->EndTime();
+    time_t recordingStart = recording->Start();
+    int framesTotal = (liveEventStop - recordingStart)*fps;
+    int recLength = liveEventStop - recordingStart;
+    replayView->SetTimeShift(framesTotal, recLength);
 }

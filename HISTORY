@@ -331,6 +331,7 @@ Version 0.4.6
 - added token {startsin} in displaymenuschedules
 - added viewelement <vdrstatistics> in main menu
 - added permashift support in displaychannel
+- added timeshift support in displayreplay
 
 
 
