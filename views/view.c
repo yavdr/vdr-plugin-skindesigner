@@ -1111,6 +1111,7 @@ cViewElement::cViewElement(cTemplateViewElement *tmplViewElement, cViewHelpers *
 } 
 
 cViewElement::~cViewElement() {
+    CancelSave();
 }
 
 bool cViewElement::Render(void) {
