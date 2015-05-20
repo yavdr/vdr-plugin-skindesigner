@@ -1,3 +1,10 @@
+vdr-plugin-skindesigner (0.4.7-1-gf9278c8-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * f9278c8: try to fix concurrency issue
+
+ -- Frodo <frodo.vdr@gmx.net>  Wed, 20 May 2015 21:26:08 +0200
+
 vdr-plugin-skindesigner (0.4.7-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
