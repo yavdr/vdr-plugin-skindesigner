@@ -38,7 +38,6 @@ cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(root
 }
 
 cDisplayMenuRootView::~cDisplayMenuRootView() {
-    CancelSave();
     if (view) {
         delete view;
         view = NULL;

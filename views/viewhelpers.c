@@ -873,7 +873,7 @@ void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,stri
         recVals.insert(pair< string, string >("recordings[posterheight]", sPosterHeight.str()));
         lastRecordings->push_back(recVals);
         found++;
-        if (found == 5)
+        if (found == 10)
             break;
     }
 }
@@ -938,7 +938,7 @@ bool cViewHelpers::SetEcmInfos(int channelSid, stringmap &stringTokens, intmap &
         return false;
     }
 
-    if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0)
+    if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0 || ecmInfo.ecmtime > 100000)
         return false;
     if (CompareECMInfos(&ecmInfo))
         return false;
