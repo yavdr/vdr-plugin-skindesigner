@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<skinrepositories>
+    <skinrepo>
+        <name>Holo</name>
+        <type>git</type>
+        <url>https://github.com/CReimer/Holo</url>
+        <specialfonts>
+            <font>Roboto</font>
+            <font>Gedöns</font>
+        </specialfonts>
+    </skinrepo>
+    <skinrepo>
+        <name>Tryouts</name>
+        <type>git</type>
+        <url>https://github.com/BooStars/tryouts</url>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=AttachmentattachmentID=37054h=1e3680e599888c373fa21ad2fcbb9e4c2c73a620</url>
+            </screenshot>
+            <screenshot>
+                <description>display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=AttachmentattachmentID=37056h=e7cd1c6d2bd8042b6c08629c8f5d4711e8196e5f</url>
+            </screenshot>
+        </screenshots>
+        <supportedplugins>
+            <plugin>Weatherforecast</plugin>
+            <plugin>TVGuideNG</plugin>
+        </supportedplugins>
+    </skinrepo>
+</skinrepositories>
