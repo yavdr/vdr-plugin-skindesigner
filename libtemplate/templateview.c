@@ -434,6 +434,21 @@ void cTemplateView::Translate(void) {
                             func->SetTranslatedText(translation);
                         }
                     }
+                    if (func->GetType() == ftLoop) {
+                        cTemplateLoopFunction *funcsLoop =  dynamic_cast<cTemplateLoopFunction*>(func);
+                        funcsLoop->InitIterator();
+                        cTemplateFunction *loopFunc = NULL;
+                        while(loopFunc = funcsLoop->GetNextFunction()) {
+                            if (loopFunc->GetType() == ftDrawText || loopFunc->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
+                                string text = loopFunc->GetParameter(ptText);
+                                string translation;
+                                bool translated = globals->Translate(text, translation);
+                                if (translated) {
+                                    loopFunc->SetTranslatedText(translation);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
