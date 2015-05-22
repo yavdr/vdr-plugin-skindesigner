@@ -1,3 +1,15 @@
+vdr-plugin-skindesigner (0.4.8-1-gd405f84-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * b4c82f5: fixed ecm time display
+  * ac70c7b: provide 10 last recordings in <lastrecordings> viewelement
+  * ec68aea: fixed translation in currentelement loops
+  * 2f417e4: fixed timeshifttotal in displayreplay timeshift mode
+  * c461972: Version 0.4.8
+  * d405f84: tried to fix sporadic lag when closing menu
+
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 22 May 2015 15:49:28 +0200
+
 vdr-plugin-skindesigner (0.4.7-1-gf9278c8-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
