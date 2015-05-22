@@ -131,7 +131,7 @@ void cSDDisplayReplay::SetTimeShiftValues(const cRecording *recording) {
         return;
     double fps = recording->FramesPerSecond();
     time_t liveEventStop = event->EndTime();
-    time_t recordingStart = recording->Start();
+    time_t recordingStart = time(0) - recording->LengthInSeconds();
     int framesTotal = (liveEventStop - recordingStart)*fps;
     int recLength = liveEventStop - recordingStart;
     replayView->SetTimeShift(framesTotal, recLength);
