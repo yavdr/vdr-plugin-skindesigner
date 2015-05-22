@@ -62,7 +62,8 @@ cPluginSkinDesigner::~cPluginSkinDesigner() {
 
 const char *cPluginSkinDesigner::CommandLineHelp(void) {
   return
-         "  -s <SKINPATH>, --skinpath=<SKINPATH> Set directory where xml skins are stored\n"
+         "  -s <SKINPATH>, --skinpath=<SKINPATH> Set directory where xml skins are stored by Package Manager\n"
+         "  -i <INSTALLERPATH>, --installerpath=<INSTALLERPATH> Set directory where xml skins are stored by Installer\n"
          "  -l <LOGOPATH>, --logopath=<LOGOPATH> Set directory where a common logo set for all skins is stored\n"
          "  -e <EPGIMAGESPATH>, --epgimages=<IMAGESPATH> Set directory where epgimages are stored\n";
 }
@@ -73,11 +74,12 @@ bool cPluginSkinDesigner::ProcessArgs(int argc, char *argv[]) {
         { "epgimages", required_argument, NULL, 'e' },
         { "logopath", required_argument, NULL, 'l' },
         { "skinpath", required_argument, NULL, 's' },
+        { "installerpath", required_argument, NULL, 'i' },
         { 0, 0, 0, 0 }
     };
 
     int c;
-    while ((c = getopt_long(argc, argv, "e:s:l:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "e:s:l:i:", long_options, NULL)) != -1) {
         switch (c) {
             case 'e':
                 config.SetEpgImagePath(cString(optarg));
@@ -87,6 +89,9 @@ bool cPluginSkinDesigner::ProcessArgs(int argc, char *argv[]) {
                 break;
             case 's':
                 config.SetSkinPath(cString(optarg));
+                break;
+            case 'i':
+                config.SetInstallerSkinPath(cString(optarg));
                 break;
             default:
                 return false;
@@ -128,6 +133,7 @@ bool cPluginSkinDesigner::Start(void) {
     }
     config.TranslateSetup();
     config.SetSkinSetupParameters();
+    config.ReadSkinRepos();
 
     if (skins.size() == 0) {
         esyslog("skindesigner: no skins found! Using default Skin LCARS!");

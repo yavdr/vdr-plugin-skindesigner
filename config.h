@@ -11,6 +11,7 @@
 #include "libcore/imagecache.h"
 #include "libcore/recfolderinfo.h"
 #include "libcore/skinsetup.h"
+#include "libcore/skinrepo.h"
 
 #define SCRIPTOUTPUTPATH "/tmp/skindesigner"
 
@@ -19,6 +20,7 @@ private:
     cString CheckSlashAtEnd(string path);
     bool epgImagePathSet;
     bool skinPathSet;
+    bool installerSkinPathSet;
     bool logoPathSet;
     cRect osdSize;
     string osdSkin;
@@ -40,12 +42,14 @@ private:
     map < string, cSkinSetup* > skinSetups;
     map < string, cSkinSetup* >::iterator setupIt;
     vector < pair <string, int> > skinSetupParameters;
+    cSkinRepos skinRepos;
 public:
     cDesignerConfig();
     ~cDesignerConfig();
     bool SetupParse(const char *Name, const char *Value);
     void SetPathes(void);
     void SetSkinPath(cString path);
+    void SetInstallerSkinPath(cString path);
     void SetLogoPath(cString path);
     void SetEpgImagePath(cString path);
     void ReadSkins(void);
@@ -62,6 +66,7 @@ public:
     void TranslateSetup(void);
     void SetSkinSetupParameters(void);
     void UpdateSkinSetupParameter(string name, int value);
+    void ReadSkinRepos(void);
     void SetGlobals(cGlobals *globals) { tmplGlobals = globals; };
     void UpdateGlobals(void);
     void CheckDecimalPoint(void);
@@ -84,6 +89,7 @@ public:
     int GetPluginViewElementID(string pluginName, string viewElementName, int viewID);
     int GetPluginViewGridID(string pluginName, string viewGridName, int viewID);
     cString skinPath;
+    cString installerSkinPath;
     cString logoPath;
     cString epgImagePath;
     bool replaceDecPoint;

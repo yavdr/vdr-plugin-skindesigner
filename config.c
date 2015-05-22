@@ -6,6 +6,7 @@ cDesignerConfig::cDesignerConfig() {
     tmplGlobals = NULL;
     epgImagePathSet = false;
     skinPathSet = false;
+    installerSkinPathSet = false;
     logoPathSet = false;
     //Common
     numLogosPerSizeInitial = 30;
@@ -37,12 +38,15 @@ cDesignerConfig::~cDesignerConfig() {
 void cDesignerConfig::SetPathes(void) {
     if (!skinPathSet)
         skinPath = cString::sprintf("%s/skins/", cPlugin::ResourceDirectory(PLUGIN_NAME_I18N));
+    if (!installerSkinPathSet)
+        installerSkinPath = cString::sprintf("%s/installerskins/", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
     if (!logoPathSet) 
         logoPath = cString::sprintf("%s/logos/", cPlugin::ResourceDirectory(PLUGIN_NAME_I18N));
     if (!epgImagePathSet)
         epgImagePath = cString::sprintf("%s/epgimages/", cPlugin::CacheDirectory(PLUGIN_NAME_I18N));
 
     dsyslog("skindesigner: using Skin Directory %s", *skinPath);
+    dsyslog("skindesigner: using Installer Skin Directory %s", *installerSkinPath);
     dsyslog("skindesigner: using common ChannelLogo Directory %s", *logoPath);
     dsyslog("skindesigner: using EPG Images Directory %s", *epgImagePath);
 }
@@ -50,6 +54,11 @@ void cDesignerConfig::SetPathes(void) {
 void cDesignerConfig::SetSkinPath(cString path) {
     skinPath = CheckSlashAtEnd(*path);
     skinPathSet = true;
+}
+
+void cDesignerConfig::SetInstallerSkinPath(cString path) {
+    installerSkinPath = CheckSlashAtEnd(*path);
+    installerSkinPathSet = true;
 }
 
 void cDesignerConfig::SetLogoPath(cString path) {
@@ -141,7 +150,6 @@ cSkinSetupMenu* cDesignerConfig::GetSkinSetupMenu(string &skin, string &menu) {
     cSkinSetup *skinSetup = GetSkinSetup(skin);
     if (!skinSetup)
         return NULL;
-    esyslog("skindesigner: skinsetup found");
     return skinSetup->GetMenu(menu);
 }
 
@@ -194,6 +202,19 @@ void cDesignerConfig::SetSkinSetupParameters(void) {
         esyslog("skindesigner: ERROR Unknown Setup Parameter %s", name.c_str());
     }
 }
+
+void cDesignerConfig::ReadSkinRepos(void) {
+    skinRepos.Read(*skinPath);
+    skinRepos.Debug();
+    /*
+    cSkinRepo *holo = skinRepos.GetRepo("Holo");
+    if (holo) {
+        esyslog("skindesigner: installing Holo");
+        holo->Install(*installerSkinPath);
+    }
+    */
+}
+
 
 void cDesignerConfig::UpdateGlobals(void) {
     string activeSkin = Setup.OSDSkin;
