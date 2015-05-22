@@ -334,4 +334,5 @@ Version 0.4.6
 - added timeshift support in displayreplay
 
 Version 0.4.7
-
+- fixed crash when deleting menuitem
+- fixed ecm time display

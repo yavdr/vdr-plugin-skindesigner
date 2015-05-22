@@ -938,7 +938,7 @@ bool cViewHelpers::SetEcmInfos(int channelSid, stringmap &stringTokens, intmap &
         return false;
     }
 
-    if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0)
+    if (ecmInfo.hops < 0 || ecmInfo.ecmtime <= 0 || ecmInfo.ecmtime > 100000)
         return false;
     if (CompareECMInfos(&ecmInfo))
         return false;
