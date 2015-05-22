@@ -334,9 +334,11 @@ Version 0.4.6
 - added timeshift support in displayreplay
 
 Version 0.4.7
+
 - fixed crash when deleting menuitem
 - fixed ecm time display
 - provide 10 last recordings in <lastrecordings> viewelement
 - fixed translation in currentelement loops
 - fixed timeshifttotal in displayreplay timeshift mode
 
+Version 0.4.8
