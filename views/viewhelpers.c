@@ -873,7 +873,7 @@ void cViewHelpers::SetLastRecordings(map<string,int> *intTokens, map<string,stri
         recVals.insert(pair< string, string >("recordings[posterheight]", sPosterHeight.str()));
         lastRecordings->push_back(recVals);
         found++;
-        if (found == 5)
+        if (found == 10)
             break;
     }
 }

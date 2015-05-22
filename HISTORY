@@ -336,3 +336,4 @@ Version 0.4.6
 Version 0.4.7
 - fixed crash when deleting menuitem
 - fixed ecm time display
+- provide 10 last recordings in <lastrecordings> viewelement

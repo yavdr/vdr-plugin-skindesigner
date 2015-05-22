@@ -20,9 +20,9 @@
     <timers detached="false">
     </timers>
 
-    <!-- Available Variables lastrecordings: 5 newest recordings
+    <!-- Available Variables lastrecordings: 10 newest recordings
     {numtimers}                  number of active timers
-    {recordings[]}               array with 5 newest recordings
+    {recordings[]}               array with 10 newest recordings
     {recordings[name]}           name of recording
     {recordings[seriesname]}     series name if available
     {recordings[date]}           date of recording in dd.mm.yy
