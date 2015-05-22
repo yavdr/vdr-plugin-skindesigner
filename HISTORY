@@ -338,4 +338,5 @@ Version 0.4.7
 - fixed ecm time display
 - provide 10 last recordings in <lastrecordings> viewelement
 - fixed translation in currentelement loops
+- fixed timeshifttotal in displayreplay timeshift mode
 
