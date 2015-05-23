@@ -1,4 +1,4 @@
-debian/plugin.skindesigner.conf    etc/vdr/plugins
+#debian/plugin.skindesigner.conf    etc/vdr/plugins
 debian/temperatures.frodo          usr/lib/vdr/plugins/skindesigner/scripts
 
 usr/lib/vdr/plugins/*
