@@ -2,6 +2,8 @@
 #include <sstream>
 #include <vector>
 #include <stdlib.h>
+#include <fstream>
+#include <iostream>
 #include "helpers.h"
 #include <vdr/skins.h>
 

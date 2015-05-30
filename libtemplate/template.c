@@ -70,6 +70,8 @@ bool cTemplate::ReadFromXML(string xmlfile) {
                 templateName << "plug-" << plugName << "-" << it->second.c_str();
                 if (parser.ReadPluginView(plugName, templateNumber, templateName.str())) {
                     ok = parser.ParsePluginView(plugName, templateNumber);
+                } else {
+                    dsyslog("skindesigner: template %s for plugin %s not available", templateName.str().c_str(), plugName.c_str());
                 }
             }
         }

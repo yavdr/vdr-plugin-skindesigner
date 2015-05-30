@@ -61,6 +61,10 @@ public:
 class cSkindesignerOsdMenu : public cOsdMenu {
 private:
     bool init;
+    bool firstCallCleared;
+    bool secondCall;
+    int firstMenu;
+    eMenuType firstType;
     bool displayText;
     string pluginName;
     ISDDisplayMenu *sdDisplayMenu;
@@ -70,6 +74,7 @@ private:
     map < string, vector< map< string, string > > > loopTokens;
     bool SetSkinDesignerDisplayMenu(void);
 protected:
+    void FirstCallCleared(void) { firstCallCleared = true; };
     void ClearTokens(void);
     void SetPluginName(string name) {pluginName = name; };
     void SetPluginMenu(int menu, eMenuType type);

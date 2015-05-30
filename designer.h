@@ -1,6 +1,8 @@
 #ifndef __SKINDESIGNER_H
 #define __SKINDESIGNER_H
 
+class cSkinDesigner;
+
 #include "config.h"
 #include "libtemplate/template.h"
 #include "libtemplate/xmlparser.h"

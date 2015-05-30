@@ -49,6 +49,12 @@ void cDesignerConfig::SetPathes(void) {
     dsyslog("skindesigner: using Installer Skin Directory %s", *installerSkinPath);
     dsyslog("skindesigner: using common ChannelLogo Directory %s", *logoPath);
     dsyslog("skindesigner: using EPG Images Directory %s", *epgImagePath);
+
+    vdrThemesPath = cPlugin::ConfigDirectory(PLUGIN_NAME_I18N);
+    size_t found = vdrThemesPath.find("/plugins");
+    if (found != string::npos)
+        vdrThemesPath = vdrThemesPath.substr(0, found);
+    vdrThemesPath += "/themes/";
 }
 
 void cDesignerConfig::SetSkinPath(cString path) {
@@ -71,12 +77,12 @@ void cDesignerConfig::SetEpgImagePath(cString path) {
     epgImagePathSet = true;
 }
 
-void cDesignerConfig::ReadSkins(void) {
+void cDesignerConfig::ReadSkinFolder(cString &skinFolder, vector<string> *container) {
     DIR *folder = NULL;
     struct dirent *dirEntry;
-    folder = opendir(skinPath);
+    folder = opendir(skinFolder);
     if (!folder) {
-        esyslog("skindesigner: no skins found in %s", *skinPath);
+        esyslog("skindesigner: no skins found in %s", *skinFolder);
         return;
     }
     while (dirEntry = readdir(folder)) {
@@ -84,9 +90,31 @@ void cDesignerConfig::ReadSkins(void) {
         int dirEntryType = dirEntry->d_type;
         if (!dirEntryName.compare(".") || !dirEntryName.compare("..") || dirEntryType != DT_DIR)
             continue;
-        skins.push_back(dirEntryName);
+        container->push_back(dirEntryName);
     }
-    dsyslog("skindesigner %ld skins found in %s", skins.size(), *skinPath);
+    dsyslog("skindesigner %ld skins found in %s", container->size(), *skinFolder);    
+}
+
+
+
+void cDesignerConfig::ReadSkins(void) {
+    ReadSkinFolder(skinPath, &deliveredSkins);
+    ReadSkinFolder(installerSkinPath, &installerSkins);
+    for (vector<string>::iterator it = deliveredSkins.begin(); it != deliveredSkins.end(); it++) {
+        skins.push_back(*it);
+    }
+    for (vector<string>::iterator it = installerSkins.begin(); it != installerSkins.end(); it++) {
+        string instSkin = *it;
+        bool found = false;
+        for (vector<string>::iterator it2 = deliveredSkins.begin(); it2 != deliveredSkins.end(); it2++) {
+            if (!instSkin.compare(*it2)) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            skins.push_back(instSkin);
+    }
 }
 
 void cDesignerConfig::ClearSkinSetups(void) {
@@ -127,6 +155,35 @@ bool cDesignerConfig::GetSkin(string &skin) {
     skin = *skinIterator;
     skinIterator++;
     return true;
+}
+
+cString cDesignerConfig::GetSkinPath(string skin) {
+    for (vector<string>::iterator it = deliveredSkins.begin(); it != deliveredSkins.end(); it++) {
+        if (!skin.compare(*it)) {
+            return skinPath;
+        }
+    }
+    return installerSkinPath;
+}
+
+void cDesignerConfig::AddNewSkinRef(string skin) {
+    cSkinDesigner *newSkin = new cSkinDesigner(skin);
+    AddSkin(newSkin);
+    skins.push_back(skin);
+    installerSkins.push_back(skin);
+    ReadSkinSetup(skin);
+    map < string, cSkinSetup* >::iterator hit = skinSetups.find(skin);
+    if (hit != skinSetups.end())
+        (hit->second)->TranslateSetup();
+}
+
+cSkinDesigner* cDesignerConfig::GetNextSkinRef(void) {
+    if (skinRefsIterator == skinRefs.end()) {
+        return NULL;
+    }
+    cSkinDesigner *skin = *skinRefsIterator;
+    skinRefsIterator++;
+    return skin;    
 }
 
 cSkinSetup* cDesignerConfig::GetSkinSetup(string &skin) {
@@ -205,16 +262,16 @@ void cDesignerConfig::SetSkinSetupParameters(void) {
 
 void cDesignerConfig::ReadSkinRepos(void) {
     skinRepos.Read(*skinPath);
-    skinRepos.Debug();
-    /*
-    cSkinRepo *holo = skinRepos.GetRepo("Holo");
-    if (holo) {
-        esyslog("skindesigner: installing Holo");
-        holo->Install(*installerSkinPath);
-    }
-    */
+    dsyslog("skindesigner: read %d skinrepositories from %s", skinRepos.Count(), *skinPath);
 }
 
+bool cDesignerConfig::SkinInstalled(string name) {
+    for (vector<string>::iterator it = installerSkins.begin(); it != installerSkins.end(); it++) {
+        if (!name.compare(*it))
+            return true;
+    }
+    return false;
+}
 
 void cDesignerConfig::UpdateGlobals(void) {
     string activeSkin = Setup.OSDSkin;
