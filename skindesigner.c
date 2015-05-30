@@ -19,7 +19,7 @@
 #endif
 
 
-static const char *VERSION        = "0.4.8";
+static const char *VERSION        = "0.5.0";
 static const char *DESCRIPTION    = trNOOP("Skin Designer");
 
 class cPluginSkinDesigner : public cPlugin, public skindesignerapi::SkindesignerAPI {
