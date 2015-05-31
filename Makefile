@@ -48,11 +48,11 @@ DEFINES += $(shell xml2-config --cflags)
 DEFINES += -DSCRIPTFOLDER='"$(SKINDESIGNER_SCRIPTDIR)"'
 
 INCLUDES += $(shell pkg-config --cflags freetype2 fontconfig)
-
 INCLUDES += $(shell pkg-config --cflags librsvg-2.0 cairo-png) -ljpeg
-LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 
+LIBS += $(shell pkg-config --libs librsvg-2.0 cairo-png) -ljpeg
 LIBS += $(shell xml2-config --libs)
+LIBS += $(shell pkg-config --libs libcurl)
 
 ### The object files:
 OBJS = $(PLUGIN).o \
@@ -67,6 +67,7 @@ OBJS = $(PLUGIN).o \
        displayvolume.o \
        displayplugin.o \
        libcore/cairoimage.o \
+       libcore/curlfuncs.o \
        libcore/pixmapcontainer.o \
        libcore/fontmanager.o \
        libcore/imagecache.o \
@@ -74,6 +75,7 @@ OBJS = $(PLUGIN).o \
        libcore/imageloader.o \
        libcore/recfolderinfo.o \
        libcore/skinsetup.o \
+       libcore/skinrepo.o \
        libcore/extrecinfo.o \
        libcore/timers.o \
        libtemplate/globals.o \

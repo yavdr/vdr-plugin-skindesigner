@@ -178,3 +178,18 @@ int cFontManager::GetFontHeight(const char *name, int height, int charWidth) {
 
     return realHeight;
 }
+
+bool cFontManager::FontInstalled(string fontName) {
+    cStringList availableFonts;
+    cFont::GetAvailableFontNames(&availableFonts);
+    int numFonts = availableFonts.Size();
+    string compare = fontName + ":";
+    for (int i=0; i<numFonts; i++) {
+        string currentFont = availableFonts[i];
+        if (currentFont.find(compare) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+

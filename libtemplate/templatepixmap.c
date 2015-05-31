@@ -187,7 +187,7 @@ void cTemplatePixmap::ClearDynamicFunctionParameters(void) {
     }
 }
 
-void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *stringTokens, map <string,int> *intTokens) {
+void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *stringTokens, map <string,int> *intTokens, map < string, vector< map< string, string > > > *loopTokens) {
     InitIterator();
     cTemplateFunction *func = NULL;
     bool completelyParsed = true;
@@ -208,7 +208,7 @@ void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *string
     }
 
     bool replacedWidth  = ReplaceWidthFunctions();
-    bool replacedHeight = ReplaceHeightFunctions();
+    bool replacedHeight = ReplaceHeightFunctions(loopTokens);
     bool replacedPosX =   ReplacePosXFunctions();
     bool replacedPosY =   ReplacePosYFunctions();
 
@@ -425,7 +425,7 @@ bool cTemplatePixmap::ReplaceWidthFunctions(void) {
     return replaced;
 }
 
-bool cTemplatePixmap::ReplaceHeightFunctions(void) {
+bool cTemplatePixmap::ReplaceHeightFunctions(map < string, vector< map< string, string > > > *loopTokens) {
     bool replaced = false;
     InitIterator();
     cTemplateFunction *func = NULL;
@@ -443,7 +443,7 @@ bool cTemplatePixmap::ReplaceHeightFunctions(void) {
                 cTemplateFunction *myFunc = *it;
                 string myFuncName = myFunc->GetParameter(ptName); 
                 if (!myFuncName.compare(label)) {
-                    funcHeight = myFunc->GetHeight();
+                    funcHeight = myFunc->GetHeight(loopTokens);
                     func->SetHeight(type, label, funcHeight);
                     if (func->Updated()) {
                         func->CompleteParameters();

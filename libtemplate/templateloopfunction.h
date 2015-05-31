@@ -26,6 +26,7 @@ public:
     int GetLoopElementsHeight(void);
     int GetContainerWidth(void) { return containerWidth; };
     int GetContainerHeight(void) { return containerHeight; };
+    int CalculateHeight(map < string, vector< map< string, string > > > *loopTokens);
     bool Ready(void);
     void Debug(void);
 };

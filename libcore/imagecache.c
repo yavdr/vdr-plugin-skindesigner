@@ -27,18 +27,20 @@ cImageCache::~cImageCache() {
 }
 
 void cImageCache::SetPathes(void) {
-    string logoPathSkin = *cString::sprintf("%s%s/themes/%s/logos/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    cString skinPath = config.GetSkinPath(Setup.OSDSkin);
+
+    string logoPathSkin = *cString::sprintf("%s%s/themes/%s/logos/", *skinPath, Setup.OSDSkin, Setup.OSDTheme);
     if (FolderExists(logoPathSkin)) {
         logoPath = logoPathSkin;
     } else {
         logoPath = *config.logoPath;
     }
 
-    iconPathSkin = *cString::sprintf("%s%s/", *config.skinPath, Setup.OSDSkin);
-    skinPartsPathSkin = *cString::sprintf("%s%s/skinparts/", *config.skinPath, Setup.OSDSkin);
+    iconPathSkin = *cString::sprintf("%s%s/", *skinPath, Setup.OSDSkin);
+    skinPartsPathSkin = *cString::sprintf("%s%s/skinparts/", *skinPath, Setup.OSDSkin);
 
-    iconPathTheme = *cString::sprintf("%s%s/themes/%s/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
-    skinPartsPathTheme = *cString::sprintf("%s%s/themes/%s/skinparts/", *config.skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    iconPathTheme = *cString::sprintf("%s%s/themes/%s/", *skinPath, Setup.OSDSkin, Setup.OSDTheme);
+    skinPartsPathTheme = *cString::sprintf("%s%s/themes/%s/skinparts/", *skinPath, Setup.OSDSkin, Setup.OSDTheme);
 
     dsyslog("skindesigner: using channel logo path %s", logoPath.c_str());
     dsyslog("skindesigner: using icon path %s", iconPathTheme.c_str());

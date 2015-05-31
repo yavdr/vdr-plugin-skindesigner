@@ -548,7 +548,7 @@ int cTemplateFunction::GetWidth(bool cutted) {
     return funcWidth;
 }
 
-int cTemplateFunction::GetHeight(void) {
+int cTemplateFunction::GetHeight(map < string, vector< map< string, string > > > *loopTokens) {
     int funcHeight = 0;
     switch (type) {
         case ftDrawText:
@@ -578,9 +578,12 @@ int cTemplateFunction::GetHeight(void) {
                 textboxHeight = funcHeight;
             }
             break; }
-        case ftLoop:
-            //TODO: to be implemented
-            break;
+        case ftLoop: {
+            cTemplateLoopFunction *loopFunc = dynamic_cast<cTemplateLoopFunction*>(this);
+            if (loopFunc) {
+                funcHeight = loopFunc->CalculateHeight(loopTokens);
+            }
+            break; }
         default:
             esyslog("skindesigner: GetHeight not implemented for funcType %d", type);
             break;

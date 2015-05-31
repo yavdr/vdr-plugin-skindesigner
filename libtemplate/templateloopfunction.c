@@ -21,8 +21,8 @@ void cTemplateLoopFunction::AddFunction(string name, vector<pair<string, string>
     if (!name.compare("drawtext")) {
         type = ftDrawText;
     } else if (!name.compare("drawtextbox")) {
-                type = ftDrawTextBox;
-        } else if (!name.compare("drawimage")) {
+        type = ftDrawTextBox;
+    } else if (!name.compare("drawimage")) {
         type = ftDrawImage;
     } else if (!name.compare("drawrectangle")) {
         type = ftDrawRectangle;
@@ -147,6 +147,21 @@ int cTemplateLoopFunction::GetLoopElementsHeight(void) {
             maxHeight = totalHeight;
     }
     return maxHeight;
+}
+
+int cTemplateLoopFunction::CalculateHeight(map < string, vector< map< string, string > > > *loopTokens) {
+    if (!loopTokens) {
+        return 0;
+    }
+    int rowHeight = GetLoopElementsHeight();
+    string loopName = GetParameter(ptName);
+    map < string, vector< map< string, string > > >::iterator hit = loopTokens->find(loopName);
+    if (hit == loopTokens->end())
+        return 0;
+    vector< map< string, string > > toks = hit->second;
+    int numElements = toks.size();
+
+    return numElements * rowHeight;
 }
 
 bool cTemplateLoopFunction::ReplaceWidthFunctions(void) {

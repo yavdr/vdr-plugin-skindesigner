@@ -31,6 +31,7 @@ class cFontManager {
         cFont *FontUncached(string fontName, int fontSize);
         void Debug(void);
         void ListAvailableFonts(void);
+        bool FontInstalled(string fontName);
 };
 
 #endif //__FONTMANAGER_H

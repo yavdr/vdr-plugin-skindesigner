@@ -320,13 +320,13 @@ string cXmlParser::GetPath(string xmlFile) {
     string activeTheme = Setup.OSDTheme;
     string path = "";
     if (!xmlFile.compare("globals.xml")) {
-        path = *cString::sprintf("%s%s/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
+        path = *cString::sprintf("%s%s/%s", *config.GetSkinPath(activeSkin), activeSkin.c_str(), xmlFile.c_str());
     } else if (!xmlFile.compare("theme.xml")) {
-        path = *cString::sprintf("%s%s/themes/%s/%s", *config.skinPath, activeSkin.c_str(), activeTheme.c_str(), xmlFile.c_str());
+        path = *cString::sprintf("%s%s/themes/%s/%s", *config.GetSkinPath(activeSkin), activeSkin.c_str(), activeTheme.c_str(), xmlFile.c_str());
     } else if (!xmlFile.compare("setup.xml")) {
-        path = *cString::sprintf("%s%s/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
+        path = *cString::sprintf("%s%s/%s", *config.GetSkinPath(activeSkin), activeSkin.c_str(), xmlFile.c_str());
     } else {
-        path = *cString::sprintf("%s%s/xmlfiles/%s", *config.skinPath, activeSkin.c_str(), xmlFile.c_str());
+        path = *cString::sprintf("%s%s/xmlfiles/%s", *config.GetSkinPath(activeSkin), activeSkin.c_str(), xmlFile.c_str());
     }
     return path;
 }

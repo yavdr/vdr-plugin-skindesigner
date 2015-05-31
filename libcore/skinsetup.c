@@ -32,8 +32,8 @@ cSkinSetupMenu::cSkinSetupMenu(void) {
 }
 
 cSkinSetupMenu::~cSkinSetupMenu(void) {
-    for (map < string, cSkinSetupParameter* >::iterator p = parameters.begin(); p != parameters.end(); p++) {
-        delete p->second;
+    for (vector < cSkinSetupParameter* >::iterator p = parameters.begin(); p != parameters.end(); p++) {
+        delete (*p);
     }
     for (vector < cSkinSetupMenu* >::iterator s = subMenus.begin(); s != subMenus.end(); s++) {
         delete (*s);
@@ -43,7 +43,7 @@ cSkinSetupMenu::~cSkinSetupMenu(void) {
 cSkinSetupParameter *cSkinSetupMenu::GetNextParameter(bool deep) {
     cSkinSetupParameter *param = NULL;
     if (paramIt != parameters.end()) {
-        param = paramIt->second;
+        param = *paramIt;
         paramIt++;
         return param;
     }
@@ -64,9 +64,10 @@ cSkinSetupParameter *cSkinSetupMenu::GetNextParameter(bool deep) {
 }
 
 cSkinSetupParameter *cSkinSetupMenu::GetParameter(string name) {
-    map < string, cSkinSetupParameter* >::iterator hit = parameters.find(name);
-    if (hit != parameters.end())
-        return hit->second;
+    for (vector < cSkinSetupParameter* >::iterator it = parameters.begin(); it != parameters.end(); it++) {
+        if (!name.compare((*it)->name))
+            return *it;
+    }
 
     cSkinSetupParameter *paramHit = NULL;
     for (vector < cSkinSetupMenu* >::iterator subMenu = subMenus.begin(); subMenu != subMenus.end(); subMenu++) {
@@ -101,7 +102,7 @@ void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, xmlChar *name, 
     }
     param->value = atoi((const char*)value);
 
-    parameters.insert(pair< string, cSkinSetupParameter* >(param->name, param));
+    parameters.push_back(param);
 }
 
 cSkinSetupMenu *cSkinSetupMenu::GetMenu(string &name) {
@@ -134,8 +135,8 @@ cSkinSetupMenu *cSkinSetupMenu::GetNextSubMenu(bool deep) {
 
 void cSkinSetupMenu::Debug(bool deep) {
     dsyslog("skindesigner: Menu %s Setup Parameters", name.c_str());
-    for (map < string, cSkinSetupParameter* >::iterator p = parameters.begin(); p != parameters.end(); p++) {
-        (p->second)->Debug();
+    for (vector < cSkinSetupParameter* >::iterator p = parameters.begin(); p != parameters.end(); p++) {
+        (*p)->Debug();
     }
     if (subMenus.empty())
         return;
@@ -159,7 +160,7 @@ cSkinSetup::~cSkinSetup() {
 }
 
 bool cSkinSetup::ReadFromXML(void) {
-    string xmlPath = *cString::sprintf("%s%s/setup.xml", *config.skinPath, skin.c_str());
+    string xmlPath = *cString::sprintf("%s%s/setup.xml", *config.GetSkinPath(skin), skin.c_str());
     cXmlParser parser;
     if (!parser.ReadSkinSetup(this, xmlPath)) {
         return false;

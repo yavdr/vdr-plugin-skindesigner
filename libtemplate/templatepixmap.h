@@ -32,7 +32,7 @@ protected:
     cGlobals *globals;
     //functions replacing {width(label)} and {height(label)} tokens
     bool ReplaceWidthFunctions(void);
-    bool ReplaceHeightFunctions(void);
+    bool ReplaceHeightFunctions(map < string, vector< map< string, string > > > *loopTokens);
     //functions replacing {posx(label)} and {posy(label)} tokens
     bool ReplacePosXFunctions(void);
     bool ReplacePosYFunctions(void);
@@ -65,7 +65,7 @@ public:
     //Parse pixmap parameters with dynamically set Tokens
     void ParseDynamicParameters(map <string,string> *stringTokens, map <string,int> *intTokens, bool initFuncs);
     //Parse all function parameters with dynamically set Tokens
-    void ParseDynamicFunctionParameters(map <string,string> *stringTokens, map <string,int> *intTokens);
+    void ParseDynamicFunctionParameters(map <string,string> *stringTokens, map <string,int> *intTokens, map < string, vector< map< string, string > > > *loopTokens);
     //Calculate size of drawport in case area scrolls
     bool CalculateDrawPortSize(cSize &size, map < string, vector< map< string, string > > > *loopTokens = NULL);
     //Set max width for text in scrollarea

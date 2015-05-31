@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-05-09 10:38+0200\n"
+"POT-Creation-Date: 2015-05-29 18:13+0200\n"
 "PO-Revision-Date: 2014-09-27 11:02+0200\n"
 "Last-Translator: Louis Braun <louis.braun@gmx.de>\n"
 "Language-Team: \n"
@@ -21,8 +21,35 @@ msgstr "eines nach dem anderen"
 msgid "at one go"
 msgstr "alle auf einmal"
 
-msgid "Skin"
-msgstr ""
+msgid "Downloading Skin Screenshots..."
+msgstr "Lade Screenshots herunter..."
+
+msgid "Install Skin"
+msgstr "Installiere Skin"
+
+msgid "Update from Git"
+msgstr "Aus Git aktualisieren"
+
+msgid "Installing Skin..."
+msgstr "Installiere Skin..."
+
+msgid "Skin successfully installed"
+msgstr "Skin installiert"
+
+msgid "Skin NOT successfully installed"
+msgstr "Skin NICHT installiert"
+
+msgid "No Git Repsoitory available"
+msgstr "Kein Git Repository verfügbar"
+
+msgid "Updating Skin from Git..."
+msgstr "Aktualisiere Skin aus Git..."
+
+msgid "Skin successfully updated"
+msgstr "Skin erfolgreich aktualisiert"
+
+msgid "Skin already up to date"
+msgstr "Skin ist auf aktuellem Stand"
 
 msgid "Plugin Setup"
 msgstr ""
@@ -63,12 +90,6 @@ msgstr "Anzahl der initial zu cachenden Logos"
 msgid "Number to cache in maximum"
 msgstr "Maximale Anzahl zu cachender Logos"
 
-msgid "Skin Setup"
-msgstr ""
-
-msgid "has no setup"
-msgstr "hat kein Setup"
-
 msgid "Cache Statistics"
 msgstr "Cache Statistik"
 
@@ -89,6 +110,30 @@ msgstr "Logos"
 
 msgid "skinparts"
 msgstr "Skinparts"
+
+msgid "Skin Setup"
+msgstr ""
+
+msgid "Skin"
+msgstr ""
+
+msgid "has no setup"
+msgstr "hat kein Setup"
+
+msgid "Install new skins"
+msgstr ""
+
+msgid "Preview Skin"
+msgstr "Skin Vorschau"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Used Fonts"
+msgstr "Benutze Schriften"
+
+msgid "Supported Plugins"
+msgstr "Unterstützte Plugins"
 
 msgid "Skin Designer"
 msgstr "Skin Designer"
