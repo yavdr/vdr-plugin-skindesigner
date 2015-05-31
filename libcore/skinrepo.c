@@ -35,6 +35,8 @@ void cSkinRepo::Install(string path, string themesPath) {
         command = *cString::sprintf("git clone --progress %s %s", url.c_str(), skinPath.c_str());
         tempfile = *cString::sprintf("gitclone_%s_%ld.out", name.c_str(), time(0));
 
+        dsyslog("skindesigner: installing skin from Git, command: %s, logfile: %s", command.c_str(), tempfile.c_str());
+
         Start();
 
     } else if (repoType == rtZipUrl) {
@@ -46,6 +48,8 @@ void cSkinRepo::Install(string path, string themesPath) {
         
         command = *cString::sprintf("wget -P /tmp/ %s", url.c_str());
         command2 = *cString::sprintf("unzip /tmp/%s -d %s", filename.c_str(), path.c_str());
+
+        dsyslog("skindesigner: installing skin from Zip, command: %s, %s", command.c_str(), command2.c_str());
         
         Start();
     }
@@ -60,6 +64,8 @@ void cSkinRepo::Update(string path) {
 
         command = *cString::sprintf("cd %s; git pull", skinPath.c_str());
         tempfile = *cString::sprintf("gitpull_%s_%ld.out", name.c_str(), time(0));
+
+        dsyslog("skindesigner: updating skin from Git, command: %s, logfile: /tmp/%s", command.c_str(), tempfile.c_str());
 
         Start();
 
@@ -86,6 +92,9 @@ void cSkinRepo::Action(void) {
     if (result == 0) {
         if (action == eaInstall)
             CreateThemeFiles();
+        dsyslog("skindesigner: %s successfully executed", command.c_str());
+    } else {
+        esyslog("skindesigner: ERROR executing %s", command.c_str());
     }
 }
 
