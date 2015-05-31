@@ -1,4 +1,4 @@
-vdr-plugin-skindesigner (0.5.0-4-g12e65e7-0yavdr0~trusty) trusty; urgency=medium
+vdr-plugin-skindesigner (0.5.0-4-g12e65e7-0yavdr0~precise) precise; urgency=medium
 
   * new upstream snapshot
   * f483aef: implemented skininstaller config file

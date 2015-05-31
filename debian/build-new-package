@@ -3,9 +3,9 @@
 #set -x
 
 PACKAGE=vdr-plugin-skindesigner
-DISTRIBUTION=trusty
+DISTRIBUTION=precise
 BUILDPREFIX=yavdr
-PPA=yavdr/unstable-vdr
+PPA=yavdr/testing-vdr
 
 UPSTREAMURL=git://projects.vdr-developer.org/vdr-plugin-skindesigner.git
 PACKAGEURL=git@github.com:yavdr/${PACKAGE}.git
@@ -13,6 +13,7 @@ PACKAGEURL=git@github.com:yavdr/${PACKAGE}.git
 # prepare:
 # git clone -o origin ${PACKAGEURL} ${PACKAGE}
 # cd ${PACKAGE}
+# git checkout testing-0.5
 # git remote add upstream ${UPSTREAMURL}
 
 # get upstream changes
