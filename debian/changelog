@@ -1,3 +1,18 @@
+vdr-plugin-skindesigner (0.5.0-4-g12e65e7-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * f483aef: implemented skininstaller config file
+  * 5c365b5: added new files
+  * 0936766: Merge branch 'master' into installer
+  * 17871b8: implemented Skin Repositories
+  * dac7b9e: Version 0.5.0
+  * 52e309d: fixed display of channel separators
+  * dc0423c: updated README
+  * b0208d8: added some debug output when installing skins
+  * 12e65e7: added timeout for preview screenshot downloading
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Sun, 31 May 2015 11:53:10 +0200
+
 vdr-plugin-skindesigner (0.4.8-1-gd405f84-1yavdr0~trusty) trusty; urgency=medium
 
   * convert to conf.d
