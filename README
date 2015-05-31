@@ -32,6 +32,8 @@ Requirements
 
 - libxml2
 
+- libcurl
+
 - for scaling the video picture to fit into the VDR menu window please use
   softhddevice plugin revision 87c1c7be (2013-01-01) or newer.
 
