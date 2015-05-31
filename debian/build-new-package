@@ -31,7 +31,10 @@ then
   CHANGES=`git log --reverse --pretty="format:%h: %s" HEAD..upstream/master upstream/master`
 
   git merge --commit --log -m "Merge branch 'upstream/master'" upstream/master
-  git archive --format=tar.gz --prefix=${PACKAGE}-${UPSTREAMVERSION}/ --output=../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz upstream/master
+  if [ ! -e ../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz ]
+  then
+    git archive --format=tar.gz --prefix=${PACKAGE}-${UPSTREAMVERSION}/ --output=../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz upstream/master
+  fi
   dch -v ${NEWVERSION} -u medium -D ${DISTRIBUTION} --force-distribution "new upstream snapshot"
   while read -r line ; do dch -a "${line}" ; done <<< "${CHANGES}"
   if [ -z "$DRYRUN" ]
