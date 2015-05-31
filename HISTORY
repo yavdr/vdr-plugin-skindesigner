@@ -348,4 +348,6 @@ Version 0.4.8
 Version 0.5.0
 
 - fixed display of channel separators
+- added some debug output when installing skins
+- added timeout for preview screenshot downloading
 
