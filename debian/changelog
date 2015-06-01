@@ -1,3 +1,36 @@
+vdr-plugin-skindesigner (0.5.1-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * f483aef: implemented skininstaller config file
+  * 5c365b5: added new files
+  * 0936766: Merge branch 'master' into installer
+  * 17871b8: implemented Skin Repositories
+  * dac7b9e: Version 0.5.0
+  * 52e309d: fixed display of channel separators
+  * dc0423c: updated README
+  * b0208d8: added some debug output when installing skins
+  * 12e65e7: added timeout for preview screenshot downloading
+  * 8adf252: corrected themes
+  * 0f1b71f: updated READNE
+  * 30cfccd: added glassy to skinrepository
+  * d2947bf: Version 0.5.1
+
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 01 Jun 2015 15:38:01 +0200
+
+vdr-plugin-skindesigner (0.4.8-87-gb51197b-0yavdr0~precise) precise; urgency=medium
+
+  * rebuild for precise
+  * b51197b: new upstream snapshot
+
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 01 Jun 2015 14:18:48 +0200
+
+vdr-plugin-skindesigner (0.4.8-87-gb51197b-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * b51197b: new upstream snapshot
+
+ -- Frodo <frodo.vdr@gmx.net>  Mon, 01 Jun 2015 14:18:16 +0200
+
 vdr-plugin-skindesigner (0.4.8-1-gd405f84-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
