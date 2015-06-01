@@ -246,7 +246,7 @@ public:
     string GetParamName(eParamType pt);
     //Dynamic width or height parameter
     int GetWidth(bool cutted = true);
-    int GetHeight(void);
+    int GetHeight(map < string, vector< map< string, string > > > *loopTokens = NULL);
     int GetContainerWidth(void) { return containerWidth; };
     int GetContainerHeight(void) { return containerHeight; };
     void GetNeededWidths(multimap<eParamType,string> *widths);

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-05-09 10:38+0200\n"
+"POT-Creation-Date: 2015-05-29 18:13+0200\n"
 "PO-Revision-Date: 2015-01-25 01:25+0200\n"
 "Last-Translator: Rolf Ahrenberg\n"
 "Language-Team: Finnish\n"
@@ -21,8 +21,35 @@ msgstr "yksi kerrallaan"
 msgid "at one go"
 msgstr "kaikki kerralla"
 
-msgid "Skin"
-msgstr "Ulkoasu"
+msgid "Downloading Skin Screenshots..."
+msgstr ""
+
+msgid "Install Skin"
+msgstr ""
+
+msgid "Update from Git"
+msgstr ""
+
+msgid "Installing Skin..."
+msgstr ""
+
+msgid "Skin successfully installed"
+msgstr ""
+
+msgid "Skin NOT successfully installed"
+msgstr ""
+
+msgid "No Git Repsoitory available"
+msgstr ""
+
+msgid "Updating Skin from Git..."
+msgstr ""
+
+msgid "Skin successfully updated"
+msgstr ""
+
+msgid "Skin already up to date"
+msgstr ""
 
 msgid "Plugin Setup"
 msgstr "Yleiset"
@@ -63,12 +90,6 @@ msgstr "Oletuksena välimuistissa pidettävät logot"
 msgid "Number to cache in maximum"
 msgstr "Maksimissaan välimuistissa pidettävät logot"
 
-msgid "Skin Setup"
-msgstr "Ulkoasut"
-
-msgid "has no setup"
-msgstr "ei asetuksia"
-
 msgid "Cache Statistics"
 msgstr "Välimuisti"
 
@@ -89,6 +110,30 @@ msgstr "logo(a)"
 
 msgid "skinparts"
 msgstr "osasta"
+
+msgid "Skin Setup"
+msgstr "Ulkoasut"
+
+msgid "Skin"
+msgstr "Ulkoasu"
+
+msgid "has no setup"
+msgstr "ei asetuksia"
+
+msgid "Install new skins"
+msgstr ""
+
+msgid "Preview Skin"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Used Fonts"
+msgstr ""
+
+msgid "Supported Plugins"
+msgstr ""
 
 msgid "Skin Designer"
 msgstr "Skin Designer -ulkoasu"

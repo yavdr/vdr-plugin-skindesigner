@@ -75,6 +75,10 @@ void skindesignerapi::cSkindesignerOsdItem::AddLoopToken(string loopName, map<st
 **********************************************************************/
 skindesignerapi::cSkindesignerOsdMenu::cSkindesignerOsdMenu(const char *Title, int c0, int c1, int c2, int c3, int c4) : cOsdMenu(Title, c0, c1, c2, c3, c4) {
     init = true;
+    firstCallCleared = false;
+    secondCall = false;
+    firstMenu = -1;
+    firstType = mtList;
     displayText = false;
     sdDisplayMenu = NULL;
     pluginName = "";
@@ -87,6 +91,10 @@ skindesignerapi::cSkindesignerOsdMenu::~cSkindesignerOsdMenu() {
 }
 
 void skindesignerapi::cSkindesignerOsdMenu::SetPluginMenu(int menu, eMenuType type) {
+    if (firstCallCleared) {
+        firstMenu = menu;
+        firstType = type;        
+    }
     if (type == mtList)
         displayText = false;
     else if (type == mtText)
@@ -155,6 +163,15 @@ void skindesignerapi::cSkindesignerOsdMenu::TextKeyDown(void) {
 }
 
 void skindesignerapi::cSkindesignerOsdMenu::Display(void) {
+    if (firstCallCleared) {
+        firstCallCleared = false;
+        secondCall = true;
+        return;
+    }
+    if (secondCall) {
+        SetSkinDesignerDisplayMenu();
+        SetPluginMenu(firstMenu, firstType);
+    }
     if (displayText) {
         if (sdDisplayMenu) {
             sdDisplayMenu->SetTitle(Title());

@@ -43,8 +43,8 @@ private:
     cSkinSetupMenu *parent;
     vector < cSkinSetupMenu* > subMenus;
     vector < cSkinSetupMenu* >::iterator subMenuIt;
-    map < string, cSkinSetupParameter* > parameters;
-    map < string, cSkinSetupParameter* >::iterator paramIt;
+    vector < cSkinSetupParameter* > parameters;
+    vector < cSkinSetupParameter* >::iterator paramIt;
 public:
     cSkinSetupMenu(void);
     virtual ~cSkinSetupMenu(void);

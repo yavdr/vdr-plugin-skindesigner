@@ -388,7 +388,7 @@ void cDisplayMenuItemSchedulesView::SetTokens(void) {
         } else {
             stringTokens.insert(pair<string,string>("title", event->Title() ? ParseSeparator(event->Title()) : ""));
         }
-    } else {
+    } else if (!channel) {
         stringTokens.insert(pair<string,string>("title", dayseparator));        
     }
     if (channel) {

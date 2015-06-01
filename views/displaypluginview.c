@@ -143,7 +143,7 @@ void cDisplayPluginView::SetTabs(void) {
     while(tmplTab = tmplView->GetNextViewTab()) {
         tmplTab->ParseDynamicParameters(&tabStringTokens, &tabIntTokens, true);
         tmplTab->ClearDynamicFunctionParameters();
-        tmplTab->ParseDynamicFunctionParameters(&tabStringTokens, &tabIntTokens);
+        tmplTab->ParseDynamicFunctionParameters(&tabStringTokens, &tabIntTokens, &tabLoopTokens);
         if (tmplTab->DoExecute()) {
             activeTabs.push_back(tmplTab);
         }

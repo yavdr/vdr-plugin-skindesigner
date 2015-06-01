@@ -322,8 +322,9 @@ bool cDisplayMenuRootView::SetDetailedViewPlugin(map<string,string> *stringToken
     if (!detailView) {
         SetMenu(mcPlugin, true);
     }
-    if (!subViewAvailable)
+    if (!subViewAvailable) {
         return false;
+    }
     detailView->SetPluginTokens(stringTokens, intTokens, loopTokens);
     return true;
 }

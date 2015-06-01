@@ -32,6 +32,8 @@ Requirements
 
 - libxml2
 
+- libcurl
+
 - for scaling the video picture to fit into the VDR menu window please use
   softhddevice plugin revision 87c1c7be (2013-01-01) or newer.
 
@@ -65,7 +67,12 @@ After installation you have to care about the paths for the XML skins and epg im
 The following paths can be set at startup:
 
 -s <SKINPATH>, --skinpath=<SKINPATH>
-    Path to the XML skins (Default: <ResourceDirectory>/plugins/skindesigner/skins/)
+    Path where XML skins get installed by "make install" or by package manager
+    (Default: <ResourceDirectory>/plugins/skindesigner/skins/)
+
+-i <INSTALLERPATH>, --installerpath=<INSTALLERPATH>
+    Path where XML skins are installed by the Skindesigner Installer
+    (Default: <ConfigDirectory>/plugins/skindesigner/installerskins/)
 
 -l <LOGOPATH>, --logopath=<LOGOPATH>
     Path to common logo set for all skins (Default: <ResourceDirectory>/plugins/skindesigner/logos/)
@@ -73,11 +80,22 @@ The following paths can be set at startup:
 -e path, --epgimages=path
     Path to the epgimages (Default: <CacheDirectory>/epgimages/)
 
-ResourceDirectory and CacheDirectory are taken from your VDR configuration
+ResourceDirectory, ConfigDirectory and CacheDirectory are taken from your VDR configuration
 (make.config or vdr.pc).
 
 During a "make install" the included skins are automatically copied from
-<SkinSourceDirectory>/skins/ to the configured path.
+<SkinSourceDirectory>/skins/ to the configured skin path.
+
+Important: All Skins (both the skins installed by a packet manager or by "make install" and the
+skins installed with Skindesigner) need the directory "dtd" accessible one level above the directory 
+the skin itself is placed. With a "make install" the dtd directory is copied to <ResourceDirectory>/dtd.
+If you use a <SKINPATH> different to the default, please add a symlink in the appropriate directory 
+to <ResourceDirectory>/dtd. 
+Add this symlink necessarily for the skins installed to <INSTALLERPATH>. If
+<INSTALLERPATH> is /var/cache/vdr/plugins/skindesigner/skins for instance, and the dtd directory
+is located at /etc/vdr/plugins/skindesigner/dtd, create the following symlink:
+
+ln -s /etc/vdr/plugins/skindesigner/dtd /var/cache/vdr/plugins/skindesigner/dtd
 
 For S2-6400 Users: Disable High Level OSD, otherwise the plugin will not be
 loaded because lack of true color support

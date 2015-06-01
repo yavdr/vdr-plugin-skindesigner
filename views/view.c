@@ -167,7 +167,7 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
         }
         //parse dynamic tokens of pixmap functions
         pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(stringTokens, intTokens);
+        pix->ParseDynamicFunctionParameters(stringTokens, intTokens, loopTokens);
 
         if (!PixmapExists(pixCurrent) && pix->Scrolling()) {
             cSize drawportSize;
@@ -1215,7 +1215,7 @@ cRect cViewListItem::DrawListItem(map <string,string> *stringTokens, map <string
         }
     
         pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(stringTokens, intTokens);
+        pix->ParseDynamicFunctionParameters(stringTokens, intTokens, NULL);
 
         if (!PixmapExists(pixCurrent) && pix->Scrolling()) {
             cSize drawportSize;
@@ -1386,7 +1386,7 @@ void cGrid::Draw(void) {
         }
     
         pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens);
+        pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens, NULL);
         //pix->Debug();
         DrawPixmap(pixCurrent, pix);
         pixCurrent++;

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<skinrepositories>
+    <skinrepo>
+        <name>blackhole</name>
+        <type>git</type>
+        <url>https://github.com/louisbraun/blackhole.git</url>
+        <author>Louis</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://projects.vdr-developer.org/attachments/1848/blackhole_displaymenumain.jpg</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://projects.vdr-developer.org/attachments/1847/blackhole_displaychannel.jpg</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on now</description>
+                <url>http://projects.vdr-developer.org/attachments/1849/blackhole_displaymenuwhatsonnow.jpg</url>
+            </screenshot>
+            <screenshot>
+                <description>Detailed EPG</description>
+                <url>http://projects.vdr-developer.org/attachments/1850/blackhole_displaymenudetailepg.jpg</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>Source Sans Pro</font>
+            <font>DS-Digital</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>TVGuideNG</plugin>
+            <plugin>Weatherforecast</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>blackholefrodo</name>
+        <type>git</type>
+        <url>https://github.com/FrodoVDR/blackholefrodo.git</url>
+        <author>Frodo</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37513&amp;h=5b10aaaa10a6cbfa38406a9b0adc8d583d2a1216</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37512&amp;h=71d73685a2ed65f15bf4e6832ec8fedddedc10c1</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on now</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37499&amp;h=29ce2d7dada437bfd3094ad2284d9f7f134a340a</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>Source Sans Pro</font>
+            <font>DS-Digital</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>TVGuideNG</plugin>
+            <plugin>Weatherforecast</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>blackholePerlbo</name>
+        <type>zip</type>
+        <url>https://dl.dropboxusercontent.com/u/75246204/blackholePerlbo13-03.zip</url>
+        <author>Perlbo</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37408&amp;h=2d8d5a38498dd2e6acd0b4a3de516c6f2538bdb1</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37405&amp;h=588321ab0575f04633224bb46f14c409d20b738d</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on now</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37452&amp;h=f13ea3c79e79c1976d9e1c702f291a3e4267b791</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>Source Sans Pro</font>
+            <font>DS-Digital</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>TVGuideNG</plugin>
+            <plugin>Weatherforecast</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>elchi</name>
+        <type>git</type>
+        <url>https://github.com/CReimer/skinElchi.git</url>
+        <author>Copperhead</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=36776&amp;h=b381995ab32a3c7bc5894aa8724ba326a9f57569</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=36775&amp;h=a6e51ee4a923d78ae1b7e2945c013f083c86043b</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Replay</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=36777&amp;h=cd278e4a65ef6baca8118a5395dbbb01273b69938</url>
+            </screenshot>
+        </screenshots>
+        <supportedplugins>
+            <plugin>---</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>glassy</name>
+        <type>git</type>
+        <url>https://github.com/BooStars/glassy.git</url>
+        <author>Boostar</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37718&amp;h=1f500078ad81623f1b35307d907bdea0cd37744c</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>VDRSymbols Sans</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>Weatherforecast</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>glasslike</name>
+        <type>git</type>
+        <url>https://github.com/Vectra130/skindesigner_glasslike.git</url>
+        <author>Vectra130</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=38254&amp;h=56c0cb6791762169bd3bc373092a5c6ccbaa850d</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=38255&amp;h=9f05b071ded697f3857edfca500a5e37c390baf9</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=38260&amp;h=fac7685e2b434a65734f07625ac5f3456ba7c514</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>Roboto</font>
+            <font>DS-Digital</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>TVGuideNG</plugin>
+            <plugin>Weatherforecast</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>Holo</name>
+        <type>git</type>
+        <url>https://github.com/CReimer/Holo</url>
+        <author>Copperhead</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=36917&amp;h=e2a3805a9d469cc7ca25ba4a084a4a92cd2ccacf</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=36916&amp;h=0b7a5c02f6daabaf3f834c3e7e236c83e024a371</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on now</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=36918&amp;h=dadd572da35571042362b36d8abe6745f2500e08</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>Roboto</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>---</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>nopacity</name>
+        <type>git</type>
+        <url>https://github.com/louisbraun/nopacity.git</url>
+        <author>Louis</author>
+        <supportedplugins>
+            <plugin>Weatherforecast</plugin>
+            <plugin>TVGuideNG</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>shady</name>
+        <type>git</type>
+        <url>https://github.com/tomsax56/shady.git</url>
+        <author>tomas</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.anthra.de/images-shady/screenshots/main4.jpg</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules</description>
+                <url>http://www.anthra.de/images-shady/screenshots/schedules.png</url>
+            </screenshot>
+            <screenshot>
+                <description>TV Guide NG</description>
+                <url>http://www.anthra.de/images-shady/screenshots/tvgng1.png</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>VDROpen Sans Light</font>
+            <font>VDROpen Sans Semibold</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>Weatherforecast</plugin>
+            <plugin>TVGuideNG</plugin>
+            <plugin>PlexPlugin</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>tryouts</name>
+        <type>git</type>
+        <url>https://github.com/BooStars/tryouts</url>
+        <author>Boostar</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37055&amp;h=c4f6715489e506408cca04f67a2263cd4db9ab7d</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37056&amp;h=e7cd1c6d2bd8042b6c08629c8f5d4711e8196e5f</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on now</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37068&amp;h=5d649990035ac65c80e39c3bbdf29482425eba60</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>VDRSymbols Sans</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>Weatherforecast</plugin>
+            <plugin>TVGuideNG</plugin>
+        </supportedplugins>
+    </skinrepo>
+    <skinrepo>
+        <name>vectra</name>
+        <type>git</type>
+        <url>https://github.com/Vectra130/skindesigner_vectraskin.git</url>
+        <author>Vectra130</author>
+        <screenshots>
+            <screenshot>
+                <description>Main Menu</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37726&amp;h=dd861361cf88222974f90d87ba29d43e4b8df088</url>
+            </screenshot>
+            <screenshot>
+                <description>Display Channel</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37388&amp;h=91fbd820c01249b10c8bb717b86e8a36b8f98213</url>
+            </screenshot>
+            <screenshot>
+                <description>Schedules What's on</description>
+                <url>http://www.vdr-portal.de/index.php?page=Attachment&amp;attachmentID=37390&amp;h=6e185acf961c5cfeb07f4ac95aba38e65ef60e53</url>
+            </screenshot>
+        </screenshots>
+        <specialfonts>
+            <font>Roboto</font>
+            <font>DS-Digital</font>
+        </specialfonts>
+        <supportedplugins>
+            <plugin>Weatherforecast</plugin>
+            <plugin>TVGuideNG</plugin>
+        </supportedplugins>
+    </skinrepo>
+</skinrepositories>

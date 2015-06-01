@@ -226,7 +226,7 @@ void cDisplayMenuDetailView::InitTabs(void) {
     while(tmplTab = tmplView->GetNextViewTab()) {
         tmplTab->ParseDynamicParameters(&stringTokens, &intTokens, true);
         tmplTab->ClearDynamicFunctionParameters();
-        tmplTab->ParseDynamicFunctionParameters(&stringTokens, &intTokens);
+        tmplTab->ParseDynamicFunctionParameters(&stringTokens, &intTokens, &loopTokens);
         if (tmplTab->DoExecute()) {
             activeTabs.push_back(tmplTab);
         }

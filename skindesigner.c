@@ -19,12 +19,11 @@
 #endif
 
 
-static const char *VERSION        = "0.4.8";
+static const char *VERSION        = "0.5.1";
 static const char *DESCRIPTION    = trNOOP("Skin Designer");
 
 class cPluginSkinDesigner : public cPlugin, public skindesignerapi::SkindesignerAPI {
 private:
-    vector<cSkinDesigner*> skins;
     string libskindesignerApiVersion;
 protected:
     bool ServiceRegisterPlugin(skindesignerapi::cPluginStructure *plugStructure);
@@ -62,7 +61,8 @@ cPluginSkinDesigner::~cPluginSkinDesigner() {
 
 const char *cPluginSkinDesigner::CommandLineHelp(void) {
   return
-         "  -s <SKINPATH>, --skinpath=<SKINPATH> Set directory where xml skins are stored\n"
+         "  -s <SKINPATH>, --skinpath=<SKINPATH> Set directory where xml skins are stored by Package Manager\n"
+         "  -i <INSTALLERPATH>, --installerpath=<INSTALLERPATH> Set directory where xml skins are stored by Installer\n"
          "  -l <LOGOPATH>, --logopath=<LOGOPATH> Set directory where a common logo set for all skins is stored\n"
          "  -e <EPGIMAGESPATH>, --epgimages=<IMAGESPATH> Set directory where epgimages are stored\n";
 }
@@ -73,11 +73,12 @@ bool cPluginSkinDesigner::ProcessArgs(int argc, char *argv[]) {
         { "epgimages", required_argument, NULL, 'e' },
         { "logopath", required_argument, NULL, 'l' },
         { "skinpath", required_argument, NULL, 's' },
+        { "installerpath", required_argument, NULL, 'i' },
         { 0, 0, 0, 0 }
     };
 
     int c;
-    while ((c = getopt_long(argc, argv, "e:s:l:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "e:s:l:i:", long_options, NULL)) != -1) {
         switch (c) {
             case 'e':
                 config.SetEpgImagePath(cString(optarg));
@@ -87,6 +88,9 @@ bool cPluginSkinDesigner::ProcessArgs(int argc, char *argv[]) {
                 break;
             case 's':
                 config.SetSkinPath(cString(optarg));
+                break;
+            case 'i':
+                config.SetInstallerSkinPath(cString(optarg));
                 break;
             default:
                 return false;
@@ -113,23 +117,33 @@ bool cPluginSkinDesigner::Start(void) {
     libskindesignerApiVersion = LIBSKINDESIGNERAPIVERSION;
     dsyslog("skindesigner: using libskindesigner API Version %s", libskindesignerApiVersion.c_str());
 
+    //register template for skin preview page
+    skindesignerapi::cPluginStructure plugStruct;
+    plugStruct.name = "setup";
+    plugStruct.libskindesignerAPIVersion = LIBSKINDESIGNERAPIVERSION;
+    plugStruct.SetMenu(0, "skinpreview.xml");
+    ServiceRegisterPlugin(&plugStruct);
+
     config.SetOsdLanguage();
     config.SetPathes();
     config.ReadSkins();
     config.InitSkinIterator();
     string skin = "";
+    bool skinAvailable = false;
     while (config.GetSkin(skin)) {
         config.ReadSkinSetup(skin);
         cSkinDesigner *newSkin = new cSkinDesigner(skin);
-        skins.push_back(newSkin);
+        config.AddSkin(newSkin);
+        skinAvailable = true;
         if (!trueColorAvailable) {
             newSkin->ActivateBackupSkin();
         }
     }
     config.TranslateSetup();
     config.SetSkinSetupParameters();
+    config.ReadSkinRepos();
 
-    if (skins.size() == 0) {
+    if (!skinAvailable) {
         esyslog("skindesigner: no skins found! Using default Skin LCARS!");
     }
     return true;
@@ -189,11 +203,13 @@ const char **cPluginSkinDesigner::SVDRPHelpPages(void) {
 cString cPluginSkinDesigner::SVDRPCommand(const char *Command, const char *Option, int &ReplyCode) {
     
     cSkinDesigner *activeSkin = NULL;
-    for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
+    cSkinDesigner *availableSkin = NULL;
+    config.InitSkinRefsIterator();
+    while (availableSkin = config.GetNextSkinRef()) {
         string activeSkinName = Setup.OSDSkin;
-        string currentSkinName = (*skin)->Description();
+        string currentSkinName = availableSkin->Description();
         if (!currentSkinName.compare(activeSkinName)) {
-            activeSkin = *skin;
+            activeSkin = availableSkin;
             break;
         }
     }
@@ -258,9 +274,11 @@ bool cPluginSkinDesigner::ServiceRegisterPlugin(skindesignerapi::cPluginStructur
 
 skindesignerapi::ISDDisplayMenu *cPluginSkinDesigner::ServiceGetDisplayMenu(void) {
     cSkin *current = Skins.Current();
-    for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
-        if (*skin == current) {
-            cSDDisplayMenu *displayMenu = (*skin)->GetDisplayMenu();
+    cSkinDesigner *availableSkin = NULL;
+    config.InitSkinRefsIterator();
+    while (availableSkin = config.GetNextSkinRef()) {
+        if (availableSkin == current) {
+            cSDDisplayMenu *displayMenu = availableSkin->GetDisplayMenu();
             if (displayMenu) {
                 return displayMenu;
             } else {
@@ -275,9 +293,11 @@ skindesignerapi::ISkinDisplayPlugin *cPluginSkinDesigner::ServiceGetDisplayPlugi
     if (pluginName.size() == 0 || viewID < 0)
         return NULL;
     cSkin *current = Skins.Current();
-    for (vector<cSkinDesigner*>::iterator skin = skins.begin(); skin != skins.end(); skin++) {
-        if (*skin == current) {
-            cSkinDisplayPlugin *displayPlugin = (*skin)->DisplayPlugin(pluginName, viewID, subViewID);
+    cSkinDesigner *availableSkin = NULL;
+    config.InitSkinRefsIterator();
+    while (availableSkin = config.GetNextSkinRef()) {
+        if (availableSkin == current) {
+            cSkinDisplayPlugin *displayPlugin = availableSkin->DisplayPlugin(pluginName, viewID, subViewID);
             if (displayPlugin) {
                 return displayPlugin;
             } else {
