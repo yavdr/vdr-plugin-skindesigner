@@ -1,3 +1,13 @@
+vdr-plugin-skindesigner (0.5.2-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 664b71d: changed skin installation that VDR main loop is not blocked
+  * ecf8c75: updated german translation
+  * 872320b: implemented possibility to delete skins
+  * f7263ac: Version 0.5.2
+
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 04 Jun 2015 17:00:16 +0200
+
 vdr-plugin-skindesigner (0.5.1-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
