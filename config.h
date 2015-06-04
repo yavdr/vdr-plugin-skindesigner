@@ -65,6 +65,8 @@ public:
     cString GetSkinPath(string skin);
     void AddSkin(cSkinDesigner *skin) { skinRefs.push_back(skin); };
     void AddNewSkinRef(string skin);
+    bool SkinActive(string skin);
+    void DeleteSkin(string skin);
     void InitSkinRefsIterator(void) { skinRefsIterator = skinRefs.begin(); };
     cSkinDesigner *GetNextSkinRef(void);
     void ClearSkinSetups(void);

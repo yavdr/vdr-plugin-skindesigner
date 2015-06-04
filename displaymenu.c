@@ -195,6 +195,7 @@ bool cSDDisplayMenu::SetItemPlugin(map<string,string> *stringTokens, map<string,
 void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Selectable) {
     if (!doOutput)
         return;
+    //esyslog("skindesigner: %s %d - %s", Current ? "----->" : "", Index, Text);
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list) {
         return;
