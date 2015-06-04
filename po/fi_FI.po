@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-06-04 10:40+0200\n"
+"POT-Creation-Date: 2015-06-04 16:05+0200\n"
 "PO-Revision-Date: 2015-01-25 01:25+0200\n"
 "Last-Translator: Rolf Ahrenberg\n"
 "Language-Team: Finnish\n"
@@ -54,7 +54,19 @@ msgstr ""
 msgid "Update from Git"
 msgstr ""
 
+msgid "Delete Skin"
+msgstr ""
+
 msgid "No Git Repsoitory available"
+msgstr ""
+
+msgid "Skin is running and can't be deleted"
+msgstr ""
+
+msgid "Really delete skin"
+msgstr ""
+
+msgid "Skin deleted"
 msgstr ""
 
 msgid "Plugin Setup"

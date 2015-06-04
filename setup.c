@@ -1,3 +1,4 @@
+#include <vdr/interface.h>
 #include "libcore/curlfuncs.h"
 #include "setup.h"
 
@@ -115,7 +116,6 @@ eOSState cInstallManager::ProcessInstallationStatus(void) {
     return osContinue;    
 }
 
-
 // --- cSkinDesignerSetup -----------------------------------------------------------
 cSkinDesignerSetup::cSkinDesignerSetup() {
     numLogosPerSizeInitial = config.numLogosPerSizeInitial;
@@ -161,7 +161,7 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
         Store();
     }
 
-    if (!hadSubMenu && (Key == kOk || Key == kUp || Key == kDown || Key == kLeft || Key == kRight || Key == kRed)) {
+    if (!hadSubMenu && (Key == kOk || Key == kUp || Key == kDown || Key == kLeft || Key == kRight || Key == kRed || Key == kYellow)) {
         SetHelp(NULL, NULL, NULL, NULL);
         cOsdItem *current = Get(Current());
         cSkinMenuItem *skinMenuItem = dynamic_cast<cSkinMenuItem*>(current);
@@ -188,8 +188,11 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
                 SetHelp(tr("Install Skin"), NULL, NULL, NULL);
             } else if (type == itSkinSetup || type == itNoSkinSetup) {
                 cSkinRepo *repo = config.GetSkinRepo(currentSkin);
-                if (repo && repo->Type() == rtGit) {
-                    SetHelp(tr("Update from Git"), NULL, NULL, NULL);
+                if (repo) {
+                    if (repo->Type() == rtGit)
+                        SetHelp(tr("Update from Git"), NULL, tr("Delete Skin"), NULL);
+                    else
+                        SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
                 }
             }
         }
@@ -205,6 +208,20 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
                 } else {
                     Skins.Message(mtStatus, tr("No Git Repsoitory available"));
                 }
+            }
+        }
+        // KEY YELLOW
+        if (Key == kYellow) {
+            if (type == itSkinSetup || type == itNoSkinSetup) {
+                if (config.SkinActive(currentSkin)) {
+                    Skins.Message(mtError, tr("Skin is running and can't be deleted"));
+                } else if (Interface->Confirm(*cString::sprintf("%s?", tr("Really delete skin")))) {
+                    config.DeleteSkin(currentSkin);
+                    Skins.Message(mtStatus, tr("Skin deleted"));
+                    cCondWait::SleepMs(1000);
+                    return osEnd;
+                }
+                state = osContinue;
             }
         }
     }
@@ -366,7 +383,7 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
                     break;
                 } else {
                     return osBack;
-                } 
+                }
             }
             case kRed: {
                 bool gitAvailable = StartUpdate(skin);
@@ -375,6 +392,20 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
                 } else {
                     Skins.Message(mtStatus, tr("No Git Repsoitory available"));
                 }
+                break;
+            }
+            // KEY YELLOW
+            case kYellow: {
+                if (config.SkinActive(skin)) {
+                    Skins.Message(mtError, tr("Skin is running and can't be deleted"));
+                } else if (Interface->Confirm(*cString::sprintf("%s?", tr("Really delete skin")))) {
+                    config.DeleteSkin(skin);
+                    Skins.Message(mtStatus, tr("Skin deleted"));
+                    cCondWait::SleepMs(1000);
+                    return osEnd;
+                }
+                state = osContinue;
+                break;
             }
             default:
                 break;
@@ -390,8 +421,11 @@ void cSkindesignerSkinSetup::Set(void) {
     }
     
     cSkinRepo *repo = config.GetSkinRepo(skin);
-    if (repo && repo->Type() == rtGit) {
-        SetHelp(tr("Update from Git"), NULL, NULL, NULL);
+    if (repo) {
+        if (repo->Type() == rtGit)
+            SetHelp(tr("Update from Git"), NULL, tr("Delete Skin"), NULL);
+        else
+            SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
     }
 
     menu->InitParameterIterator();
