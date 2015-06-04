@@ -359,3 +359,5 @@ Version 0.5.1
 - use shallow clone when cloning git
 - implemented possibility to delete skins
 
+Version 0.5.2
+
