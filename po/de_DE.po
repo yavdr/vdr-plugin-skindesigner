@@ -25,10 +25,10 @@ msgid "Timeout"
 msgstr ""
 
 msgid "Installing Skin"
-msgstr ""
+msgstr "Installiere Skin"
 
 msgid "sec"
-msgstr ""
+msgstr "sek"
 
 msgid "Skin successfully updated"
 msgstr "Skin erfolgreich aktualisiert"
@@ -37,7 +37,7 @@ msgid "Skin already up to date"
 msgstr "Skin ist auf aktuellem Stand"
 
 msgid "Updating Skin from Git"
-msgstr ""
+msgstr "Aktualisiere Skin aus dem Git"
 
 msgid "after one another"
 msgstr "eines nach dem anderen"
@@ -127,7 +127,7 @@ msgid "has no setup"
 msgstr "hat kein Setup"
 
 msgid "Install new skins"
-msgstr ""
+msgstr "Weitere verfügbare Skins"
 
 msgid "Preview Skin"
 msgstr "Skin Vorschau"
@@ -144,8 +144,3 @@ msgstr "Unterstützte Plugins"
 msgid "Skin Designer"
 msgstr "Skin Designer"
 
-#~ msgid "Updating Skin from Git..."
-#~ msgstr "Aktualisiere Skin aus Git..."
-
-#~ msgid "Installing Skin..."
-#~ msgstr "Installiere Skin..."
