@@ -556,9 +556,17 @@ void cDisplayChannelView::DrawCustomTokens(void) {
     } else {
         map < string, string > stringTokens = tmplView->GetCustomStringTokens();
         map < string, int > intTokens = tmplView->GetCustomIntTokens();
+        ClearViewElement(veCustomTokens);
         DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
     }
 }
+
+bool cDisplayChannelView::CustomTokenChange(void) {
+    if (!tmplView)
+        return false;
+    return tmplView->CustomTokenChange();
+}
+
 
 void cDisplayChannelView::DrawCurrentWeather(void) {
     if (!ExecuteViewElement(veCurrentWeather)) {

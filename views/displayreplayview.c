@@ -457,7 +457,14 @@ void cDisplayReplayView::DrawCustomTokens(void) {
         return;
     map < string, string > stringTokens = tmplView->GetCustomStringTokens();
     map < string, int > intTokens = tmplView->GetCustomIntTokens();
+    ClearViewElement(veCustomTokens);
     DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
+}
+
+bool cDisplayReplayView::CustomTokenChange(void) {
+    if (!tmplView)
+        return false;
+    return tmplView->CustomTokenChange();
 }
 
 /****************************************************************************************

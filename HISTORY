@@ -361,3 +361,6 @@ Version 0.5.1
 
 Version 0.5.2
 
+- only close OSD when a skin is successfully updated from Git
+- refresh custom token display with each custom token change
+
