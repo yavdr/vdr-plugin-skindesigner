@@ -227,7 +227,7 @@ void cDisplayMenuItemMainView::Render(void) {
 
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
-        if (tmplCurrent) {
+        if (tmplCurrent && tmplCurrent->Execute()) {
             currentView = new cDisplayMenuItemCurrentMainView(tmplCurrent, number, label, icon);
             currentView->SetPosMenuItem(pos);
             currentView->Start();
@@ -418,7 +418,7 @@ void cDisplayMenuItemSchedulesView::Render(void) {
     
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
-        if (tmplCurrent) {
+        if (tmplCurrent && tmplCurrent->Execute()) {
             currentView = new cDisplayMenuItemCurrentSchedulesView(tmplCurrent, event, channel, timerMatch, cat, isEpgSearchFav);
             currentView->Start();
         }
@@ -526,7 +526,7 @@ void cDisplayMenuItemChannelsView::Render(void) {
     
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
-        if (tmplCurrent) {
+        if (tmplCurrent && tmplCurrent->Execute()) {
             currentView = new cDisplayMenuItemCurrentChannelView(tmplCurrent, channel);
             currentView->Start();
         }
@@ -657,7 +657,7 @@ void cDisplayMenuItemTimersView::Render(void) {
     
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
-        if (tmplCurrent) {
+        if (tmplCurrent && tmplCurrent->Execute()) {
             currentView = new cDisplayMenuItemCurrentTimerView(tmplCurrent, timer);
             currentView->Start();
         }
@@ -805,6 +805,9 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
     intTokens.insert(pair<string,int>("durationeventhours", duration / 60));
     stringTokens.insert(pair<string,string>("durationeventminutes", *cString::sprintf("%.2d", duration%60)));
 
+    stringTokens.insert(pair<string,string>("shorttext", info->ShortText() ? info->ShortText() : ""));
+    stringTokens.insert(pair<string,string>("description", info->Description() ? info->Description() : ""));
+
     static cPlugin *pScraper = GetScraperPlugin();
     if (!pScraper || !usedRecording) {
         intTokens.insert(pair<string,int>("hasposterthumbnail", false));
@@ -828,6 +831,29 @@ void cDisplayMenuItemRecordingView::SetTokens(void) {
         intTokens.insert(pair<string,int>("thumbnailheight", -1));
         stringTokens.insert(pair<string,string>("thumbnailpath", ""));
     }
+
+    if (!pScraper || !usedRecording) {
+        intTokens.insert(pair<string,int>("hasposter", false));
+        intTokens.insert(pair<string,int>("posterwidth", -1));
+        intTokens.insert(pair<string,int>("posterheight", -1));
+        stringTokens.insert(pair<string,string>("posterpath", ""));
+        return;
+    }
+
+    ScraperGetPoster call2;
+    call2.event = NULL;
+    call2.recording = usedRecording;
+    if (pScraper->Service("GetPoster", &call2)) {
+        intTokens.insert(pair<string,int>("hasposter", FileExists(call2.poster.path)));
+        intTokens.insert(pair<string,int>("posterwidth", call2.poster.width));
+        intTokens.insert(pair<string,int>("posterheight", call2.poster.height));
+        stringTokens.insert(pair<string,string>("posterpath", call2.poster.path));
+    } else {
+        intTokens.insert(pair<string,int>("hasposter", false));
+        intTokens.insert(pair<string,int>("posterwidth", -1));
+        intTokens.insert(pair<string,int>("posterheight", -1));
+        stringTokens.insert(pair<string,string>("posterpath", ""));
+    }
 }
 
 
@@ -841,7 +867,7 @@ void cDisplayMenuItemRecordingView::Render(void) {
     
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
-        if (tmplCurrent) {
+        if (tmplCurrent && tmplCurrent->Execute()) {
             currentView = new cDisplayMenuItemCurrentRecordingView(tmplCurrent, recording, level, total, newRecs);
             currentView->Start();
         }
@@ -898,7 +924,7 @@ void cDisplayMenuItemPluginView::Render(void) {
     
     if (current) {
         cTemplateViewElement *tmplCurrent = tmplList->GetListElementCurrent();
-        if (tmplCurrent) {
+        if (tmplCurrent && tmplCurrent->Execute()) {
             currentView = new cDisplayMenuItemCurrentPluginView(tmplCurrent, stringTokens, intTokens, loopTokens);
             currentView->Start();
         }

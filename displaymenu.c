@@ -170,6 +170,7 @@ bool cSDDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, bo
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
+
     list->AddRecordingMenuItem(Index, Recording, Level, Total, New, Current, Selectable);
     if (state == vsIdle)
         state = vsMenuUpdate;

@@ -363,4 +363,6 @@ Version 0.5.2
 
 - only close OSD when a skin is successfully updated from Git
 - refresh custom token display with each custom token change
-
+- added recording shorttext, description and scraper poster tokens
+  to displaymenurecordings listelement
+- allow currentelements to use conditions

@@ -430,6 +430,7 @@
 <!ATTLIST currentelement
   delay CDATA #REQUIRED
   fadetime CDATA #IMPLIED
+  condition CDATA #IMPLIED
   debug CDATA #IMPLIED
 >
 

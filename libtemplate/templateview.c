@@ -1245,6 +1245,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("debug");
     attributes.insert("delay");
     attributes.insert("fadetime");
+    attributes.insert("condition");
     funcsAllowed.insert(pair< string, set<string> >("currentelement", attributes));
 
     //definition of allowed parameters for viewtab
