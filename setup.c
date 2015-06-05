@@ -96,11 +96,12 @@ eOSState cInstallManager::ProcessInstallationStatus(void) {
         if (Finished()) {
             if (SuccessfullyUpdated()) {
                 Skins.Message(mtStatus, tr("Skin successfully updated"));
+                cCondWait::SleepMs(1000);
+                return osEnd;
             } else {
                 Skins.Message(mtStatus, tr("Skin already up to date"));
-            }
-            cCondWait::SleepMs(1000);
-            return osEnd;
+                return osContinue;
+            }            
         } else {
             int duration = Duration();
             if (duration > timeout) {
