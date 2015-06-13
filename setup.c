@@ -191,7 +191,7 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
                 cSkinRepo *repo = config.GetSkinRepo(currentSkin);
                 if (repo) {
                     if (repo->Type() == rtGit)
-                        SetHelp(tr("Update from Git"), NULL, tr("Delete Skin"), NULL);
+                        SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
                     else
                         SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
                 }
@@ -424,7 +424,7 @@ void cSkindesignerSkinSetup::Set(void) {
     cSkinRepo *repo = config.GetSkinRepo(skin);
     if (repo) {
         if (repo->Type() == rtGit)
-            SetHelp(tr("Update from Git"), NULL, tr("Delete Skin"), NULL);
+            SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
         else
             SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
     }

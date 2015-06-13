@@ -35,6 +35,7 @@ protected:
     int GetLiveBuffer(void);
     void SetScraperTokens(const cEvent *event, const cRecording *recording, stringmap &stringTokens, intmap &intTokens, map < string, vector<stringmap> > &loopTokens);
     void SetPosterBanner(const cEvent *event, stringmap &stringTokens, intmap &intTokens);
+    void SetPosterBannerV2(const cRecording *recording, stringmap &stringTokens, intmap &intTokens);
     void SetTimers(map<string,int> *intTokens, map<string,string> *stringTokens, vector<stringmap> *timers);
     void SetLastRecordings(map<string,int> *intTokens, map<string,string> *stringTokens, vector<stringmap> *lastRecordings);
     void SetMenuHeader(eMenuCategory cat, string menuTitle, stringmap &stringTokens, intmap &intTokens);

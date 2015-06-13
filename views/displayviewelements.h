@@ -15,19 +15,15 @@ public:
     bool Render(void);
 };
 
-enum ScraperContentType {
-    ctPosterBanner,
-    ctFull
-};
-
 class cViewElementScraperContent : public cViewElement, public cViewHelpers {
 private:
-    ScraperContentType type;
     const cEvent *event;
+    const cRecording *recording;
 public:
-    cViewElementScraperContent(const cEvent *event, ScraperContentType type, cTemplateViewElement *tmplViewElement);
+    cViewElementScraperContent(const cEvent *event, const cRecording *recording, cTemplateViewElement *tmplViewElement);
     virtual ~cViewElementScraperContent() {};
     void SetEvent(const cEvent *event) { this->event = event; };
+    void SetRecording(const cRecording *recording) { this->recording = recording; };
     bool Render(void);
 };
 
