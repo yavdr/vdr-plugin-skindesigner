@@ -146,11 +146,12 @@ bool cImageCache::LogoExists(string channelID) {
     if (!channel)
         return false;
     string logoLower = StrToLowerCase(channel->Name());
+    string channelIDLower = StrToLowerCase(channelID.c_str());
 
     return (FileExists(logoPath.c_str(), logoLower, "svg") ||
             FileExists(logoPath.c_str(), logoLower, "png") ||
-            FileExists(logoPath.c_str(), channelID, "svg") ||
-            FileExists(logoPath.c_str(), channelID, "png"));
+            FileExists(logoPath.c_str(), channelIDLower, "svg") ||
+            FileExists(logoPath.c_str(), channelIDLower, "png"));
 }
 
 bool cImageCache::SeparatorLogoExists(string name) {

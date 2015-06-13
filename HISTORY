@@ -366,3 +366,4 @@ Version 0.5.2
 - added recording shorttext, description and scraper poster tokens
   to displaymenurecordings listelement
 - allow currentelements to use conditions
+- fixed bug searching channel logos with channelid
