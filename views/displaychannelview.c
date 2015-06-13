@@ -363,7 +363,7 @@ void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
     if (DetachViewElement(veScraperContent)) {
         cViewElementScraperContent *viewElement = dynamic_cast<cViewElementScraperContent*>(GetViewElement(veScraperContent));
         if (!viewElement) {
-            viewElement = new cViewElementScraperContent(event, ctPosterBanner, tmplView->GetViewElement(veScraperContent));
+            viewElement = new cViewElementScraperContent(event, NULL, tmplView->GetViewElement(veScraperContent));
             AddViewElement(veScraperContent, viewElement);
             viewElement->Start();
         } else {

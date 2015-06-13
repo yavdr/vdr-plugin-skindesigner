@@ -369,3 +369,4 @@ Version 0.5.2
 - fixed bug searching channel logos with channelid
 - fixed bug in parsing printf text tokens
 - changed "Update from Git" to "Update"
+- made viewelement scrapercontent in displayreplay detachable
