@@ -367,3 +367,4 @@ Version 0.5.2
   to displaymenurecordings listelement
 - allow currentelements to use conditions
 - fixed bug searching channel logos with channelid
+- fixed bug in parsing printf text tokens
