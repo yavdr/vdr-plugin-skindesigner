@@ -368,3 +368,4 @@ Version 0.5.2
 - allow currentelements to use conditions
 - fixed bug searching channel logos with channelid
 - fixed bug in parsing printf text tokens
+- changed "Update from Git" to "Update"
