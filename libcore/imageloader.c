@@ -400,3 +400,102 @@ void cImageImporterJPG::GetImageSize(int &width, int &height) {
         height = cinfo->image_height;
     }
 }
+
+//
+// SVG Template class
+//
+
+cSVGTemplate::cSVGTemplate(string imageName, string templatePath) {
+    this->imageName = imageName;
+    this->templatePath = templatePath;
+    startTokenColor = "{sdcol(";
+    startTokenOpac = "{sdopac(";
+    endToken = ")}";
+    filePath = templatePath;
+    filePath += imageName + ".svg";
+}
+
+cSVGTemplate::~cSVGTemplate(void) {
+}
+
+bool cSVGTemplate::Exists(void) {
+    return FileExists(templatePath, imageName, "svg");
+}
+
+void cSVGTemplate::ReadTemplate(void) {
+    string line;
+    ifstream templatefile(filePath.c_str());
+    if (templatefile.is_open()) {
+        while ( getline (templatefile, line) ) {
+            svgTemplate.push_back(line);
+        }
+        templatefile.close();
+    }
+}
+
+bool cSVGTemplate::ParseTemplate(void) {
+    int i = 0;
+    for (vector<string>::iterator it = svgTemplate.begin(); it != svgTemplate.end(); it++) {
+        string line = *it;
+        size_t hit = line.find(startTokenColor);
+        if (hit == string::npos) {
+            i++;
+            continue;
+        }
+        size_t hitEnd = line.find(endToken, hit);
+        if (hitEnd == string::npos) {
+            return false;
+        }
+        string colorName = GetColorName(line, hit, hitEnd);
+        tColor replaceColor = 0x0;
+        if (!config.GetThemeColor(colorName, replaceColor)) {
+            return false;
+        }
+        ReplaceTokens(line, hit, hitEnd, replaceColor);
+        svgTemplate[i] = line;
+        i++;
+    }
+    return true;
+}
+
+string cSVGTemplate::WriteImage(void) {
+    string tempPath = *cString::sprintf("/tmp/skindesigner/svg/%s/%s/", Setup.OSDSkin, Setup.OSDTheme);
+    CreateFolder(tempPath);
+    string fileName = tempPath + imageName + ".svg";
+    ofstream tmpimg;
+    tmpimg.open (fileName.c_str(), ios::out | ios::trunc);
+    if (!tmpimg.is_open()) {
+        return "";
+    }
+    for (vector<string>::iterator it = svgTemplate.begin(); it != svgTemplate.end(); it++) {
+        tmpimg << (*it) << "\n";
+    }
+    tmpimg.close();
+    return fileName;
+}
+
+string cSVGTemplate::GetColorName(string line, size_t tokenStart, size_t tokenEnd) {
+    string colorName = line.substr(tokenStart + startTokenColor.size(), tokenEnd - tokenStart - startTokenColor.size());
+    if (colorName.size() > 0) {
+        stringstream name;
+        name << "{" << colorName << "}";
+        return name.str();
+    }
+    return "";
+}
+
+void cSVGTemplate::ReplaceTokens(string &line, size_t tokenStart, size_t tokenEnd, tColor color) {
+    string rgbColor = *cString::sprintf("%x", color & 0x00FFFFFF);
+    line.replace(tokenStart, tokenEnd - tokenStart + 2, rgbColor);
+    size_t hitAlpha = line.find(startTokenOpac);
+    if (hitAlpha == string::npos) {
+        return;
+    }
+    size_t hitAlphaEnd = line.find(endToken, hitAlpha);
+    if (hitAlphaEnd == string::npos) {
+        return;
+    }
+    tIndex alpha = (color & 0xFF000000) >> 24;
+    string svgAlpha = *cString::sprintf("%f", (float)(alpha / (float)255));
+    line.replace(hitAlpha, hitAlphaEnd - hitAlpha + 2, svgAlpha);
+}

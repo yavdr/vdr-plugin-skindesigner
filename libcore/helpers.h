@@ -17,6 +17,7 @@ bool FileExists(const string &fullpath);
 bool FileExists(const string &path, const string &name, const string &ext);
 bool FolderExists(const string &path);
 bool FirstFileInFolder(string &path, string &extension, string &fileName);
+void CreateFolder(string &path);
 
 string &ltrim(string &s);
 string &rtrim(string &s);
