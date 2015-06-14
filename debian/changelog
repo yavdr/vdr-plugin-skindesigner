@@ -1,3 +1,18 @@
+vdr-plugin-skindesigner (0.5.3-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * db69972: avoid string null pointer initialisation
+  * 5724449: only close OSD when a skin is successfully updated from Git
+  * b6a6ea2: refresh custom token display with each custom token change
+  * 64b131e: allow currentelements to use conditions
+  * ffca82a: fixed bug searching channel logos with channelid
+  * 745fa9e: fixed bug in parsing printf text tokens
+  * 3eb6418: changed 'Update from Git' to 'Update'
+  * 480b0a4: made viewelement scrapercontent in displayreplay detachable
+  * 1f09f99: Version 0.5.3
+
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 14 Jun 2015 23:15:55 +0200
+
 vdr-plugin-skindesigner (0.5.2-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
