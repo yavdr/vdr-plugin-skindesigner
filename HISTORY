@@ -361,3 +361,14 @@ Version 0.5.1
 
 Version 0.5.2
 
+- only close OSD when a skin is successfully updated from Git
+- refresh custom token display with each custom token change
+- added recording shorttext, description and scraper poster tokens
+  to displaymenurecordings listelement
+- allow currentelements to use conditions
+- fixed bug searching channel logos with channelid
+- fixed bug in parsing printf text tokens
+- changed "Update from Git" to "Update"
+- made viewelement scrapercontent in displayreplay detachable
+
+Version 0.5.3

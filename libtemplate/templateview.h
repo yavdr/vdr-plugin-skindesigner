@@ -125,6 +125,7 @@ public:
     bool GetScalingWindow(cRect &scalingWindow);
     map<string,string> GetCustomStringTokens(void) { return globals->GetCustomStringTokens(); };
     map<string,int> GetCustomIntTokens(void) { return globals->GetCustomIntTokens(); };
+    bool CustomTokenChange(void) { return globals->CustomTokenChange(); };
     //Checks for parsing template XML files
     bool ValidSubView(const char *subView);
     bool ValidViewElement(const char *viewElement);

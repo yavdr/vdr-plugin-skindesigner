@@ -44,6 +44,7 @@ public:
     void ClearOnPause(void);
     void DelayOnPause(void);
     void DrawCustomTokens(void);
+    bool CustomTokenChange(void);
     void DoFadeIn(void) { Start(); };
     void Flush(void) { DoFlush(); };
 };

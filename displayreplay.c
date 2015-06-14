@@ -110,6 +110,8 @@ void cSDDisplayReplay::Flush(void) {
         replayView->DoFadeIn();
         initial = false;
     } else {
+        if (replayView->CustomTokenChange())
+            replayView->DrawCustomTokens();
         replayView->Flush();
     }
 }

@@ -96,11 +96,12 @@ eOSState cInstallManager::ProcessInstallationStatus(void) {
         if (Finished()) {
             if (SuccessfullyUpdated()) {
                 Skins.Message(mtStatus, tr("Skin successfully updated"));
+                cCondWait::SleepMs(1000);
+                return osEnd;
             } else {
                 Skins.Message(mtStatus, tr("Skin already up to date"));
-            }
-            cCondWait::SleepMs(1000);
-            return osEnd;
+                return osContinue;
+            }            
         } else {
             int duration = Duration();
             if (duration > timeout) {
@@ -190,7 +191,7 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
                 cSkinRepo *repo = config.GetSkinRepo(currentSkin);
                 if (repo) {
                     if (repo->Type() == rtGit)
-                        SetHelp(tr("Update from Git"), NULL, tr("Delete Skin"), NULL);
+                        SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
                     else
                         SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
                 }
@@ -423,7 +424,7 @@ void cSkindesignerSkinSetup::Set(void) {
     cSkinRepo *repo = config.GetSkinRepo(skin);
     if (repo) {
         if (repo->Type() == rtGit)
-            SetHelp(tr("Update from Git"), NULL, tr("Delete Skin"), NULL);
+            SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
         else
             SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
     }

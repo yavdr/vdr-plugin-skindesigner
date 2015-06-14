@@ -4,6 +4,8 @@
         {nummenuitem}           number of item in list, starts with 1
         {name}                  Real Name of recording (Name of Recording Folder)
         {epgname}               Name of recording (Name from EPG)
+        {shorttext}             Short Text of recording
+        {description}           Descrption of recording
         {date}                  Date of recording
         {time}                  Time of recording
         {daynumeric}            day as number
@@ -27,6 +29,10 @@
         {thumbnailbwidth}       width of scraped poster thumbnail
         {thumbnailheight}       height of scraped poster thumbnail
         {thumbnailpath}         absolute path of scraped poster thumbnail
+        {hasposter}             true if a scraped poster is available for recording
+        {posterwidth}           width of scraped poster
+        {posterheight}          height of scraped poster
+        {posterpath}            absolute path of scraped poster
         -->
         <listelement>
         </listelement>

@@ -62,7 +62,7 @@ private:
     bool DrawDevices(void);
     void DrawCurrentSchedule(void);
     void DrawCurrentWeather(void);
-    void DrawCustomTokens(void);
+    bool DrawCustomTokens(void);
 public:
     cDisplayMenuMainView(cTemplateView *tmplView, bool menuInit, string currentRecording);
     virtual ~cDisplayMenuMainView();

@@ -363,7 +363,7 @@ void cDisplayChannelView::DrawScraperContent(const cEvent *event) {
     if (DetachViewElement(veScraperContent)) {
         cViewElementScraperContent *viewElement = dynamic_cast<cViewElementScraperContent*>(GetViewElement(veScraperContent));
         if (!viewElement) {
-            viewElement = new cViewElementScraperContent(event, ctPosterBanner, tmplView->GetViewElement(veScraperContent));
+            viewElement = new cViewElementScraperContent(event, NULL, tmplView->GetViewElement(veScraperContent));
             AddViewElement(veScraperContent, viewElement);
             viewElement->Start();
         } else {
@@ -556,9 +556,17 @@ void cDisplayChannelView::DrawCustomTokens(void) {
     } else {
         map < string, string > stringTokens = tmplView->GetCustomStringTokens();
         map < string, int > intTokens = tmplView->GetCustomIntTokens();
+        ClearViewElement(veCustomTokens);
         DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
     }
 }
+
+bool cDisplayChannelView::CustomTokenChange(void) {
+    if (!tmplView)
+        return false;
+    return tmplView->CustomTokenChange();
+}
+
 
 void cDisplayChannelView::DrawCurrentWeather(void) {
     if (!ExecuteViewElement(veCurrentWeather)) {
