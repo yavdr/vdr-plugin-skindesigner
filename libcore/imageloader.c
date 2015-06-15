@@ -442,16 +442,21 @@ bool cSVGTemplate::ParseTemplate(void) {
             i++;
             continue;
         }
-        size_t hitEnd = line.find(endToken, hit);
-        if (hitEnd == string::npos) {
-            return false;
-        }
-        string colorName = GetColorName(line, hit, hitEnd);
-        tColor replaceColor = 0x0;
-        if (!config.GetThemeColor(colorName, replaceColor)) {
-            return false;
-        }
-        ReplaceTokens(line, hit, hitEnd, replaceColor);
+        while (hit != string::npos) {
+            size_t hitEnd = line.find(endToken, hit);
+            if (hitEnd == string::npos) {
+                esyslog("skindesigner: error in SVG Template %s: invalid tag", imageName.c_str());
+                return false;
+            }
+            string colorName = GetColorName(line, hit, hitEnd);
+            tColor replaceColor = 0x0;
+            if (!config.GetThemeColor(colorName, replaceColor)) {
+                esyslog("skindesigner: error in SVG Template %s: invalid color %x", imageName.c_str(), replaceColor);
+                return false;
+            }
+            ReplaceTokens(line, hit, hitEnd, replaceColor);
+            hit = line.find(startTokenColor);
+        }        
         svgTemplate[i] = line;
         i++;
     }
@@ -485,7 +490,7 @@ string cSVGTemplate::GetColorName(string line, size_t tokenStart, size_t tokenEn
 }
 
 void cSVGTemplate::ReplaceTokens(string &line, size_t tokenStart, size_t tokenEnd, tColor color) {
-    string rgbColor = *cString::sprintf("%x", color & 0x00FFFFFF);
+    string rgbColor = *cString::sprintf("%06x", color & 0x00FFFFFF);
     line.replace(tokenStart, tokenEnd - tokenStart + 2, rgbColor);
     size_t hitAlpha = line.find(startTokenOpac);
     if (hitAlpha == string::npos) {

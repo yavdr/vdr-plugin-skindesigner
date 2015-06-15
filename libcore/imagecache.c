@@ -390,12 +390,15 @@ bool cImageCache::LoadIcon(eImageType type, string name) {
         return LoadImage(*subIconSkinPath, name, "png");
 
     //and finally check if a svg template exists
+    esyslog("skindesigner: checking svg template for %s", name.c_str());
     cSVGTemplate svgTemplate(name, svgTemplatePath);
     if (!svgTemplate.Exists())
         return false;
+    esyslog("skindesigner: template found for %s", name.c_str());
     svgTemplate.ReadTemplate();
     if (!svgTemplate.ParseTemplate())
         return false;
+    esyslog("skindesigner: template parsed for %s", name.c_str());
     string tmpImageName = svgTemplate.WriteImage();
     return LoadImage(tmpImageName.c_str());
 }
@@ -441,12 +444,15 @@ bool cImageCache::LoadSkinpart(string name) {
         return LoadImage(skinPartsPathSkin.c_str(), name, "png");
 
     //check if a svg template exists
+    esyslog("skindesigner: checking svg template for %s", name.c_str());
     cSVGTemplate svgTemplate(name, svgTemplatePath);
     if (!svgTemplate.Exists())
         return false;
+    esyslog("skindesigner: template found for %s", name.c_str());
     svgTemplate.ReadTemplate();
     if (!svgTemplate.ParseTemplate())
         return false;
+    esyslog("skindesigner: template parsed for %s", name.c_str());
     string tmpImageName = svgTemplate.WriteImage();
     return LoadImage(tmpImageName.c_str());
 }
