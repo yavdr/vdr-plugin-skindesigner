@@ -132,6 +132,8 @@ cFont *cFontManager::CreateFont(string name, int size) {
 }
 
 void cFontManager::InsertFont(string name, int size) {
+    if (FontExists(name, size))
+        return;
     cFont *newFont = CreateFont(name, size);
     if (!newFont)
         return;
@@ -143,6 +145,16 @@ void cFontManager::InsertFont(string name, int size) {
         fontsizes.insert(pair<int, cFont*>(size, newFont));
         fonts.insert(pair<string, map<int, cFont*> >(name, fontsizes));
     }
+}
+
+bool cFontManager::FontExists(string name, int size) {
+    map < string, map< int, cFont* > >::iterator hit = fonts.find(name);
+    if (hit == fonts.end())
+        return false;
+    map< int, cFont* >::iterator hit2 = (hit->second).find(size);
+    if (hit2 == (hit->second).end())
+        return false;
+    return true;
 }
 
 cFont *cFontManager::GetFont(string name, int size) {
@@ -192,4 +204,3 @@ bool cFontManager::FontInstalled(string fontName) {
     }
     return false;
 }
-

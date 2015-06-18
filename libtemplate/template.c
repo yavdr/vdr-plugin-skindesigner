@@ -12,9 +12,8 @@ cTemplate::cTemplate(eViewType viewType, string pluginName, int viewID) {
 }
 
 cTemplate::~cTemplate() {
-
- if (rootView)
-    delete rootView;
+    if (rootView)
+        delete rootView;
 
 }
 

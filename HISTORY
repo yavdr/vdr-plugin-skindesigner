@@ -372,3 +372,6 @@ Version 0.5.2
 - made viewelement scrapercontent in displayreplay detachable
 
 Version 0.5.3
+
+- added SVG Template parsing
+- fixed memory leak when creating fonts

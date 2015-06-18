@@ -502,5 +502,6 @@ void cSVGTemplate::ReplaceTokens(string &line, size_t tokenStart, size_t tokenEn
     }
     tIndex alpha = (color & 0xFF000000) >> 24;
     string svgAlpha = *cString::sprintf("%f", (float)(alpha / (float)255));
+    std::replace( svgAlpha.begin(), svgAlpha.end(), ',', '.');
     line.replace(hitAlpha, hitAlphaEnd - hitAlpha + 2, svgAlpha);
 }
