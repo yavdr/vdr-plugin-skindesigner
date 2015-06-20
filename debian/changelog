@@ -1,3 +1,16 @@
+vdr-plugin-skindesigner (0.5.3-6-g50fe393-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 7f2a4ca: added SVGTemplates
+  * 41736f4: Merge branch 'master' into svgtemplates
+  * bbe8c56: fixed bug in svgtemplate parsing
+  * a0a6e21: fixed memory leak when creating fonts
+  * bc07550: fixed crash using animated images in plugins
+  * 50fe393: added banner to displaymenuschedulescurrentview and
+    displaymenureplaycurrentview
+
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 20 Jun 2015 19:28:26 +0200
+
 vdr-plugin-skindesigner (0.5.3-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
