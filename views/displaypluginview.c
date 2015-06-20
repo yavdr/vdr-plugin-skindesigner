@@ -39,6 +39,7 @@ void cDisplayPluginView::Deactivate(bool hide) {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
     HidePixmaps();
+    HideAnimations();
     for (map< int, cViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
         cViewGrid *viewGrid = it->second;
         viewGrid->Hide();
@@ -52,6 +53,7 @@ void cDisplayPluginView::Activate(void) {
     }
     if (hidden) {
         ShowPixmaps();
+        ShowAnimations();
         for (map< int, cViewGrid* >::iterator it = viewGrids.begin(); it != viewGrids.end(); it++) {
             cViewGrid *viewGrid = it->second;
             viewGrid->Show();

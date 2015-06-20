@@ -375,3 +375,5 @@ Version 0.5.3
 
 - added SVG Template parsing
 - fixed memory leak when creating fonts
+- fixed crash using animated images in plugins
+

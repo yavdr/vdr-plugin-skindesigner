@@ -269,6 +269,20 @@ void cView::ClearAnimations(int cat) {
     animations.erase(cat);
 }
 
+void cView::HideAnimations(void) {
+    for (multimap<int,cAnimation*>::iterator it = animations.begin(); it!=animations.end(); ++it) {
+        cAnimation *anim = it->second;
+        anim->HidePixmaps();
+    }
+}
+
+void cView::ShowAnimations(void) {
+    for (multimap<int,cAnimation*>::iterator it = animations.begin(); it!=animations.end(); ++it) {
+        cAnimation *anim = it->second;
+        anim->ShowPixmaps();
+    }
+}
+
 void cView::ActivateScrolling(void) {
     if (veScroll == veUndefined)
         return;
