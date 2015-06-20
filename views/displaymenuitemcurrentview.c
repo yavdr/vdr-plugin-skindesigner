@@ -32,22 +32,70 @@ void cDisplayMenuItemCurrentView::SetScraperPoster(const cEvent *event, const cR
         intTokens.insert(pair<string,int>("posterwidth", -1));
         intTokens.insert(pair<string,int>("posterheight", -1));
         stringTokens.insert(pair<string,string>("posterpath", ""));
+        intTokens.insert(pair<string,int>("hasbanner", false));
+        intTokens.insert(pair<string,int>("bannerwidth", -1));
+        intTokens.insert(pair<string,int>("bannerheight", -1));
+        stringTokens.insert(pair<string,string>("bannerpath", ""));
         return;
     }
 
-    ScraperGetPoster call;
-    call.event = event;
-    call.recording = recording;
-    if (pScraper->Service("GetPoster", &call)) {
-        intTokens.insert(pair<string,int>("hasposter", FileExists(call.poster.path)));
-        intTokens.insert(pair<string,int>("posterwidth", call.poster.width));
-        intTokens.insert(pair<string,int>("posterheight", call.poster.height));
-        stringTokens.insert(pair<string,string>("posterpath", call.poster.path));
-    } else {
+    ScraperGetEventType getType;
+    getType.event = event;
+    getType.recording = recording;
+    if (!pScraper->Service("GetEventType", &getType)) {
         intTokens.insert(pair<string,int>("hasposter", false));
         intTokens.insert(pair<string,int>("posterwidth", -1));
         intTokens.insert(pair<string,int>("posterheight", -1));
         stringTokens.insert(pair<string,string>("posterpath", ""));
+        intTokens.insert(pair<string,int>("hasbanner", false));
+        intTokens.insert(pair<string,int>("bannerwidth", -1));
+        intTokens.insert(pair<string,int>("bannerheight", -1));
+        stringTokens.insert(pair<string,string>("bannerpath", ""));
+        return;
+    }
+
+    if (getType.type == tMovie) {
+        cMovie movie;
+        movie.movieId = getType.movieId;
+        pScraper->Service("GetMovie", &movie);
+        intTokens.insert(pair<string,int>("hasposter", true));
+        stringTokens.insert(pair<string,string>("posterpath", movie.poster.path));
+        intTokens.insert(pair<string,int>("posterwidth", movie.poster.width));
+        intTokens.insert(pair<string,int>("posterheight", movie.poster.height));
+        intTokens.insert(pair<string,int>("hasbanner", false));
+        intTokens.insert(pair<string,int>("bannerwidth", -1));
+        intTokens.insert(pair<string,int>("bannerheight", -1));
+        stringTokens.insert(pair<string,string>("bannerpath", ""));
+    } else if (getType.type == tSeries) {
+        cSeries series;
+        series.seriesId = getType.seriesId;
+        series.episodeId = getType.episodeId;
+        pScraper->Service("GetSeries", &series);
+        //Poster
+        if (series.posters.size() > 0) {
+            intTokens.insert(pair<string,int>("hasposter", true));
+            intTokens.insert(pair<string,int>("posterwidth", series.posters[0].width));
+            intTokens.insert(pair<string,int>("posterheight", series.posters[0].height));
+            stringTokens.insert(pair<string,string>("posterpath", series.posters[0].path));            
+        } else {
+            intTokens.insert(pair<string,int>("hasposter", false));
+            intTokens.insert(pair<string,int>("posterwidth", -1));
+            intTokens.insert(pair<string,int>("posterheight", -1));
+            stringTokens.insert(pair<string,string>("posterpath", ""));            
+        }
+
+        //Banners
+        if (series.banners.size() > 0) {
+            intTokens.insert(pair<string,int>("hasbanner", true));
+            intTokens.insert(pair<string,int>("bannerwidth", series.banners[0].width));
+            intTokens.insert(pair<string,int>("bannerheight", series.banners[0].height));
+            stringTokens.insert(pair<string,string>("bannerpath", series.banners[0].path));            
+        } else {
+            intTokens.insert(pair<string,int>("hasbanner", false));
+            intTokens.insert(pair<string,int>("bannerwidth", -1));
+            intTokens.insert(pair<string,int>("bannerheight", -1));
+            stringTokens.insert(pair<string,string>("bannerpath", ""));            
+        }
     }
 }
 

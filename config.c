@@ -77,6 +77,12 @@ void cDesignerConfig::SetEpgImagePath(cString path) {
     epgImagePathSet = true;
 }
 
+bool cDesignerConfig::GetThemeColor(string &name, tColor &col) {
+    if (!tmplGlobals)
+        return false;
+    return tmplGlobals->GetColor(name, col);
+}
+
 void cDesignerConfig::ReadSkinFolder(cString &skinFolder, vector<string> *container) {
     DIR *folder = NULL;
     struct dirent *dirEntry;

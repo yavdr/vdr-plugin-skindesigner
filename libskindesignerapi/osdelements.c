@@ -78,6 +78,9 @@ skindesignerapi::cViewGrid::cViewGrid(skindesignerapi::ISkinDisplayPlugin *view,
 }
 
 skindesignerapi::cViewGrid::~cViewGrid() {
+    if (!view)
+        return;
+    view->ClearGrids(viewGridID);    
 }
 
 void skindesignerapi::cViewGrid::SetGrid(long gridID, double x, double y, double width, double height) {

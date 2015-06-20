@@ -149,6 +149,11 @@ bool FirstFileInFolder(string &path, string &extension, string &fileName) {
     return false;
 }
 
+void CreateFolder(string &path) {
+    cString command = cString::sprintf("mkdir -p %s", path.c_str());
+    system(*command);
+}
+
 // trim from start
 string &ltrim(string &s) {
     s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));

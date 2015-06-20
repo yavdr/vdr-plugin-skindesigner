@@ -58,6 +58,7 @@ public:
     void SetInstallerSkinPath(cString path);
     void SetLogoPath(cString path);
     void SetEpgImagePath(cString path);
+    bool GetThemeColor(string &name, tColor &col);
     void ReadSkins(void);
     void ReadSkinSetup(string skin);
     void InitSkinIterator(void) { skinIterator = skins.begin(); };

@@ -14,7 +14,6 @@ cTemplateView::cTemplateView(void) {
 }
 
 cTemplateView::~cTemplateView() {
-
     for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         delete it->second;
     }

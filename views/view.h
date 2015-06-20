@@ -78,6 +78,8 @@ public:
     void DrawDebugGrid(void);
     virtual ~cView();
     virtual void Stop(void);
+    void HideAnimations(void);
+    void ShowAnimations(void);
 };
 
 class cViewElement : public cView {
