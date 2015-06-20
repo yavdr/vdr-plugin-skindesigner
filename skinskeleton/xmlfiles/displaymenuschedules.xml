@@ -78,6 +78,10 @@
         {posterwidth}             width of scraped poster
         {posterheight}            height of scraped poster
         {posterpath}              absolute path of scraped poster
+        {hasbanner}               true if a scraped banner is available for this element
+        {bannerwidth}             width of scraped banner
+        {bannerheight}            height of scraped banner
+        {bannerpath}              absolute path of scraped banner
         {timerpartitial}          true if partitial timer is set for the event
         {timerfull}               true if full timer is set for the event
         {whatson}                 true if menu "What's on" is displayed
