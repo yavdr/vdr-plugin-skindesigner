@@ -5,6 +5,7 @@
 
 typedef map<string,string> stringmap;
 typedef map<string,int> intmap;
+typedef pair<string,string> stringpair;
 
 class cViewHelpers {
 private:

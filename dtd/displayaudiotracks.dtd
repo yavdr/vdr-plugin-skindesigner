@@ -21,13 +21,13 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT background (area|areascroll)*>
+<!ELEMENT background (areacontainer|area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT header (area|areascroll)*>
+<!ELEMENT header (areacontainer|area|areascroll)*>
 <!ATTLIST header
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
@@ -45,6 +45,6 @@
   orientation (horizontal|vertical) #REQUIRED
 >
 
-<!ELEMENT listelement (area|areascroll)*>
+<!ELEMENT listelement (areacontainer|area|areascroll)*>
 
 %functions;

@@ -221,7 +221,8 @@ bool cViewHelpers::SetSystemMemory(bool forced, stringmap &stringTokens, intmap 
 
 bool cViewHelpers::SetSystemTemperatures(bool forced, stringmap &stringTokens, intmap &intTokens) {
     cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/temperatures\"", SCRIPTFOLDER, SCRIPTFOLDER);
-    system(*execCommand);
+    int ok = system(*execCommand);
+    if (ok) {}
 
     string tempCPU, tempGPU;
     int cpu, gpu;
@@ -261,7 +262,8 @@ bool cViewHelpers::SetSystemTemperatures(bool forced, stringmap &stringTokens, i
 
 bool cViewHelpers::SetVDRStats(bool forced, stringmap &stringTokens, intmap &intTokens) {
     cString execCommand = cString::sprintf("cd \"%s/\"; \"%s/vdrstats\"", SCRIPTFOLDER, SCRIPTFOLDER);
-    system(*execCommand);
+    int ok = system(*execCommand);
+    if (ok) {}
 
     string vdrCPU = "";
     string vdrMEM = "";

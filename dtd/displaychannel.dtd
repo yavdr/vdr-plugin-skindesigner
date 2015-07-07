@@ -24,79 +24,79 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT background (area)*>
+<!ELEMENT background (areacontainer|area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT channelinfo (area|areascroll)*>
+<!ELEMENT channelinfo (areacontainer|area|areascroll)*>
 <!ATTLIST channelinfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT epginfo (area|areascroll)*>
+<!ELEMENT epginfo (areacontainer|area|areascroll)*>
 <!ATTLIST epginfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT progressbar (area|areascroll)*>
+<!ELEMENT progressbar (areacontainer|area|areascroll)*>
 <!ATTLIST progressbar
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT progressbarback (area)*>
+<!ELEMENT progressbarback (areacontainer|area|areascroll)*>
 <!ATTLIST progressbarback
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT statusinfo (area|areascroll)*>
+<!ELEMENT statusinfo (areacontainer|area|areascroll)*>
 <!ATTLIST statusinfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT audioinfo (area|areascroll)*>
+<!ELEMENT audioinfo (areacontainer|area|areascroll)*>
 <!ATTLIST audioinfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT ecminfo (area|areascroll)*>
+<!ELEMENT ecminfo (areacontainer|area|areascroll)*>
 <!ATTLIST ecminfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT screenresolution (area|areascroll)*>
+<!ELEMENT screenresolution (areacontainer|area|areascroll)*>
 <!ATTLIST screenresolution
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT channelgroup (area|areascroll)*>
+<!ELEMENT channelgroup (areacontainer|area|areascroll)*>
 <!ATTLIST channelgroup
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT signalquality (area|areascroll)*>
+<!ELEMENT signalquality (areacontainer|area|areascroll)*>
 <!ATTLIST signalquality
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT signalqualityback (area|areascroll)*>
+<!ELEMENT signalqualityback (areacontainer|area|areascroll)*>
 <!ATTLIST signalqualityback
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT devices (area|areascroll)*>
+<!ELEMENT devices (areacontainer|area|areascroll)*>
 <!ATTLIST devices
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -111,7 +111,7 @@
   mode CDATA #IMPLIED
 >
 
-<!ELEMENT currentweather (area|areascroll)*>
+<!ELEMENT currentweather (areacontainer|area|areascroll)*>
 <!ATTLIST currentweather
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -125,7 +125,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT scrapercontent (area|areascroll)*>
+<!ELEMENT scrapercontent (areacontainer|area|areascroll)*>
 <!ATTLIST scrapercontent
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -139,7 +139,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT datetime (area|areascroll)*>
+<!ELEMENT datetime (areacontainer|area|areascroll)*>
 <!ATTLIST datetime
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -153,7 +153,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT time (area|areascroll)*>
+<!ELEMENT time (areacontainer|area|areascroll)*>
 <!ATTLIST time
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -167,13 +167,13 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT message (area|areascroll)*>
+<!ELEMENT message (areacontainer|area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT customtokens (area|areascroll)*>
+<!ELEMENT customtokens (areacontainer|area|areascroll)*>
 <!ATTLIST customtokens
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED

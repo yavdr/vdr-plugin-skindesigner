@@ -18,13 +18,13 @@ bool cGlobals::ReadFromXML(void) {
     //globals.xml is mandatory
     string xmlFile = "globals.xml";
     cXmlParser parser;
-    if (!parser.ReadGlobals(this, xmlFile, true))
+    if (!parser.ReadGlobals(this, xmlFile))
         return false;
     if (!parser.ParseGlobals())
         return false;
     //theme.xml is optional
     xmlFile = "theme.xml";
-    if (parser.ReadGlobals(this, xmlFile, false)) {
+    if (parser.ReadGlobals(this, xmlFile)) {
         parser.ParseGlobals();
     }
     return true;

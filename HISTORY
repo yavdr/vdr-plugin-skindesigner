@@ -378,3 +378,4 @@ Version 0.5.3
 - fixed crash using animated images in plugins
 - added banner to displaymenuschedulescurrentview and 
   displaymenureplaycurrentview
+- immplemented areacontainers to group areas

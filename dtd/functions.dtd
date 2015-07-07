@@ -1,3 +1,13 @@
+<!ELEMENT areacontainer (area|areascroll)*>
+<!ATTLIST areacontainer
+  x CDATA #IMPLIED
+  y CDATA #IMPLIED
+  width CDATA #IMPLIED
+  height CDATA #IMPLIED
+  condition CDATA #IMPLIED
+  debug (true|false) #IMPLIED
+>
+
 <!ELEMENT area (loop|fill|drawtext|drawtextbox|drawimage|drawtextvertical|drawrectangle|drawellipse|drawslope)*>
 <!ATTLIST area
   x CDATA #IMPLIED
@@ -28,7 +38,7 @@
   debug (true|false) #IMPLIED
 >
 
-<!ELEMENT grid (area|areascroll)*>
+<!ELEMENT grid (areacontainer|area|areascroll)*>
 <!ATTLIST grid
   x CDATA #REQUIRED
   y CDATA #REQUIRED

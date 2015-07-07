@@ -55,7 +55,7 @@ public:
     void SetParent(cSkinSetupMenu *p) { parent = p; };
     cSkinSetupMenu *GetParent(void) { return parent; };
     void AddSubMenu(cSkinSetupMenu *sub) { subMenus.push_back(sub); };
-    void SetParameter(eSetupParameterType paramType, xmlChar *name, xmlChar* displayText, xmlChar *min, xmlChar *max, xmlChar *value);
+    void SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value);
     void InitIterators(void);
     void InitParameterIterator(void) { paramIt = parameters.begin(); };
     cSkinSetupParameter *GetNextParameter(bool deep = true);
@@ -80,9 +80,9 @@ public:
     cSkinSetup(string skin);
     virtual ~cSkinSetup(void);
     bool ReadFromXML(void);
-    void SetSubMenu(xmlChar *name, xmlChar *displayText);
+    void SetSubMenu(string name, string displayText);
     void SubMenuDone(void);
-    void SetParameter(xmlChar *type, xmlChar *name, xmlChar* displayText, xmlChar *min, xmlChar *max, xmlChar *value);
+    void SetParameter(string type, string name, string displayText, string min, string max, string value);
     void InitParameterIterator(void) { rootMenu->InitIterators(); };
     cSkinSetupParameter *GetNextParameter(void);
     cSkinSetupParameter *GetParameter(string name);

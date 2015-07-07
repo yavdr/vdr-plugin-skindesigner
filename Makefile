@@ -73,6 +73,7 @@ OBJS = $(PLUGIN).o \
        libcore/imagecache.o \
        libcore/helpers.o \
        libcore/imageloader.o \
+       libcore/libxmlwrapper.o \
        libcore/recfolderinfo.o \
        libcore/skinsetup.o \
        libcore/skinrepo.o \

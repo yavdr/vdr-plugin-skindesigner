@@ -190,10 +190,10 @@ void cTemplate::GetUsedFonts(cTemplateView *view, vector< pair<string, int> > &u
     view->InitViewElementIterator();
     cTemplateViewElement *viewElement = NULL;
     while(viewElement = view->GetNextViewElement()) {
-        viewElement->InitIterator();
+        viewElement->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewElement->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText) {
@@ -206,10 +206,10 @@ void cTemplate::GetUsedFonts(cTemplateView *view, vector< pair<string, int> > &u
     view->InitViewListIterator();
     cTemplateViewList *viewList = NULL;
     while(viewList = view->GetNextViewList()) {
-        viewList->InitIterator();
+        viewList->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewList->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText) {
@@ -218,9 +218,9 @@ void cTemplate::GetUsedFonts(cTemplateView *view, vector< pair<string, int> > &u
             }
         }
         cTemplateViewElement *listElement = viewList->GetListElement();
-        listElement->InitIterator();
+        listElement->InitPixmapIterator();
         while(pix = listElement->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText) {
@@ -233,7 +233,7 @@ void cTemplate::GetUsedFonts(cTemplateView *view, vector< pair<string, int> > &u
     view->InitViewTabIterator();
     cTemplateViewTab *viewTab = NULL;
     while(viewTab = view->GetNextViewTab()) {
-        viewTab->InitIterator();
+        viewTab->InitFunctionIterator();
         cTemplateFunction *func = NULL;
         while(func = viewTab->GetNextFunction()) {
             if (func->GetType() == ftDrawText) {
@@ -248,7 +248,7 @@ void cTemplate::CacheImages(cTemplateView *view) {
     view->InitViewElementIterator();
     cTemplateViewElement *viewElement = NULL;
     while(viewElement = view->GetNextViewElement()) {
-        viewElement->InitIterator();
+        viewElement->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewElement->GetNextPixmap()) {
             CachePixmapImages(pix);
@@ -258,13 +258,13 @@ void cTemplate::CacheImages(cTemplateView *view) {
     view->InitViewListIterator();
     cTemplateViewList *viewList = NULL;
     while(viewList = view->GetNextViewList()) {
-        viewList->InitIterator();
+        viewList->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewList->GetNextPixmap()) {
             CachePixmapImages(pix);
         }
         cTemplateViewElement *listElement = viewList->GetListElement();
-        listElement->InitIterator();
+        listElement->InitPixmapIterator();
         while(pix = listElement->GetNextPixmap()) {
             CachePixmapImages(pix);
         }
@@ -272,7 +272,7 @@ void cTemplate::CacheImages(cTemplateView *view) {
         if (!currentElement) {
             continue;
         }
-        currentElement->InitIterator();
+        currentElement->InitPixmapIterator();
         while(pix = currentElement->GetNextPixmap()) {
             CachePixmapImages(pix);
         }
@@ -286,7 +286,7 @@ void cTemplate::CacheImages(cTemplateView *view) {
 }
 
 void cTemplate::CachePixmapImages(cTemplatePixmap *pix) {
-    pix->InitIterator();
+    pix->InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = pix->GetNextFunction()) {
         if (func->GetType() == ftDrawImage) {
