@@ -379,3 +379,5 @@ Version 0.5.3
 - added banner to displaymenuschedulescurrentview and 
   displaymenureplaycurrentview
 - immplemented areacontainers to group areas
+- fixed bug displaying pixmaps with transparency
+
