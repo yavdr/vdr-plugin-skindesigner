@@ -380,4 +380,5 @@ Version 0.5.3
   displaymenureplaycurrentview
 - immplemented areacontainers to group areas
 - fixed bug displaying pixmaps with transparency
+- fixed bug displaying wrong headers in skin setup submenus
 
