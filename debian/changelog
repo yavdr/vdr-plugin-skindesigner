@@ -1,3 +1,14 @@
+vdr-plugin-skindesigner (0.6.0-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 5a6fb85: immplemented areacontainers to group areas
+  * 5df1af0: forgot to add new files
+  * ce49462: fixed bug displaying pixmaps with transparency
+  * 14f96b8: fixed bug displaying wrong headers in skin setup submenus
+  * 32d96c5: Version 0.6.0
+
+ -- Frodo <frodo.vdr@gmx.net>  Thu, 09 Jul 2015 19:53:58 +0200
+
 vdr-plugin-skindesigner (0.5.3-6-g50fe393-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
