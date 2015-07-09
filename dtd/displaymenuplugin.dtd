@@ -16,42 +16,42 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT background (area)*>
+<!ELEMENT background (areacontainer|area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT header (area|areascroll)*>
+<!ELEMENT header (areacontainer|area|areascroll)*>
 <!ATTLIST header
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT datetime (area|areascroll)*>
+<!ELEMENT datetime (areacontainer|area|areascroll)*>
 <!ATTLIST datetime
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT message (area|areascroll)*>
+<!ELEMENT message (areacontainer|area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT colorbuttons (area|areascroll)*>
+<!ELEMENT colorbuttons (areacontainer|area|areascroll)*>
 <!ATTLIST colorbuttons
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT scrollbar (area|areascroll)*>
+<!ELEMENT scrollbar (areacontainer|area|areascroll)*>
 <!ATTLIST scrollbar
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT detailheader (area|areascroll)*>
+<!ELEMENT detailheader (areacontainer|area|areascroll)*>
 <!ATTLIST detailheader
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT tablabels (area|areascroll)*>
+<!ELEMENT tablabels (areacontainer|area|areascroll)*>
 <!ATTLIST tablabels
   debug CDATA #IMPLIED
 >
@@ -68,12 +68,12 @@
   orientation (horizontal|vertical) #REQUIRED
 >
 
-<!ELEMENT listelement (area|areascroll)*>
+<!ELEMENT listelement (areacontainer|area|areascroll)*>
 <!ATTLIST listelement
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT currentelement (area|areascroll)*>
+<!ELEMENT currentelement (areacontainer|area|areascroll)*>
 <!ATTLIST currentelement
   delay CDATA #REQUIRED
   fadetime CDATA #IMPLIED

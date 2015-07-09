@@ -25,29 +25,29 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT background (area)*>
+<!ELEMENT background (areacontainer|area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT backgroundmodeonly (area)*>
+<!ELEMENT backgroundmodeonly (areacontainer|area|areascroll)*>
 <!ATTLIST backgroundmodeonly
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT datetime (area|areascroll)*>
+<!ELEMENT datetime (areacontainer|area|areascroll)*>
 <!ATTLIST datetime
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT time (area|areascroll)*>
+<!ELEMENT time (areacontainer|area|areascroll)*>
 <!ATTLIST time
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT scrapercontent (area|areascroll)*>
+<!ELEMENT scrapercontent (areacontainer|area|areascroll)*>
 <!ATTLIST scrapercontent
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -61,73 +61,73 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT rectitle (area|areascroll)*>
+<!ELEMENT rectitle (areacontainer|area|areascroll)*>
 <!ATTLIST rectitle
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT recinfo (area|areascroll)*>
+<!ELEMENT recinfo (areacontainer|area|areascroll)*>
 <!ATTLIST recinfo
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT currenttime (area|areascroll)*>
+<!ELEMENT currenttime (areacontainer|area|areascroll)*>
 <!ATTLIST currenttime
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT totaltime (area|areascroll)*>
+<!ELEMENT totaltime (areacontainer|area|areascroll)*>
 <!ATTLIST totaltime
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT endtime (area|areascroll)*>
+<!ELEMENT endtime (areacontainer|area|areascroll)*>
 <!ATTLIST endtime
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT progressbar (area|areascroll)*>
+<!ELEMENT progressbar (areacontainer|area|areascroll)*>
 <!ATTLIST progressbar
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT cutmarks (area|areascroll)*>
+<!ELEMENT cutmarks (areacontainer|area|areascroll)*>
 <!ATTLIST cutmarks
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT controlicons (area|areascroll)*>
+<!ELEMENT controlicons (areacontainer|area|areascroll)*>
 <!ATTLIST controlicons
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT controliconsmodeonly (area|areascroll)*>
+<!ELEMENT controliconsmodeonly (areacontainer|area|areascroll)*>
 <!ATTLIST controliconsmodeonly
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT jump (area|areascroll)*>
+<!ELEMENT jump (areacontainer|area|areascroll)*>
 <!ATTLIST jump
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT message (area|areascroll)*>
+<!ELEMENT message (areacontainer|area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT onpause (area|areascroll)*>
+<!ELEMENT onpause (areacontainer|area|areascroll)*>
 <!ATTLIST onpause
   debug CDATA #IMPLIED
   delay CDATA #REQUIRED
@@ -135,7 +135,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT onpausemodeonly (area|areascroll)*>
+<!ELEMENT onpausemodeonly (areacontainer|area|areascroll)*>
 <!ATTLIST onpausemodeonly
   debug CDATA #IMPLIED
   delay CDATA #REQUIRED
@@ -143,7 +143,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT customtokens (area|areascroll)*>
+<!ELEMENT customtokens (areacontainer|area|areascroll)*>
 <!ATTLIST customtokens
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED

@@ -378,3 +378,9 @@ Version 0.5.3
 - fixed crash using animated images in plugins
 - added banner to displaymenuschedulescurrentview and 
   displaymenureplaycurrentview
+- immplemented areacontainers to group areas
+- fixed bug displaying pixmaps with transparency
+- fixed bug displaying wrong headers in skin setup submenus
+
+Version 0.6.0
+

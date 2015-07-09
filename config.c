@@ -237,7 +237,10 @@ void cDesignerConfig::DeleteSkin(string skin) {
     if (FolderExists(delPath)) {
         dsyslog("skindesigner: deleting skin %s", delPath.c_str());
         cString command = cString::sprintf("rm -rf %s", delPath.c_str());
-        system(*command); 
+        int ok = system(*command);
+        if (!ok) {
+            esyslog("skindesigner: error deleting skin %s", delPath.c_str());
+        } 
     }
 }
 

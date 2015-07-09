@@ -1568,6 +1568,9 @@ string cTemplateFunction::GetFuncName(void) {
         case ftViewElement:
             name = "View Element Parameters";
             break;
+        case ftPixmapContainer:
+            name = "Pixmap Container Parameters";
+            break;
         case ftPixmap:
             name = "Pixmap Parameters";
             break;

@@ -130,68 +130,91 @@ void cView::DrawViewElement(eViewElement ve, map <string,string> *stringTokens, 
     int pixCurrent = viewElement->GetPixOffset();
     if (pixCurrent < 0)
         return;
-    viewElement->InitIterator();
-    cTemplatePixmap *pix = NULL;
-    while(pix = viewElement->GetNextPixmap()) {
-        //check if already drawn background area, this can be skipped
-        if (PixmapExists(pixCurrent) && pix->BackgroundArea()) {
-            pixCurrent++;
-            continue;
-        }
-        //reset Template 
-        pix->ClearDynamicParameters();
-        //create Pixmap if already fully parsed
-        if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
-            CreateViewPixmap(pixCurrent, pix);
-        }
-        //check if pixmap needs dynamic parameters  
-        if ((!pix->Ready() || !pix->DoExecute()) && !pix->Scrolling()) {
-            //parse dynamic parameters and initiate functions
-            pix->ParseDynamicParameters(stringTokens, intTokens, true);
-            if (pix->Ready() && pix->DoExecute()) {
-                CreateViewPixmap(pixCurrent, pix);
-            }
+    viewElement->InitPixmapNodeIterator();
+    cTemplatePixmapNode *pixNode = NULL;
+    while(pixNode = viewElement->GetNextPixmapNode()) {
+        cTemplatePixmap *pix = dynamic_cast<cTemplatePixmap*>(pixNode);
+        if (pix) {
+            bool draw = PreparePixmap(ve, pixCurrent, pix, stringTokens, intTokens, loopTokens);
+            if (draw)
+                DrawPixmap(pixCurrent, pix, loopTokens);
+            pixCurrent++; 
         } else {
-            //parse dynamic parameters but not initiate functions
-            pix->ParseDynamicParameters(stringTokens, intTokens, false);
-        }
-        //if pixmap still not valid, skip
-        if (!pix->Ready() && !pix->Scrolling()) {
-            pixCurrent++;
-            continue;
-        }
-        //if condition for pixmap set, check if cond is true 
-        if (!pix->DoExecute()) {
-            pixCurrent++;
-            continue;
-        }
-        //parse dynamic tokens of pixmap functions
-        pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(stringTokens, intTokens, loopTokens);
-
-        if (!PixmapExists(pixCurrent) && pix->Scrolling()) {
-            cSize drawportSize;
-            scrolling = pix->CalculateDrawPortSize(drawportSize, loopTokens);
-            if (scrolling) {
-                CreateScrollingPixmap(pixCurrent, pix, drawportSize);
-                pix->SetScrollingTextWidth();
-                veScroll = ve;
-                scrollingPix = pixCurrent;
-                scrollOrientation = pix->GetNumericParameter(ptOrientation); 
-                scrollMode = pix->GetNumericParameter(ptScrollMode);
-                scrollDelay = pix->GetNumericParameter(ptDelay);
-                scrollSpeed = pix->GetNumericParameter(ptScrollSpeed);
-            } else {
-                CreateViewPixmap(pixCurrent, pix);              
+            cTemplatePixmapContainer *pixContainer = dynamic_cast<cTemplatePixmapContainer*>(pixNode);
+            pixContainer->ParseDynamicParameters(stringTokens, intTokens);
+            if (pixContainer->DoDebug()) {
+                pixContainer->Debug();
+            }
+            if (!pixContainer->DoExecute()) {
+                pixCurrent += pixContainer->NumPixmaps();
+                continue;
+            }
+            pixContainer->InitIterator();
+            cTemplatePixmap *pix = NULL;
+            while (pix = pixContainer->GetNextPixmap()) {
+                bool draw = PreparePixmap(ve, pixCurrent, pix, stringTokens, intTokens, loopTokens);
+                if (draw)
+                    DrawPixmap(pixCurrent, pix, loopTokens);
+                pixCurrent++;                 
             }
         }
-        if (pix->DoDebug()) {
-            pix->Debug();
-        }
-        
-        DrawPixmap(pixCurrent, pix, loopTokens);
-        pixCurrent++; 
     }
+}
+
+bool cView::PreparePixmap(eViewElement ve, int num, cTemplatePixmap *pix, map <string,string> *stringTokens, map <string,int> *intTokens, map < string, vector< map< string, string > > > *loopTokens) {
+    //check if already drawn background area, this can be skipped
+    if (PixmapExists(num) && pix->BackgroundArea()) {
+        return false;
+    }
+    //reset Template 
+    pix->ClearDynamicParameters();
+    //create Pixmap if already fully parsed
+    if (!PixmapExists(num) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
+        CreateViewPixmap(num, pix);
+    }
+    //check if pixmap needs dynamic parameters  
+    if ((!pix->Ready() || !pix->DoExecute()) && !pix->Scrolling()) {
+        //parse dynamic parameters and initiate functions
+        pix->ParseDynamicParameters(stringTokens, intTokens, true);
+        if (pix->Ready() && pix->DoExecute()) {
+            CreateViewPixmap(num, pix);
+        }
+    } else {
+        //parse dynamic parameters but not initiate functions
+        pix->ParseDynamicParameters(stringTokens, intTokens, false);
+    }
+    //if pixmap still not valid, skip
+    if (!pix->Ready() && !pix->Scrolling()) {
+        return false;
+    }
+    //if condition for pixmap set, check if cond is true 
+    if (!pix->DoExecute()) {
+        return false;
+    }
+    //parse dynamic tokens of pixmap functions
+    pix->ClearDynamicFunctionParameters();
+    pix->ParseDynamicFunctionParameters(stringTokens, intTokens, loopTokens);
+
+    if (!PixmapExists(num) && pix->Scrolling()) {
+        cSize drawportSize;
+        scrolling = pix->CalculateDrawPortSize(drawportSize, loopTokens);
+        if (scrolling) {
+            CreateScrollingPixmap(num, pix, drawportSize);
+            pix->SetScrollingTextWidth();
+            veScroll = ve;
+            scrollingPix = num;
+            scrollOrientation = pix->GetNumericParameter(ptOrientation); 
+            scrollMode = pix->GetNumericParameter(ptScrollMode);
+            scrollDelay = pix->GetNumericParameter(ptDelay);
+            scrollSpeed = pix->GetNumericParameter(ptScrollSpeed);
+        } else {
+            CreateViewPixmap(num, pix);              
+        }
+    }
+    if (pix->DoDebug()) {
+        pix->Debug();
+    }
+    return true;
 }
 
 void cView::ClearViewElement(eViewElement ve) {
@@ -217,7 +240,7 @@ void cView::ClearViewElement(eViewElement ve) {
     if (pixCurrent < 0)
         return;
     cTemplatePixmap *pix = NULL;
-    viewElement->InitIterator();
+    viewElement->InitPixmapIterator();
     while(pix = viewElement->GetNextPixmap()) {
         if (!pix->BackgroundArea()) {
             Fill(pixCurrent, clrTransparent);
@@ -237,7 +260,7 @@ void cView::DestroyViewElement(eViewElement ve) {
     if (pixCurrent < 0)
         return;
     cTemplatePixmap *pix = NULL;
-    viewElement->InitIterator();
+    viewElement->InitPixmapIterator();
     while(pix = viewElement->GetNextPixmap()) {
         DestroyPixmap(pixCurrent);
         pixCurrent++; 
@@ -299,7 +322,7 @@ void cView::ActivateScrolling(void) {
     int pixCurrent = scrollViewElement->GetPixOffset();
     if (pixCurrent < 0)
         return;
-    scrollViewElement->InitIterator();
+    scrollViewElement->InitPixmapIterator();
     cTemplatePixmap *pix = NULL;
     while(pix = scrollViewElement->GetNextPixmap()) {
         DrawPixmap(pixCurrent, pix);
@@ -376,7 +399,7 @@ void cView::CreateScrollingPixmap(int num, cTemplatePixmap *pix, cSize &drawport
 }
 
 void cView::DrawPixmap(int num, cTemplatePixmap *pix, map < string, vector< map< string, string > > > *loopTokens, bool flushPerLoop) {
-    pix->InitIterator();
+    pix->InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = pix->GetNextFunction()) {
         eFuncType type = func->GetType();
@@ -1200,59 +1223,86 @@ cRect cViewListItem::DrawListItem(map <string,string> *stringTokens, map <string
         DebugTokens("ListItem", stringTokens, intTokens);
     }
 
-    tmplViewElement->InitIterator();
-    cTemplatePixmap *pix = NULL;
+    tmplViewElement->InitPixmapIterator();
     int pixCurrent = 0;
-
-    while(pix = tmplViewElement->GetNextPixmap()) {
-        SetListElementPosition(pix);
-        if (pixCurrent == 0) {
-            posItem = pix->GetPixmapSize();
-        }
-        if (!PixmapExists(pixCurrent)) {
-            pix->ParseDynamicParameters(stringTokens, intTokens, true);
+    cTemplatePixmapNode *pixNode = NULL;
+    while(pixNode = tmplViewElement->GetNextPixmapNode()) {
+        cTemplatePixmap *pix = dynamic_cast<cTemplatePixmap*>(pixNode);
+        if (pix) {
+            SetListElementPosition(pix);
+            if (pixCurrent == 0) {
+                posItem = pix->GetPixmapSize();
+            }
+            bool draw = PrepareListItemPixmap(pixCurrent, pix, stringTokens, intTokens);
+            if (draw) {
+                DrawPixmap(pixCurrent, pix);
+            }
+            pixCurrent++;        
         } else {
-            pix->ParseDynamicParameters(stringTokens, intTokens, false);
-        }
-        if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
-            CreateViewPixmap(pixCurrent, pix);
-        }
-        //if pixmap still not valid, skip
-        if (!pix->Ready()  && !pix->Scrolling()) {
-            pixCurrent++;
-            continue;
-        }
-        //if condition for pixmap set, check if cond is true 
-        if (!pix->DoExecute()) {
-            pixCurrent++;
-            continue;
-        }
-    
-        pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(stringTokens, intTokens, NULL);
-
-        if (!PixmapExists(pixCurrent) && pix->Scrolling()) {
-            cSize drawportSize;
-            scrolling = pix->CalculateDrawPortSize(drawportSize);
-            pix->SetScrollingTextWidth();
-            if (scrolling) {
-                CreateScrollingPixmap(pixCurrent, pix, drawportSize);
-                scrollingPix = pixCurrent;
-                scrollOrientation = pix->GetNumericParameter(ptOrientation); 
-                scrollMode = pix->GetNumericParameter(ptScrollMode);
-                scrollDelay = pix->GetNumericParameter(ptDelay);
-                scrollSpeed = pix->GetNumericParameter(ptScrollSpeed);
-            } else {
-                CreateViewPixmap(pixCurrent, pix);
+            cTemplatePixmapContainer *pixContainer = dynamic_cast<cTemplatePixmapContainer*>(pixNode);
+            pixContainer->ParseDynamicParameters(stringTokens, intTokens);
+            if (pixContainer->DoDebug()) {
+                pixContainer->Debug();
+            }
+            if (!pixContainer->DoExecute()) {
+                pixCurrent += pixContainer->NumPixmaps();
+                continue;
+            }
+            pixContainer->InitIterator();
+            cTemplatePixmap *pix = NULL;
+            while (pix = pixContainer->GetNextPixmap()) {
+                SetListElementPosition(pix);
+                bool draw = PrepareListItemPixmap(pixCurrent, pix, stringTokens, intTokens);
+                if (draw) {
+                    DrawPixmap(pixCurrent, pix);
+                }
+                pixCurrent++;                 
             }
         }
-        if (pix->DoDebug()) {
-            pix->Debug();
-        }
-        DrawPixmap(pixCurrent, pix);
-        pixCurrent++;
     }
     return posItem;
+}
+
+bool cViewListItem::PrepareListItemPixmap(int num, cTemplatePixmap *pix, map <string,string> *stringTokens, map <string,int> *intTokens) {
+    if (!PixmapExists(num)) {
+        pix->ParseDynamicParameters(stringTokens, intTokens, true);
+    } else {
+        pix->ParseDynamicParameters(stringTokens, intTokens, false);
+    }
+    if (!PixmapExists(num) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
+        CreateViewPixmap(num, pix);
+    }
+    //if pixmap still not valid, skip
+    if (!pix->Ready()  && !pix->Scrolling()) {
+        return false;
+    }
+    //if condition for pixmap set, check if cond is true 
+    if (!pix->DoExecute()) {
+        return false;
+    }
+
+    pix->ClearDynamicFunctionParameters();
+    pix->ParseDynamicFunctionParameters(stringTokens, intTokens, NULL);
+
+    if (!PixmapExists(num) && pix->Scrolling()) {
+        cSize drawportSize;
+        scrolling = pix->CalculateDrawPortSize(drawportSize);
+        pix->SetScrollingTextWidth();
+        if (scrolling) {
+            CreateScrollingPixmap(num, pix, drawportSize);
+            scrollingPix = num;
+            scrollOrientation = pix->GetNumericParameter(ptOrientation); 
+            scrollMode = pix->GetNumericParameter(ptScrollMode);
+            scrollDelay = pix->GetNumericParameter(ptDelay);
+            scrollSpeed = pix->GetNumericParameter(ptScrollSpeed);
+        } else {
+            CreateViewPixmap(num, pix);
+        }
+    }
+    if (pix->DoDebug()) {
+        pix->Debug();
+    }
+    return true;
 }
 
 void cViewListItem::ClearListItem(void) {
@@ -1352,7 +1402,7 @@ void cGrid::SetCurrent(bool current) {
 void cGrid::Move(void) {
     if (!tmplViewElement)
         return;
-    tmplViewElement->InitIterator();
+    tmplViewElement->InitPixmapIterator();
     cTemplatePixmap *pix = NULL;
     int pixCurrent = 0;
 
@@ -1374,40 +1424,71 @@ void cGrid::Draw(void) {
         DebugTokens("Grid", &stringTokens, &intTokens);
     }
 
-    tmplViewElement->InitIterator();
-    cTemplatePixmap *pix = NULL;
+    tmplViewElement->InitPixmapIterator();
     int pixCurrent = 0;
-
-    while(pix = tmplViewElement->GetNextPixmap()) {
-        PositionPixmap(pix);
-        if (!PixmapExists(pixCurrent)) {
-            pix->ParseDynamicParameters(&stringTokens, &intTokens, true);
+    cTemplatePixmapNode *pixNode = NULL;
+    while(pixNode = tmplViewElement->GetNextPixmapNode()) {
+        cTemplatePixmap *pix = dynamic_cast<cTemplatePixmap*>(pixNode);
+        if (pix) {
+            PositionPixmap(pix);
+            bool draw = PrepareGridPixmap(pixCurrent, pix);
+            if (pix->DoDebug())
+                pix->Debug();
+            if (draw) {
+                DrawPixmap(pixCurrent, pix);
+            }
+            pixCurrent++;
         } else {
-            pix->ParseDynamicParameters(&stringTokens, &intTokens, false);
+            cTemplatePixmapContainer *pixContainer = dynamic_cast<cTemplatePixmapContainer*>(pixNode);
+            pixContainer->ParseDynamicParameters(&stringTokens, &intTokens);
+            if (pixContainer->DoDebug()) {
+                pixContainer->Debug();
+            }
+            if (!pixContainer->DoExecute()) {
+                pixCurrent += pixContainer->NumPixmaps();
+                continue;
+            }
+            pixContainer->InitIterator();
+            cTemplatePixmap *pix = NULL;
+            while (pix = pixContainer->GetNextPixmap()) {
+                PositionPixmap(pix);
+                bool draw = PrepareGridPixmap(pixCurrent, pix);
+                if (pix->DoDebug())
+                    pix->Debug();
+                if (draw) {
+                    DrawPixmap(pixCurrent, pix);
+                }
+                pixCurrent++;                 
+            }
+
+
         }
-        if (!PixmapExists(pixCurrent) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
-            CreateViewPixmap(pixCurrent, pix);
-        }
-        //if pixmap still not valid, skip
-        if (!pix->Ready()  && !pix->Scrolling()) {
-            pixCurrent++;
-            continue;
-        }
-        //if condition for pixmap set, check if cond is true 
-        if (!pix->DoExecute()) {
-            pixCurrent++;
-            continue;
-        }
-    
-        pix->ClearDynamicFunctionParameters();
-        pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens, NULL);
-        //pix->Debug();
-        DrawPixmap(pixCurrent, pix);
-        pixCurrent++;
     }
     dirty = false;
     resized = false;
     moved = false;
+}
+
+bool cGrid::PrepareGridPixmap(int num, cTemplatePixmap *pix) {
+    if (!PixmapExists(num)) {
+        pix->ParseDynamicParameters(&stringTokens, &intTokens, true);
+    } else {
+        pix->ParseDynamicParameters(&stringTokens, &intTokens, false);
+    }
+    if (!PixmapExists(num) && pix->Ready() && pix->DoExecute() && !pix->Scrolling()) {
+        CreateViewPixmap(num, pix);
+    }
+    //if pixmap still not valid, skip
+    if (!pix->Ready()  && !pix->Scrolling()) {
+        return false;
+    }
+    //if condition for pixmap set, check if cond is true 
+    if (!pix->DoExecute()) {
+        return false;
+    }
+    pix->ClearDynamicFunctionParameters();
+    pix->ParseDynamicFunctionParameters(&stringTokens, &intTokens, NULL);
+    return true;
 }
 
 void cGrid::Clear(void) {

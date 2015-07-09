@@ -56,6 +56,7 @@ protected:
     int scrollSpeed;
     int animCat;
     void DrawViewElement(eViewElement ve, map <string,string> *stringTokens = NULL, map <string,int> *intTokens = NULL, map < string, vector< map< string, string > > > *loopTokens = NULL);
+    bool PreparePixmap(eViewElement ve, int num, cTemplatePixmap *pix, map <string,string> *stringTokens, map <string,int> *intTokens, map < string, vector< map< string, string > > > *loopTokens);
     void ClearViewElement(eViewElement ve);
     void DestroyViewElement(eViewElement ve);
     void DestroyDetachedViewElement(eViewElement ve);
@@ -112,6 +113,7 @@ protected:
     int align;
     int listOrientation;
     void SetListElementPosition(cTemplatePixmap *pix);
+    bool PrepareListItemPixmap(int num, cTemplatePixmap *pix, map <string,string> *stringTokens, map <string,int> *intTokens);
 public:
     cViewListItem(cTemplateViewElement *tmplItem);
     virtual ~cViewListItem();
@@ -132,6 +134,7 @@ protected:
     map <string,string> stringTokens;
     map <string,int> intTokens;
     void PositionPixmap(cTemplatePixmap *pix);
+    bool PrepareGridPixmap(int num, cTemplatePixmap *pix);
 public:
     cGrid(cTemplateViewElement *tmplGrid);
     virtual ~cGrid();

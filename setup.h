@@ -79,10 +79,12 @@ public:
 class cSkinSetupSubMenu : public cOsdItem {
 private:
     string name;
+    string displayText;
 public:
     cSkinSetupSubMenu(string name, string displayText);
     virtual ~cSkinSetupSubMenu() {};
     string GetName(void) { return name; };
+    string GetDisplayText(void) { return displayText; };
 };
 
 // --- cSkindesignerSkinSetup -----------------------------------------------------------
@@ -90,12 +92,12 @@ public:
 class cSkindesignerSkinSetup : public cOsdMenu, cInstallManager {
 private:
     string skin;
-    string name;
+    string menu;
 protected:
     virtual eOSState ProcessKey(eKeys Key);
     void Set(void);
 public:
-    cSkindesignerSkinSetup(string skin, string menu);
+    cSkindesignerSkinSetup(string skin, string menu, string header);
     virtual ~cSkindesignerSkinSetup();
 };
 

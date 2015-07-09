@@ -128,9 +128,8 @@ void cPixmapContainer::CreatePixmap(int num, int Layer, const cRect &ViewPort, c
     pixmaps[num]->Fill(clrTransparent);
     if (pixContainerInit && (fadeTime || shiftTime)) {
         pixmaps[num]->SetAlpha(0);
-    } else if (pixmapsTransparency[num] > 0) {
-        int alpha = (100 - pixmapsTransparency[num])*255/100;
-        pixmaps[num]->SetAlpha(alpha);
+    } else if (pixmapsTransparency[num]) {
+        pixmaps[num]->SetAlpha(pixmapsTransparency[num]);
     }
 }
 
@@ -224,7 +223,7 @@ void cPixmapContainer::SetAlpha(int num, int Alpha) {
 void cPixmapContainer::SetTransparency(int num, int Transparency) {
     if (Transparency < 0 && Transparency > 100)
         return;
-    pixmapsTransparency[num] = Transparency;
+    pixmapsTransparency[num] = (100 - Transparency)*255/100;
 }
 
 void cPixmapContainer::SetLayer(int num, int Layer) {
@@ -352,8 +351,9 @@ int cPixmapContainer::AnimationDelay(void) {
 void cPixmapContainer::FadeIn(void) {
     if (!fadeTime) {
         for (int i = 0; i < numPixmaps; i++) {
-            if (PixmapExists(i))
-                SetAlpha(i, ALPHA_OPAQUE);
+            if (PixmapExists(i)) {
+                SetAlpha(i, pixmapsTransparency[i] ? pixmapsTransparency[i] : ALPHA_OPAQUE);
+            }
         }
         return;
     }
@@ -368,12 +368,8 @@ void cPixmapContainer::FadeIn(void) {
         for (int i = 0; i < numPixmaps; i++) {
             if (!PixmapExists(i))
                 continue;
-            if (pixmapsTransparency[i] > 0) {
-                int alpha = (100 - pixmapsTransparency[i])*Alpha/100;
-                SetAlpha(i, alpha);
-            } else {
-                SetAlpha(i, Alpha);
-            }
+            int alpha = (double)pixmapsTransparency[i] / 255.0 * Alpha;
+            SetAlpha(i, alpha);
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
@@ -398,12 +394,8 @@ void cPixmapContainer::FadeOut(void) {
         for (int i = 0; i < numPixmaps; i++) {
             if (!PixmapExists(i))
                 continue;
-            if (pixmapsTransparency[i] > 0) {
-                int alpha = (100 - pixmapsTransparency[i])*Alpha/100;
-                SetAlpha(i, alpha);
-            } else {
-                SetAlpha(i, Alpha);
-            }
+            int alpha = (double)pixmapsTransparency[i] / 255.0 * Alpha;
+            SetAlpha(i, alpha);
         }
         DoFlush();
         int Delta = cTimeMs::Now() - Now;
@@ -481,7 +473,7 @@ void cPixmapContainer::ShiftInFromBorder(int frames, int frameTime) {
         cRect r = ViewPort(i);
         r.SetPoint(pos.X(), pos.Y());
         SetViewPort(i, r);
-        SetAlpha(i, ALPHA_OPAQUE);
+        SetAlpha(i, pixmapsTransparency[i] ? pixmapsTransparency[i] : ALPHA_OPAQUE);
     }
     DoFlush();
     //Calculating total shifting distance
@@ -635,7 +627,7 @@ void cPixmapContainer::ShiftInFromPoint(int frames, int frameTime) {
         cRect r = ViewPort(i);
         r.SetPoint(startPos);
         SetViewPort(i, r);
-        SetAlpha(i, ALPHA_OPAQUE);
+        SetAlpha(i, pixmapsTransparency[i] ? pixmapsTransparency[i] : ALPHA_OPAQUE);
     }
     DoFlush();
     //Move In

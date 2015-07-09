@@ -22,18 +22,18 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT viewelement (area|areascroll)*>
+<!ELEMENT viewelement (areacontainer|area|areascroll)*>
 <!ATTLIST viewelement
   name CDATA #REQUIRED
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT scrollbar (area|areascroll)*>
+<!ELEMENT scrollbar (areacontainer|area|areascroll)*>
 <!ATTLIST scrollbar
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT tablabels (area|areascroll)*>
+<!ELEMENT tablabels (areacontainer|area|areascroll)*>
 <!ATTLIST tablabels
   debug CDATA #IMPLIED
 >

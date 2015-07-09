@@ -8,11 +8,8 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/xmlerror.h>
 #include <vdr/plugin.h>
-
+#include "../libcore/libxmlwrapper.h"
 #include "templateview.h"
 #include "templateviewlist.h"
 #include "templateviewgrid.h"
@@ -23,45 +20,49 @@ using namespace std;
 
 // --- cXmlParser -------------------------------------------------------------
 
-class cXmlParser {
+class cXmlParser : public cLibXMLWrapper {
 private:
     cTemplateView *view;
     cGlobals *globals;
     cSkinSetup *skinSetup;
-    xmlParserCtxtPtr ctxt;
-    xmlDocPtr doc;
-    xmlNodePtr root;
-    string GetPath(string xmlFile);
-    void ParseSetupMenu(xmlNodePtr node);
-    void ParseSetupParameter(xmlNodePtr node);
-    void ParseGlobalColors(xmlNodePtr node);
+    //parsing views
+    bool ParseSubView(void);
+    void ParseViewElement(cTemplateView *subView = NULL);
+    void ParseViewList(cTemplateView *subView = NULL);
+    void ParseViewTab(cTemplateView *subView);
+    void ParseGrid(void);
+    cTemplatePixmap *ParseArea(void);
+    cTemplatePixmapContainer *ParseAreaContainer(void);
+    void ParseFunctionCalls(cTemplatePixmap *pix);
+    void ParseLoopFunctionCalls(cTemplateLoopFunction *loopFunc);
+    //parsing globals
+    void ParseGlobalColors(void);
     void InsertColor(string name, string value);
-    void ParseGlobalVariables(xmlNodePtr node);
+    void ParseGlobalVariables(void);
     void InsertVariable(string name, string type, string value);
-    void ParseGlobalFonts(xmlNodePtr node);
-    void ParseTranslations(xmlNodePtr node);
-    bool ParseSubView(xmlNodePtr node);
-    void ParseViewElement(const xmlChar * viewElement, xmlNodePtr node, vector<pair<string, string> > &attributes, cTemplateView *subView = NULL);
-    void ParseViewList(xmlNodePtr parentNode, cTemplateView *subView = NULL);
-    void ParseViewTab(xmlNodePtr parentNode, cTemplateView *subView);
-    void ParseGrid(xmlNodePtr node, vector<pair<string, string> > &attributes);
-    void ParseFunctionCalls(xmlNodePtr node, cTemplatePixmap *pix);
-    void ParseLoopFunctionCalls(xmlNodePtr node, cTemplateLoopFunction *loopFunc);
-    bool ParseAttributes(xmlAttrPtr attr, xmlNodePtr node, vector<pair<string, string> > &attribs, bool isViewElement = false);
+    void ParseGlobalFonts(void);
+    void ParseTranslations(void);
+    //parsing skin setup
+    void ParseSetupMenu(void);
+    void ParseSetupParameter(void);
+    //helpers
+    void ValidateAttributes(const char *nodeName, vector<stringpair> &attributes);
+    string GetPath(string xmlFile);
 public:
     cXmlParser(void);
     virtual ~cXmlParser(void);
+    //reading views
     bool ReadView(cTemplateView *view, string xmlFile);
-    bool ReadPluginView(string plugName, int templateNumber, string templateName);
-    bool ReadGlobals(cGlobals *globals, string xmlFile, bool mandatory);
-    bool ReadSkinSetup(cSkinSetup *skinSetup, string xmlFile);
     bool ParseView(void);
+    //reading plugin views
+    bool ReadPluginView(string plugName, int templateNumber, string templateName);
     bool ParsePluginView(string plugName, int templateNumber);
+    //reading globals
+    bool ReadGlobals(cGlobals *globals, string xmlFile);
     bool ParseGlobals(void);
+    //reading skin setups
+    bool ReadSkinSetup(cSkinSetup *skinSetup, string xmlFile);
     bool ParseSkinSetup(string skin);
-    void DeleteDocument(void);
-    static void InitLibXML();
-    static void CleanupLibXML();
 };
 
 #endif //__XMLPARSER_H

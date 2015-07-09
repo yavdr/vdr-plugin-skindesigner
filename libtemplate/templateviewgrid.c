@@ -15,7 +15,7 @@ bool cTemplateViewGrid::CalculatePixmapParameters(void) {
     int gridWidth = parameters->GetNumericParameter(ptWidth);
     int gridHeight = parameters->GetNumericParameter(ptHeight);
 
-    for (vector<cTemplatePixmap*>::iterator pix = viewPixmaps.begin(); pix != viewPixmaps.end(); pix++) {
+    for (vector<cTemplatePixmapNode*>::iterator pix = viewPixmapNodes.begin(); pix != viewPixmapNodes.end(); pix++) {
         (*pix)->SetContainer(gridX, gridY, gridWidth, gridHeight);
         (*pix)->SetGlobals(globals);
         paramsValid = paramsValid && (*pix)->CalculateParameters();

@@ -173,7 +173,7 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
         // KEY OK
         if ((Key == kOk)) {
             if (type == itSkinSetup) {
-                state = AddSubMenu(new cSkindesignerSkinSetup(currentSkin, ""));
+                state = AddSubMenu(new cSkindesignerSkinSetup(currentSkin, "", ""));
             } else if (type == itNoSkinSetup) {
                 state = osContinue;
             } else if (type == itSkinRepo) {
@@ -354,15 +354,16 @@ cSkinMenuItem::cSkinMenuItem(string skinName, string displayText, eItemType type
 // --- cSkinSetupSubMenu -----------------------------------------------------------
 cSkinSetupSubMenu::cSkinSetupSubMenu(string name, string displayText) : cOsdItem(displayText.c_str()) {
     this->name = name;
+    this->displayText = displayText;
 }
 
 // --- cSkindesignerSkinSetup -----------------------------------------------------------
 
-cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin, string name)  : 
-cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.c_str(), name.c_str()), 30) {
+cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin, string menu, string header) : 
+cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.c_str(), header.c_str()), 30) {
     SetMenuCategory(mcPluginSetup);
     this->skin = skin;
-    this->name = name;
+    this->menu = menu;
     Set();
 }
 
@@ -380,7 +381,7 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
                 cOsdItem *current = Get(Current());
                 cSkinSetupSubMenu *subMenuItem = dynamic_cast<cSkinSetupSubMenu*>(current);
                 if (subMenuItem) {
-                    state = AddSubMenu(new cSkindesignerSkinSetup(skin, subMenuItem->GetName()));
+                    state = AddSubMenu(new cSkindesignerSkinSetup(skin, subMenuItem->GetName(), subMenuItem->GetDisplayText()));
                     break;
                 } else {
                     return osBack;
@@ -416,8 +417,8 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
 }
 
 void cSkindesignerSkinSetup::Set(void) {
-    cSkinSetupMenu *menu = config.GetSkinSetupMenu(skin, name);
-    if (!menu) {
+    cSkinSetupMenu *setupMenu = config.GetSkinSetupMenu(skin, menu);
+    if (!setupMenu) {
         return;
     }
     
@@ -429,9 +430,9 @@ void cSkindesignerSkinSetup::Set(void) {
             SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
     }
 
-    menu->InitParameterIterator();
+    setupMenu->InitParameterIterator();
     cSkinSetupParameter *param = NULL;
-    while (param = menu->GetNextParameter(false)) {
+    while (param = setupMenu->GetNextParameter(false)) {
         if (param->type == sptInt) {
             Add(new cMenuEditIntItem(param->displayText.c_str(), &param->value, param->min, param->max));
         } else if (param->type == sptBool) {
@@ -439,9 +440,9 @@ void cSkindesignerSkinSetup::Set(void) {
         }
     }
 
-    menu->InitSubmenuIterator();
+    setupMenu->InitSubmenuIterator();
     cSkinSetupMenu *subMenu = NULL;
-    while (subMenu = menu->GetNextSubMenu(false)) {
+    while (subMenu = setupMenu->GetNextSubMenu(false)) {
         Add(new cSkinSetupSubMenu(subMenu->GetName(), subMenu->GetDisplayText()));
     }
 }
