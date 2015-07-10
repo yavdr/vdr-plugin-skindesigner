@@ -384,3 +384,8 @@ Version 0.5.3
 
 Version 0.6.0
 
+- fixed bug that menulists are not read if no currentelement
+  is defined
+
+Version 0.6.1
+
