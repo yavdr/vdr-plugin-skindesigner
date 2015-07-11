@@ -47,6 +47,7 @@ private:
     string skinPartsPathSkin;
     string iconPathTheme;
     string skinPartsPathTheme;
+    string svgTemplatePath;
     map<string, cImage*> iconCache;
     map<string, cImage*> channelLogoCache;
     map<string, cImage*> skinPartsCache;

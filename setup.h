@@ -10,9 +10,33 @@ enum eItemType {
     itSkinRepo
 };
 
-// --- cSkinDesignerSetup -----------------------------------------------------------
+// --- cInstallManager -----------------------------------------------------------
+class cInstallManager {
+private:
+    uint64_t installationStart;
+    int lastInstallDuration;
+    int timeout;
+    bool installing;
+    bool updating;
+    cSkinRepo *runningInst;
+protected:
+    string currentSkin;
+    bool StartInstallation(string skin);
+    bool StartUpdate(string skin);
+    bool Installing(void) { return installing; };
+    bool Updating(void) { return updating; };
+    bool Finished(void);
+    bool SuccessfullyInstalled(void);
+    bool SuccessfullyUpdated(void);
+    int Duration(void);
+    eOSState ProcessInstallationStatus(void);
+public:
+    cInstallManager(void);
+    virtual ~cInstallManager(void);
+};
 
-class cSkinDesignerSetup : public cMenuSetupPage {
+// --- cSkinDesignerSetup -----------------------------------------------------------
+class cSkinDesignerSetup : public cMenuSetupPage, cInstallManager {
 private:
     int numLogosPerSizeInitial;
     int limitLogoCache;
@@ -24,7 +48,6 @@ private:
     int blockFlush;
     int framesPerSecond;
     const char *menuDisplayStyle[2];
-
     void Setup(void);
     virtual void Store(void);
     virtual eOSState ProcessKey(eKeys Key);
@@ -35,7 +58,7 @@ private:
     void InstallSkins(void);
 public:
     cSkinDesignerSetup(void);
-    virtual ~cSkinDesignerSetup();
+    virtual ~cSkinDesignerSetup(void);
 };
 
 // --- cSkinMenuItem -----------------------------------------------------------
@@ -56,35 +79,34 @@ public:
 class cSkinSetupSubMenu : public cOsdItem {
 private:
     string name;
+    string displayText;
 public:
     cSkinSetupSubMenu(string name, string displayText);
     virtual ~cSkinSetupSubMenu() {};
     string GetName(void) { return name; };
+    string GetDisplayText(void) { return displayText; };
 };
 
 // --- cSkindesignerSkinSetup -----------------------------------------------------------
 
-class cSkindesignerSkinSetup : public cOsdMenu {
+class cSkindesignerSkinSetup : public cOsdMenu, cInstallManager {
 private:
     string skin;
-    string name;
+    string menu;
 protected:
     virtual eOSState ProcessKey(eKeys Key);
     void Set(void);
 public:
-    cSkindesignerSkinSetup(string skin, string menu);
+    cSkindesignerSkinSetup(string skin, string menu, string header);
     virtual ~cSkindesignerSkinSetup();
 };
 
 // --- cSkindesignerSkinPreview -----------------------------------------------------------
 
-class cSkindesignerSkinPreview : public skindesignerapi::cSkindesignerOsdMenu {
-private:
-    string skinName;
+class cSkindesignerSkinPreview : public skindesignerapi::cSkindesignerOsdMenu, cInstallManager {
 protected:
     virtual eOSState ProcessKey(eKeys Key);
     void Set(void);
-    bool InstallSkin(void);
     string CheckFontInstalled(string fontName);
 public:
     cSkindesignerSkinPreview(string skin);

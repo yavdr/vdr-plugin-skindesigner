@@ -4,6 +4,9 @@
 #include <locale.h>
 
 cGlobals::cGlobals(void) {
+    customTokenChange = 0;
+    lastCustomTokenQuery = 0;
+
     fonts.insert(pair<string, string>("vdrOsd", Setup.FontOsd));
     fonts.insert(pair<string, string>("vdrFix", Setup.FontFix));
     fonts.insert(pair<string, string>("vdrSml", Setup.FontSml));
@@ -15,13 +18,13 @@ bool cGlobals::ReadFromXML(void) {
     //globals.xml is mandatory
     string xmlFile = "globals.xml";
     cXmlParser parser;
-    if (!parser.ReadGlobals(this, xmlFile, true))
+    if (!parser.ReadGlobals(this, xmlFile))
         return false;
     if (!parser.ParseGlobals())
         return false;
     //theme.xml is optional
     xmlFile = "theme.xml";
-    if (parser.ReadGlobals(this, xmlFile, false)) {
+    if (parser.ReadGlobals(this, xmlFile)) {
         parser.ParseGlobals();
     }
     return true;
@@ -198,11 +201,13 @@ string cGlobals::DoTranslate(string token) {
 void cGlobals::AddCustomInt(string &name, int value) {
     customIntTokens.erase(name);
     customIntTokens.insert(pair<string,int>(name, value));
+    customTokenChange = time(0);
 }
 
 void cGlobals::AddCustomString(string &name, string &value) {
     customStringTokens.erase(name);
     customStringTokens.insert(pair<string,string>(name, value));
+    customTokenChange = time(0);
 }
 
 bool cGlobals::GetCustomInt(string name, int &val) {
@@ -211,6 +216,24 @@ bool cGlobals::GetCustomInt(string name, int &val) {
         val = hit->second;
         return true;
     }
+    return false;
+}
+
+map <string, string> cGlobals::GetCustomStringTokens(void) { 
+    lastCustomTokenQuery = time(0);
+    return customStringTokens;
+}
+
+map <string, int> cGlobals::GetCustomIntTokens(void) { 
+    lastCustomTokenQuery = time(0);
+    return customIntTokens; 
+}
+
+bool cGlobals::CustomTokenChange(void) {
+    if (!lastCustomTokenQuery)
+        return true;
+    if (lastCustomTokenQuery < customTokenChange)
+        return true;
     return false;
 }
 

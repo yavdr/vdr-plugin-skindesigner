@@ -27,14 +27,17 @@ bool cViewElementDevices::Render(void) {
 
 /********************************************************************************************************************/
 
-cViewElementScraperContent::cViewElementScraperContent(const cEvent *event, ScraperContentType type, cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
+cViewElementScraperContent::cViewElementScraperContent(const cEvent *event, const cRecording *recording, cTemplateViewElement *tmplViewElement) : cViewElement(tmplViewElement) {
     this->event = event;
-    this->type = type;
+    this->recording = recording;
 }
 
 bool cViewElementScraperContent::Render(void) {
     ClearTokens();
-    SetPosterBanner(event, stringTokens, intTokens);
+    if (event)
+        SetPosterBanner(event, stringTokens, intTokens);
+    else if (recording)
+        SetPosterBannerV2(recording, stringTokens, intTokens);
     ClearViewElement(veScraperContent);
     DrawViewElement(veScraperContent, &stringTokens, &intTokens);
     return true;

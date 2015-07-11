@@ -4,6 +4,8 @@
         {nummenuitem}           number of item in list, starts with 1
         {name}                  Real Name of recording (Name of Recording Folder)
         {epgname}               Name of recording (Name from EPG)
+        {shorttext}             Short Text of recording
+        {description}           Descrption of recording
         {date}                  Date of recording
         {time}                  Time of recording
         {daynumeric}            day as number
@@ -27,6 +29,10 @@
         {thumbnailbwidth}       width of scraped poster thumbnail
         {thumbnailheight}       height of scraped poster thumbnail
         {thumbnailpath}         absolute path of scraped poster thumbnail
+        {hasposter}             true if a scraped poster is available for recording
+        {posterwidth}           width of scraped poster
+        {posterheight}          height of scraped poster
+        {posterpath}            absolute path of scraped poster
         -->
         <listelement>
         </listelement>
@@ -50,7 +56,8 @@
         {durationminutes}       real duration, rest of minutes
         {durationevent}         duration of corresponding event in minutes
         {durationeventhours}    event duration, full hours
-        {durationeventminutes}  event duration, rest of minutes        {new}                   true if recording is new
+        {durationeventminutes}  event duration, rest of minutes        
+        {new}                   true if recording is new
         {cutted}                true if recording is cutted
         {folder}                true if item is a folder
         {numrecordingsfolder}   if item is a folder, number of recordings in this folder
@@ -59,6 +66,10 @@
         {posterwidth}           width of scraped poster
         {posterheight}          height of scraped poster
         {posterpath}            absolute path of scraped poster
+        {hasbanner}             true if a scraped banner is available for this element
+        {bannerwidth}           width of scraped banner
+        {bannerheight}          height of scraped banner
+        {bannerpath}            absolute path of scraped banner        
         -->
         <currentelement delay="500" fadetime="0">
         </currentelement>

@@ -293,7 +293,6 @@ void cDisplayMenuMainView::DrawStaticViewElements(void) {
     DrawTemperatures();
     DrawCurrentSchedule();
     DrawCurrentWeather();
-    DrawCustomTokens();
 }
 
 bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
@@ -301,9 +300,9 @@ bool cDisplayMenuMainView::DrawDynamicViewElements(void) {
     bool memChanged = DrawMemory();
     bool vdrChanged = DrawVdrStats();
     bool devicesChanged = DrawDevices();
+    bool customTokensChanged = DrawCustomTokens();
     initial = false;
-    return loadChanged || memChanged || vdrChanged || devicesChanged;
-
+    return loadChanged || memChanged || vdrChanged || devicesChanged || customTokensChanged;
 }
 
 void cDisplayMenuMainView::DrawTimers(void) {
@@ -588,12 +587,15 @@ void cDisplayMenuMainView::DrawCurrentWeather(void) {
     }
 }
 
-void cDisplayMenuMainView::DrawCustomTokens(void) {
+bool cDisplayMenuMainView::DrawCustomTokens(void) {
     if (!ExecuteViewElement(veCustomTokens)) {
-        return;
+        return false;
     }
     if (!tmplView)
-        return;
+        return false;
+
+    if (!initial && !tmplView->CustomTokenChange())
+        return false;
 
     if (DetachViewElement(veCustomTokens)) {
         cViewElement *viewElement = GetViewElement(veCustomTokens);
@@ -608,8 +610,10 @@ void cDisplayMenuMainView::DrawCustomTokens(void) {
     } else {
         map < string, string > stringTokens = tmplView->GetCustomStringTokens();
         map < string, int > intTokens = tmplView->GetCustomIntTokens();
+        ClearViewElement(veCustomTokens);
         DrawViewElement(veCustomTokens, &stringTokens, &intTokens);
     }
+    return true;
 }
 
 /************************************************************************

@@ -2,6 +2,7 @@
 #include <sstream>
 #include <map>
 #include <fstream>
+#include <iostream>
 #include <sys/stat.h>
 #include "imagecache.h"
 #include "cairoimage.h"
@@ -42,9 +43,12 @@ void cImageCache::SetPathes(void) {
     iconPathTheme = *cString::sprintf("%s%s/themes/%s/", *skinPath, Setup.OSDSkin, Setup.OSDTheme);
     skinPartsPathTheme = *cString::sprintf("%s%s/themes/%s/skinparts/", *skinPath, Setup.OSDSkin, Setup.OSDTheme);
 
+    svgTemplatePath = *cString::sprintf("%s%s/svgtemplates/", *skinPath, Setup.OSDSkin);
+    
     dsyslog("skindesigner: using channel logo path %s", logoPath.c_str());
     dsyslog("skindesigner: using icon path %s", iconPathTheme.c_str());
     dsyslog("skindesigner: using skinparts path %s", skinPartsPathTheme.c_str());
+    dsyslog("skindesigner: using svgtemplate path %s", svgTemplatePath.c_str());
 }
 
 void cImageCache::CacheLogo(int width, int height) {
@@ -146,11 +150,12 @@ bool cImageCache::LogoExists(string channelID) {
     if (!channel)
         return false;
     string logoLower = StrToLowerCase(channel->Name());
+    string channelIDLower = StrToLowerCase(channelID.c_str());
 
     return (FileExists(logoPath.c_str(), logoLower, "svg") ||
             FileExists(logoPath.c_str(), logoLower, "png") ||
-            FileExists(logoPath.c_str(), channelID, "svg") ||
-            FileExists(logoPath.c_str(), channelID, "png"));
+            FileExists(logoPath.c_str(), channelIDLower, "svg") ||
+            FileExists(logoPath.c_str(), channelIDLower, "png"));
 }
 
 bool cImageCache::SeparatorLogoExists(string name) {
@@ -381,8 +386,18 @@ bool cImageCache::LoadIcon(eImageType type, string name) {
 
     if (FileExists(*subIconSkinPath, name, "svg"))
         return LoadImage(*subIconSkinPath, name, "svg");
-    else 
+    else if (FileExists(*subIconSkinPath, name, "png"))
         return LoadImage(*subIconSkinPath, name, "png");
+
+    //and finally check if a svg template exists
+    cSVGTemplate svgTemplate(name, svgTemplatePath);
+    if (!svgTemplate.Exists())
+        return false;
+    svgTemplate.ReadTemplate();
+    if (!svgTemplate.ParseTemplate())
+        return false;
+    string tmpImageName = svgTemplate.WriteImage();
+    return LoadImage(tmpImageName.c_str());
 }
 
 bool cImageCache::LoadLogo(const cChannel *channel) {
@@ -422,8 +437,18 @@ bool cImageCache::LoadSkinpart(string name) {
     else if (FileExists(skinPartsPathSkin.c_str(), name, "svg"))
         return LoadImage(skinPartsPathSkin.c_str(), name, "svg");
     
-    else 
+    else if (FileExists(skinPartsPathSkin.c_str(), name, "png"))
         return LoadImage(skinPartsPathSkin.c_str(), name, "png");
+
+    //check if a svg template exists
+    cSVGTemplate svgTemplate(name, svgTemplatePath);
+    if (!svgTemplate.Exists())
+        return false;
+    svgTemplate.ReadTemplate();
+    if (!svgTemplate.ParseTemplate())
+        return false;
+    string tmpImageName = svgTemplate.WriteImage();
+    return LoadImage(tmpImageName.c_str());
 }
 
 void cImageCache::Clear(void) {

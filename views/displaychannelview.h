@@ -49,6 +49,7 @@ public:
     void ClearChannelGroups(void);
     void DisplayMessage(eMessageType Type, const char *Text);
     void DrawCustomTokens(void);
+    bool CustomTokenChange(void);
     void DrawCurrentWeather(void);
     void DoStart(void) { Start(); };
     void Flush(void) { DoFlush(); };

@@ -88,19 +88,19 @@ void cSkinSetupMenu::InitIterators(void) {
     subMenuIt = subMenus.begin();
 }
 
-void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, xmlChar *name, xmlChar* displayText, xmlChar *min, xmlChar *max, xmlChar *value) {
+void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value) {
     cSkinSetupParameter *param = new cSkinSetupParameter();
     param->type = paramType;
-    param->name = (const char*)name;
-    param->displayText = (const char*)displayText;
+    param->name = name;
+    param->displayText = displayText;
 
-    if (min && paramType == sptInt) {
-        param->min = atoi((const char*)min);
+    if (min.size() && paramType == sptInt) {
+        param->min = atoi(min.c_str());
     }
-    if (max && paramType == sptInt) {
-        param->max = atoi((const char*)max);
+    if (max.size() && paramType == sptInt) {
+        param->max = atoi(max.c_str());
     }
-    param->value = atoi((const char*)value);
+    param->value = atoi(value.c_str());
 
     parameters.push_back(param);
 }
@@ -169,10 +169,10 @@ bool cSkinSetup::ReadFromXML(void) {
     return true;
 }
 
-void cSkinSetup::SetSubMenu(xmlChar *name, xmlChar *displayText) {
+void cSkinSetup::SetSubMenu(string name, string displayText) {
     cSkinSetupMenu *subMenu = new cSkinSetupMenu();
-    subMenu->SetName((const char*)name);
-    subMenu->SetDisplayText((const char*)displayText);
+    subMenu->SetName(name);
+    subMenu->SetDisplayText(displayText);
     subMenu->SetParent(currentMenu);
     currentMenu->AddSubMenu(subMenu);
     currentMenu = subMenu;
@@ -185,15 +185,15 @@ void cSkinSetup::SubMenuDone(void) {
     }
 }
 
-void cSkinSetup::SetParameter(xmlChar *type, xmlChar *name, xmlChar* displayText, xmlChar *min, xmlChar *max, xmlChar *value) {
-    if (!type || !name || !displayText || !value) {
+void cSkinSetup::SetParameter(string type, string name, string displayText, string min, string max, string value) {
+    if (!type.size() || !name.size() || !displayText.size() || !value.size()) {
         esyslog("skindesigner: invalid setup parameter for skin %s", skin.c_str());
         return;
     }
     eSetupParameterType paramType = sptUnknown;
-    if (!xmlStrcmp(type, (const xmlChar *) "int")) {
+    if (!type.compare("int")) {
         paramType = sptInt;
-    } else if (!xmlStrcmp(type, (const xmlChar *) "bool")) {
+    } else if (!type.compare("bool")) {
         paramType = sptBool;
     }
     if (paramType == sptUnknown) {

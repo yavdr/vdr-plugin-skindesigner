@@ -78,18 +78,20 @@
         {textyes}       text to display on yes button
         {textno}        text to display on no button
         -->
-        <area condition="{buttonyesno}" layer="5">
-            <drawrectangle condition="not{current}" x="2%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
-            <drawrectangle condition="not{current}" x="52%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
-            <drawrectangle condition="{current}++{yes}" x="2%" y="5%" width="46%" height="90%" color="{clrTransBlueLight}"/>
-            <drawrectangle condition="{current}++{yes}" x="52%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
-            <drawrectangle condition="{current}++not{yes}" x="2%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
-            <drawrectangle condition="{current}++not{yes}" x="52%" y="5%" width="46%" height="90%" color="{clrTransBlueLight}"/>
-        </area>
-        <area condition="{buttonyesno}" layer="6">
-            <drawtext name="yestext" x="{areawidth}/4 - {width(yestext)}/2" valign="center" font="{light}" fontsize="70%" color="{clrWhite}" text="{textyes}" />
-            <drawtext name="notext" x="3*{areawidth}/4 - {width(notext)}/2" valign="center" font="{light}" fontsize="70%" color="{clrWhite}" text="{textno}" />
-        </area>        
+        <areacontainer condition="{buttonyesno}">
+            <area layer="5">
+                <drawrectangle condition="not{current}" x="2%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
+                <drawrectangle condition="not{current}" x="52%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
+                <drawrectangle condition="{current}++{yes}" x="2%" y="5%" width="46%" height="90%" color="{clrTransBlueLight}"/>
+                <drawrectangle condition="{current}++{yes}" x="52%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
+                <drawrectangle condition="{current}++not{yes}" x="2%" y="5%" width="46%" height="90%" color="{clrDarkGray}"/>
+                <drawrectangle condition="{current}++not{yes}" x="52%" y="5%" width="46%" height="90%" color="{clrTransBlueLight}"/>
+            </area>
+            <area layer="6">
+                <drawtext name="yestext" x="{areawidth}/4 - {width(yestext)}/2" valign="center" font="{light}" fontsize="70%" color="{clrWhite}" text="{textyes}" />
+                <drawtext name="notext" x="3*{areawidth}/4 - {width(notext)}/2" valign="center" font="{light}" fontsize="70%" color="{clrWhite}" text="{textno}" />
+            </area>
+        </areacontainer>
         <!-- Int Selector
         {intselector}   true
         {text}          title of selector
@@ -126,14 +128,16 @@
         {text}          title of selector
         {value}         current value of selector, string
         -->
-        <area condition="{textinput}" layer="6">
-            <drawtext x="1%" y="10%" font="{light}" fontsize="40%" color="{clrWhite}" text="{text}" />
-            <drawrectangle condition="not{editmode}" x="1%" y="55%" width="98%" height="40%" color="{clrWhite}"/>
-            <drawrectangle condition="{editmode}" x="1%" y="55%" width="98%" height="40%" color="{clrRed}"/>
-        </area>
-        <area condition="{textinput}" layer="7">
-            <drawtext align="right" y="55%" font="{light}" fontsize="40%" color="{clrBlack}" text="{value} " />
-        </area>
+        <areacontainer condition="{textinput}">
+            <area layer="6">
+                <drawtext x="1%" y="10%" font="{light}" fontsize="40%" color="{clrWhite}" text="{text}" />
+                <drawrectangle condition="not{editmode}" x="1%" y="55%" width="98%" height="40%" color="{clrWhite}"/>
+                <drawrectangle condition="{editmode}" x="1%" y="55%" width="98%" height="40%" color="{clrRed}"/>
+            </area>
+            <area layer="7">
+                <drawtext align="right" y="55%" font="{light}" fontsize="40%" color="{clrBlack}" text="{value} " />
+            </area>
+        </areacontainer>
         <!-- Time Selector 
         {timeselector}  true
         {text}          title of selector
@@ -174,49 +178,51 @@
         {day0abbr} ... {day6abbr}  localized one character abbrevation for weekdays from Monday to Sunday
         {day0set}  ... {day6set}   true if according weekday from Monday to Sunday is set
         -->
-        <area condition="{weekdayselector}" layer="6">
-            <drawtext x="1%" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{text}" />
-            
-            <drawrectangle x="{areawidth} - {areaheight}*4" y="25%" width="{areaheight}*3.5" height="50%" color="{clrWhite}" />
+        <areacontainer condition="{weekdayselector}">
+            <area layer="6">
+                <drawtext x="1%" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{text}" />
+                
+                <drawrectangle x="{areawidth} - {areaheight}*4" y="25%" width="{areaheight}*3.5" height="50%" color="{clrWhite}" />
 
-            <drawrectangle condition="not{day0set}" x="{areawidth} - {areaheight}*4.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day0set}" x="{areawidth} - {areaheight}*4.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
-            
-            <drawrectangle condition="not{day1set}" x="{areawidth} - {areaheight}*3.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day1set}" x="{areawidth} - {areaheight}*3.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+                <drawrectangle condition="not{day0set}" x="{areawidth} - {areaheight}*4.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day0set}" x="{areawidth} - {areaheight}*4.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+                
+                <drawrectangle condition="not{day1set}" x="{areawidth} - {areaheight}*3.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day1set}" x="{areawidth} - {areaheight}*3.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
 
-            <drawrectangle condition="not{day2set}" x="{areawidth} - {areaheight}*3.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day2set}" x="{areawidth} - {areaheight}*3.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+                <drawrectangle condition="not{day2set}" x="{areawidth} - {areaheight}*3.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day2set}" x="{areawidth} - {areaheight}*3.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
 
-            <drawrectangle condition="not{day3set}" x="{areawidth} - {areaheight}*2.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day3set}" x="{areawidth} - {areaheight}*2.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+                <drawrectangle condition="not{day3set}" x="{areawidth} - {areaheight}*2.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day3set}" x="{areawidth} - {areaheight}*2.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
 
-            <drawrectangle condition="not{day4set}" x="{areawidth} - {areaheight}*2.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day4set}" x="{areawidth} - {areaheight}*2.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+                <drawrectangle condition="not{day4set}" x="{areawidth} - {areaheight}*2.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day4set}" x="{areawidth} - {areaheight}*2.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
 
-            <drawrectangle condition="not{day5set}" x="{areawidth} - {areaheight}*1.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day5set}" x="{areawidth} - {areaheight}*1.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+                <drawrectangle condition="not{day5set}" x="{areawidth} - {areaheight}*1.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day5set}" x="{areawidth} - {areaheight}*1.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
 
-            <drawrectangle condition="not{day6set}" x="{areawidth} - {areaheight}*1.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
-            <drawrectangle condition="{day6set}" x="{areawidth} - {areaheight}*1.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
-        </area>
-        <area condition="{weekdayselector}" layer="7">
-            <drawrectangle condition="{current}++eq({dayselected}, 0)" x="{areawidth} - {areaheight}*4.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
-            <drawrectangle condition="{current}++eq({dayselected}, 1)" x="{areawidth} - {areaheight}*3.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
-            <drawrectangle condition="{current}++eq({dayselected}, 2)" x="{areawidth} - {areaheight}*3.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
-            <drawrectangle condition="{current}++eq({dayselected}, 3)" x="{areawidth} - {areaheight}*2.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
-            <drawrectangle condition="{current}++eq({dayselected}, 4)" x="{areawidth} - {areaheight}*2.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
-            <drawrectangle condition="{current}++eq({dayselected}, 5)" x="{areawidth} - {areaheight}*1.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
-            <drawrectangle condition="{current}++eq({dayselected}, 6)" x="{areawidth} - {areaheight}*1.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="not{day6set}" x="{areawidth} - {areaheight}*1.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrDarkGray}" />
+                <drawrectangle condition="{day6set}" x="{areawidth} - {areaheight}*1.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlueLight}" />
+            </area>
+            <area layer="7">
+                <drawrectangle condition="{current}++eq({dayselected}, 0)" x="{areawidth} - {areaheight}*4.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="{current}++eq({dayselected}, 1)" x="{areawidth} - {areaheight}*3.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="{current}++eq({dayselected}, 2)" x="{areawidth} - {areaheight}*3.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="{current}++eq({dayselected}, 3)" x="{areawidth} - {areaheight}*2.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="{current}++eq({dayselected}, 4)" x="{areawidth} - {areaheight}*2.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="{current}++eq({dayselected}, 5)" x="{areawidth} - {areaheight}*1.5 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
+                <drawrectangle condition="{current}++eq({dayselected}, 6)" x="{areawidth} - {areaheight}*1.0 + 2" y="{areaheight}*0.25+2" width="{areaheight}*0.5-4" height="{areaheight}*0.5-4" color="{clrTransBlack}" />
 
-            <drawtext name="day0" x="{areawidth} - {areaheight}*4.0 + {areaheight}/4 - {width(day0)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day0abbr}" />
-            <drawtext name="day1" x="{areawidth} - {areaheight}*3.5 + {areaheight}/4 - {width(day1)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day1abbr}" />
-            <drawtext name="day2" x="{areawidth} - {areaheight}*3.0 + {areaheight}/4 - {width(day2)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day2abbr}" />
-            <drawtext name="day3" x="{areawidth} - {areaheight}*2.5 + {areaheight}/4 - {width(day3)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day3abbr}" />
-            <drawtext name="day4" x="{areawidth} - {areaheight}*2.0 + {areaheight}/4 - {width(day4)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day4abbr}" />
-            <drawtext name="day5" x="{areawidth} - {areaheight}*1.5 + {areaheight}/4 - {width(day5)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day5abbr}" />
-            <drawtext name="day6" x="{areawidth} - {areaheight}*1.0 + {areaheight}/4 - {width(day6)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day6abbr}" />
-        </area>
+                <drawtext name="day0" x="{areawidth} - {areaheight}*4.0 + {areaheight}/4 - {width(day0)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day0abbr}" />
+                <drawtext name="day1" x="{areawidth} - {areaheight}*3.5 + {areaheight}/4 - {width(day1)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day1abbr}" />
+                <drawtext name="day2" x="{areawidth} - {areaheight}*3.0 + {areaheight}/4 - {width(day2)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day2abbr}" />
+                <drawtext name="day3" x="{areawidth} - {areaheight}*2.5 + {areaheight}/4 - {width(day3)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day3abbr}" />
+                <drawtext name="day4" x="{areawidth} - {areaheight}*2.0 + {areaheight}/4 - {width(day4)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day4abbr}" />
+                <drawtext name="day5" x="{areawidth} - {areaheight}*1.5 + {areaheight}/4 - {width(day5)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day5abbr}" />
+                <drawtext name="day6" x="{areawidth} - {areaheight}*1.0 + {areaheight}/4 - {width(day6)}/2" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{day6abbr}" />
+            </area>
+        </areacontainer>
         <!-- Directory Selector 
         {directoryselector}  true
         {text}               title of selector
@@ -238,17 +244,19 @@
         {overlapstartpercent}    start of overlap in percent of total conflict time width
         {overlapwidthpercent}    width of overlap in percent of total conflict time width
         -->
-        <area condition="{timerconflictheader}" layer="5">
-            <drawtext name="title" x="{areawidth}*0.7*0.5 - {width(title)}/2" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{text}" />
-            <drawrectangle x="70%" y="0" width="30%" height="100%" color="{clrWhite}"/>
-        </area>
-        <area condition="{timerconflictheader}" layer="6">
-            <drawtext x="{areawidth}*0.7" y="0" font="{light}" fontsize="50%" color="{clrBlack}" text="{conflictstart}" />
-            <drawtext align="right" y="0" font="{light}" fontsize="50%" color="{clrBlack}" text="{conflictstop}" />
-            <drawtext name="olstart" x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100 - 70" y="50%" font="{light}" fontsize="50%" color="{clrRed}" text="{overlapstart}" />
-            <drawtext x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100 + {overlapwidthpercent}*{areawidth}*0.3/100 + 5" y="50%" font="{light}" fontsize="50%" color="{clrRed}" text="{overlapstop}" />
-            <drawrectangle x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100" y="50%" width="{overlapwidthpercent}*{areawidth}*0.3/100" height="50%" color="{clrRedTrans}"/>
-        </area>
+        <areacontainer condition="{timerconflictheader}">
+            <area layer="5">
+                <drawtext name="title" x="{areawidth}*0.7*0.5 - {width(title)}/2" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{text}" />
+                <drawrectangle x="70%" y="0" width="30%" height="100%" color="{clrWhite}"/>
+            </area>
+            <area layer="6">
+                <drawtext x="{areawidth}*0.7" y="0" font="{light}" fontsize="50%" color="{clrBlack}" text="{conflictstart}" />
+                <drawtext align="right" y="0" font="{light}" fontsize="50%" color="{clrBlack}" text="{conflictstop}" />
+                <drawtext name="olstart" x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100 - 70" y="50%" font="{light}" fontsize="50%" color="{clrRed}" text="{overlapstart}" />
+                <drawtext x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100 + {overlapwidthpercent}*{areawidth}*0.3/100 + 5" y="50%" font="{light}" fontsize="50%" color="{clrRed}" text="{overlapstop}" />
+                <drawrectangle x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100" y="50%" width="{overlapwidthpercent}*{areawidth}*0.3/100" height="50%" color="{clrRedTrans}"/>
+            </area>
+        </areacontainer>
          <!-- Timerconflict 
         {timerconflict}          true
         {timertitle}             title of timer
@@ -268,28 +276,30 @@
         {overlapstartpercent}    start of overlap in percent of total conflict time width
         {overlapwidthpercent}    width of overlap in percent of total conflict time width
         -->
-        <area condition="{timerconflict}" layer="5">
-            <drawimage condition="not{current}" imagetype="skinpart" path="menubutton" x="0" y="0" width="70%" height="100%"/>
-            <drawimage condition="{current}" imagetype="skinpart" path="menubuttonactive" x="0" y="0" width="70%" height="100%"/>
-        </area>
-        <area condition="{timerconflict}" layer="6">
-            <drawimage condition="{current}++{infoactive}" imagetype="icon" path="ico_info_active" x="{areaheight}*0.05" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="not{current}||not{infoactive}" imagetype="icon" path="ico_info_inactive" x="{areaheight}*0.05" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="{current}++{deleteactive}" imagetype="icon" path="ico_delete_active" x="{areaheight}*0.6" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="not{current}||not{deleteactive}" imagetype="icon" path="ico_delete_inactive" x="{areaheight}*0.6" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="{current}++{editactive}" imagetype="icon" path="ico_edit_active" x="{areaheight}*1.15" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="not{current}||not{editactive}" imagetype="icon" path="ico_edit_inactive" x="{areaheight}*1.15" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="{current}++{searchactive}" imagetype="icon" path="ico_search_active" x="{areaheight}*1.7" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawimage condition="not{current}||not{searchactive}" imagetype="icon" path="ico_search_inactive" x="{areaheight}*1.7" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
-            <drawtext x="{areaheight}*2.3" width="{areawidth}*0.7 - {areaheight}*2.4" y="0" font="{regular}" fontsize="40%" color="{clrWhite}" text="{timertitle}" />
-            <drawtext x="{areaheight}*2.3" y="40%" font="{light}" fontsize="30%" color="{clrWhite}" text="{weekday} {date} {starttime} - {stoptime}" />
-            <drawtext x="{areaheight}*2.3" y="70%" font="{light}" fontsize="30%" color="{clrWhite}" text="{channelname}, Transp. {transponder}" />
-            <drawrectangle x="70%" y="0" width="30%" height="100%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.7 + {timerstartpercent}*{areawidth}*0.3/100" y="30%" width="{timerwidthpercent}*{areawidth}*0.3/100" height="40%" color="{clrBlack}"/>
-        </area>
-        <area condition="{timerconflict}" layer="7">
-            <drawrectangle x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100" y="0" width="{overlapwidthpercent}*{areawidth}*0.3/100" height="100%" color="{clrRedTrans}"/>
-        </area>
+        <areacontainer condition="{timerconflict}">
+            <area layer="5">
+                <drawimage condition="not{current}" imagetype="skinpart" path="menubutton" x="0" y="0" width="70%" height="100%"/>
+                <drawimage condition="{current}" imagetype="skinpart" path="menubuttonactive" x="0" y="0" width="70%" height="100%"/>
+            </area>
+            <area layer="6">
+                <drawimage condition="{current}++{infoactive}" imagetype="icon" path="ico_info_active" x="{areaheight}*0.05" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="not{current}||not{infoactive}" imagetype="icon" path="ico_info_inactive" x="{areaheight}*0.05" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="{current}++{deleteactive}" imagetype="icon" path="ico_delete_active" x="{areaheight}*0.6" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="not{current}||not{deleteactive}" imagetype="icon" path="ico_delete_inactive" x="{areaheight}*0.6" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="{current}++{editactive}" imagetype="icon" path="ico_edit_active" x="{areaheight}*1.15" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="not{current}||not{editactive}" imagetype="icon" path="ico_edit_inactive" x="{areaheight}*1.15" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="{current}++{searchactive}" imagetype="icon" path="ico_search_active" x="{areaheight}*1.7" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawimage condition="not{current}||not{searchactive}" imagetype="icon" path="ico_search_inactive" x="{areaheight}*1.7" valign="center" width="{areaheight}*0.5" height="{areaheight}*0.5"/>
+                <drawtext x="{areaheight}*2.3" width="{areawidth}*0.7 - {areaheight}*2.4" y="0" font="{regular}" fontsize="40%" color="{clrWhite}" text="{timertitle}" />
+                <drawtext x="{areaheight}*2.3" y="40%" font="{light}" fontsize="30%" color="{clrWhite}" text="{weekday} {date} {starttime} - {stoptime}" />
+                <drawtext x="{areaheight}*2.3" y="70%" font="{light}" fontsize="30%" color="{clrWhite}" text="{channelname}, Transp. {transponder}" />
+                <drawrectangle x="70%" y="0" width="30%" height="100%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.7 + {timerstartpercent}*{areawidth}*0.3/100" y="30%" width="{timerwidthpercent}*{areawidth}*0.3/100" height="40%" color="{clrBlack}"/>
+            </area>
+            <area layer="7">
+                <drawrectangle x="{areawidth}*0.7 + {overlapstartpercent}*{areawidth}*0.3/100" y="0" width="{overlapwidthpercent}*{areawidth}*0.3/100" height="100%" color="{clrRedTrans}"/>
+            </area>
+        </areacontainer>
         <!-- Event 
         {event}              true
         {title}              title of event
@@ -367,78 +377,82 @@
         {eventstart}                start time of according event
         {eventstop}                 end time of according event
         -->
-        <area condition="{timelineheader}" layer="5">
-            <drawtext align="center" y="1%" font="{regular}" fontsize="35%" color="{clrWhite}" text="Timer for {date}" />
-            <drawrectangle x="{areawidth}*0.05" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.0875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.1625" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.2" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.2375" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.275" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.3125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.35" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.3875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.425" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.4625" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.5" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.5375" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.575" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.6125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.65" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.6875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.725" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.7625" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.8" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.8375" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-            <drawrectangle x="{areawidth}*0.875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
-            <drawrectangle x="{areawidth}*0.9125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
-        </area>
-        <area condition="{timelineheader}" layer="6">
-            <drawtext name="text0" x="{areawidth}*0.05 + {areawidth}*0.0375/2 - {width(text0)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="0"/>
-            <drawtext name="text1" x="{areawidth}*0.0875 + {areawidth}*0.0375/2 - {width(text1)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="1"/>
-            <drawtext name="text2" x="{areawidth}*0.125 + {areawidth}*0.0375/2 - {width(text2)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="2"/>
-            <drawtext name="text3" x="{areawidth}*0.1625 + {areawidth}*0.0375/2 - {width(text3)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="3"/>
-            <drawtext name="text4" x="{areawidth}*0.2 + {areawidth}*0.0375/2 - {width(text4)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="4"/>
-            <drawtext name="text5" x="{areawidth}*0.2375 + {areawidth}*0.0375/2 - {width(text5)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="5"/>
-            <drawtext name="text6" x="{areawidth}*0.275 + {areawidth}*0.0375/2 - {width(text6)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="6"/>
-            <drawtext name="text7" x="{areawidth}*0.3125 + {areawidth}*0.0375/2 - {width(text7)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="7"/>
-            <drawtext name="text8" x="{areawidth}*0.35 + {areawidth}*0.0375/2 - {width(text8)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="8"/>
-            <drawtext name="text9" x="{areawidth}*0.3875 + {areawidth}*0.0375/2 - {width(text9)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="9"/>
-            <drawtext name="text10" x="{areawidth}*0.425 + {areawidth}*0.0375/2 - {width(text10)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="10"/>
-            <drawtext name="text11" x="{areawidth}*0.4625 + {areawidth}*0.0375/2 - {width(text11)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="11"/>
-            <drawtext name="text12" x="{areawidth}*0.5 + {areawidth}*0.0375/2 - {width(text12)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="12"/>
-            <drawtext name="text13" x="{areawidth}*0.5375 + {areawidth}*0.0375/2 - {width(text13)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="13"/>
-            <drawtext name="text14" x="{areawidth}*0.575 + {areawidth}*0.0375/2 - {width(text14)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="14"/>
-            <drawtext name="text15" x="{areawidth}*0.6125 + {areawidth}*0.0375/2 - {width(text15)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="15"/>
-            <drawtext name="text16" x="{areawidth}*0.65 + {areawidth}*0.0375/2 - {width(text16)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="16"/>
-            <drawtext name="text17" x="{areawidth}*0.6875 + {areawidth}*0.0375/2 - {width(text17)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="17"/>
-            <drawtext name="text18" x="{areawidth}*0.725 + {areawidth}*0.0375/2 - {width(text18)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="18"/>
-            <drawtext name="text19" x="{areawidth}*0.7625 + {areawidth}*0.0375/2 - {width(text19)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="19"/>
-            <drawtext name="text20" x="{areawidth}*0.8 + {areawidth}*0.0375/2 - {width(text20)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="20"/>
-            <drawtext name="text21" x="{areawidth}*0.8375 + {areawidth}*0.0375/2 - {width(text21)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="21"/>
-            <drawtext name="text22" x="{areawidth}*0.875 + {areawidth}*0.0375/2 - {width(text22)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="22"/>
-            <drawtext name="text23" x="{areawidth}*0.9125 + {areawidth}*0.0375/2 - {width(text23)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="23"/>
-        </area>
-        <area condition="{timelineheader}++{timerset}" layer="6">
-             <drawimage condition="{channellogoexisis}" imagetype="channellogo" path="{channelid}" x="1%" y="30%" width="{areaheight}*0.5" height="{areaheight}*0.5" />
-             <drawtext condition="not{channellogoexisis}" x="1%" width="{areaheight}*0.7" y="40%" font="{light}" fontsize="20%" color="{clrWhite}" text="{channelname}"/>
-             <drawtext x="{areaheight}*0.8" y="36%" font="{light}" fontsize="25%" color="{clrWhite}" text="{eventstart} - {eventstop} (Rec. {timerstart} - {timerstop}), Transp. {channeltransponder}"/>
-             <drawtext x="{areaheight}*0.8" y="57%" width="{areawidth}-{areaheight}" font="{light}" fontsize="25%" color="{clrWhite}" text="{eventtitle} - {eventshorttext}"/>
-        </area>
+        <areacontainer condition="{timelineheader}">
+            <area layer="5">
+                <drawtext align="center" y="1%" font="{regular}" fontsize="35%" color="{clrWhite}" text="Timer for {date}" />
+                <drawrectangle x="{areawidth}*0.05" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.0875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.1625" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.2" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.2375" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.275" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.3125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.35" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.3875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.425" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.4625" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.5" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.5375" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.575" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.6125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.65" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.6875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.725" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.7625" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.8" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.8375" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+                <drawrectangle x="{areawidth}*0.875" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrBlack}"/>
+                <drawrectangle x="{areawidth}*0.9125" y="80%" width="{areawidth}*0.0375" height="20%" color="{clrWhite}"/>
+            </area>
+            <area layer="6">
+                <drawtext name="text0" x="{areawidth}*0.05 + {areawidth}*0.0375/2 - {width(text0)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="0"/>
+                <drawtext name="text1" x="{areawidth}*0.0875 + {areawidth}*0.0375/2 - {width(text1)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="1"/>
+                <drawtext name="text2" x="{areawidth}*0.125 + {areawidth}*0.0375/2 - {width(text2)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="2"/>
+                <drawtext name="text3" x="{areawidth}*0.1625 + {areawidth}*0.0375/2 - {width(text3)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="3"/>
+                <drawtext name="text4" x="{areawidth}*0.2 + {areawidth}*0.0375/2 - {width(text4)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="4"/>
+                <drawtext name="text5" x="{areawidth}*0.2375 + {areawidth}*0.0375/2 - {width(text5)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="5"/>
+                <drawtext name="text6" x="{areawidth}*0.275 + {areawidth}*0.0375/2 - {width(text6)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="6"/>
+                <drawtext name="text7" x="{areawidth}*0.3125 + {areawidth}*0.0375/2 - {width(text7)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="7"/>
+                <drawtext name="text8" x="{areawidth}*0.35 + {areawidth}*0.0375/2 - {width(text8)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="8"/>
+                <drawtext name="text9" x="{areawidth}*0.3875 + {areawidth}*0.0375/2 - {width(text9)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="9"/>
+                <drawtext name="text10" x="{areawidth}*0.425 + {areawidth}*0.0375/2 - {width(text10)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="10"/>
+                <drawtext name="text11" x="{areawidth}*0.4625 + {areawidth}*0.0375/2 - {width(text11)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="11"/>
+                <drawtext name="text12" x="{areawidth}*0.5 + {areawidth}*0.0375/2 - {width(text12)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="12"/>
+                <drawtext name="text13" x="{areawidth}*0.5375 + {areawidth}*0.0375/2 - {width(text13)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="13"/>
+                <drawtext name="text14" x="{areawidth}*0.575 + {areawidth}*0.0375/2 - {width(text14)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="14"/>
+                <drawtext name="text15" x="{areawidth}*0.6125 + {areawidth}*0.0375/2 - {width(text15)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="15"/>
+                <drawtext name="text16" x="{areawidth}*0.65 + {areawidth}*0.0375/2 - {width(text16)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="16"/>
+                <drawtext name="text17" x="{areawidth}*0.6875 + {areawidth}*0.0375/2 - {width(text17)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="17"/>
+                <drawtext name="text18" x="{areawidth}*0.725 + {areawidth}*0.0375/2 - {width(text18)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="18"/>
+                <drawtext name="text19" x="{areawidth}*0.7625 + {areawidth}*0.0375/2 - {width(text19)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="19"/>
+                <drawtext name="text20" x="{areawidth}*0.8 + {areawidth}*0.0375/2 - {width(text20)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="20"/>
+                <drawtext name="text21" x="{areawidth}*0.8375 + {areawidth}*0.0375/2 - {width(text21)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="21"/>
+                <drawtext name="text22" x="{areawidth}*0.875 + {areawidth}*0.0375/2 - {width(text22)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrWhite}" text="22"/>
+                <drawtext name="text23" x="{areawidth}*0.9125 + {areawidth}*0.0375/2 - {width(text23)}/2" y="80%" font="{regular}" fontsize="20%" color="{clrBlack}" text="23"/>
+            </area>
+            <area condition="{timerset}" layer="6">
+                 <drawimage condition="{channellogoexisis}" imagetype="channellogo" path="{channelid}" x="1%" y="30%" width="{areaheight}*0.5" height="{areaheight}*0.5" />
+                 <drawtext condition="not{channellogoexisis}" x="1%" width="{areaheight}*0.7" y="40%" font="{light}" fontsize="20%" color="{clrWhite}" text="{channelname}"/>
+                 <drawtext x="{areaheight}*0.8" y="36%" font="{light}" fontsize="25%" color="{clrWhite}" text="{eventstart} - {eventstop} (Rec. {timerstart} - {timerstop}), Transp. {channeltransponder}"/>
+                 <drawtext x="{areaheight}*0.8" y="57%" width="{areawidth}-{areaheight}" font="{light}" fontsize="25%" color="{clrWhite}" text="{eventtitle} - {eventshorttext}"/>
+            </area>
+        </areacontainer>
         <!-- Timeline Timer 
         {timelinetimer}             true
         {timerstart}                start of timer in tenth percent of complete 24h width
         {timerwidth}                width of timer in tenth percent of complete 24h width
         -->
-        <area condition="{timelinetimer}" layer="5">
-            <drawrectangle condition="{current}" x="5%" y="0" width="90%" height="100%" color="{clrTransBlueLight}"/>
-            <drawrectangle condition="not{current}" x="5%" y="0" width="90%" height="100%" color="{clrDarkGray}"/>
-            <drawrectangle x="5%" y="{areaheight}-1" width="90%" height="1" color="{clrBlack}"/>
-        </area>
-        <area condition="{timelinetimer}" layer="6">
-            <drawrectangle x="{areawidth}*0.05 + {timerstart}*{areawidth}*0.9/1000" y="25%" width="{timerwidth}*{areawidth}*0.9/1000" height="50%" color="{clrBlack}"/>
-        </area>
+        <areacontainer condition="{timelinetimer}">
+            <area layer="5">
+                <drawrectangle condition="{current}" x="5%" y="0" width="90%" height="100%" color="{clrTransBlueLight}"/>
+                <drawrectangle condition="not{current}" x="5%" y="0" width="90%" height="100%" color="{clrDarkGray}"/>
+                <drawrectangle x="5%" y="{areaheight}-1" width="90%" height="1" color="{clrBlack}"/>
+            </area>
+            <area layer="6">
+                <drawrectangle x="{areawidth}*0.05 + {timerstart}*{areawidth}*0.9/1000" y="25%" width="{timerwidth}*{areawidth}*0.9/1000" height="50%" color="{clrBlack}"/>
+            </area>
+        </areacontainer>
         <!-- Favorites 
         {favorite}                  true
         {favdesc}                   description of favorite

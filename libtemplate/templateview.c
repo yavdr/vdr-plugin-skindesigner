@@ -14,7 +14,6 @@ cTemplateView::cTemplateView(void) {
 }
 
 cTemplateView::~cTemplateView() {
-
     for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         delete it->second;
     }
@@ -350,10 +349,10 @@ void cTemplateView::Translate(void) {
     InitViewElementIterator();
     cTemplateViewElement *viewElement = NULL;
     while(viewElement = GetNextViewElement()) {
-        viewElement->InitIterator();
+        viewElement->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewElement->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
@@ -386,10 +385,10 @@ void cTemplateView::Translate(void) {
     InitViewListIterator();
     cTemplateViewList *viewList = NULL;
     while(viewList = GetNextViewList()) {
-        viewList->InitIterator();
+        viewList->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewList->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
@@ -403,9 +402,9 @@ void cTemplateView::Translate(void) {
             }
         }
         cTemplateViewElement *listElement = viewList->GetListElement();
-        listElement->InitIterator();
+        listElement->InitPixmapIterator();
         while(pix = listElement->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
@@ -421,9 +420,9 @@ void cTemplateView::Translate(void) {
         
         cTemplateViewElement *listElementCurrent = viewList->GetListElementCurrent();
         if (listElementCurrent) {
-            listElementCurrent->InitIterator();
+            listElementCurrent->InitPixmapIterator();
             while(pix = listElementCurrent->GetNextPixmap()) {
-                pix->InitIterator();
+                pix->InitFunctionIterator();
                 cTemplateFunction *func = NULL;
                 while(func = pix->GetNextFunction()) {
                     if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
@@ -464,7 +463,7 @@ void cTemplateView::Translate(void) {
         if (translated) {
             viewTab->SetName(tabTrans);            
         }
-        viewTab->InitIterator();
+        viewTab->InitFunctionIterator();
         cTemplateFunction *func = NULL;
         while(func = viewTab->GetNextFunction()) {
             if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
@@ -497,10 +496,10 @@ void cTemplateView::Translate(void) {
     InitViewGridIterator();
     cTemplateViewGrid *viewGrid = NULL;
     while(viewGrid = GetNextViewGrid()) {
-        viewGrid->InitIterator();
+        viewGrid->InitPixmapIterator();
         cTemplatePixmap *pix = NULL;
         while(pix = viewGrid->GetNextPixmap()) {
-            pix->InitIterator();
+            pix->InitFunctionIterator();
             cTemplateFunction *func = NULL;
             while(func = pix->GetNextFunction()) {
                 if (func->GetType() == ftDrawText || func->GetType() == ftDrawTextBox || func->GetType() == ftDrawTextVertical) {
@@ -695,6 +694,16 @@ void cTemplateView::SetFunctionDefinitions(void) {
     name = "listelement";
     attributes.clear();
     attributes.insert("debug");
+    funcsAllowed.insert(pair< string, set<string> >(name, attributes));
+
+    name = "areacontainer";
+    attributes.clear();
+    attributes.insert("x");
+    attributes.insert("y");
+    attributes.insert("width");
+    attributes.insert("height");
+    attributes.insert("debug");
+    attributes.insert("condition");
     funcsAllowed.insert(pair< string, set<string> >(name, attributes));
 
     name = "area";
@@ -999,9 +1008,9 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<stringpair> &viewElementattributes) {
     eViewElement ve = veUndefined;
-    
+
     if (!sViewElement.compare("background")) {
         ve = veBackground;
     } else if (!sViewElement.compare("channelinfo")) {
@@ -1041,7 +1050,6 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmap *pix, 
     } else if (!sViewElement.compare("customtokens")) {
         ve = veCustomTokens;
     }
-
     if (ve == veUndefined) {
         esyslog("skindesigner: unknown ViewElement in displaychannel: %s", sViewElement.c_str());
         return;
@@ -1245,6 +1253,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("debug");
     attributes.insert("delay");
     attributes.insert("fadetime");
+    attributes.insert("condition");
     funcsAllowed.insert(pair< string, set<string> >("currentelement", attributes));
 
     //definition of allowed parameters for viewtab
@@ -1507,7 +1516,7 @@ void cTemplateViewMenu::AddPluginView(string plugName, int templNo, cTemplateVie
     }
 }
 
-void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1648,7 +1657,7 @@ string cTemplateViewMessage::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewMessage::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewMessage::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1801,7 +1810,7 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1916,7 +1925,7 @@ string cTemplateViewVolume::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewVolume::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewVolume::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -2026,7 +2035,7 @@ string cTemplateViewAudioTracks::GetViewListName(eViewList vl) {
     return name;
 }
 
-void cTemplateViewAudioTracks::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewAudioTracks::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -2133,7 +2142,7 @@ void cTemplateViewPlugin::AddSubView(string sSubView, cTemplateView *subView) {
     subViews.insert(pair< eSubView, cTemplateView* >((eSubView)subViewId, subView));
 }
 
-void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmap *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
     eViewElement ve = veUndefined;
     string viewElementName = "";
     int viewElementID = -1;
@@ -2177,7 +2186,7 @@ void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmap *pix, v
     }
 }
 
-void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmap *pix, vector<pair<string, string> > &gridAttributes) {
+void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmapNode *pix, vector<pair<string, string> > &gridAttributes) {
     string gridName = "";
     bool found = false;
     for (vector<pair<string, string> >::iterator it = gridAttributes.begin(); it != gridAttributes.end(); it++) {

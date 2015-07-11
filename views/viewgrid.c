@@ -71,6 +71,7 @@ void cViewGrid::Hide(void) {
     for (map < long, cGrid* >::iterator it = grids.begin(); it != grids.end(); it++) {
         cGrid *grid = it->second;
         grid->HidePixmaps();
+        grid->HideAnimations();
     }
 }
 
@@ -78,6 +79,7 @@ void cViewGrid::Show(void) {
     for (map < long, cGrid* >::iterator it = grids.begin(); it != grids.end(); it++) {
         cGrid *grid = it->second;
         grid->ShowPixmaps();
+        grid->ShowAnimations();
     }
 }
 

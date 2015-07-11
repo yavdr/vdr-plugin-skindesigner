@@ -58,6 +58,7 @@ public:
     void SetInstallerSkinPath(cString path);
     void SetLogoPath(cString path);
     void SetEpgImagePath(cString path);
+    bool GetThemeColor(string &name, tColor &col);
     void ReadSkins(void);
     void ReadSkinSetup(string skin);
     void InitSkinIterator(void) { skinIterator = skins.begin(); };
@@ -65,6 +66,8 @@ public:
     cString GetSkinPath(string skin);
     void AddSkin(cSkinDesigner *skin) { skinRefs.push_back(skin); };
     void AddNewSkinRef(string skin);
+    bool SkinActive(string skin);
+    void DeleteSkin(string skin);
     void InitSkinRefsIterator(void) { skinRefsIterator = skinRefs.begin(); };
     cSkinDesigner *GetNextSkinRef(void);
     void ClearSkinSetups(void);

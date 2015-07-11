@@ -23,6 +23,7 @@ enum eFuncType {
     ftView,
     ftViewElement,
     ftViewList,
+    ftPixmapContainer,
     ftPixmap,
     ftPixmapScroll,
     ftLoop,

@@ -350,4 +350,42 @@ Version 0.5.0
 - fixed display of channel separators
 - added some debug output when installing skins
 - added timeout for preview screenshot downloading
+- added some skins
+- adapted README
+
+Version 0.5.1
+
+- changed skin installation that VDR main loop is not blocked
+- use shallow clone when cloning git
+- implemented possibility to delete skins
+
+Version 0.5.2
+
+- only close OSD when a skin is successfully updated from Git
+- refresh custom token display with each custom token change
+- added recording shorttext, description and scraper poster tokens
+  to displaymenurecordings listelement
+- allow currentelements to use conditions
+- fixed bug searching channel logos with channelid
+- fixed bug in parsing printf text tokens
+- changed "Update from Git" to "Update"
+- made viewelement scrapercontent in displayreplay detachable
+
+Version 0.5.3
+
+- added SVG Template parsing
+- fixed memory leak when creating fonts
+- fixed crash using animated images in plugins
+- added banner to displaymenuschedulescurrentview and 
+  displaymenureplaycurrentview
+- immplemented areacontainers to group areas
+- fixed bug displaying pixmaps with transparency
+- fixed bug displaying wrong headers in skin setup submenus
+
+Version 0.6.0
+
+- fixed bug that menulists are not read if no currentelement
+  is defined
+
+Version 0.6.1
 

@@ -9,12 +9,14 @@ cTemplateViewElement::cTemplateViewElement(void) {
     containerWidth = 0;
     containerHeight = 0;
     pixOffset = -1;
+    pixmapIterator = NULL;
+    currentNode = NULL;
 }
 
 cTemplateViewElement::~cTemplateViewElement(void) {
     if (parameters)
         delete parameters;
-    for (vector<cTemplatePixmap*>::iterator it = viewPixmaps.begin(); it != viewPixmaps.end(); it++) {
+    for (vector<cTemplatePixmapNode*>::iterator it = viewPixmapNodes.begin(); it != viewPixmapNodes.end(); it++) {
         delete (*it);
     }
 }
@@ -28,7 +30,7 @@ void cTemplateViewElement::SetContainer(int x, int y, int width, int height) {
 
 void cTemplateViewElement::SetGlobals(cGlobals *globals) { 
     this->globals = globals;
-    for (vector<cTemplatePixmap*>::iterator pix = viewPixmaps.begin(); pix != viewPixmaps.end(); pix++) {
+    for (vector<cTemplatePixmapNode*>::iterator pix = viewPixmapNodes.begin(); pix != viewPixmapNodes.end(); pix++) {
         (*pix)->SetGlobals(globals);
     }
 }
@@ -52,7 +54,7 @@ bool cTemplateViewElement::CalculateParameters(void) {
 
 bool cTemplateViewElement::CalculatePixmapParameters(void) {
     bool paramsValid = true;
-    for (vector<cTemplatePixmap*>::iterator pix = viewPixmaps.begin(); pix != viewPixmaps.end(); pix++) {
+    for (vector<cTemplatePixmapNode*>::iterator pix = viewPixmapNodes.begin(); pix != viewPixmapNodes.end(); pix++) {
         (*pix)->SetContainer(containerX, containerY, containerWidth, containerHeight);
         (*pix)->SetGlobals(globals);
         paramsValid = paramsValid && (*pix)->CalculateParameters();
@@ -62,7 +64,7 @@ bool cTemplateViewElement::CalculatePixmapParameters(void) {
 
 bool cTemplateViewElement::CalculatePixmapParametersList(int orientation, int numElements) {
     bool paramsValid = true;
-    for (vector<cTemplatePixmap*>::iterator pix = viewPixmaps.begin(); pix != viewPixmaps.end(); pix++) {
+    for (vector<cTemplatePixmapNode*>::iterator pix = viewPixmapNodes.begin(); pix != viewPixmapNodes.end(); pix++) {
         (*pix)->SetContainer(containerX, containerY, containerWidth, containerHeight);
         (*pix)->SetGlobals(globals);
         if (orientation == orHorizontal) {
@@ -87,23 +89,91 @@ int cTemplateViewElement::GetNumericParameter(eParamType type) {
     return parameters->GetNumericParameter(type);
 }
 
-void cTemplateViewElement::InitIterator(void) {
-    pixIterator = viewPixmaps.begin();
+int cTemplateViewElement::GetNumPixmaps(void) {
+    int numPixmaps = 0;
+    for (vector<cTemplatePixmapNode*>::iterator pix = viewPixmapNodes.begin(); pix != viewPixmapNodes.end(); pix++) {
+        numPixmaps += (*pix)->NumPixmaps();
+    }
+    return numPixmaps;
+};
+
+void cTemplateViewElement::InitPixmapNodeIterator(void) {
+    pixmapNodeIterator = viewPixmapNodes.begin();
+}
+
+cTemplatePixmapNode *cTemplateViewElement::GetNextPixmapNode(void) {
+    if (pixmapNodeIterator == viewPixmapNodes.end())
+        return NULL;
+    cTemplatePixmapNode *pix = *pixmapNodeIterator;
+    pixmapNodeIterator++;
+    return pix;
+}
+
+void cTemplateViewElement::InitPixmapIterator(void) {
+    pixmapNodeIterator = viewPixmapNodes.begin();
+    if (pixmapNodeIterator == viewPixmapNodes.end())
+        return;
+    if (!(*pixmapNodeIterator)->IsContainer()) {
+        //first node is a pixmap, use this
+        pixmapIterator = dynamic_cast<cTemplatePixmap*>(*pixmapNodeIterator);
+        return;
+    } 
+    //first node is a container, so fetch first pixmap of this container
+    currentNode = dynamic_cast<cTemplatePixmapContainer*>(*pixmapNodeIterator);
+    currentNode->InitIterator();
+    pixmapIterator = currentNode->GetNextPixmap();
 }
 
 cTemplatePixmap *cTemplateViewElement::GetNextPixmap(void) {
-    if (pixIterator == viewPixmaps.end())
+    if (!pixmapIterator)
         return NULL;
-    cTemplatePixmap *pix = *pixIterator;
-    pixIterator++;
-    return pix; 
+    cTemplatePixmap *current = pixmapIterator;
+    //set next pixmap
+    if (!currentNode) {
+        //last node was a pixmap
+        pixmapNodeIterator++;
+        if (pixmapNodeIterator == viewPixmapNodes.end()) {
+            pixmapIterator = NULL;
+            return current;
+        }
+        if (!(*pixmapNodeIterator)->IsContainer()) {
+            //node is a pixmap, use this
+            pixmapIterator = dynamic_cast<cTemplatePixmap*>(*pixmapNodeIterator);
+            return current;
+        }
+        //node is a container, so fetch first pixmap of this container
+        currentNode = dynamic_cast<cTemplatePixmapContainer*>(*pixmapNodeIterator);
+        currentNode->InitIterator();
+        pixmapIterator = currentNode->GetNextPixmap();
+    } else {
+        pixmapIterator = currentNode->GetNextPixmap();
+        if (pixmapIterator) {
+            return current;
+        }
+        currentNode = NULL;
+        pixmapNodeIterator++;
+        if (pixmapNodeIterator == viewPixmapNodes.end()) {
+            pixmapIterator = NULL;
+            return current;
+        }
+        if (!(*pixmapNodeIterator)->IsContainer()) {
+            //node is a pixmap, use this
+            pixmapIterator = dynamic_cast<cTemplatePixmap*>(*pixmapNodeIterator);
+            return current;
+        }
+        //node is a container, so fetch first pixmap of this container
+        currentNode = dynamic_cast<cTemplatePixmapContainer*>(*pixmapNodeIterator);
+        currentNode->InitIterator();
+        pixmapIterator = currentNode->GetNextPixmap();
+    }
+    return current;
 }
 
 cTemplateFunction *cTemplateViewElement::GetFunction(string name) {
-    InitIterator();
+    InitPixmapIterator();
     cTemplatePixmap *pix = NULL;
     while (pix = GetNextPixmap()) {
-        pix->InitIterator();
+        pix->InitFunctionIterator();
         cTemplateFunction *func = NULL;
         while(func = pix->GetNextFunction()) {
             if (func->GetType() == ftDrawText) {
@@ -151,7 +221,7 @@ void cTemplateViewElement::Debug(void) {
     if (parameters)
         parameters->Debug();
     return;
-    for (vector<cTemplatePixmap*>::iterator it = viewPixmaps.begin(); it != viewPixmaps.end(); it++) {
+    for (vector<cTemplatePixmapNode*>::iterator it = viewPixmapNodes.begin(); it != viewPixmapNodes.end(); it++) {
         (*it)->Debug();
     }
 }

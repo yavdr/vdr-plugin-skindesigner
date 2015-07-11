@@ -170,6 +170,7 @@ bool cSDDisplayMenu::SetItemRecording(const cRecording *Recording, int Index, bo
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list)
         return false;
+
     list->AddRecordingMenuItem(Index, Recording, Level, Total, New, Current, Selectable);
     if (state == vsIdle)
         state = vsMenuUpdate;
@@ -195,6 +196,7 @@ bool cSDDisplayMenu::SetItemPlugin(map<string,string> *stringTokens, map<string,
 void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Selectable) {
     if (!doOutput)
         return;
+    //esyslog("skindesigner: %s %d - %s", Current ? "----->" : "", Index, Text);
     cDisplayMenuListView *list = rootView->GetListView();
     if (!list) {
         return;
@@ -210,7 +212,7 @@ void cSDDisplayMenu::SetItem(const char *Text, int Index, bool Current, bool Sel
     } else if (cat == mcSetup && rootView->SubViewAvailable()) {
         list->AddSetupMenuItem(Index, Text, Current, Selectable);        
     } else if ((cat == mcSchedule || cat == mcScheduleNow || cat == mcScheduleNext) && rootView->SubViewAvailable()) {
-        list->AddSchedulesMenuItem(Index, NULL, NULL, tmNone, MenuCategory(), false, Current, Selectable, Text);
+        list->AddSchedulesMenuItem(Index, NULL, NULL, tmNone, MenuCategory(), false, Current, Selectable, Text ? Text : "");
     } else {
         rootView->CorrectDefaultMenu();
         string *tabTexts = new string[MaxTabs];

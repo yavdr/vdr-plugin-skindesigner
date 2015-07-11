@@ -1,6 +1,7 @@
-#ifndef __NOPACITY_IMAGELOADER_H
-#define __NOPACITY_IMAGELOADER_H
+#ifndef __SKINDESIGNER_IMAGELOADER_H
+#define __SKINDESIGNER_IMAGELOADER_H
 
+#include <string>
 #include <cairo.h>
 #include <librsvg/rsvg.h>
 #ifndef LIBRSVG_CHECK_VERSION // Workaround for librsvg < 2.36.2
@@ -11,6 +12,8 @@
 #include <setjmp.h>
 #include <vdr/osd.h>
 #include <vdr/tools.h>
+
+using namespace std;
 
 //
 // Image importers
@@ -85,4 +88,28 @@ public:
     bool LoadImage(const char *fullpath);
 };
 
-#endif //__NOPACITY_IMAGELOADER_H
+//
+// SVG Template class
+//
+
+class cSVGTemplate {
+private:
+    string imageName;
+    string templatePath;
+    string filePath;
+    string startTokenColor;
+    string startTokenOpac;
+    string endToken;
+    vector<string> svgTemplate;
+    string GetColorName(string line, size_t tokenStart, size_t tokenEnd);
+    void ReplaceTokens(string &line, size_t tokenStart, size_t tokenEnd, tColor color);
+public:
+    cSVGTemplate(string imageName, string templatePath);
+    virtual ~cSVGTemplate(void);
+    bool Exists(void);
+    void ReadTemplate(void);
+    bool ParseTemplate(void);
+    string WriteImage(void);
+};
+
+#endif //__SKINDESIGNER_IMAGELOADER_H

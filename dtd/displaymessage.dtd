@@ -21,12 +21,12 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT background (area)*>
+<!ELEMENT background (areacontainer|area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT message (area|areascroll)*>
+<!ELEMENT message (areacontainer|area|areascroll)*>
 <!ATTLIST message
   debug CDATA #IMPLIED
 >

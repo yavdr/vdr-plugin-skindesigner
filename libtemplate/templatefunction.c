@@ -991,14 +991,13 @@ void cTemplateFunction::ParseTextToken(string &value, size_t start, size_t end) 
         value = value.replace(0, start, "");
         token.type = ttConstString;
         token.value = constString;
-        textTokens.push_back(token);
     } else {
         string tokenName = value.substr(1, end - start - 1);
         value = value.replace(0, end - start + 1, "");
         token.type = ttToken;
         token.value = tokenName;
-        textTokens.push_back(token);
     }
+    textTokens.push_back(token);
 }
 
 void cTemplateFunction::ParseConditionalTextToken(string &value, size_t start, size_t end) {
@@ -1008,7 +1007,6 @@ void cTemplateFunction::ParseConditionalTextToken(string &value, size_t start, s
         value = value.replace(0, start, "");
         token.type = ttConstString;
         token.value = constString;
-        textTokens.push_back(token);
     } else {
         string condToken = value.substr(start + 1, end - start - 1);
         value = value.replace(0, end - start + 1, "");
@@ -1041,9 +1039,8 @@ void cTemplateFunction::ParseConditionalTextToken(string &value, size_t start, s
         token.type = ttConditionalToken;
         token.value = tokenName;
         token.subTokens = subTokens;
-        textTokens.push_back(token);
     }
-
+    textTokens.push_back(token);
 }
 
 void cTemplateFunction::ParsePrintfTextToken(string &value, size_t start, size_t end) {
@@ -1053,7 +1050,6 @@ void cTemplateFunction::ParsePrintfTextToken(string &value, size_t start, size_t
         value = value.replace(0, start, "");
         token.type = ttConstString;
         token.value = constString;
-        textTokens.push_back(token);
     } else {
         token.type = ttPrintfToken;
         //fetch parameter list from printf
@@ -1572,6 +1568,9 @@ string cTemplateFunction::GetFuncName(void) {
         case ftViewElement:
             name = "View Element Parameters";
             break;
+        case ftPixmapContainer:
+            name = "Pixmap Container Parameters";
+            break;
         case ftPixmap:
             name = "Pixmap Parameters";
             break;
@@ -1814,14 +1813,14 @@ void cTemplateFunction::Debug(void) {
             eTextTokenType tokenType = (*it).type;
             string tokType = "";
             if (tokenType == ttConstString)
-                tokType = "Const: ";
+                tokType = "Const";
             else if (tokenType == ttToken)
-                tokType = "Token: ";
+                tokType = "Token";
             else if (tokenType == ttConditionalToken)
-                tokType = "Conditional Token: ";
+                tokType = "Conditional Token";
             else if (tokenType == ttPrintfToken)
-                tokType = "PrintF Token: ";
-            esyslog("skindesigner: %s %d = \"%s\"", tokType.c_str(), i++, (*it).value.c_str());
+                tokType = "PrintF Token";
+            esyslog("skindesigner: Token %d Type %s : \"%s\"", i++, tokType.c_str(), (*it).value.c_str());
             if (tokenType == ttConditionalToken) {
                 for (vector<cTextToken>::iterator it2 = (*it).subTokens.begin(); it2 != (*it).subTokens.end(); it2++) {
                     eTextTokenType tokenTypeCond = (*it2).type;
@@ -1835,7 +1834,7 @@ void cTemplateFunction::Debug(void) {
             }
             if (tokenType == ttPrintfToken) {
                 for (vector<string>::iterator it2 = (*it).parameters.begin(); it2 != (*it).parameters.end(); it2++) {
-                    esyslog("skindesigner: Printf parameter: %s", (*it2).c_str());
+                    esyslog("skindesigner: PrintF parameter: %s", (*it2).c_str());
                 }                
             }
         }

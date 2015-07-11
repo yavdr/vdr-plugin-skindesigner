@@ -77,6 +77,12 @@ void cDesignerConfig::SetEpgImagePath(cString path) {
     epgImagePathSet = true;
 }
 
+bool cDesignerConfig::GetThemeColor(string &name, tColor &col) {
+    if (!tmplGlobals)
+        return false;
+    return tmplGlobals->GetColor(name, col);
+}
+
 void cDesignerConfig::ReadSkinFolder(cString &skinFolder, vector<string> *container) {
     DIR *folder = NULL;
     struct dirent *dirEntry;
@@ -175,6 +181,67 @@ void cDesignerConfig::AddNewSkinRef(string skin) {
     map < string, cSkinSetup* >::iterator hit = skinSetups.find(skin);
     if (hit != skinSetups.end())
         (hit->second)->TranslateSetup();
+}
+
+bool cDesignerConfig::SkinActive(string skin) {
+    cSkin *activeSkin = Skins.Current();
+    if (activeSkin && !skin.compare(activeSkin->Name()))
+        return true;
+    return false;
+}
+
+
+void cDesignerConfig::DeleteSkin(string skin) {
+    dsyslog("skindesigner: deleting skin %s", skin.c_str());
+    cSkin *deleteSkin = NULL;
+    bool found = false;
+    for (deleteSkin = Skins.First(); deleteSkin; deleteSkin = Skins.Next(deleteSkin)) {
+        if (!skin.compare(deleteSkin->Name())) {
+            found = true;
+            break;
+        }
+    }
+    if (!found || !deleteSkin) {
+        esyslog("skindesigner: skin %s to delete not found", skin.c_str());
+        return;
+    }
+    vector<cSkinDesigner*>::iterator delIt;
+    for (delIt = skinRefs.begin(); delIt != skinRefs.end(); delIt++) {
+        if (*delIt == deleteSkin)
+            break;
+    }
+    if (delIt != skinRefs.end())
+        skinRefs.erase(delIt);
+
+    vector<string>::iterator delIt2; 
+    for (delIt2 = installerSkins.begin(); delIt2 != installerSkins.end(); delIt2++) {
+        if (!skin.compare(*delIt2))
+            break;
+    }
+    if (delIt2 != installerSkins.end())
+        installerSkins.erase(delIt2);
+
+    vector<string>::iterator delIt3; 
+    for (delIt3 = skins.begin(); delIt3 != skins.end(); delIt3++) {
+        if (!skin.compare(*delIt3))
+            break;
+    }
+    if (delIt3 != skins.end())
+        skins.erase(delIt3);
+
+    Skins.Del(deleteSkin);
+
+    stringstream deletePath;
+    deletePath << *installerSkinPath << skin;
+    string delPath = deletePath.str();
+    if (FolderExists(delPath)) {
+        dsyslog("skindesigner: deleting skin %s", delPath.c_str());
+        cString command = cString::sprintf("rm -rf %s", delPath.c_str());
+        int ok = system(*command);
+        if (!ok) {
+            esyslog("skindesigner: error deleting skin %s", delPath.c_str());
+        } 
+    }
 }
 
 cSkinDesigner* cDesignerConfig::GetNextSkinRef(void) {

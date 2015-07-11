@@ -1,6 +1,123 @@
+#include <vdr/interface.h>
 #include "libcore/curlfuncs.h"
 #include "setup.h"
 
+// --- cInstallManager -----------------------------------------------------------
+cInstallManager::cInstallManager(void) {
+    installing = false;
+    updating = false;
+    runningInst = NULL;
+    installationStart = 0;
+    lastInstallDuration = -1;
+    timeout = 120;              //2 Minutes timeout
+    currentSkin = "";
+}
+
+cInstallManager::~cInstallManager(void) {
+}
+
+bool cInstallManager::StartInstallation(string skin) {
+    runningInst = config.GetSkinRepo(skin);
+    if (!runningInst) {
+        return false;
+    }
+    installing = true;
+    installationStart = cTimeMs::Now();
+    runningInst->Install(*config.installerSkinPath, config.vdrThemesPath);
+    return true;
+}
+
+bool cInstallManager::StartUpdate(string skin) {
+    runningInst = config.GetSkinRepo(skin);
+    if (!runningInst || runningInst->Type() != rtGit) {
+        return false;
+    }
+    updating = true;
+    installationStart = cTimeMs::Now();
+    runningInst->Update(*config.installerSkinPath);
+    return true;
+}
+
+bool cInstallManager::Finished(void) {
+    if (!runningInst)
+        return true;
+    if (runningInst->InstallationFinished()) {
+        installing = false;
+        updating = false;
+        return true;
+    }
+    return false;
+}
+
+bool cInstallManager::SuccessfullyInstalled(void) {
+    if (!runningInst)
+        return false;
+    bool ok = runningInst->SuccessfullyInstalled();
+    runningInst = NULL;
+    return ok;
+    
+}
+
+bool cInstallManager::SuccessfullyUpdated(void) {
+    if (!runningInst)
+        return false;
+    bool ok = runningInst->SuccessfullyUpdated();
+    runningInst = NULL;
+    return ok;
+}
+
+int cInstallManager::Duration(void) {
+    return (cTimeMs::Now() - installationStart) / 1000;
+}
+
+eOSState cInstallManager::ProcessInstallationStatus(void) {
+    if (Installing()) {
+        if (Finished()) {
+            if (SuccessfullyInstalled()) {
+                config.AddNewSkinRef(currentSkin);
+                Skins.Message(mtStatus, tr("Skin successfully installed"));
+            } else {
+                Skins.Message(mtError, tr("Skin NOT successfully installed"));
+            }
+            cCondWait::SleepMs(1000);
+            return osEnd;
+        } else {
+            int duration = Duration();
+            if (duration > timeout) {
+                Skins.Message(mtError, tr("Timeout"));
+                cCondWait::SleepMs(1000);
+                return osEnd;
+            } else if (duration != lastInstallDuration) {
+                Skins.Message(mtStatus, *cString::sprintf("%s (%d %s)...", tr("Installing Skin"), duration, tr("sec")));
+                lastInstallDuration = duration;
+            }
+        }
+    } else if (Updating()) {
+        if (Finished()) {
+            if (SuccessfullyUpdated()) {
+                Skins.Message(mtStatus, tr("Skin successfully updated"));
+                cCondWait::SleepMs(1000);
+                return osEnd;
+            } else {
+                Skins.Message(mtStatus, tr("Skin already up to date"));
+                return osContinue;
+            }            
+        } else {
+            int duration = Duration();
+            if (duration > timeout) {
+                Skins.Message(mtError, tr("Timeout"));
+                cCondWait::SleepMs(1000);
+                return osEnd;
+            } else if (duration != lastInstallDuration) {
+                Skins.Message(mtStatus, *cString::sprintf("%s (%d %s)...", tr("Updating Skin from Git"), duration, tr("sec")));
+                lastInstallDuration = duration;
+            }
+        }        
+    }
+    return osContinue;    
+}
+
+// --- cSkinDesignerSetup -----------------------------------------------------------
 cSkinDesignerSetup::cSkinDesignerSetup() {
     numLogosPerSizeInitial = config.numLogosPerSizeInitial;
     limitLogoCache = config.limitLogoCache;
@@ -16,7 +133,7 @@ cSkinDesignerSetup::cSkinDesignerSetup() {
     Setup();
 }
 
-cSkinDesignerSetup::~cSkinDesignerSetup() {
+cSkinDesignerSetup::~cSkinDesignerSetup(void) {
     config.setupCloseDoReload = true;
 }
 
@@ -35,28 +152,33 @@ void cSkinDesignerSetup::Setup(void) {
 }
 
 eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
+    eOSState state = ProcessInstallationStatus();
+    if (state == osEnd)
+        return osEnd;
+
     bool hadSubMenu = HasSubMenu();
-    eOSState state = cMenuSetupPage::ProcessKey(Key);
+    state = cMenuSetupPage::ProcessKey(Key);
     if (hadSubMenu && Key == kOk) {
         Store();
     }
-    if (!hadSubMenu && (Key == kOk || Key == kUp || Key == kDown || Key == kLeft || Key == kRight || Key == kRed)) {
+
+    if (!hadSubMenu && (Key == kOk || Key == kUp || Key == kDown || Key == kLeft || Key == kRight || Key == kRed || Key == kYellow)) {
         SetHelp(NULL, NULL, NULL, NULL);
         cOsdItem *current = Get(Current());
         cSkinMenuItem *skinMenuItem = dynamic_cast<cSkinMenuItem*>(current);
         if (!skinMenuItem)
             return state;
         eItemType type = skinMenuItem->Type();
-        string skinName = skinMenuItem->GetSkinName();
+        currentSkin = skinMenuItem->GetSkinName();
         // KEY OK
         if ((Key == kOk)) {
             if (type == itSkinSetup) {
-                state = AddSubMenu(new cSkindesignerSkinSetup(skinName, ""));
+                state = AddSubMenu(new cSkindesignerSkinSetup(currentSkin, "", ""));
             } else if (type == itNoSkinSetup) {
                 state = osContinue;
             } else if (type == itSkinRepo) {
                 Skins.Message(mtStatus, tr("Downloading Skin Screenshots..."));
-                cSkindesignerSkinPreview *prev = new cSkindesignerSkinPreview(skinName);
+                cSkindesignerSkinPreview *prev = new cSkindesignerSkinPreview(currentSkin);
                 Skins.Message(mtStatus, NULL);
                 state = AddSubMenu(prev);
             }
@@ -66,54 +188,41 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
             if (type == itSkinRepo) {
                 SetHelp(tr("Install Skin"), NULL, NULL, NULL);
             } else if (type == itSkinSetup || type == itNoSkinSetup) {
-                cSkinRepo *repo = config.GetSkinRepo(skinName);
-                if (repo && repo->Type() == rtGit) {
-                    SetHelp(tr("Update from Git"), NULL, NULL, NULL);
+                cSkinRepo *repo = config.GetSkinRepo(currentSkin);
+                if (repo) {
+                    if (repo->Type() == rtGit)
+                        SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
+                    else
+                        SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
                 }
             }
         }
         // KEY RED
         if (Key == kRed) {
             if (type == itSkinRepo) {
-                Skins.Message(mtStatus, tr("Installing Skin..."));
-                cSkinRepo *skinRepo = config.GetSkinRepo(skinName);
-                if (!skinRepo) {
-                    return state;
-                }
-                skinRepo->Install(*config.installerSkinPath, config.vdrThemesPath);
-                while (!skinRepo->InstallationFinished()) {
-                    cCondWait::SleepMs(50);
-                }
-                bool ok = skinRepo->SuccessfullyInstalled();
-                if (ok) {
-                    config.AddNewSkinRef(skinName);
-                    Skins.Message(mtStatus, tr("Skin successfully installed"));
-                    cCondWait::SleepMs(1000);
-                    state = osEnd;
-                } else {
-                    Skins.Message(mtStatus, tr("Skin NOT successfully installed"));
-                    state = osContinue;
-                 }
+                Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Installing Skin")));
+                StartInstallation(currentSkin);
             } else if (type == itSkinSetup || type == itNoSkinSetup) {
-                cSkinRepo *skinRepo = config.GetSkinRepo(skinName);
-                if (!skinRepo || skinRepo->Type() != rtGit) {
-                    Skins.Message(mtStatus, tr("No Git Repsoitory available"));
-                    return state;
-                }
-                Skins.Message(mtStatus, tr("Updating Skin from Git..."));
-                skinRepo->Update(*config.installerSkinPath);
-                while (!skinRepo->InstallationFinished()) {
-                    cCondWait::SleepMs(50);
-                }
-                bool ok = skinRepo->SuccessfullyUpdated();
-                if (ok) {
-                    Skins.Message(mtStatus, tr("Skin successfully updated"));
-                    cCondWait::SleepMs(1000);
-                    state = osEnd;
+                bool gitAvailable = StartUpdate(currentSkin);
+                if (gitAvailable) {
+                    Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Updating Skin from Git")));
                 } else {
-                    Skins.Message(mtStatus, tr("Skin already up to date"));
-                    state = osContinue;
+                    Skins.Message(mtStatus, tr("No Git Repsoitory available"));
                 }
+            }
+        }
+        // KEY YELLOW
+        if (Key == kYellow) {
+            if (type == itSkinSetup || type == itNoSkinSetup) {
+                if (config.SkinActive(currentSkin)) {
+                    Skins.Message(mtError, tr("Skin is running and can't be deleted"));
+                } else if (Interface->Confirm(*cString::sprintf("%s?", tr("Really delete skin")))) {
+                    config.DeleteSkin(currentSkin);
+                    Skins.Message(mtStatus, tr("Skin deleted"));
+                    cCondWait::SleepMs(1000);
+                    return osEnd;
+                }
+                state = osContinue;
             }
         }
     }
@@ -245,15 +354,16 @@ cSkinMenuItem::cSkinMenuItem(string skinName, string displayText, eItemType type
 // --- cSkinSetupSubMenu -----------------------------------------------------------
 cSkinSetupSubMenu::cSkinSetupSubMenu(string name, string displayText) : cOsdItem(displayText.c_str()) {
     this->name = name;
+    this->displayText = displayText;
 }
 
 // --- cSkindesignerSkinSetup -----------------------------------------------------------
 
-cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin, string name)  : 
-cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.c_str(), name.c_str()), 30) {
+cSkindesignerSkinSetup::cSkindesignerSkinSetup(string skin, string menu, string header) : 
+cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.c_str(), header.c_str()), 30) {
     SetMenuCategory(mcPluginSetup);
     this->skin = skin;
-    this->name = name;
+    this->menu = menu;
     Set();
 }
 
@@ -261,39 +371,43 @@ cSkindesignerSkinSetup::~cSkindesignerSkinSetup() {
 }
 
 eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
-    eOSState state = cOsdMenu::ProcessKey(Key);
+    eOSState state = ProcessInstallationStatus();
+    if (state == osEnd)
+        return osEnd;
+    state = cOsdMenu::ProcessKey(Key);
     if (state == osUnknown) {
         switch (Key) {
             case kOk: {
                 cOsdItem *current = Get(Current());
                 cSkinSetupSubMenu *subMenuItem = dynamic_cast<cSkinSetupSubMenu*>(current);
                 if (subMenuItem) {
-                    state = AddSubMenu(new cSkindesignerSkinSetup(skin, subMenuItem->GetName()));
+                    state = AddSubMenu(new cSkindesignerSkinSetup(skin, subMenuItem->GetName(), subMenuItem->GetDisplayText()));
                     break;
                 } else {
                     return osBack;
-                } 
+                }
             }
             case kRed: {
-                cSkinRepo *skinRepo = config.GetSkinRepo(skin);
-                if (!skinRepo) {
-                    Skins.Message(mtStatus, tr("No Git Repsoitory available"));
-                    return state;
-                }
-                Skins.Message(mtStatus, tr("Updating Skin from Git..."));
-                skinRepo->Update(*config.installerSkinPath);
-                while (!skinRepo->InstallationFinished()) {
-                    cCondWait::SleepMs(50);
-                }
-                bool ok = skinRepo->SuccessfullyUpdated();
-                if (ok) {
-                    Skins.Message(mtStatus, tr("Skin successfully updated"));
-                    cCondWait::SleepMs(1000);
-                    state = osEnd;
+                bool gitAvailable = StartUpdate(skin);
+                if (gitAvailable) {
+                    Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Updating Skin from Git")));
                 } else {
-                    Skins.Message(mtStatus, tr("Skin already up to date"));
-                    state = osContinue;
+                    Skins.Message(mtStatus, tr("No Git Repsoitory available"));
                 }
+                break;
+            }
+            // KEY YELLOW
+            case kYellow: {
+                if (config.SkinActive(skin)) {
+                    Skins.Message(mtError, tr("Skin is running and can't be deleted"));
+                } else if (Interface->Confirm(*cString::sprintf("%s?", tr("Really delete skin")))) {
+                    config.DeleteSkin(skin);
+                    Skins.Message(mtStatus, tr("Skin deleted"));
+                    cCondWait::SleepMs(1000);
+                    return osEnd;
+                }
+                state = osContinue;
+                break;
             }
             default:
                 break;
@@ -303,19 +417,22 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
 }
 
 void cSkindesignerSkinSetup::Set(void) {
-    cSkinSetupMenu *menu = config.GetSkinSetupMenu(skin, name);
-    if (!menu) {
+    cSkinSetupMenu *setupMenu = config.GetSkinSetupMenu(skin, menu);
+    if (!setupMenu) {
         return;
     }
     
     cSkinRepo *repo = config.GetSkinRepo(skin);
-    if (repo && repo->Type() == rtGit) {
-        SetHelp(tr("Update from Git"), NULL, NULL, NULL);
+    if (repo) {
+        if (repo->Type() == rtGit)
+            SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
+        else
+            SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
     }
 
-    menu->InitParameterIterator();
+    setupMenu->InitParameterIterator();
     cSkinSetupParameter *param = NULL;
-    while (param = menu->GetNextParameter(false)) {
+    while (param = setupMenu->GetNextParameter(false)) {
         if (param->type == sptInt) {
             Add(new cMenuEditIntItem(param->displayText.c_str(), &param->value, param->min, param->max));
         } else if (param->type == sptBool) {
@@ -323,9 +440,9 @@ void cSkindesignerSkinSetup::Set(void) {
         }
     }
 
-    menu->InitSubmenuIterator();
+    setupMenu->InitSubmenuIterator();
     cSkinSetupMenu *subMenu = NULL;
-    while (subMenu = menu->GetNextSubMenu(false)) {
+    while (subMenu = setupMenu->GetNextSubMenu(false)) {
         Add(new cSkinSetupSubMenu(subMenu->GetName(), subMenu->GetDisplayText()));
     }
 }
@@ -334,7 +451,7 @@ void cSkindesignerSkinSetup::Set(void) {
 
 cSkindesignerSkinPreview::cSkindesignerSkinPreview(string skinName)  : 
 cSkindesignerOsdMenu(*cString::sprintf("%s: %s \"%s\"", trVDR("Preview"), tr("Skin"), skinName.c_str())) {
-    this->skinName = skinName;
+    currentSkin = skinName;
     SetPluginName("setup");
     FirstCallCleared();
     Set();
@@ -344,7 +461,10 @@ cSkindesignerSkinPreview::~cSkindesignerSkinPreview() {
 }
 
 eOSState cSkindesignerSkinPreview::ProcessKey(eKeys Key) {
-    eOSState state = cOsdMenu::ProcessKey(Key);
+    eOSState state = ProcessInstallationStatus();
+    if (state == osEnd)
+        return osEnd;
+    state = cOsdMenu::ProcessKey(Key);
     switch (Key) {
         case kOk:
         case kBack:
@@ -367,14 +487,8 @@ eOSState cSkindesignerSkinPreview::ProcessKey(eKeys Key) {
             state = osContinue;
             break;
         } case kRed: {
-            Skins.Message(mtStatus, tr("Installing Skin..."));
-            bool ok = InstallSkin();
-            if (ok)
-                Skins.Message(mtStatus, tr("Skin successfully installed"));
-            else
-                Skins.Message(mtStatus, tr("Skin NOT successfully installed"));
-            cCondWait::SleepMs(1000);
-            state = osEnd;
+            StartInstallation(currentSkin);
+            state = osContinue;
             break;
         } default:
             break;
@@ -384,7 +498,7 @@ eOSState cSkindesignerSkinPreview::ProcessKey(eKeys Key) {
 
 void cSkindesignerSkinPreview::Display(void) {
     SetHelp(tr("Install Skin"), NULL, NULL, NULL);
-    skindesignerapi::cSkindesignerOsdMenu::Display();    
+    skindesignerapi::cSkindesignerOsdMenu::Display();
 }
 
 void cSkindesignerSkinPreview::Set(void) {
@@ -392,18 +506,18 @@ void cSkindesignerSkinPreview::Set(void) {
     ClearTokens();
     Clear();
 
-    cSkinRepo *skinRepo = config.GetSkinRepo(skinName);
+    cSkinRepo *skinRepo = config.GetSkinRepo(currentSkin);
     if (!skinRepo) {
-        esyslog("skindesigner: no valid skin repository found for skin %s", skinName.c_str());
+        esyslog("skindesigner: no valid skin repository found for skin %s", currentSkin.c_str());
         return;
     }
 
-    AddStringToken("menuheader", *cString::sprintf("%s: %s \"%s\"", trVDR("Preview"), tr("Skin"), skinName.c_str()));
-    AddStringToken("skinname", skinName);
+    AddStringToken("menuheader", *cString::sprintf("%s: %s \"%s\"", trVDR("Preview"), tr("Skin"), currentSkin.c_str()));
+    AddStringToken("skinname", currentSkin);
     AddStringToken("author", skinRepo->Author());
-    
+
     stringstream plainText;
-    plainText << *cString::sprintf("%s: %s \"%s\"", trVDR("Preview"), tr("Skin"), skinName.c_str()) << "\n\n";
+    plainText << *cString::sprintf("%s: %s \"%s\"", trVDR("Preview"), tr("Skin"), currentSkin.c_str()) << "\n\n";
     plainText << tr("Author") << ": " << skinRepo->Author() << "\n";
 
     plainText << tr("Used Fonts") << ": \n";
@@ -435,7 +549,7 @@ void cSkindesignerSkinPreview::Set(void) {
         if (url.find(".png") != string::npos)
             imgType = ".png";
         stringstream tempName;
-        tempName << "/tmp/screenshot_" << skinName << "_" << i++ << imgType;
+        tempName << "/tmp/screenshot_" << currentSkin << "_" << i++ << imgType;
         dsyslog("skindesigner: download screenshot name %s url %s", tempName.str().c_str(), url.c_str());
         CurlGetUrlFile(url.c_str(), tempName.str().c_str());
         map<string,string> img;
@@ -443,23 +557,6 @@ void cSkindesignerSkinPreview::Set(void) {
         img.insert(pair<string,string>("screenshots[path]", tempName.str()));
         AddLoopToken("screenshots", img);
     }
-}
-
-bool cSkindesignerSkinPreview::InstallSkin(void) {
-    cSkinRepo *skinRepo = config.GetSkinRepo(skinName);
-    if (!skinRepo) {
-        esyslog("skindesigner: no valid skin repository found for skin %s", skinName.c_str());
-        return false;
-    }
-    skinRepo->Install(*config.installerSkinPath, config.vdrThemesPath);
-    while (!skinRepo->InstallationFinished()) {
-        cCondWait::SleepMs(50);
-    }
-    bool ok = skinRepo->SuccessfullyInstalled();
-    if (ok) {
-        config.AddNewSkinRef(skinName);
-    }
-    return ok;
 }
 
 string cSkindesignerSkinPreview::CheckFontInstalled(string fontName) {

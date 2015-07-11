@@ -20,6 +20,8 @@ typedef uint32_t tColor;
 
 class cGlobals {
 private:
+    time_t customTokenChange;
+    time_t lastCustomTokenQuery;
     string language;
     string DoTranslate(string token);
     map <string, tColor> colors;
@@ -50,8 +52,9 @@ public:
     void AddCustomInt(string &name, int value);
     void AddCustomString(string &name, string &value);
     bool GetCustomInt(string name, int &val);
-    map <string, string> GetCustomStringTokens(void) { return customStringTokens; };
-    map <string, int> GetCustomIntTokens(void) { return customIntTokens; };
+    map <string, string> GetCustomStringTokens(void);
+    map <string, int> GetCustomIntTokens(void);
+    bool CustomTokenChange(void);
     void ListCustomTokens(void);
     void Debug(void);
 };

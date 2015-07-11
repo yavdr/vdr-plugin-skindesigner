@@ -16,13 +16,13 @@
   debuggrid CDATA #IMPLIED
 >
 
-<!ELEMENT background (area)*>
+<!ELEMENT background (areacontainer|area|areascroll)*>
 <!ATTLIST background
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT header (area|areascroll)*>
+<!ELEMENT header (areacontainer|area|areascroll)*>
 <!ATTLIST header
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -36,7 +36,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT datetime (area|areascroll)*>
+<!ELEMENT datetime (areacontainer|area|areascroll)*>
 <!ATTLIST datetime
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -50,7 +50,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT time (area|areascroll)*>
+<!ELEMENT time (areacontainer|area|areascroll)*>
 <!ATTLIST time
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -64,7 +64,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT message (area|areascroll)*>
+<!ELEMENT message (areacontainer|area|areascroll)*>
 <!ATTLIST message
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -78,19 +78,19 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT sortmode (area|areascroll)*>
+<!ELEMENT sortmode (areacontainer|area|areascroll)*>
 <!ATTLIST sortmode
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT colorbuttons (area|areascroll)*>
+<!ELEMENT colorbuttons (areacontainer|area|areascroll)*>
 <!ATTLIST colorbuttons
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT timers (area|areascroll)*>
+<!ELEMENT timers (areacontainer|area|areascroll)*>
 <!ATTLIST timers
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -104,7 +104,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT discusage (area|areascroll)*>
+<!ELEMENT discusage (areacontainer|area|areascroll)*>
 <!ATTLIST discusage
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -118,7 +118,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT devices (area|areascroll)*>
+<!ELEMENT devices (areacontainer|area|areascroll)*>
 <!ATTLIST devices
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -133,7 +133,7 @@
   mode CDATA #IMPLIED
 >
 
-<!ELEMENT systemload (area|areascroll)*>
+<!ELEMENT systemload (areacontainer|area|areascroll)*>
 <!ATTLIST systemload
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -147,7 +147,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT systemmemory (area|areascroll)*>
+<!ELEMENT systemmemory (areacontainer|area|areascroll)*>
 <!ATTLIST systemmemory
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -161,7 +161,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT temperatures (area|areascroll)*>
+<!ELEMENT temperatures (areacontainer|area|areascroll)*>
 <!ATTLIST temperatures
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -175,7 +175,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT vdrstatistics (area|areascroll)*>
+<!ELEMENT vdrstatistics (areacontainer|area|areascroll)*>
 <!ATTLIST vdrstatistics
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -189,7 +189,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT currentschedule (area|areascroll)*>
+<!ELEMENT currentschedule (areacontainer|area|areascroll)*>
 <!ATTLIST currentschedule
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -203,7 +203,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT currentweather (area|areascroll)*>
+<!ELEMENT currentweather (areacontainer|area|areascroll)*>
 <!ATTLIST currentweather
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -217,7 +217,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT lastrecordings (area|areascroll)*>
+<!ELEMENT lastrecordings (areacontainer|area|areascroll)*>
 <!ATTLIST lastrecordings
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -231,7 +231,7 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT customtokens (area|areascroll)*>
+<!ELEMENT customtokens (areacontainer|area|areascroll)*>
 <!ATTLIST customtokens
   detached CDATA #IMPLIED
   delay CDATA #IMPLIED
@@ -245,19 +245,19 @@
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT scrollbar (area|areascroll)*>
+<!ELEMENT scrollbar (areacontainer|area|areascroll)*>
 <!ATTLIST scrollbar
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT detailheader (area|areascroll)*>
+<!ELEMENT detailheader (areacontainer|area|areascroll)*>
 <!ATTLIST detailheader
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
 >
 
-<!ELEMENT tablabels (area|areascroll)*>
+<!ELEMENT tablabels (areacontainer|area|areascroll)*>
 <!ATTLIST tablabels
   debug CDATA #IMPLIED
   condition CDATA #IMPLIED
@@ -421,15 +421,16 @@
   orientation (horizontal|vertical) #REQUIRED
 >
 
-<!ELEMENT listelement (area|areascroll)*>
+<!ELEMENT listelement (areacontainer|area|areascroll)*>
 <!ATTLIST listelement
   debug CDATA #IMPLIED
 >
 
-<!ELEMENT currentelement (area|areascroll)*>
+<!ELEMENT currentelement (areacontainer|area|areascroll)*>
 <!ATTLIST currentelement
   delay CDATA #REQUIRED
   fadetime CDATA #IMPLIED
+  condition CDATA #IMPLIED
   debug CDATA #IMPLIED
 >
 

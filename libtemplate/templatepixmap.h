@@ -13,23 +13,46 @@
 
 #include "globals.h"
 #include "templateloopfunction.h"
+#include "../views/viewhelpers.h"
 
 using namespace std;
 
-// --- cTemplatePixmap -------------------------------------------------------------
-
-class cTemplatePixmap {
+// --- cTemplatePixmapNode -------------------------------------------------------------
+class cTemplatePixmapNode {
 protected:
-    bool scrolling;
-    bool background;
+    bool isContainer;
+    cGlobals *globals;
     cTemplateFunction *parameters;
-    vector<cTemplateFunction*> functions;
-    vector<cTemplateFunction*>::iterator funcIt;
     int containerX;
     int containerY;
     int containerWidth;
     int containerHeight;
-    cGlobals *globals;
+public:
+    cTemplatePixmapNode(void);
+    virtual ~cTemplatePixmapNode(void);
+    void SetParameters(vector<stringpair> &params);
+    void SetContainer(int x, int y, int w, int h);
+    bool IsContainer(void) { return isContainer; };
+    bool DoExecute(void) { return parameters->DoExecute(); };
+    bool DoDebug(void) { return parameters->DoDebug(); };
+    virtual void SetGlobals(cGlobals *globals) { this->globals = globals; };
+    virtual bool CalculateParameters(void) { return false; };
+    virtual void SetWidth(int width) {};
+    virtual void SetHeight(int height) {};
+    virtual int NumPixmaps(void) { return 0; };
+    virtual void Debug(void) {};
+};
+
+// --- cTemplatePixmap -------------------------------------------------------------
+class cTemplatePixmapContainer;
+
+class cTemplatePixmap : public cTemplatePixmapNode {
+protected:
+    cTemplatePixmapContainer *pixContainer;
+    bool scrolling;
+    bool background;
+    vector<cTemplateFunction*> functions;
+    vector<cTemplateFunction*>::iterator funcIt;
     //functions replacing {width(label)} and {height(label)} tokens
     bool ReplaceWidthFunctions(void);
     bool ReplaceHeightFunctions(map < string, vector< map< string, string > > > *loopTokens);
@@ -42,8 +65,8 @@ public:
     cTemplatePixmap(void);
     virtual ~cTemplatePixmap(void);
     //Setter Functions
+    void SetPixmapContainer(cTemplatePixmapContainer *pixContainer) { this->pixContainer = pixContainer; };
     void SetScrolling(void) { scrolling = true; };
-    void SetParameters(vector<pair<string, string> > &params);
     void SetWidth(int width);
     void SetHeight(int height);
     void SetX(int x);
@@ -52,8 +75,7 @@ public:
     void SetHeightPercent(double height);
     void SetXPercent(double x);
     void SetYPercent(double y);
-    void SetContainer(int x, int y, int w, int h);
-    void SetGlobals(cGlobals *globals) { this->globals = globals; };
+    void SetParameter(eParamType type, string value);
     void AddFunction(string name, vector<pair<string, string> > &params);
     void AddLoopFunction(cTemplateLoopFunction *lf);
     //PreCache Parameters
@@ -71,17 +93,39 @@ public:
     //Set max width for text in scrollarea
     void SetScrollingTextWidth(void);
     //Getter Functions
+    int NumPixmaps(void) { return 1; };
     cRect GetPixmapSize(void);
     int GetNumericParameter(eParamType type);
     bool Scrolling(void) { return scrolling; };
-    bool DoExecute(void) { return parameters->DoExecute(); };
-    bool DoDebug(void) { return parameters->DoDebug(); };
     bool Ready(void);
     bool BackgroundArea(void) { return background; };
+    bool ParameterSet(eParamType type);
+    cTemplateFunction *GetFunction(string name);
     //Traverse Functions
-    void InitIterator(void);
+    void InitFunctionIterator(void);
     cTemplateFunction *GetNextFunction(void);
     //Debug
+    void Debug(void);
+};
+
+class cTemplatePixmapContainer : public cTemplatePixmapNode {
+private:
+    vector<cTemplatePixmap*> pixmaps;
+    vector<cTemplatePixmap*>::iterator pixmapIterator;
+public:
+    cTemplatePixmapContainer(void);
+    virtual ~cTemplatePixmapContainer(void);
+    void SetGlobals(cGlobals *globals);
+    void SetWidth(int width);
+    void SetHeight(int height);
+    void AddPixmap(cTemplatePixmap *pix);
+    //PreCache Parameters
+    bool CalculateParameters(void);
+    void ParseDynamicParameters(map <string,string> *stringTokens, map <string,int> *intTokens);
+    int NumPixmaps(void) { return pixmaps.size(); };
+    void InitIterator(void);
+    cTemplatePixmap *GetNextPixmap(void);
+    cTemplateFunction *GetFunction(string name);
     void Debug(void);
 };
 

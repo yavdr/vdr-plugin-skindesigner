@@ -1,16 +1,40 @@
 #include "templatepixmap.h"
 
 using namespace std;
+// --- cTemplatePixmapNode -------------------------------------------------------------
 
-// --- cTemplatePixmap -------------------------------------------------------------
-
-cTemplatePixmap::cTemplatePixmap(void) {
+cTemplatePixmapNode::cTemplatePixmapNode(void) {
     parameters = NULL;
+    globals = NULL;
     containerX = 0;
     containerY = 0;
     containerWidth = 0;
     containerHeight = 0;
-    globals = NULL;
+}
+
+cTemplatePixmapNode::~cTemplatePixmapNode() {
+    if (parameters)
+        delete parameters;
+}
+
+void cTemplatePixmapNode::SetParameters(vector<stringpair> &params) {
+    parameters = new cTemplateFunction(isContainer?ftPixmapContainer:ftPixmap);
+    parameters->SetGlobals(globals);
+    parameters->SetParameters(params);
+}
+
+void cTemplatePixmapNode::SetContainer(int x, int y, int w, int h) { 
+    containerX = x;
+    containerY = y;
+    containerWidth = w; 
+    containerHeight = h;
+}
+
+// --- cTemplatePixmap -------------------------------------------------------------
+
+cTemplatePixmap::cTemplatePixmap(void) {
+    pixContainer = NULL;
+    isContainer = false;
     scrolling = false;
     background = false;
 }
@@ -19,21 +43,6 @@ cTemplatePixmap::~cTemplatePixmap() {
     for (vector<cTemplateFunction*>::iterator it = functions.begin(); it != functions.end(); it++) {
         delete (*it);
     }
-    if (parameters)
-        delete parameters;
-}
-
-void cTemplatePixmap::SetParameters(vector<pair<string, string> > &params) {
-    parameters = new cTemplateFunction(ftPixmap);
-    parameters->SetGlobals(globals);
-    parameters->SetParameters(params);
-}
-
-void cTemplatePixmap::SetContainer(int x, int y, int w, int h) { 
-    containerX = x;
-    containerY = y;
-    containerWidth = w; 
-    containerHeight = h;
 }
 
 void cTemplatePixmap::SetWidth(int width) {
@@ -75,6 +84,11 @@ void cTemplatePixmap::SetYPercent(double y) {
     int absY = containerY + containerHeight * y;
     parameters->SetYManually(absY);
 }
+
+void cTemplatePixmap::SetParameter(eParamType type, string value) {
+    parameters->SetParameter(type, value);
+}
+
 
 void cTemplatePixmap::ClearDynamicParameters(void) {
     parameters->ClearDynamicParameters();
@@ -180,7 +194,7 @@ bool cTemplatePixmap::CalculateParameters(void) {
 }
 
 void cTemplatePixmap::ClearDynamicFunctionParameters(void) {
-    InitIterator();
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
         func->ClearDynamicParameters();
@@ -188,7 +202,7 @@ void cTemplatePixmap::ClearDynamicFunctionParameters(void) {
 }
 
 void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *stringTokens, map <string,int> *intTokens, map < string, vector< map< string, string > > > *loopTokens) {
-    InitIterator();
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     bool completelyParsed = true;
     while(func = GetNextFunction()) {
@@ -215,7 +229,7 @@ void cTemplatePixmap::ParseDynamicFunctionParameters(map <string,string> *string
     if (!replacedWidth && !replacedHeight && !replacedPosX && !replacedPosY)
         return;
 
-    InitIterator();
+    InitFunctionIterator();
     func = NULL;
     while(func = GetNextFunction()) {
         if (func->ParsedCompletely())
@@ -249,7 +263,7 @@ bool cTemplatePixmap::CalculateDrawPortSize(cSize &size, map < string, vector< m
         }
     } else if (orientation == orVertical) {
         //check "last" element height
-        InitIterator();
+        InitFunctionIterator();
         cTemplateFunction *f = NULL;
         int drawportHeight = 1;
         while (f = GetNextFunction()) {
@@ -324,7 +338,7 @@ void cTemplatePixmap::SetScrollingTextWidth(void) {
     if (orientation != orHorizontal)
         return;
     int pixWidth = parameters->GetNumericParameter(ptWidth);
-    InitIterator();
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
         if (func->GetType() == ftDrawText) {
@@ -339,7 +353,7 @@ cTemplateFunction *cTemplatePixmap::GetScrollFunction(void) {
     string scrollElement = parameters->GetParameter(ptScrollElement);
     if (scrollElement.size() == 0)
         return NULL;
-    InitIterator();
+    InitFunctionIterator();
     cTemplateFunction *f = NULL;
     while (f = GetNextFunction()) {
         string funcName = f->GetParameter(ptName);
@@ -365,7 +379,7 @@ int cTemplatePixmap::GetNumericParameter(eParamType type) {
     return parameters->GetNumericParameter(type);
 }
 
-void cTemplatePixmap::InitIterator(void) {
+void cTemplatePixmap::InitFunctionIterator(void) {
     funcIt = functions.begin();
 }
 
@@ -393,9 +407,26 @@ bool cTemplatePixmap::Ready(void) {
     return true;
 }
 
+bool cTemplatePixmap::ParameterSet(eParamType type) {
+    string value = parameters->GetParameter(type);
+    if (value.size() > 0)
+        return true;
+    return false;
+}
+
+cTemplateFunction *cTemplatePixmap::GetFunction(string name) {
+    for (vector<cTemplateFunction*>::iterator it = functions.begin(); it != functions.end(); it++) {
+        string funcName = (*it)->GetParameter(ptName);
+        if (!name.compare(funcName))
+            return *it;
+    }
+    return NULL;
+}
+
 bool cTemplatePixmap::ReplaceWidthFunctions(void) {
     bool replaced = false;
-    InitIterator();
+    bool found = false;
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
         if (func->ParsedCompletely()) {
@@ -411,6 +442,7 @@ bool cTemplatePixmap::ReplaceWidthFunctions(void) {
                 cTemplateFunction *myFunc = *it;
                 string myFuncName = myFunc->GetParameter(ptName); 
                 if (!myFuncName.compare(label)) {
+                    found = true;
                     funcWidth = myFunc->GetWidth();
                     func->SetWidth(type, label, funcWidth);
                     if (func->Updated()) {
@@ -418,6 +450,20 @@ bool cTemplatePixmap::ReplaceWidthFunctions(void) {
                     } else {
                         replaced = true;
                     }
+                    break;
+                }
+            }
+            if (!found && pixContainer) {
+                cTemplateFunction *myFunc = pixContainer->GetFunction(label);
+                if (myFunc) {
+                    funcWidth = myFunc->GetWidth();
+                    func->SetWidth(type, label, funcWidth);
+                    if (func->Updated()) {
+                        func->CompleteParameters();
+                    } else {
+                        replaced = true;
+                    }
+                    break;
                 }
             }
         }
@@ -427,7 +473,8 @@ bool cTemplatePixmap::ReplaceWidthFunctions(void) {
 
 bool cTemplatePixmap::ReplaceHeightFunctions(map < string, vector< map< string, string > > > *loopTokens) {
     bool replaced = false;
-    InitIterator();
+    bool found = false;
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
         if (func->ParsedCompletely()) {
@@ -443,6 +490,7 @@ bool cTemplatePixmap::ReplaceHeightFunctions(map < string, vector< map< string, 
                 cTemplateFunction *myFunc = *it;
                 string myFuncName = myFunc->GetParameter(ptName); 
                 if (!myFuncName.compare(label)) {
+                    found = true;
                     funcHeight = myFunc->GetHeight(loopTokens);
                     func->SetHeight(type, label, funcHeight);
                     if (func->Updated()) {
@@ -450,6 +498,20 @@ bool cTemplatePixmap::ReplaceHeightFunctions(map < string, vector< map< string, 
                     } else {
                         replaced = true;
                     }
+                    break;
+                }
+            }
+            if (!found && pixContainer) {
+                cTemplateFunction *myFunc = pixContainer->GetFunction(label);
+                if (myFunc) {
+                    funcHeight = myFunc->GetHeight(loopTokens);
+                    func->SetHeight(type, label, funcHeight);
+                    if (func->Updated()) {
+                        func->CompleteParameters();
+                    } else {
+                        replaced = true;
+                    }
+                    break;
                 }
             }
         }
@@ -459,7 +521,8 @@ bool cTemplatePixmap::ReplaceHeightFunctions(map < string, vector< map< string, 
 
 bool cTemplatePixmap::ReplacePosXFunctions(void) {
     bool replaced = false;
-    InitIterator();
+    bool found = false;
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
         if (func->ParsedCompletely()) {
@@ -475,6 +538,7 @@ bool cTemplatePixmap::ReplacePosXFunctions(void) {
                 cTemplateFunction *myFunc = *it;
                 string myFuncName = myFunc->GetParameter(ptName); 
                 if (!myFuncName.compare(label)) {
+                    found = true;
                     funcX = myFunc->GetNumericParameter(ptX);
                     if (funcX > -1) {
                         func->SetX(type, label, funcX);
@@ -484,6 +548,22 @@ bool cTemplatePixmap::ReplacePosXFunctions(void) {
                             replaced = true;
                         }
                     }
+                    break;
+                }
+            }
+            if (!found && pixContainer) {
+                cTemplateFunction *myFunc = pixContainer->GetFunction(label);
+                if (myFunc) {
+                    funcX = myFunc->GetNumericParameter(ptX);
+                    if (funcX > -1) {
+                        func->SetX(type, label, funcX);
+                        if (func->Updated()) {
+                            func->CompleteParameters();
+                        } else {
+                            replaced = true;
+                        }
+                    }
+                    break;
                 }
             }
         }
@@ -493,7 +573,8 @@ bool cTemplatePixmap::ReplacePosXFunctions(void) {
 
 bool cTemplatePixmap::ReplacePosYFunctions(void) {
     bool replaced = false;
-    InitIterator();
+    bool found = false;
+    InitFunctionIterator();
     cTemplateFunction *func = NULL;
     while(func = GetNextFunction()) {
         if (func->ParsedCompletely()) {
@@ -509,6 +590,7 @@ bool cTemplatePixmap::ReplacePosYFunctions(void) {
                 cTemplateFunction *myFunc = *it;
                 string myFuncName = myFunc->GetParameter(ptName);
                 if (!myFuncName.compare(label)) {
+                    found = true;
                     funcY = myFunc->GetNumericParameter(ptY);
                     if (funcY > -1) {
                         func->SetY(type, label, funcY);
@@ -518,6 +600,22 @@ bool cTemplatePixmap::ReplacePosYFunctions(void) {
                             replaced = true;
                         }
                     }
+                    break;
+                }
+            }
+            if (!found && pixContainer) {
+                cTemplateFunction *myFunc = pixContainer->GetFunction(label);
+                if (myFunc) {
+                    funcY = myFunc->GetNumericParameter(ptY);
+                    if (funcY > -1) {
+                        func->SetY(type, label, funcY);
+                        if (func->Updated()) {
+                            func->CompleteParameters();
+                        } else {
+                            replaced = true;
+                        }
+                    }
+                    break;
                 }
             }
         }
@@ -532,3 +630,110 @@ void cTemplatePixmap::Debug(void) {
         (*it)->Debug();
     }
 }
+
+// --- cTemplatePixmapContainer -------------------------------------------------------------
+
+cTemplatePixmapContainer::cTemplatePixmapContainer(void) {
+    isContainer = true;
+}
+
+cTemplatePixmapContainer::~cTemplatePixmapContainer() {
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        delete (*it);
+    }
+}
+
+void cTemplatePixmapContainer::SetGlobals(cGlobals *globals) {
+    this->globals = globals;
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        (*it)->SetGlobals(globals);
+    }    
+}
+
+void cTemplatePixmapContainer::SetWidth(int width) {
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        (*it)->SetWidth(width);
+    }
+}
+
+void cTemplatePixmapContainer::SetHeight(int height) {
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        (*it)->SetHeight(height);
+    }
+}
+
+void cTemplatePixmapContainer::AddPixmap(cTemplatePixmap *pix) {
+    //setting default parameters of container if parameter is not set in area
+    string containerDefaultX = parameters->GetParameter(ptX);
+    string containerDefaultY = parameters->GetParameter(ptY);
+    string containerDefaultWidth = parameters->GetParameter(ptWidth);
+    string containerDefaultHeight = parameters->GetParameter(ptHeight);
+    if (containerDefaultX.size() > 0 && !pix->ParameterSet(ptX))
+        pix->SetParameter(ptX, containerDefaultX);
+    if (containerDefaultY.size() > 0 && !pix->ParameterSet(ptY))
+        pix->SetParameter(ptY, containerDefaultY);
+    if (containerDefaultWidth.size() > 0 && !pix->ParameterSet(ptWidth))
+        pix->SetParameter(ptWidth, containerDefaultWidth);
+    if (containerDefaultHeight.size() > 0 && !pix->ParameterSet(ptHeight))
+        pix->SetParameter(ptHeight, containerDefaultHeight);
+
+    pix->SetPixmapContainer(this);
+    pixmaps.push_back(pix); 
+}
+
+bool cTemplatePixmapContainer::CalculateParameters(void) {
+    bool paramsValid = true;
+    //Calculate Pixmap Size
+    parameters->SetContainer(containerX, containerY, containerWidth, containerHeight);
+    parameters->SetGlobals(globals);
+    paramsValid = parameters->CalculateParameters();
+
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        (*it)->SetContainer(containerX, containerY, containerWidth, containerHeight);
+        (*it)->SetGlobals(globals);
+        paramsValid = (*it)->CalculateParameters() && paramsValid;
+    }
+
+    return paramsValid;
+}
+
+void cTemplatePixmapContainer::ParseDynamicParameters(map <string,string> *stringTokens, map <string,int> *intTokens) {
+    parameters->ClearDynamicParameters();
+    parameters->SetIntTokens(intTokens); 
+    parameters->SetStringTokens(stringTokens); 
+    parameters->ParseParameters();
+    parameters->UnsetIntTokens();
+    parameters->UnsetStringTokens();
+}
+
+void cTemplatePixmapContainer::InitIterator(void) {
+    pixmapIterator = pixmaps.begin();
+}
+
+cTemplatePixmap *cTemplatePixmapContainer::GetNextPixmap(void) {
+    if (pixmapIterator == pixmaps.end())
+        return NULL;
+    cTemplatePixmap *pix = *pixmapIterator;
+    pixmapIterator++;
+    return pix;
+}
+
+cTemplateFunction *cTemplatePixmapContainer::GetFunction(string name) {
+    cTemplateFunction *hit = NULL;
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        hit  = (*it)->GetFunction(name);
+        if (hit)
+            return hit;
+    }
+    return NULL;
+}
+
+
+void cTemplatePixmapContainer::Debug(void) {
+    esyslog("skindesigner: pixmapcontainer");
+    parameters->Debug();
+    for (vector<cTemplatePixmap*>::iterator it = pixmaps.begin(); it != pixmaps.end(); it++) {
+        (*it)->Debug();
+    }
+}
+

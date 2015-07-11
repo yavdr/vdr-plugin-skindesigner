@@ -32,7 +32,7 @@ void cSkinRepo::Install(string path, string themesPath) {
     this->themesPath = themesPath;
     if (repoType == rtGit) {
 
-        command = *cString::sprintf("git clone --progress %s %s", url.c_str(), skinPath.c_str());
+        command = *cString::sprintf("git clone --depth=1 --progress %s %s", url.c_str(), skinPath.c_str());
         tempfile = *cString::sprintf("gitclone_%s_%ld.out", name.c_str(), time(0));
 
         dsyslog("skindesigner: installing skin from Git, command: %s, logfile: %s", command.c_str(), tempfile.c_str());

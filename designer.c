@@ -128,7 +128,7 @@ void cSkinDesigner::Reload(void) {
         esyslog("skindesigner: OSD is open, close first!");
         return;
     }
-    DeleteTemplates();
+
     cStopWatch watch;
     bool ok = LoadTemplates();
     if (!ok) {
@@ -390,6 +390,7 @@ void cSkinDesigner::CacheTemplates(void) {
         }
     }
     dsyslog("skindesigner: templates cached");
+    fontManager->DeleteFonts();
     fontManager->CacheFonts(channelTemplate);
     fontManager->CacheFonts(menuTemplate);
     fontManager->CacheFonts(messageTemplate);
