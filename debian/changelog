@@ -1,3 +1,41 @@
+vdr-plugin-skindesigner (0.6.1-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * 8adf252: corrected themes
+  * 0f1b71f: updated READNE
+  * 30cfccd: added glassy to skinrepository
+  * d2947bf: Version 0.5.1
+  * 664b71d: changed skin installation that VDR main loop is not blocked
+  * ecf8c75: updated german translation
+  * 872320b: implemented possibility to delete skins
+  * f7263ac: Version 0.5.2
+  * db69972: avoid string null pointer initialisation
+  * 5724449: only close OSD when a skin is successfully updated from Git
+  * b6a6ea2: refresh custom token display with each custom token change
+  * 64b131e: allow currentelements to use conditions
+  * 7f2a4ca: added SVGTemplates
+  * ffca82a: fixed bug searching channel logos with channelid
+  * 745fa9e: fixed bug in parsing printf text tokens
+  * 3eb6418: changed 'Update from Git' to 'Update'
+  * 480b0a4: made viewelement scrapercontent in displayreplay detachable
+  * 1f09f99: Version 0.5.3
+  * 41736f4: Merge branch 'master' into svgtemplates
+  * bbe8c56: fixed bug in svgtemplate parsing
+  * a0a6e21: fixed memory leak when creating fonts
+  * bc07550: fixed crash using animated images in plugins
+  * 50fe393: added banner to displaymenuschedulescurrentview and
+    displaymenureplaycurrentview
+  * 5a6fb85: immplemented areacontainers to group areas
+  * 5df1af0: forgot to add new files
+  * ce49462: fixed bug displaying pixmaps with transparency
+  * 14f96b8: fixed bug displaying wrong headers in skin setup submenus
+  * 32d96c5: Version 0.6.0
+  * b188f1f: fixed bug that menulists are not read if no currentelement
+    is defined
+  * 9611291: Version 0.6.1
+
+ -- Alexander Grothe <seahawk1986@gmx.de>  Sat, 11 Jul 2015 19:20:49 +0200
+
 vdr-plugin-skindesigner (0.5.0-4-g12e65e7-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
