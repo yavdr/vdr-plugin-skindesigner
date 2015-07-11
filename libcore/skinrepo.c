@@ -24,6 +24,16 @@ cSkinRepo::cSkinRepo(void) {
 cSkinRepo::~cSkinRepo() {
 }
 
+bool cSkinRepo::Valid(void) {
+    if (!name.size())
+        return false;
+    if (repoType == rtUndefined)
+        return false;
+    if (!url.size())
+        return false;
+    return true;
+}
+
 void cSkinRepo::Install(string path, string themesPath) {
     if (Running())
         return;
@@ -178,8 +188,8 @@ void cSkinRepo::Debug() {
 // --- cSkinRepos -------------------------------------------------------------
 
 cSkinRepos::cSkinRepos(void) {
-    repoFile = "skinrepositories.xml";
-    doc = NULL;
+    skinRepoUrl = "https://github.com/louisbraun/skinrepository.git";
+    repoFolder = "skinrepositories/";
 }
 
 cSkinRepos::~cSkinRepos() {
@@ -188,41 +198,40 @@ cSkinRepos::~cSkinRepos() {
     }
 }
 
+void cSkinRepos::Init(string path) {
+    string repoPath = path + repoFolder;
+    if (FolderExists(repoPath)) {
+        PullRepoGit(repoPath);
+    } else {
+        InitRepoGit(repoPath);
+    }
+}
+
 void cSkinRepos::Read(string path) {
-    string filepath = path + repoFile;
-    xmlParserCtxtPtr ctxt = xmlNewParserCtxt();
-    xmlNodePtr root = NULL;
-
-    doc = xmlCtxtReadFile(ctxt, filepath.c_str(), NULL, XML_PARSE_NOENT);
-    if (doc == NULL) {
-        esyslog("skindesigner: ERROR: skinrepository file %s not loaded successfully.", filepath.c_str());
+    string repoPath = path + repoFolder;
+    DIR *folder = NULL;
+    struct dirent *dirEntry;
+    folder = opendir(repoPath.c_str());
+    if (!folder) {
+        esyslog("skindesigner: no skinrepository folder available in %s", repoPath.c_str());
         return;
     }
-
-    root = xmlDocGetRootElement(doc);
-    if (root == NULL) {
-        return;
-    }
-
-    if (xmlStrcmp(root->name, (const xmlChar *) "skinrepositories")) {
-        return;
-    }
-
-    xmlNodePtr node = root->xmlChildrenNode;
-    while (node != NULL) {
-        if (node->type != XML_ELEMENT_NODE) {
-            node = node->next;
+    while (dirEntry = readdir(folder)) {
+        string fileName = dirEntry->d_name;
+        if (!fileName.compare(".") || !fileName.compare("..") || !fileName.compare(".git"))
+            continue;
+        string filePath = repoPath + fileName;
+        if (! ReadXMLFile(filePath.c_str(), false) ) {
+            esyslog("skindesigner: error reading skinrepo %s", filePath.c_str());
             continue;
         }
-        if (xmlStrcmp(node->name, (const xmlChar *) "skinrepo")) {
+        if (! SetDocument() )
             continue;
-        }
-        ReadRepository(node->xmlChildrenNode);
-        node = node->next;
+        if (!ParseRepository())
+            esyslog("skindesigner: error parsing skinrepository %s", filePath.c_str());
+        DeleteDocument();
     }
 
-    if (doc) xmlFreeDoc(doc);
-    xmlFreeParserCtxt(ctxt);
 }
 
 cSkinRepo *cSkinRepos::GetRepo(string name) {
@@ -249,122 +258,112 @@ void cSkinRepos::Debug(void) {
     }
 }
 
-void cSkinRepos::ReadRepository(xmlNodePtr node) {
-    if (!node)
-        return;
+bool cSkinRepos::ParseRepository(void) {
+    if (!LevelDown())
+        return false;
+    
     cSkinRepo *repo = new cSkinRepo();
-    while (node != NULL) {
-        if (node->type != XML_ELEMENT_NODE) {
-            node = node->next;
-            continue;
-        }
-        
-        xmlChar *value = NULL;
-        //Repo Name
-        if (!xmlStrcmp(node->name, (const xmlChar *) "name")) {
-            value = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
-            if (value)
-                repo->SetName((const char *)value);
-        //Repo Type
-        } else if (!xmlStrcmp(node->name, (const xmlChar *) "type")) {
-            value = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
-            if (value) {
+    
+    do {
+        string value = "";
+        if (CheckNodeName("name")) {
+            if (GetNodeValue(value)) {
+                repo->SetName(value);
+            }
+        } else if (CheckNodeName("type")) {
+            if (GetNodeValue(value)) {
                 eRepoType repoType = rtUndefined;
-                if (!xmlStrcmp(value, (const xmlChar *) "git"))
+                if (!value.compare("git"))
                     repoType = rtGit;
-                else if (!xmlStrcmp(value, (const xmlChar *) "zip"))
+                else if (!value.compare("zip"))
                     repoType = rtZipUrl;
                 repo->SetRepoType(repoType);
             }
-        //Repo URL
-        } else if (!xmlStrcmp(node->name, (const xmlChar *) "url")) {
-            value = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
-            if (value)
-                repo->SetUrl((const char *)value);
-        //Skin Author
-        } else if (!xmlStrcmp(node->name, (const xmlChar *) "author")) {
-            value = xmlNodeListGetString(doc, node->xmlChildrenNode, 1);
-            if (value)
-                repo->SetAuthor((const char *)value);
-        //Repo Specialfonts
-        } else if (!xmlStrcmp(node->name, (const xmlChar *) "specialfonts")) {
-            xmlNodePtr child = node->xmlChildrenNode;
-            while (child != NULL) {
-                if (child->type != XML_ELEMENT_NODE) {
-                    child = child->next;
-                    continue;
-                }
-                if (!xmlStrcmp(child->name, (const xmlChar *) "font")) {
-                    xmlChar *fontvalue = NULL;
-                    fontvalue = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
-                    if (fontvalue) {
-                        repo->SetSpecialFont((const char *)fontvalue);
-                        xmlFree(fontvalue);
+        } else if (CheckNodeName("url")) {
+            if (GetNodeValue(value)) {
+                repo->SetUrl(value);
+            }
+        } else if (CheckNodeName("author")) {
+            if (GetNodeValue(value)) {
+                repo->SetAuthor(value);
+            }
+        } else if (CheckNodeName("specialfonts")) {
+            if (!LevelDown())
+                continue;
+            do {
+                if (CheckNodeName("font")) {
+                    if (GetNodeValue(value)) {
+                        repo->SetSpecialFont(value);
                     }
                 }
-                child = child->next;
-            }
-        //Repo supported Plugins
-        } else if (!xmlStrcmp(node->name, (const xmlChar *) "supportedplugins")) {
-            xmlNodePtr child = node->xmlChildrenNode;
-            while (child != NULL) {
-                if (child->type != XML_ELEMENT_NODE) {
-                    child = child->next;
-                    continue;
-                }
-                if (!xmlStrcmp(child->name, (const xmlChar *) "plugin")) {
-                    xmlChar *plugvalue = NULL;
-                    plugvalue = xmlNodeListGetString(doc, child->xmlChildrenNode, 1);
-                    if (plugvalue) {
-                        repo->SetSupportedPlugin((const char *)plugvalue);
-                        xmlFree(plugvalue);
+            } while (NextNode());
+            LevelUp();
+        } else if (CheckNodeName("supportedplugins")) {
+            if (!LevelDown())
+                continue;
+            do {
+                if (CheckNodeName("plugin")) {
+                    if (GetNodeValue(value)) {
+                        repo->SetSupportedPlugin(value);
                     }
                 }
-                child = child->next;
+            } while (NextNode());
+            LevelUp();
+        } else if (CheckNodeName("screenshots")) {
+            if (!LevelDown()) {
+                continue;
             }
-        //Repo Screenshots
-        } else if (!xmlStrcmp(node->name, (const xmlChar *) "screenshots")) {
-            xmlNodePtr child = node->xmlChildrenNode;
-            while (child != NULL) {
-                if (child->type != XML_ELEMENT_NODE) {
-                    child = child->next;
-                    continue;
-                }
-                if (!xmlStrcmp(child->name, (const xmlChar *) "screenshot")) {
-                    xmlNodePtr subchild = child->xmlChildrenNode;
+            do {
+                if (CheckNodeName("screenshot")) {
+                    if (!LevelDown()) {
+                        continue;
+                    }
                     string desc = "";
                     string url = "";
-                    while (subchild != NULL) {
-                        if (subchild->type != XML_ELEMENT_NODE) {
-                            subchild = subchild->next;
-                            continue;
+                    do {
+                        if (CheckNodeName("description")) {
+                            GetNodeValue(desc);
+                        } else if (CheckNodeName("url")) {
+                            GetNodeValue(url);
                         }
-                        xmlChar *screenshotvalue = NULL;
-                        if (!xmlStrcmp(subchild->name, (const xmlChar *) "description")) {
-                            screenshotvalue = xmlNodeListGetString(doc, subchild->xmlChildrenNode, 1);
-                            if (screenshotvalue) {
-                                desc = (const char *)screenshotvalue;
-                                xmlFree(screenshotvalue);
-                            }
-                        } else if (!xmlStrcmp(subchild->name, (const xmlChar *) "url")) {
-                            screenshotvalue = xmlNodeListGetString(doc, subchild->xmlChildrenNode, 1);
-                            if (screenshotvalue) {
-                                url = (const char *)screenshotvalue;
-                                xmlFree(screenshotvalue);
-                            }
-                        }
-                        subchild = subchild->next;
-                    }
-                    repo->SetScreenshot(desc, url);
+                    } while (NextNode());
+                    LevelUp();
+                    if (desc.size() && url.size())
+                        repo->SetScreenshot(desc, url);
                 }
-                child = child->next;
-            }
+            } while (NextNode());
+            LevelUp();
         }
-        if (value)
-            xmlFree(value);
-        node = node->next;
-
+    } while (NextNode());
+    LevelUp();
+    if (repo->Valid()) {
+        repos.push_back(repo);
+        return true;
     }
-    repos.push_back(repo);
+    return false;
 }
 
+void cSkinRepos::InitRepoGit(string path) {
+    dsyslog("skindesigner: initiating skin repository %s", path.c_str());
+    CreateFolder(path);
+
+    cString command = cString::sprintf("git clone --depth=1 %s %s", skinRepoUrl.c_str(), path.c_str());
+    int result = system (*command);
+    
+    if (result == 0) {
+        dsyslog("skindesigner: skinrepository successfully initiated");
+    } else {
+        esyslog("skindesigner: ERROR initiating skinrepository. Command: %s", *command);
+    }
+}
+
+void cSkinRepos::PullRepoGit(string path) {
+    dsyslog("skindesigner: updating skin repository %s", path.c_str());
+    cString command = *cString::sprintf("cd %s; git pull", path.c_str());
+    int result = system (*command);
+    if (result == 0) {
+        dsyslog("skindesigner: skinrepository successfully updated");
+    } else {
+        esyslog("skindesigner: ERROR updating skinrepository. Command: %s", *command);
+    }
+}

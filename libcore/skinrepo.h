@@ -5,9 +5,7 @@
 #include <vector>
 #include <map>
 #include <set>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/xmlerror.h>
+#include "../libcore/libxmlwrapper.h"
 #include <vdr/plugin.h>
 
 using namespace std;
@@ -55,6 +53,7 @@ public:
     void SetSpecialFont(string font) { specialFonts.push_back(font); };
     void SetSupportedPlugin(string plugin) { supportedPlugins.push_back(plugin); };
     void SetScreenshot(string desc, string url) { screenshots.push_back(pair<string, string>(desc, url)); };
+    bool Valid(void);
     eRepoType Type(void) { return repoType; };
     string Name(void) { return name; };
     string Author(void) { return author; };
@@ -72,16 +71,19 @@ public:
 
 // --- cSkinRepos -------------------------------------------------------------
 
-class cSkinRepos {
+class cSkinRepos : public cLibXMLWrapper {
 private:
-    string repoFile;
-    xmlDocPtr doc;
+    string skinRepoUrl;
+    string repoFolder;
     vector<cSkinRepo*> repos;
     vector<cSkinRepo*>::iterator repoIt;
-    void ReadRepository(xmlNodePtr node);
+    bool ParseRepository(void);
+    void InitRepoGit(string path);
+    void PullRepoGit(string path);
 public:
     cSkinRepos(void);
     virtual ~cSkinRepos(void);
+    void Init(string path);
     void Read(string path);
     int Count(void) { return repos.size(); };
     cSkinRepo *GetRepo(string name);

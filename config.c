@@ -94,7 +94,7 @@ void cDesignerConfig::ReadSkinFolder(cString &skinFolder, vector<string> *contai
     while (dirEntry = readdir(folder)) {
         string dirEntryName = dirEntry->d_name;
         int dirEntryType = dirEntry->d_type;
-        if (!dirEntryName.compare(".") || !dirEntryName.compare("..") || dirEntryType != DT_DIR)
+        if (!dirEntryName.compare(".") || !dirEntryName.compare("..") || !dirEntryName.compare("skinrepositories") || dirEntryType != DT_DIR)
             continue;
         container->push_back(dirEntryName);
     }
@@ -328,7 +328,8 @@ void cDesignerConfig::SetSkinSetupParameters(void) {
 }
 
 void cDesignerConfig::ReadSkinRepos(void) {
-    skinRepos.Read(*skinPath);
+    skinRepos.Init(*installerSkinPath);
+    skinRepos.Read(*installerSkinPath);
     dsyslog("skindesigner: read %d skinrepositories from %s", skinRepos.Count(), *skinPath);
 }
 

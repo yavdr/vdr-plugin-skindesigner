@@ -152,9 +152,7 @@ bool FirstFileInFolder(string &path, string &extension, string &fileName) {
 void CreateFolder(string &path) {
     cString command = cString::sprintf("mkdir -p %s", path.c_str());
     int ok = system(*command);
-    if (!ok) {
-        esyslog("skindesigner: error creating folder %s", path.c_str());
-    }
+    if (!ok) {}
 }
 
 // trim from start

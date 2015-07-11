@@ -37,7 +37,7 @@ void cLibXMLWrapper::DeleteDocument(void) {
         nodeStack.pop();
 }
 
-bool cLibXMLWrapper::ReadXMLFile(const char *path) {
+bool cLibXMLWrapper::ReadXMLFile(const char *path, bool validate) {
     if (!ctxt) {
         esyslog("skindesigner: Failed to allocate parser context");
         return false;
@@ -46,7 +46,11 @@ bool cLibXMLWrapper::ReadXMLFile(const char *path) {
         dsyslog("skindesigner: reading XML Template %s failed", path);
         return false;
     }
-    doc = xmlCtxtReadFile(ctxt, path, NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
+    if (validate)
+        doc = xmlCtxtReadFile(ctxt, path, NULL, XML_PARSE_NOENT | XML_PARSE_DTDVALID);
+    else
+        doc = xmlCtxtReadFile(ctxt, path, NULL, XML_PARSE_NOENT);
+
     if (!doc) {
         dsyslog("skindesigner: reading XML Template %s failed", path);
         return false;
@@ -180,5 +184,6 @@ bool cLibXMLWrapper::GetNodeValue(string &value) {
         xmlFree(val);
         return true;
     }
+    value = "";
     return false;
 }
