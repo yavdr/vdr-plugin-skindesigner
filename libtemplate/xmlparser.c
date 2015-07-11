@@ -247,7 +247,7 @@ void cXmlParser::ParseViewList(cTemplateView *subView) {
             currentElement->SetGlobals(globals);
             currentElement->SetParameters(attribsCur);
             if (!LevelDown())
-                return;
+                continue;
             do {
                 if (!CheckNodeName("areacontainer") && !CheckNodeName("area") && !CheckNodeName("areascroll")) {
                     esyslog("skindesigner: invalid tag \"%s\" in viewelement", NodeName());
