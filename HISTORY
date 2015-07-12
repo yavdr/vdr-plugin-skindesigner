@@ -391,3 +391,5 @@ Version 0.6.1
 
 - changed skinrepository from static file to github repository
 - fixed flickering when main menu is fading
+- some changes in metrixHD
+
