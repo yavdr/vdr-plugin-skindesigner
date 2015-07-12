@@ -6,6 +6,7 @@
 #include "../libcore/helpers.h"
 
 cDisplayMenuRootView::cDisplayMenuRootView(cTemplateView *rootView) : cView(rootView) {
+    fadeOut = false;
     cat = mcUndefined;
     selectedPluginMainMenu = "";
     sortMode = msmUnknown;

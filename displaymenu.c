@@ -14,7 +14,7 @@ cSDDisplayMenu::cSDDisplayMenu(cTemplate *menuTemplate) {
         doOutput = false;
         dsyslog("skindesigner: displayMenu no valid template - aborting");
         return;
-    } 
+    }
     rootView = new cDisplayMenuRootView(menuTemplate->GetRootView());
     if (!rootView->createOsd()) {
         doOutput = false;

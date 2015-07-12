@@ -58,8 +58,9 @@ cView::~cView() {
     if (fadeOut) {
         if (IsAnimated())
             ShiftOut();
-        else
+        else {
             FadeOut();
+        }
     }
 }
 

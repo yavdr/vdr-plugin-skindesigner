@@ -2,6 +2,7 @@
 #include "displaypluginview.h"
 
 cDisplayPluginView::cDisplayPluginView(cTemplateView *tmplView, bool isRootView) : cView(tmplView) {
+    fadeOut = false;
     init = true;
     tabInit = true;
     tabScrolled = true;
@@ -281,8 +282,7 @@ void cDisplayPluginView::DrawTabLabels(void) {
 }
 
 void cDisplayPluginView::Action(void) {
-    SetInitFinished();
-    FadeIn();
-    DoFlush();
+    if (!init)
+        SetFadeTime(0);
     cView::Action();
 }
