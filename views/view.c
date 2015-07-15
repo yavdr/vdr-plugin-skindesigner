@@ -44,16 +44,20 @@ cView::~cView() {
         cDevice::PrimaryDevice()->ScaleVideo(cRect::Null);
     }
     //clear detached views
+    Lock();
     for (map<eViewElement,cViewElement*>::iterator dVeIt = detachedViewElements.begin(); dVeIt != detachedViewElements.end(); dVeIt++) {
         cViewElement *ve = dVeIt->second;
         delete ve;
     }
+    Unlock();
     //clear animations
+    Lock();
     for (multimap<int, cAnimation*>::iterator animIt = animations.begin(); animIt != animations.end(); animIt++) {
         cAnimation *anim = animIt->second;
         anim->Stop();
         delete anim;
     }
+    Unlock();
     //shift or fade out
     if (fadeOut) {
         if (IsAnimated())
@@ -94,6 +98,8 @@ void cView::Action(void) {
     DoFlush();
     if (scrolling) {
         DoSleep(scrollDelay);
+        if (!Running())
+            return;
         if (scrollOrientation == orHorizontal) {
             ActivateScrolling();
             ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);

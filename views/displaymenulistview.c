@@ -84,10 +84,12 @@ int cDisplayMenuListView::GetListWidth(void) {
 
 void cDisplayMenuListView::Clear(void) {
     for (int i=0; i<itemCount; i++) {
+        Lock();
         if (menuItems[i]) {
             delete menuItems[i];
             menuItems[i] = NULL;
         }
+        Unlock();
     }
     oneColumn = true;
     for (int i=0; i<cSkinDisplayMenu::MaxTabs; i++) {

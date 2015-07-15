@@ -73,6 +73,8 @@ void cDisplayMenuItemView::EndScrolling(void) {
 void cDisplayMenuItemView::Action(void) {
     if (scrolling) {
         DoSleep(scrollDelay);
+        if (!Running())
+            return;
         PrepareScrolling();
         if (scrollOrientation == orHorizontal) {
             ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);

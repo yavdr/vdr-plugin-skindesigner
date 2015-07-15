@@ -392,4 +392,6 @@ Version 0.6.1
 - changed skinrepository from static file to github repository
 - fixed flickering when main menu is fading
 - some changes in metrixHD
+- changed font in metrixhd from "VDROpen Sans" to "Open Sans"
+- fixed crashes if main menu is opened consecutively
 

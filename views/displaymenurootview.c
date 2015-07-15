@@ -347,11 +347,15 @@ void cDisplayMenuRootView::KeyInput(bool up, bool page) {
 
 void cDisplayMenuRootView::Clear(void) {
     if (view) {
+        view->Lock();
         view->ClearChannel();
         view->ClearEpgSearchFavorite();
+        view->Unlock();
     }
     if (listView) {
+        listView->Lock();
         listView->Clear();
+        listView->Unlock();
     }
     if (detailView) {
         delete detailView;
@@ -422,6 +426,7 @@ cFont *cDisplayMenuRootView::GetTextAreaFont(void) {
 void cDisplayMenuRootView::Render(void) {
     if (!view)
         return;
+    view->Lock();
     view->DrawDebugGrid();
     if (!view->DrawBackground()) {
         defaultBackgroundDrawn = true;
@@ -453,6 +458,7 @@ void cDisplayMenuRootView::Render(void) {
 
     view->DrawStaticViewElements();
     view->DrawDynamicViewElements();
+    view->Unlock();
 }
 
 void cDisplayMenuRootView::RenderMenuItems(void) {
