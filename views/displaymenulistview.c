@@ -224,6 +224,7 @@ void cDisplayMenuListView::Render(void) {
     }
     int current = -1;
     for (int i=0; i<itemCount; i++) {
+        Lock();
         if (menuItems[i] && menuItems[i]->Dirty()) {
             menuItems[i]->Clear();
             menuItems[i]->SetNumber(i);
@@ -236,6 +237,7 @@ void cDisplayMenuListView::Render(void) {
                 menuItems[i]->Stop();
             }
         }
+        Unlock();
     }
     if (current > -1) {
         menuItems[current]->Start();        

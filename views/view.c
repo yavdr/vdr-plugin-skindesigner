@@ -1191,6 +1191,8 @@ void cViewElement::Action(void) {
     DoFlush();
     if (scrolling) {
         DoSleep(scrollDelay);
+        if (!Running())
+            return;
         if (scrollOrientation == orHorizontal) {
             ScrollHorizontal(scrollingPix, scrollDelay, scrollSpeed, scrollMode);
         } else {
