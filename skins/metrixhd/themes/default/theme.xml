@@ -26,7 +26,7 @@
     </translations>
 
     <fonts>
-        <font name="light">Open Sans Light:Light</font>
+        <font name="light">Open Sans:Light</font>
         <font name="semibold">Open Sans:Semibold</font>
     </fonts>
 </globals>

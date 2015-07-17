@@ -13,6 +13,7 @@ cSkinRepo::cSkinRepo(void) {
     action = eaUndefined;
     url = "";
     author = "unknown";
+    minSDVersion = "0.0.1";
     command = "";
     command2 = "";
     tempfile = "";
@@ -166,6 +167,7 @@ void cSkinRepo::Debug() {
     dsyslog("skindesigner: --- skinrepo %s, Type %s ---", name.c_str(), strRepoType.c_str());
     dsyslog("skindesigner: url %s", url.c_str());
     dsyslog("skindesigner: author %s", author.c_str());
+    dsyslog("skindesigner: minimum Skindesigner Version required %s", minSDVersion.c_str());
     if (specialFonts.size() > 0) {
         for (vector<string>::iterator it = specialFonts.begin(); it != specialFonts.end(); it++) {
             dsyslog("skindesigner: special font %s", (*it).c_str());
@@ -286,6 +288,10 @@ bool cSkinRepos::ParseRepository(void) {
         } else if (CheckNodeName("author")) {
             if (GetNodeValue(value)) {
                 repo->SetAuthor(value);
+            }
+        } else if (CheckNodeName("minimumskindesignerversion")) {
+            if (GetNodeValue(value)) {
+                repo->SetMinSDVersion(value);
             }
         } else if (CheckNodeName("specialfonts")) {
             if (!LevelDown())

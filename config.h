@@ -18,6 +18,7 @@
 
 class cDesignerConfig {
 private:
+    string version;
     cString CheckSlashAtEnd(string path);
     bool epgImagePathSet;
     bool skinPathSet;
@@ -52,6 +53,7 @@ private:
 public:
     cDesignerConfig();
     ~cDesignerConfig();
+    void SetVersion(string version) {this->version = version; };
     bool SetupParse(const char *Name, const char *Value);
     void SetPathes(void);
     void SetSkinPath(cString path);
@@ -84,6 +86,7 @@ public:
     void InitSkinRepoIterator(void) { skinRepos.InitRepoIterator(); };
     cSkinRepo *GetNextSkinRepo(void) { return skinRepos.GetNextRepo(); };
     cSkinRepo *GetSkinRepo(string name) { return skinRepos.GetRepo(name); };
+    bool CheckVersion(string name, string &neededVersion);
     bool SkinInstalled(string name);
     void SetGlobals(cGlobals *globals) { tmplGlobals = globals; };
     void UpdateGlobals(void);

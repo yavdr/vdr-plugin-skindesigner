@@ -394,4 +394,5 @@ Version 0.6.1
 - some changes in metrixHD
 - changed font in metrixhd from "VDROpen Sans" to "Open Sans"
 - fixed crashes if main menu is opened consecutively
+- added version check for skinrepositiries
 

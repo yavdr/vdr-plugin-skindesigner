@@ -199,6 +199,18 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
         }
         // KEY RED
         if (Key == kRed) {
+            string versionNeeded = "";
+            bool versionOk = config.CheckVersion(currentSkin, versionNeeded);
+            if (!versionOk) {
+                cString error = cString::sprintf("%s %s %s %s %s", 
+                                                 tr("Skin Designer"),
+                                                 tr("version"), 
+                                                 versionNeeded.c_str(),
+                                                 tr("or higher"),
+                                                 tr("needed"));
+                Skins.Message(mtError, *error);
+                return state;
+            }
             if (type == itSkinRepo) {
                 Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Installing Skin")));
                 StartInstallation(currentSkin);
@@ -388,6 +400,18 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
                 }
             }
             case kRed: {
+                string versionNeeded = "";
+                bool versionOk = config.CheckVersion(skin, versionNeeded);
+                if (!versionOk) {
+                    cString error = cString::sprintf("%s %s %s %s %s", 
+                                                     tr("Skin Designer"),
+                                                     tr("version"), 
+                                                     versionNeeded.c_str(),
+                                                     tr("or higher"),
+                                                     tr("needed"));
+                    Skins.Message(mtError, *error);
+                    break;
+                }
                 bool gitAvailable = StartUpdate(skin);
                 if (gitAvailable) {
                     Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Updating Skin from Git")));
@@ -487,7 +511,19 @@ eOSState cSkindesignerSkinPreview::ProcessKey(eKeys Key) {
             state = osContinue;
             break;
         } case kRed: {
-            StartInstallation(currentSkin);
+            string versionNeeded = "";
+            bool versionOk = config.CheckVersion(currentSkin, versionNeeded);
+            if (!versionOk) {
+                cString error = cString::sprintf("%s %s %s %s %s", 
+                                                 tr("Skin Designer"),
+                                                 tr("version"), 
+                                                 versionNeeded.c_str(),
+                                                 tr("or higher"),
+                                                 tr("needed"));
+                Skins.Message(mtError, *error);
+            } else {
+                StartInstallation(currentSkin);
+            }
             state = osContinue;
             break;
         } default:

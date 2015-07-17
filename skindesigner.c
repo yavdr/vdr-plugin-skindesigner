@@ -54,6 +54,7 @@ public:
 
 cPluginSkinDesigner::cPluginSkinDesigner(void) {
     libskindesignerApiVersion = "undefined";
+    config.SetVersion(VERSION);
 }
 
 cPluginSkinDesigner::~cPluginSkinDesigner() {

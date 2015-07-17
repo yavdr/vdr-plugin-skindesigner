@@ -31,6 +31,7 @@ private:
     eAction action;
     string url;
     string author;
+    string minSDVersion;
     vector<string> specialFonts;
     vector<string> supportedPlugins;
     vector< pair < string, string > > screenshots;
@@ -50,6 +51,7 @@ public:
     void SetRepoType(eRepoType type) { this->repoType = type; };
     void SetUrl(string url) { this->url = url; };
     void SetAuthor(string author) { this->author = author; };
+    void SetMinSDVersion(string minSDVersion) { this->minSDVersion = minSDVersion; };
     void SetSpecialFont(string font) { specialFonts.push_back(font); };
     void SetSupportedPlugin(string plugin) { supportedPlugins.push_back(plugin); };
     void SetScreenshot(string desc, string url) { screenshots.push_back(pair<string, string>(desc, url)); };
@@ -57,6 +59,7 @@ public:
     eRepoType Type(void) { return repoType; };
     string Name(void) { return name; };
     string Author(void) { return author; };
+    string MinSDVersion(void) { return minSDVersion; };
     string Url(void) { return url; };
     vector<string> SpecialFonts(void) { return specialFonts; };
     vector<string> SupportedPlugins(void) { return supportedPlugins; };
