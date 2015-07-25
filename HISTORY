@@ -397,3 +397,6 @@ Version 0.6.1
 - added version check for skinrepositiries
 
 Version 0.6.2
+
+- added progressmodeonly viewelement in displayreplay
+

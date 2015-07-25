@@ -1739,6 +1739,7 @@ void cTemplateViewReplay::SetViewElements(void) {
     viewElementsAllowed.insert("cutmarks");
     viewElementsAllowed.insert("controlicons");
     viewElementsAllowed.insert("controliconsmodeonly");
+    viewElementsAllowed.insert("progressmodeonly");
     viewElementsAllowed.insert("jump");
     viewElementsAllowed.insert("message");
     viewElementsAllowed.insert("onpause");
@@ -1784,6 +1785,9 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
             break;
         case veControlIconsModeOnly:
             name = "Control Icons Mode only";
+            break;
+        case veProgressModeOnly:
+            name = "Progress Mode only";
             break;
         case veBackgroundModeOnly:
             name = "Background Mode only";
@@ -1839,6 +1843,8 @@ void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmapNode *pi
         ve = veControlIcons;
     } else if (!sViewElement.compare("controliconsmodeonly")) {
         ve = veControlIconsModeOnly;
+    } else if (!sViewElement.compare("progressmodeonly")) {
+        ve = veProgressModeOnly;
     } else if (!sViewElement.compare("backgroundmodeonly")) {
         ve = veBackgroundModeOnly;
     } else if (!sViewElement.compare("jump")) {

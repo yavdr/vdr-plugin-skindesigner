@@ -122,11 +122,21 @@
     <controliconsmodeonly>
     </controliconsmodeonly>
 
+    <!-- Available Variables progressmodeonly:
+    {current}                   current frame of recording
+    {total}                     total frames of recording
+    {timecurrent}               current time in hh:mm:ss or mm:ss if shorter that one hour
+    {timetotal}                 total time in hh:mm:ss or mm:ss if shorter that one hour
+    -->
+    <progressmodeonly>
+    </progressmodeonly>
+
     <!-- Available Variables jump:
     {jump}                      time to jump to in hh:mm
     -->
     <jump>
     </jump>
+    
     <!-- Available Variables message:
     {text}                     message text
     {status}                   true if message is a status message

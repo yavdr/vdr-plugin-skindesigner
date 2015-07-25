@@ -213,6 +213,19 @@ void cStopWatch::Stop(const char* message) {
     dsyslog("skindesigner: %s - needed %d ms", message, (int)(cTimeMs::Now() - start));
 }
 
+string GetTimeString(int seconds) {
+    time_t sec(seconds);
+    tm *p = gmtime(&sec);
+    int hours = p->tm_hour;
+    int mins = p->tm_min;
+    int secs = p->tm_sec;
+    if (hours > 0) {
+        return *cString::sprintf("%d:%02d:%02d", hours, mins, secs);
+    }
+    return *cString::sprintf("%02d:%02d", mins, secs);;
+}
+
+
 //View Helpers
 string GetScreenResolutionString(int width, int height, bool *isHD) {
     string name = "";

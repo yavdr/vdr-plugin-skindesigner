@@ -41,6 +41,8 @@ public:
 	void Stop(const char* message);
 };
 
+string GetTimeString(int seconds);
+
 string GetScreenResolutionString(int width, int height, bool *isHD);
 string GetScreenAspectString(double aspect, bool *isWideScreen);
 
