@@ -30,22 +30,19 @@ then
   CHANGES=`git log --reverse --pretty="format:%h: %s" HEAD..upstream/master upstream/master`
 
   git merge --commit --log -m "Merge branch 'upstream/master'" upstream/master
-  git archive --format=tar.gz --prefix=${PACKAGE}-${UPSTREAMVERSION}/ --output=../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz upstream/master
+  if [ ! -e ../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz ]
+  then
+    git archive --format=tar.gz --prefix=${PACKAGE}-${UPSTREAMVERSION}/ --output=../${PACKAGE}_${UPSTREAMVERSION}.orig.tar.gz upstream/master
+  fi
   dch -v ${NEWVERSION} -u medium -D ${DISTRIBUTION} --force-distribution "new upstream snapshot"
   while read -r line ; do dch -a "${line}" ; done <<< "${CHANGES}"
-  git add debian/changelog
-  git commit -m "new upstream snapshot"
-  git push
-  git push --tags
-  debuild -S -sa
-  dput -U ppa:${PPA} ../${PACKAGE}_${NEWVERSION}_source.changes
-
-  # upload to testing/precise
-  OTHERDISTRIBUTION=precise
-  OTHERPPA=yavdr/testing-vdr
-  OTHERVERSION=${UPSTREAMVERSION}-0${BUILDPREFIX}0~${OTHERDISTRIBUTION}
-  dch -v ${OTHERVERSION} --force-bad-version -u medium -D ${OTHERDISTRIBUTION} --force-distribution "rebuild for ${OTHERDISTRIBUTION}"
-  debuild -S -sa
-  dput -U ppa:${OTHERPPA} ../${PACKAGE}_${OTHERVERSION}_source.changes
-  git checkout -- debian/changelog
+  if [ -z "$DRYRUN" ]
+  then
+    git add debian/changelog
+    git commit -m "new upstream snapshot"
+    git push
+    git push --tags
+    debuild -S -sa
+    dput -U ppa:${PPA} ../${PACKAGE}_${NEWVERSION}_source.changes
+  fi
 fi
