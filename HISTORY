@@ -399,4 +399,6 @@ Version 0.6.1
 Version 0.6.2
 
 - added progressmodeonly viewelement in displayreplay
+- fixed bug in checking skin version
+
 

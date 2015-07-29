@@ -201,22 +201,32 @@ eOSState cSkinDesignerSetup::ProcessKey(eKeys Key) {
         if (Key == kRed) {
             string versionNeeded = "";
             bool versionOk = config.CheckVersion(currentSkin, versionNeeded);
-            if (!versionOk) {
-                cString error = cString::sprintf("%s %s %s %s %s", 
-                                                 tr("Skin Designer"),
-                                                 tr("version"), 
-                                                 versionNeeded.c_str(),
-                                                 tr("or higher"),
-                                                 tr("needed"));
-                Skins.Message(mtError, *error);
-                return state;
-            }
             if (type == itSkinRepo) {
+                if (!versionOk) {
+                    cString error = cString::sprintf("%s %s %s %s %s", 
+                                                     tr("Skin Designer"),
+                                                     tr("version"), 
+                                                     versionNeeded.c_str(),
+                                                     tr("or higher"),
+                                                     tr("needed"));
+                    Skins.Message(mtError, *error);
+                    return state;
+                }
                 Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Installing Skin")));
                 StartInstallation(currentSkin);
             } else if (type == itSkinSetup || type == itNoSkinSetup) {
                 bool gitAvailable = StartUpdate(currentSkin);
                 if (gitAvailable) {
+                    if (!versionOk) {
+                        cString error = cString::sprintf("%s %s %s %s %s", 
+                                                         tr("Skin Designer"),
+                                                         tr("version"), 
+                                                         versionNeeded.c_str(),
+                                                         tr("or higher"),
+                                                         tr("needed"));
+                        Skins.Message(mtError, *error);
+                        return state;
+                    }                    
                     Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Updating Skin from Git")));
                 } else {
                     Skins.Message(mtStatus, tr("No Git Repsoitory available"));
@@ -402,18 +412,18 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
             case kRed: {
                 string versionNeeded = "";
                 bool versionOk = config.CheckVersion(skin, versionNeeded);
-                if (!versionOk) {
-                    cString error = cString::sprintf("%s %s %s %s %s", 
-                                                     tr("Skin Designer"),
-                                                     tr("version"), 
-                                                     versionNeeded.c_str(),
-                                                     tr("or higher"),
-                                                     tr("needed"));
-                    Skins.Message(mtError, *error);
-                    break;
-                }
                 bool gitAvailable = StartUpdate(skin);
                 if (gitAvailable) {
+                    if (!versionOk) {
+                        cString error = cString::sprintf("%s %s %s %s %s", 
+                                                         tr("Skin Designer"),
+                                                         tr("version"), 
+                                                         versionNeeded.c_str(),
+                                                         tr("or higher"),
+                                                         tr("needed"));
+                        Skins.Message(mtError, *error);
+                        break;
+                    }
                     Skins.Message(mtStatus, *cString::sprintf("%s ...", tr("Updating Skin from Git")));
                 } else {
                     Skins.Message(mtStatus, tr("No Git Repsoitory available"));

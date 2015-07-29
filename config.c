@@ -359,14 +359,17 @@ bool cDesignerConfig::CheckVersion(string name, string &neededVersion) {
     int verMinor = atoi(tokensVer[1].c_str());
     int verMikro = atoi(tokensVer[2].c_str());
 
-    if (minVerMajor > verMajor) {
+    if (minVerMajor < verMajor)
+        return true;
+    if (minVerMajor > verMajor)
         return false;
-    } else if (minVerMinor > verMinor) {
+    if (minVerMinor < verMinor)
+        return true;
+    if (minVerMinor > verMinor)
         return false;
-    } else if (minVerMikro > verMikro) {
-        return false;
-    }
-    return true;
+    if (minVerMikro <= verMikro)
+        return true;
+    return false;
 }
 
 bool cDesignerConfig::SkinInstalled(string name) {
