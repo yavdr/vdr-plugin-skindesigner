@@ -400,5 +400,5 @@ Version 0.6.2
 
 - added progressmodeonly viewelement in displayreplay
 - fixed bug in checking skin version
-
-
+- added {watched} and {percentseen} to displaymenurecordings
+  current view
