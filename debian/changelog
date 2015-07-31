@@ -1,3 +1,22 @@
+vdr-plugin-skindesigner (0.6.3-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * bffafed: changed skinrepository from static file to github
+    repository
+  * dc2aefa:  fixed flickering when main menu is fading
+  * ac3f69c: some changes in metrixHD
+  * 65b61b4: fixed crashes if main menu is opened consecutively
+  * 10e37f6: some more locks
+  * c4b49c6: added version check for skinrepositiries
+  * d9c5219: Version 0.6.2
+  * 6e0f56e: added progressmodeonly viewelement in displayreplay
+  * 2efe231: fixed bug in checking skin version
+  * 5bb69c2: added {watched} and {percentseen} to displaymenurecordings
+    current view
+  * b5c587b: Version 0.6.3
+
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 31 Jul 2015 13:37:21 +0200
+
 vdr-plugin-skindesigner (0.6.2-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
