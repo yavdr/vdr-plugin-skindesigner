@@ -10,6 +10,7 @@
 cDisplayMenuView::cDisplayMenuView(cTemplateView *tmplView, bool menuInit) : cView(tmplView) {
     if (!menuInit)
         SetFadeTime(0);
+    fadeOut = false;
     cat = mcUndefined;
     sortMode = msmUnknown;
     sortModeLast = msmUnknown;
@@ -283,7 +284,6 @@ cDisplayMenuMainView::cDisplayMenuMainView(cTemplateView *tmplView, bool menuIni
 
 cDisplayMenuMainView::~cDisplayMenuMainView() {
     CancelSave();
-    FadeOut();
 }
 
 void cDisplayMenuMainView::DrawStaticViewElements(void) {
@@ -628,7 +628,6 @@ cDisplayMenuSchedulesView::cDisplayMenuSchedulesView(cTemplateView *tmplView, eM
 
 cDisplayMenuSchedulesView::~cDisplayMenuSchedulesView() {
     CancelSave();
-    FadeOut();
 }
 
 bool cDisplayMenuSchedulesView::DrawHeader(void) {

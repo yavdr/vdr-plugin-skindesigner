@@ -7,6 +7,7 @@
 
 class cDisplayMenuListView {
 private:
+    cMutex mutex;
     cTemplateViewList *tmplList;
     eMenuCategory cat;
     string currentPlug;
@@ -19,6 +20,8 @@ private:
 public:
     cDisplayMenuListView(cTemplateViewList *tmplList, int count, eMenuCategory cat = mcUnknown, string currentPlug = "");
     virtual ~cDisplayMenuListView();
+    void Lock(void) { mutex.Lock(); };
+    void Unlock(void) { mutex.Unlock(); };
     void Clear(void);
     void SetTabs(int tab1, int tab2, int tab3, int tab4, int tab5);
     int GetMaxItems(void) { return itemCount; };

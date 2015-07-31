@@ -94,7 +94,7 @@ void cDesignerConfig::ReadSkinFolder(cString &skinFolder, vector<string> *contai
     while (dirEntry = readdir(folder)) {
         string dirEntryName = dirEntry->d_name;
         int dirEntryType = dirEntry->d_type;
-        if (!dirEntryName.compare(".") || !dirEntryName.compare("..") || dirEntryType != DT_DIR)
+        if (!dirEntryName.compare(".") || !dirEntryName.compare("..") || !dirEntryName.compare("skinrepositories") || dirEntryType != DT_DIR)
             continue;
         container->push_back(dirEntryName);
     }
@@ -328,8 +328,48 @@ void cDesignerConfig::SetSkinSetupParameters(void) {
 }
 
 void cDesignerConfig::ReadSkinRepos(void) {
-    skinRepos.Read(*skinPath);
-    dsyslog("skindesigner: read %d skinrepositories from %s", skinRepos.Count(), *skinPath);
+    skinRepos.Init(*installerSkinPath);
+    skinRepos.Read(*installerSkinPath);
+    dsyslog("skindesigner: read %d skinrepositories from %s", skinRepos.Count(), *installerSkinPath);
+}
+
+bool cDesignerConfig::CheckVersion(string name, string &neededVersion) {
+    cSkinRepo *repo = skinRepos.GetRepo(name);
+    if (!repo)
+        return false;
+    neededVersion = repo->MinSDVersion();
+
+    splitstring minVer(neededVersion.c_str());
+    vector<string> tokensMinVer = minVer.split('.', 1);
+    if (tokensMinVer.size() != 3) {
+        esyslog("skindesigner: incorrect minimumskindesignerversion definition: %s", neededVersion.c_str());
+        return false;
+    }
+    splitstring ver(version.c_str());
+    vector<string> tokensVer = ver.split('.', 1);
+    if (tokensVer.size() != 3) {
+        esyslog("skindesigner: incorrect version definition: %s", version.c_str());
+        return false;
+    }
+
+    int minVerMajor = atoi(tokensMinVer[0].c_str());
+    int minVerMinor = atoi(tokensMinVer[1].c_str());
+    int minVerMikro = atoi(tokensMinVer[2].c_str());
+    int verMajor = atoi(tokensVer[0].c_str());
+    int verMinor = atoi(tokensVer[1].c_str());
+    int verMikro = atoi(tokensVer[2].c_str());
+
+    if (minVerMajor < verMajor)
+        return true;
+    if (minVerMajor > verMajor)
+        return false;
+    if (minVerMinor < verMinor)
+        return true;
+    if (minVerMinor > verMinor)
+        return false;
+    if (minVerMikro <= verMikro)
+        return true;
+    return false;
 }
 
 bool cDesignerConfig::SkinInstalled(string name) {

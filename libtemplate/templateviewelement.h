@@ -68,6 +68,7 @@ enum eViewElement {
     veCuttingMarks,
     veControlIcons,
     veControlIconsModeOnly,
+    veProgressModeOnly,
     veBackgroundModeOnly,
     veRecJump,
     veOnPause,

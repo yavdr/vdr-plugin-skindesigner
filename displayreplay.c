@@ -59,6 +59,7 @@ void cSDDisplayReplay::SetMode(bool Play, bool Forward, int Speed) {
     } else {
         replayView->ClearOnPause();
     }
+
     replayView->DrawControlIcons(Play, Forward, Speed, modeOnly);
     initialModeSet = true;
 }
@@ -103,7 +104,16 @@ void cSDDisplayReplay::Flush(void) {
         replayView->DrawDate();
         replayView->DrawTime();
     }
-
+    if (modeOnly) {
+        cControl *control = cControl::Control();
+        if (control) {
+            double fps = control->FramesPerSecond();
+            int current = 0;
+            int total = 0;
+            if (control->GetIndex(current, total))
+                replayView->DrawProgressModeOnly(fps, current, total);
+        }
+    }
     if (initial && initialModeSet) {
         replayView->DrawBackground(modeOnly);
         replayView->DrawCustomTokens();

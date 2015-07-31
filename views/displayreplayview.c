@@ -349,6 +349,20 @@ void cDisplayReplayView::DrawControlIcons(bool play, bool forward, int speed, bo
     }
 }
 
+void cDisplayReplayView::DrawProgressModeOnly(double fps, int current, int total) {
+    string cur = GetTimeString((double)current / fps);
+    string tot = GetTimeString((double)total / fps);
+    map < string, string > stringTokens;
+    map < string, int > intTokens;
+    intTokens.insert(pair<string,int>("current", current));
+    intTokens.insert(pair<string,int>("total", total));
+    stringTokens.insert(pair<string,string>("timecurrent", cur));
+    stringTokens.insert(pair<string,string>("timetotal", tot));
+    ClearViewElement(veProgressModeOnly);
+    DrawViewElement(veProgressModeOnly, &stringTokens, &intTokens);
+}
+
+
 void cDisplayReplayView::DrawJump(const char *jump) {
     if (!jump) {
         ClearViewElement(veRecJump);

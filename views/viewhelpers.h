@@ -9,6 +9,7 @@ typedef pair<string,string> stringpair;
 
 class cViewHelpers {
 private:
+    cMutex mutexDevices;
     int numDevices;
     bool devicesInit;
     int* lastSignalStrength;

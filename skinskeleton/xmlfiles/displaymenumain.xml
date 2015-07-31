@@ -112,7 +112,7 @@
     {minutes}                   Duration, rest of minutes
     {elapsed}                   Elapsed time of current Schedule in min (0 for recordings)
     {remaining}                 Remaining time of current Schedule in min (0 for recordings)
-    {hasPoster}                 true if poster is available
+    {hasposter}                 true if poster is available
     {posterpath}                Full Path of Poster to use in image path attribute
     {posterwidth}               width of poster in pixel
     {posterheight}              height of poster in pixel

@@ -14,6 +14,7 @@ class cViewElement;
 
 class cView : public cPixmapContainer {
 private:
+    cMutex mutex;
     void Init(void);
     void DoDrawDebugGrid(void);
     void DoFill(int num, cTemplateFunction *func);
@@ -76,8 +77,10 @@ public:
     cView(cTemplateView *tmplView);
     cView(cTemplateViewElement *tmplViewElement);
     cView(cTemplateViewTab *tmplTab);
-    void DrawDebugGrid(void);
     virtual ~cView();
+    void Lock(void) { mutex.Lock(); };
+    void Unlock(void) { mutex.Unlock(); };
+    void DrawDebugGrid(void);
     virtual void Stop(void);
     void HideAnimations(void);
     void ShowAnimations(void);

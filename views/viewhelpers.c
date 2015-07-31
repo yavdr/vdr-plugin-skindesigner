@@ -32,9 +32,14 @@ cViewHelpers::cViewHelpers(void) {
 
 cViewHelpers::~cViewHelpers() {
     if (devicesInit) {
+        mutexDevices.Lock();
         delete[] lastSignalStrength;
+        lastSignalStrength = NULL;
         delete[] lastSignalQuality;
+        lastSignalQuality = NULL;
         delete[] recDevices;
+        recDevices = NULL;
+        mutexDevices.Unlock();
     }
 }
 
@@ -309,11 +314,13 @@ void cViewHelpers::InitDevices(void) {
     lastSignalStrength = new int[numDevices];
     lastSignalQuality = new int[numDevices];
     recDevices = new bool[numDevices];
+    mutexDevices.Lock();
     for (int i=0; i<numDevices; i++) {
         lastSignalStrength[i] = 0;
         lastSignalQuality[i] = 0;
         recDevices[i] = false;
     }
+    mutexDevices.Unlock();
     devicesInit = true;
 }
 
@@ -330,7 +337,15 @@ bool cViewHelpers::SetDevices(bool initial, bool light, intmap *intTokens, vecto
             }
             int signalStrength = device->SignalStrength();
             int signalQuality = device->SignalQuality();
-            if ((signalStrength != lastSignalStrength[i]) || (signalQuality != lastSignalQuality[i])) {
+            int lastSigStr = 0;
+            int lastSigQual = 0;
+            mutexDevices.Lock();
+            if (lastSignalStrength && lastSignalQuality) {
+                lastSigStr = lastSignalStrength[i];
+                lastSigQual = lastSignalQuality[i];
+            }
+            mutexDevices.Unlock();
+            if ((signalStrength != lastSigStr) || (signalQuality != lastSigQual)) {
                 changed = true;
                 break;
             }            
@@ -356,7 +371,10 @@ bool cViewHelpers::SetDevices(bool initial, bool light, intmap *intTokens, vecto
         if (cRecordControl *RecordControl = cRecordControls::GetRecordControl(timer)) {
             const cDevice *recDevice = RecordControl->Device();
             if (recDevice) {
-                recDevices[recDevice->DeviceNumber()] = true;
+                mutexDevices.Lock();
+                if (recDevices)
+                    recDevices[recDevice->DeviceNumber()] = true;
+                mutexDevices.Unlock();
             }
         }
     }
@@ -399,7 +417,12 @@ bool cViewHelpers::SetDevices(bool initial, bool light, intmap *intTokens, vecto
         deviceVals.insert(pair< string, string >("devices[signalquality]", strQuality.str()));
 
         deviceVals.insert(pair< string, string >("devices[livetv]", i == deviceLiveTV ? "1" : "0"));
-        deviceVals.insert(pair< string, string >("devices[recording]", recDevices[i] ? "1" : "0"));
+        string isRecording = "0";
+        mutexDevices.Lock();
+        if (recDevices && recDevices[i])
+            isRecording = "1";
+        mutexDevices.Unlock();
+        deviceVals.insert(pair< string, string >("devices[recording]", isRecording));
 
         const cChannel *channel = device->GetCurrentlyTunedTransponder();
         const cSource *source = (channel) ? Sources.Get(channel->Source()) : NULL;

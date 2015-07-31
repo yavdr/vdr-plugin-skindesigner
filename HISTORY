@@ -389,3 +389,19 @@ Version 0.6.0
 
 Version 0.6.1
 
+- changed skinrepository from static file to github repository
+- fixed flickering when main menu is fading
+- some changes in metrixHD
+- changed font in metrixhd from "VDROpen Sans" to "Open Sans"
+- fixed crashes if main menu is opened consecutively
+- added version check for skinrepositiries
+
+Version 0.6.2
+
+- added progressmodeonly viewelement in displayreplay
+- fixed bug in checking skin version
+- added {watched} and {percentseen} to displaymenurecordings
+  current view
+
+Version 0.6.3
+

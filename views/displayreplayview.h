@@ -38,6 +38,7 @@ public:
     void DrawProgressBar(int current, int total);
     void DrawMarks(const cMarks *marks, int current, int total);
     void DrawControlIcons(bool play, bool forward, int speed, bool modeOnly);
+    void DrawProgressModeOnly(double fps, int current, int total);
     void DrawJump(const char *jump);
     void DrawMessage(eMessageType type, const char *text);
     void DrawOnPause(string recFileName, bool modeOnly);

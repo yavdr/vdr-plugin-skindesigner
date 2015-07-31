@@ -24,7 +24,7 @@ private:
     stack<xmlNodePtr> nodeStack;
 protected:
     void DeleteDocument(void);
-    bool ReadXMLFile(const char *path);
+    bool ReadXMLFile(const char *path, bool validate = true);
     bool SetDocument(void);
     bool Validate(void);
     bool CheckNodeName(const char *name);
