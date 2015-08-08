@@ -284,7 +284,6 @@ void cView::DestroyDetachedViewElement(eViewElement ve) {
     detachedViewElements.erase(hit);    
 }
 
-
 void cView::ClearAnimations(int cat) {
     //stop and delete all animated elements from this viewelement
     if (animations.size() == 0)
@@ -746,6 +745,7 @@ void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
     string fontName = func->GetFontName();
     int fontSize = func->GetNumericParameter(ptFontSize);
     int align = func->GetNumericParameter(ptAlign);
+    int valign = func->GetNumericParameter(ptValign);
     int maxLines = func->GetNumericParameter(ptMaxLines);
     tColor clr = func->GetColorParameter(ptColor);
     tColor clrBack = clrTransparent;
@@ -759,6 +759,14 @@ void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
     int fontHeight = fontManager->Height(fontName, fontSize);
     int lines = wrapper.Lines();
     int yLine = y;
+
+    if (height > 0 && valign == alCenter) {
+        int totalHeight = lines * fontHeight;
+        if (totalHeight < height) {
+            yLine += (height - totalHeight) / 2;
+        }
+    }
+
     for (int line=0; line < lines; line++) {
         int xLine = x;
         if (align == alCenter) {
@@ -771,15 +779,16 @@ void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
         cPoint pos(xLine, yLine);
         if (maxLines > 0 && line == maxLines-1) {
             string lastLine = wrapper.GetLine(line);
-        if (lines > maxLines) {
+            if (lines > maxLines) {
                 lastLine += "...";
             }
-        DrawText(num, pos, lastLine.c_str(), clr, clrBack, fontName, fontSize);
+            DrawText(num, pos, lastLine.c_str(), clr, clrBack, fontName, fontSize);
             break;
-        } else if (height > 0 && yLine - y + 2*fontHeight > height) {
+        } else if (line != (lines-1) && height > 0 && yLine - y + 2*fontHeight > height) {
             DrawText(num, pos, "...", clr, clrBack, fontName, fontSize);
             break;
         }
+        esyslog("skindesigner: drawing regular line yLine %d", yLine);
         DrawText(num, pos, wrapper.GetLine(line), clr, clrBack, fontName, fontSize);
         yLine += fontHeight;
     }

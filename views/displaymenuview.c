@@ -221,6 +221,8 @@ void cDisplayMenuView::DrawScrollbar(int numMax, int numDisplayed, int offset) {
 
     intTokens.insert(pair<string, int>("height", barHeight));
     intTokens.insert(pair<string, int>("offset", barOffset));
+    intTokens.insert(pair<string, int>("hasprev", (offset == 0) ? 0 : 1));
+    intTokens.insert(pair<string, int>("hasnext", (offset + numMax == numDisplayed) ? 0 : 1));
 
     ClearViewElement(veScrollbar);
     DrawViewElement(veScrollbar, &stringTokens, &intTokens);

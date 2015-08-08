@@ -1,6 +1,7 @@
 #include "skinsetup.h"
 #include "../config.h"
 #include "../libtemplate/xmlparser.h"
+#include "../libcore/helpers.h"
 
 // --- cSkinSetupParameter -----------------------------------------------------------
 
@@ -10,7 +11,17 @@ cSkinSetupParameter::cSkinSetupParameter(void) {
     displayText = "";
     min = 0;
     max = 1000;
-    value = 0; 
+    value = 0;
+    options = NULL;
+    optionsTranslated = NULL;
+    numOptions = 0;
+}
+
+cSkinSetupParameter::~cSkinSetupParameter(void) {
+    if (numOptions > 0 && options && optionsTranslated) {
+        delete[] options;
+        delete[] optionsTranslated;
+    }
 }
 
 void cSkinSetupParameter::Debug(void) {
@@ -19,9 +30,16 @@ void cSkinSetupParameter::Debug(void) {
         sType = "bool";
     else if (type == sptInt)
         sType = "int";
-    dsyslog("skindesigner: name \"%s\", type %s, displayText \"%s\", Value %d", name.c_str(), sType.c_str(), displayText.c_str(), value);
+    else if (type == sptString)
+        sType = "string";
+    dsyslog("skindesigner: name \"%s\", type %s, displayText \"%s\", Value: %d", name.c_str(), sType.c_str(), displayText.c_str(), value);
     if (type == sptInt)
         dsyslog("skindesigner: min %d, max %d", min, max);
+    if (type == sptString && options) {
+        for (int i=0; i < numOptions; i++) {
+            dsyslog("skindesigner: option %d: %s, translated: %s", i+1, options[i], optionsTranslated[i]);
+        }
+    }
 }
 
 // --- cSkinSetupMenu -----------------------------------------------------------
@@ -88,7 +106,7 @@ void cSkinSetupMenu::InitIterators(void) {
     subMenuIt = subMenus.begin();
 }
 
-void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value) {
+void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value, string options) {
     cSkinSetupParameter *param = new cSkinSetupParameter();
     param->type = paramType;
     param->name = name;
@@ -100,7 +118,25 @@ void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, string name, st
     if (max.size() && paramType == sptInt) {
         param->max = atoi(max.c_str());
     }
+
     param->value = atoi(value.c_str());
+
+    if (paramType == sptString) {
+        splitstring o(options.c_str());
+        vector<string> opts = o.split(',', 1);
+        int numOpts = opts.size();
+        if (numOpts > 0) {
+            param->numOptions = numOpts;
+            param->options = new const char*[numOpts];
+            int i=0;
+            for (vector<string>::iterator it = opts.begin(); it != opts.end(); it++) {
+                string option = trim(*it);
+                char *s = new char[option.size()];
+                strcpy(s, option.c_str());
+                param->options[i++] = s;
+            }
+        }
+    }
 
     parameters.push_back(param);
 }
@@ -185,7 +221,7 @@ void cSkinSetup::SubMenuDone(void) {
     }
 }
 
-void cSkinSetup::SetParameter(string type, string name, string displayText, string min, string max, string value) {
+void cSkinSetup::SetParameter(string type, string name, string displayText, string min, string max, string value, string options) {
     if (!type.size() || !name.size() || !displayText.size() || !value.size()) {
         esyslog("skindesigner: invalid setup parameter for skin %s", skin.c_str());
         return;
@@ -195,12 +231,14 @@ void cSkinSetup::SetParameter(string type, string name, string displayText, stri
         paramType = sptInt;
     } else if (!type.compare("bool")) {
         paramType = sptBool;
+    } else if (!type.compare("string")) {
+        paramType = sptString;
     }
     if (paramType == sptUnknown) {
         esyslog("skindesigner: invalid setup parameter for skin %s", skin.c_str());
         return;
     }
-    currentMenu->SetParameter(paramType, name, displayText, min, max, value);
+    currentMenu->SetParameter(paramType, name, displayText, min, max, value, options);
 }
 
 cSkinSetupParameter *cSkinSetup::GetNextParameter(void) {
@@ -221,7 +259,14 @@ void cSkinSetup::AddToGlobals(cGlobals *globals) {
     rootMenu->InitIterators();
     cSkinSetupParameter *param = NULL;
     while (param = rootMenu->GetNextParameter()) {
-		globals->AddInt(param->name, param->value);
+		if (param->type == sptString) {
+            string value = param->options[param->value];
+            globals->AddString(param->name, value);
+            string intName = "index" + param->name;
+            globals->AddInt(intName, param->value);
+        } else {
+            globals->AddInt(param->name, param->value);
+        }
     }
 }
 
@@ -232,6 +277,23 @@ void cSkinSetup::TranslateSetup(void) {
         string transl = "";
         if (Translate(param->displayText, transl)) {
             param->displayText = transl;
+        }
+        if (param->type == sptString && param->numOptions > 0) {
+            param->optionsTranslated = new const char*[param->numOptions];
+            for (int i = 0; i < param->numOptions; i++) {
+                string option = param->options[i];
+                string optionTransToken = "{tr(" + option + ")}";
+                string optionTranslated = "";
+                if (Translate(optionTransToken, optionTranslated)) {
+                    char *s = new char[optionTranslated.size()];
+                    strcpy(s, optionTranslated.c_str());
+                    param->optionsTranslated[i] = s;
+                } else {
+                    char *s = new char[option.size()];
+                    strcpy(s, option.c_str());
+                    param->optionsTranslated[i] = s;
+                }
+            }
         }
     }
 

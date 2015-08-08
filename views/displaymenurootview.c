@@ -226,6 +226,13 @@ void cDisplayMenuRootView::SetSortMode(eMenuSortMode sortMode) {
     view->SetSortMode(sortMode);
 }
 
+eMenuOrientation cDisplayMenuRootView::MenuOrientation(void) {
+    if (!listView) {
+        return moVertical;
+    }
+    return listView->MenuOrientation();
+}
+
 void cDisplayMenuRootView::CorrectDefaultMenu(void) {
     if (viewType > svMenuDefault && viewType != svMenuPlugin) {
         SetMenu(mcUnknown, true);

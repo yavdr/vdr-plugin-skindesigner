@@ -8,6 +8,9 @@
         <parameter type="int" name="shifttimedatetime" min="0" max="1000" displaytext="{tr(shifttimedatetimetext)}">0</parameter>
         <parameter type="int" name="shifttimetimers" min="0" max="1000" displaytext="{tr(shifttimetimerstext)}">0</parameter>
         <parameter type="bool" name="showdevices" displaytext="{tr(showdevices)}">0</parameter>
+        <parameter type="string" name="mainmenuorientation" displaytext="{tr(mainmenuorientation)}" options="horizontal,vertical">1</parameter>
+        <parameter type="string" name="recmenuorientation" displaytext="{tr(recmenuorientation)}" options="horizontal,vertical">1</parameter>
+        <parameter type="string" name="weathermenuorientation" displaytext="{tr(weathermenuorientation)}" options="horizontal,vertical">1</parameter>
     </menu>
 
     <translations>
@@ -32,6 +35,26 @@
             <trans lang="en_EN">Show DVB device info when switching channel</trans>
             <trans lang="de_DE">DVB Karten Info beim Umschalten anzeigen</trans>
             <trans lang="fi_FI">Näytä DVB-tiedot kanavanvaihdossa</trans>
+        </token>
+        <token name="tr(mainmenuorientation)">
+            <trans lang="en_EN">Orientation of main menu</trans>
+            <trans lang="de_DE">Ausrichtung des Hauptmenüs</trans>
+        </token>
+        <token name="tr(recmenuorientation)">
+            <trans lang="en_EN">Orientation of recordings menu</trans>
+            <trans lang="de_DE">Ausrichtung des Aufzeichnugsmenüs</trans>
+        </token>
+        <token name="tr(weathermenuorientation)">
+            <trans lang="en_EN">Orientation of weatherforecast menu</trans>
+            <trans lang="de_DE">Ausrichtung des Wettermenüs</trans>
+        </token>
+        <token name="tr(horizontal)">
+            <trans lang="en_EN">horizontal menu</trans>
+            <trans lang="de_DE">horizontales Menü</trans>
+        </token>
+        <token name="tr(vertical)">
+            <trans lang="en_EN">vertical menu</trans>
+            <trans lang="de_DE">vertikales Menü</trans>
         </token>
     </translations>
 </setup>

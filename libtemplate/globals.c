@@ -149,6 +149,15 @@ void cGlobals::ReplaceStringVars(string &value) {
 
 }
 
+bool cGlobals::GetString(string &name, string &value) {
+    map<string,string>::iterator hit = stringVars.find(name);
+    if (hit == stringVars.end())
+        return false;
+    value = hit->second;
+    return true;
+}
+
+
 bool cGlobals::AddTranslation(string name,  map < string, string > transl) {
     translations.erase(name);
     translations.insert(pair<string, map < string, string > >(name, transl));

@@ -25,9 +25,7 @@ void cTemplateViewList::SetGlobals(cGlobals *globals) {
 bool cTemplateViewList::CalculateListParameters(void) {
     if (!parameters)
         return false;
-    parameters->SetContainer(containerX, containerY, containerWidth, containerHeight);
-    parameters->SetGlobals(globals);
-    bool paramsValid = parameters->CalculateParameters();
+    bool paramsValid = false;
     if (!listElement)
         return false;
     listElement->SetContainer(parameters->GetNumericParameter(ptX),
@@ -65,6 +63,13 @@ bool cTemplateViewList::CalculateListParameters(map < string, int > *intTokens) 
     paramsValid = listElement->CalculatePixmapParametersList(parameters->GetNumericParameter(ptOrientation), 
                                                              parameters->GetNumericParameter(ptNumElements));
     return paramsValid;
+}
+
+eOrientation cTemplateViewList::GetOrientation(void) {
+    if (!parameters)
+        return orNone;
+    int orientation = parameters->GetNumericParameter(ptOrientation);
+    return (eOrientation)orientation;
 }
 
 int cTemplateViewList::GetAverageFontWidth(void) {

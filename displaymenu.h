@@ -4,6 +4,15 @@
 #include "libtemplate/template.h"
 #include "views/displaymenurootview.h"
 
+#if defined(APIVERSNUM) && APIVERSNUM < 20301
+#ifndef MENU_ORIENTATION_DEFINED
+enum eMenuOrientation {
+    moVertical = 0,
+    moHorizontal
+};
+#endif
+#endif
+
 enum eViewState {
     vsInit,
     vsMenuInit,
@@ -32,6 +41,7 @@ public:
     virtual void Clear(void);
     virtual void SetMenuCategory(eMenuCategory MenuCat);
     virtual void SetMenuSortMode(eMenuSortMode MenuSortMode);
+    virtual eMenuOrientation MenuOrientation(void);
     virtual void SetPluginMenu(string name, int menu, int type, bool init);
     virtual void SetTitle(const char *Title);
     virtual void SetButtons(const char *Red, const char *Green = NULL, const char *Yellow = NULL, const char *Blue = NULL);

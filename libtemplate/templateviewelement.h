@@ -111,6 +111,7 @@ public:
     void SetPixOffset(int offset) { pixOffset = offset; };
     int GetPixOffset(void) { return pixOffset; };
     virtual int GetNumPixmaps(void);
+    bool GetName(string &name);
     void InitPixmapNodeIterator(void);
     cTemplatePixmapNode *GetNextPixmapNode(void);
     void InitPixmapIterator(void);

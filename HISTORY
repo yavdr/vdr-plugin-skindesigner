@@ -405,3 +405,18 @@ Version 0.6.2
 
 Version 0.6.3
 
+- implemented horizontal menus
+  For displaying horizontal menus with VDR <= 2.2.x a VDR 
+  patch is required (see /patches/vdr-2.2.0_horizontal_menu.patch 
+  in the plugin source directory). Without this patch the keys 
+  left/right and up/down are not toggled in horizontal menus. 
+  With VDR >= 2.3.1 this patch is not needed anymore.
+- added possibility to add conditions to <menuitems> elements
+- added possibility to define a viewelement several times with
+  different conditions
+- added "string" skin setup parameter with multiple options
+- added "valign" option in <drawtextbox>. If the box height is set
+  and the text does not need the complete height, with valign="center"
+  the text can be placed horizontally centered inside the box borders.
+- implemented optional horizontal main-, recordings- and 
+  weatherforecast menu in metrixhd

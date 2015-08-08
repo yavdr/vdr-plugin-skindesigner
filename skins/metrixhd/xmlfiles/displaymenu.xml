@@ -13,11 +13,7 @@
 ]>
 
 <displaymenu x="3%" y="5%" width="94%" height="90%" fadetime="0">
-    <!-- 
-    The following background, header, datetime and colorbuttons definitions are default
-    implementations. If one or more of these elements are not implemented in the subview, 
-    the default implementations are used. 
-    -->
+
     <background>
         <!-- background left Menu -->
         <area x="0" y="0" width="63%" height="100%" layer="1">
@@ -28,18 +24,7 @@
             <fill color="{clrTransBlueLight}" />
         </area>
     </background>
-    <!-- Available Variables header:
-    {title}                   title of current menu
-    {vdrversion}              running VDR Version
-    {hasicon}                 true if a menu icon is available
-    {icon}                    path of menu icon
-    {freetime}                available disc capacity in hh:mm
-    {freepercent}             available disc capacity in percent
-    {usedpercent}             used disc capacity in percent
-    {freegb}                  available disc capacity in gigabytes
-    {discalert}               true if disc usage is > 95%
-    {vdrusagestring}          localized VDR internal usage string
-    -->
+
     <header>
         <area x="0" y="0" width="41%" height="10%" layer="2">
             <drawtext condition="not{hasicon}" x="5" width="{areawidth}-10" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
@@ -47,17 +32,7 @@
             <drawtext condition="{hasicon}" x="{areaheight}" valign="center" width="{areawidth}-{areaheight}-10" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
         </area>
     </header>
-    <!-- Available Variables datetime:
-    {time}                              time in hh:mm
-    {day}                               day in digits
-    {dayleadingzero}                    day in digits with leading 0
-    {dayname}                           Full name of the day
-    {daynameshort}                      Short 3 char name of the day
-    {month}                             month in digits with leading 0
-    {monthname}                         Full name of the month
-    {monthnameshort}                    3 letter abbrivation of month name
-    {year}                              year in yyyy
-    -->
+
     <datetime>
         <area x="41%" y="0" width="12%" height="10%" layer="2">
             <drawtext align="right" y="5%" font="{light}" fontsize="50%" color="{clrWhite}" text="{dayname}" />
@@ -67,13 +42,7 @@
             <drawtext align="center" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{time}" />
         </area>
     </datetime>
-    <!-- Available Variables message:
-    {text}                    message text
-    {status}                  true if message is an status message
-    {info}                    true if message is an info message
-    {warning}                 true if message is an warn message
-    {error}                   true if message is an error message
-    -->
+
     <message>
         <area x="5%" y="75%" width="90%" height="15%" layer="7">
             <fill color="{clrTransBlack}" />
@@ -85,12 +54,6 @@
         </area>
     </message>
     
-    <!-- Available Variables sortmode:
-    {sortnumber}              true if menu is sorted by number
-    {sortname}                true if menu is sorted alphabetical
-    {sorttime}                true if menu is sorted by time
-    {sortprovider}            true if menu is sorted by provider
-    -->
     <sortmode>
         <area x="35%" y="2%" width="6%" height="6%" layer="4">
             <drawimage condition="{sortnumber}" imagetype="icon" path="ico_sort_number" x="0" y="0" width="100%" height="100%"/>
@@ -99,28 +62,7 @@
             <drawimage condition="{sortprovider}" imagetype="icon" path="ico_sort_provider" x="0" y="0" width="100%" height="100%"/>
         </area>
     </sortmode>
-    <!-- Available Variables colorbuttons:
-    {red1}                    true if red button is button 1
-    {red2}                    true if red button is button 2
-    {red3}                    true if red button is button 3
-    {red4}                    true if red button is button 4
-    {green1}                  true if green button is button 1
-    {green2}                  true if green button is button 2
-    {green3}                  true if green button is button 3
-    {green4}                  true if green button is button 4
-    {yellow1}                 true if yellow button is button 1
-    {yellow2}                 true if yellow button is button 2
-    {yellow3}                 true if yellow button is button 3
-    {yellow4}                 true if yellow button is button 4
-    {blue1}                   true if blue button is button 1
-    {blue2}                   true if blue button is button 2
-    {blue3}                   true if blue button is button 3
-    {blue4}                   true if blue button is button 4
-    {red}                     label of red button
-    {green}                   label of green button
-    {yellow}                  label of yellow button
-    {blue}                    label of blue button
-    -->
+
     <colorbuttons>
         <area x="0" y="92%" width="15%" height="8%" layer="2">
             <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />

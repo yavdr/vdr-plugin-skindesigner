@@ -15,6 +15,7 @@ using namespace std;
 enum eSetupParameterType {
     sptInt,
     sptBool,
+    sptString,
     sptUnknown
 };
 
@@ -24,13 +25,16 @@ class cSkinSetupParameter {
 private:
 public:
     cSkinSetupParameter(void);
-    virtual ~cSkinSetupParameter(void) {};
+    virtual ~cSkinSetupParameter(void);
     eSetupParameterType type;
     string name;
     string displayText;
     int min;
     int max;
-    int value; 
+    int value;
+    const char* *options;
+    const char* *optionsTranslated;
+    int numOptions;
     void Debug(void);
 };
 
@@ -55,7 +59,7 @@ public:
     void SetParent(cSkinSetupMenu *p) { parent = p; };
     cSkinSetupMenu *GetParent(void) { return parent; };
     void AddSubMenu(cSkinSetupMenu *sub) { subMenus.push_back(sub); };
-    void SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value);
+    void SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value, string options);
     void InitIterators(void);
     void InitParameterIterator(void) { paramIt = parameters.begin(); };
     cSkinSetupParameter *GetNextParameter(bool deep = true);
@@ -82,7 +86,7 @@ public:
     bool ReadFromXML(void);
     void SetSubMenu(string name, string displayText);
     void SubMenuDone(void);
-    void SetParameter(string type, string name, string displayText, string min, string max, string value);
+    void SetParameter(string type, string name, string displayText, string min, string max, string value, string options);
     void InitParameterIterator(void) { rootMenu->InitIterators(); };
     cSkinSetupParameter *GetNextParameter(void);
     cSkinSetupParameter *GetParameter(string name);

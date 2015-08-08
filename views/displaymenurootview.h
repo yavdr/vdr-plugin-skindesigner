@@ -55,6 +55,7 @@ public:
     void SetMenu(eMenuCategory menuCat, bool menuInit);
     void SetSelectedPluginMainMenu(string name) { selectedPluginMainMenu = name; };
     void SetSortMode(eMenuSortMode sortMode);
+    eMenuOrientation MenuOrientation(void);
     void SetCurrentRecording(string rec) { currentRecording = rec; };
     void CorrectDefaultMenu(void);
     void SetPluginMenu(string name, int menu, int type);

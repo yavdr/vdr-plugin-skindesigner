@@ -65,6 +65,12 @@ void cSDDisplayMenu::SetMenuSortMode(eMenuSortMode MenuSortMode) {
     rootView->SetSortMode(MenuSortMode);
 }
 
+eMenuOrientation cSDDisplayMenu::MenuOrientation(void) {
+    if (!doOutput)
+        return moVertical;
+    return rootView->MenuOrientation();
+}
+
 void cSDDisplayMenu::SetPluginMenu(string name, int menu, int type, bool init) {
     pluginName = name;
     pluginMenu = menu;

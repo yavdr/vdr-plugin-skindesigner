@@ -1,7 +1,4 @@
 <menumain x="0" y="0" width="100%" height="100%" fadetime="0">
-    <!-- 
-    static content of main menu, is only drawn once at main menu startup
-    -->
     <background>
         <!-- main menu background -->
         <area x="0" y="0" width="71%" height="70%" layer="1">
@@ -13,26 +10,13 @@
             <drawrectangle x="53%" y="0" width="47%" height="100%" color="{clrTransBlack}" />
         </area>
     </background>
-    <!-- Available Variables header:
-    {title}                   title of current menu
-    {vdrversion}              running VDR Version
-    -->
+
     <header>
         <area x="0" y="0" width="70%" height="7%" layer="2">
             <drawtext x="10" valign="center" font="{light}" fontsize="100%" color="{clrWhite}" text="{title} {vdrversion}" />
         </area>
     </header>
-    <!-- Available Variables datetime:
-    {time}                              time in hh:mm
-    {day}                               day in digits
-    {dayleadingzero}                    day in digits with leading 0
-    {dayname}                           Full name of the day
-    {daynameshort}                      Short 3 char name of the day
-    {month}                             month in digits with leading 0
-    {monthname}                         Full name of the month
-    {monthnameshort}                    3 letter abbrivation of month name  
-    {year}                              year in yyyy
-    -->
+
     <datetime>
         <area x="75%" y="0" width="13%" height="10%" layer="3">
             <drawtext align="right" y="0%" font="{light}" fontsize="55%" color="{clrWhite}" text="{dayname}" />
@@ -43,28 +27,6 @@
         </area>
     </datetime>
 
-    <!-- Available Variables colorbuttons:
-    {red1}                    true if red button is button 1
-    {red2}                    true if red button is button 2
-    {red3}                    true if red button is button 3
-    {red4}                    true if red button is button 4
-    {green1}                  true if green button is button 1
-    {green2}                  true if green button is button 2
-    {green3}                  true if green button is button 3
-    {green4}                  true if green button is button 4
-    {yellow1}                 true if yellow button is button 1
-    {yellow2}                 true if yellow button is button 2
-    {yellow3}                 true if yellow button is button 3
-    {yellow4}                 true if yellow button is button 4
-    {blue1}                   true if blue button is button 1
-    {blue2}                   true if blue button is button 2
-    {blue3}                   true if blue button is button 3
-    {blue4}                   true if blue button is button 4
-    {red}                     label of red button
-    {green}                   label of green button
-    {yellow}                  label of yellow button
-    {blue}                    label of blue button
-    -->
     <colorbuttons>
         <area x="0" y="63%" width="18%" height="7%" layer="2">
             <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
@@ -107,20 +69,7 @@
             <drawrectangle condition="{blue4}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
         </area>
     </colorbuttons>
-    <!-- Available Variables timers:
-    {numtimers}                  number of active timers (max. 15 timers will be displayed)
-    {numtimerconflicts}          number of current timer conflicts
 
-    {timers[]}                   array with active timers (local and remote if remotetimers plugin is in use)
-    {timers[title]}              title of timer
-    {timers[datetime]}           date and time of timer
-    {timers[recording]}          true if timer is recording currently
-    {timers[channelname]}        name of channel for which timer is created
-    {timers[channelnumber]}      number of channel
-    {timers[channelid]}          ChannelID of channel
-    {timers[channellogoexists]}  true if channel logo exists
-    {timers[isremotetimer]}      true if timer is a remote timer from remotetimers plugin
-    -->
     <timers detached="true" delay="100" shifttime="{shifttimetimers}" startx="0" starty="100%">
         <area x="0" y="75%" width="{areawidth}/8 - 5" height="25%" layer="1">
             <fill color="{clrTransBlack}" />
@@ -167,14 +116,6 @@
         </area>
     </timers>
 
-    <!-- Available Variables discusage:
-    {freetime}                available disc capacity in hh:mm
-    {freepercent}             available disc capacity in percent
-    {usedpercent}             used disc capacity in percent
-    {freegb}                  available disc capacity in gigabytes
-    {discalert}               true if disc usage is > 95%
-    {vdrusagestring}          localized VDR internal usage string
-    -->
     <discusage detached="true" delay="100" fadetime="0">
         <area background="true" x="75%" y="26%" width="25%" height="10%" layer="1">
             <fill condition="not{discalert}" color="{clrTransBlack}"/>
@@ -187,26 +128,6 @@
         </area>
     </discusage>
 
-    <!-- Available Variables currentweather:
-    {timestamp}                 timestamp of forecast in dd.mm hh:mm
-    {temperature}               current temperature in °C
-    {apparenttemperature}       apparent (feeled) temperature
-    {mintemperature}            minimum daily temperature in °C
-    {maxtemperature}            maximum daily temperature in °C
-    {summary}                   short weather summary
-    {icon}                      weather icon 
-    {precipitationintensity}    precipitation intensity in l/m2
-    {precipitationprobability}  precipitation probability in %
-    {precipitationtype}         precipitation type
-    {humidity}                  humidity in %
-    {windspeed}                 windspeed in km/h
-    {windbearing}               wind bearing in °
-    {windbearingstring}         wind bearing (N, NE, ...)
-    {visibility}                visibility in km
-    {cloudcover}                cloud cover in %
-    {pressure}                  pressure in HPo
-    {ozone}                     ozone value in DU
-    -->
     <currentweather detached="true" delay="100" fadetime="0">
         <area x="75%" y="13%" width="25%" height="10%" layer="2">
             <drawrectangle x="0" y="0" width="53%" height="100%" color="{clrTransBlueLight}" />
@@ -224,23 +145,6 @@
         </area>
     </currentweather>
 
-    <!-- Available Variables devices:
-    {numdevices}                number of available devices
-    {devices[]}                 array with available devices
-    {devices[num]}              number of current device
-    {devices[type]}             type of device (DVB-S, DVB-C, ...)
-    {devices[istuned]}          true if device is currently tuned to a transponder
-    {devices[livetv]}           true if device is currently playing livetv
-    {devices[recording]}        true if device is currently recording
-    {devices[hascam]}           true if device has a CAM
-    {devices[cam]}              number of CAM
-    {devices[signalstrength]}   signalstrength of devcie
-    {devices[signalquality]}    signalstrength of devcie
-    {devices[channelnumber]}    number of the currently tuned channel
-    {devices[channelname]}      name of the currently tuned channel
-    {devices[channelid]}        ID of the currently tuned channel
-    {devices[source]}           source of the currently tuned channel
-    -->
     <devices condition="{showdevices}" detached="true" delay="100" fadetime="0">
         <area background="true" x="75%" y="48%" width="25%" height="{areaheight}/12 * {numdevices}" layer="1">
             <fill color="{clrTransBlack}"/>
@@ -259,9 +163,6 @@
         </area>
     </devices>
 
-    <!-- Available Variables systemload:
-    {load}                      current system load
-    -->
     <systemload detached="true" delay="100" fadetime="0">
         <area background="true" x="75%" y="40%" width="25%" height="5%" layer="1">
             <fill color="{clrTransBlack}"/>
@@ -271,23 +172,10 @@
         </area>
     </systemload>
 
-    <!-- Available Variables customtokens:
-    all custom tokens set by the svdrp command SCTK are available in this viewelement
-    For instance, use an appropriate script which runs periodically as cronjob and
-    sets these custom tokens with svdrpsend or dbus2vdr
-    --> 
     <customtokens>
     </customtokens>
 
-    <menuitems x="0" y="7%" orientation="vertical" width="70%" height="56%" align="center" numlistelements="8">
-        <!-- Available Variables main menu listelement:
-        {nummenuitem}             number of item in list, starts with 1
-        {label}                   label of menu item
-        {number}                  number of menu item (or empty string if not set)
-        {icon}                    path of appropriate icon
-        {current}                 true if item is currently selected 
-        {separator}               true if item is a list separator 
-        -->
+    <menuitems condition="strequal({mainmenuorientation}, 'vertical')" x="0" y="7%" orientation="vertical" width="70%" height="56%" align="center" numlistelements="8">
         <listelement>
             <area x="0" width="60%" layer="2">
                 <fill condition="not{current}" color="{clrTransparent}" />
@@ -297,12 +185,6 @@
                 <drawtext name="menutext" x="20" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{number} {label}" />
             </areascroll>
         </listelement>
-        <!-- additional element which is drawn for current element -->
-        <!-- Available Variables main menu currentelement:
-        {label}                   label of menu item
-        {number}                  number of menu item (or empty string if not set)
-        {icon}                    path of appropriate icon
-        -->
         <currentelement delay="50" fadetime="0">
             <area x="61%" y="22%" width="36%" height="52%" layer="2">
                 <fill color="{clrTransBlueLight}" />
@@ -312,8 +194,30 @@
             </area>
         </currentelement>
     </menuitems>
-    
-    <scrollbar>
+
+    <menuitems condition="strequal({mainmenuorientation}, 'horizontal')" x="0" y="7%" orientation="horizontal" width="70%" height="56%" align="center" numlistelements="1">
+        <listelement>
+            <area y="10%" height="80%" layer="2">
+                <drawrectangle condition="{current}" x="20%" y="0" width="60%" height="100%" color="{clrTransBlueLight}" />
+            </area>
+            <area y="10%" height="80%" layer="3">
+                <drawimage condition="{current}" imagetype="menuicon" path="{icon}" align="center" y="10%" width="{areaheight}*0.6" height="{areaheight}*0.6"/>
+            </area>
+            <areascroll scrollelement="menutext" mode="forthandback" orientation="horizontal" delay="1000" scrollspeed="medium" y="70%" height="20%" layer="4">
+                <drawtext name="menutext" align="center" valign="center" font="{light}" fontsize="90%" color="{clrWhite}" text="{label}" />
+            </areascroll>
+        </listelement>
+    </menuitems>
+
+    <scrollbar condition="strequal({mainmenuorientation}, 'horizontal')">
+        <area condition="{hasprev}" x="0" y="7%" width="14%" height="56%" layer="2">
+            <drawimage imagetype="icon" path="ico_arrow_left" align="center" valign="center" width="{areawidth}*0.8" height="{areawidth}*0.8"/>
+        </area>
+        <area condition="{hasnext}" x="56%" y="7%" width="14%" height="56%" layer="2">
+            <drawimage imagetype="icon" path="ico_arrow_right" align="center" valign="center" width="{areawidth}*0.8" height="{areawidth}*0.8"/>
+        </area>
+    </scrollbar>
+    <scrollbar condition="strequal({mainmenuorientation}, 'vertical')">
         <area x="68%" y="7%" width="2%" height="56%" layer="2">
             <fill color="{clrWhite}" />
             <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />

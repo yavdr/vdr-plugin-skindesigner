@@ -1,39 +1,49 @@
 <menurecordings x="0" y="0" width="100%" height="100%" fadetime="0">
-    <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
-        <!-- Available Variables recordings menu listelement:
-        {nummenuitem}           number of item in list, starts with 1
-        {name}                  Name of recording
-        {epgname}               Name of recording (Name from EPG)
-        {shorttext}             Short Text of recording
-        {description}           Descrption of recording
-        {date}                  Date of recording (day dd.mm.yyyy)
-        {time}                  Time of recording
-        {daynumeric}            day as number
-        {month}                 month as number
-        {year}                  year as number
-        {duration}              real duration of recording in minutes
-        {durationhours}         real duration, full hours
-        {durationminutes}       real duration, rest of minutes
-        {durationevent}         duration of corresponding event in minutes
-        {durationeventhours}    event duration, full hours
-        {durationeventminutes}  event duration, rest of minutes
-        {current}               true if item is currently selected
-        {new}                   true if recording is new
-        {percentseen}           percent already watched, -1 for VDR < 2.1.8
-        {watched}               true if percentseen > 85% including MarginStop of not cutted recording 
-        {cutted}                true if recording is cutted
-        {folder}                true if item is a folder
-        {numrecordingsfolder}   if item is a folder, number of recordings in this folder
-        {newrecordingsfolder}   if item is a folder, number of new recordings in this folder
-        {hasposterthumbnail}    true if a scraped poster thumbnail is available for recording
-        {thumbnailbwidth}       width of scraped poster thumbnail
-        {thumbnailheight}       height of scraped poster thumbnail
-        {thumbnailpath}         absolute path of scraped poster thumbnail
-        {hasposter}             true if a scraped poster is available for recording
-        {posterwidth}           width of scraped poster
-        {posterheight}          height of scraped poster
-        {posterpath}            absolute path of scraped poster
-         -->
+
+    <background condition="strequal({recmenuorientation}, 'horizontal')">
+        <!-- horizontal menu -->
+        <area x="0" y="0" width="100%" height="10%" layer="1">
+            <fill color="{clrTransBlack}" />
+        </area>
+        <area x="0" y="60%" width="100%" height="40%" layer="1">
+            <fill color="{clrTransBlack}" />
+        </area>
+        <area x="5%" y="10%" width="90%" height="50%" layer="1">
+            <fill color="{clrTransBlueLight}" />
+        </area>
+    </background>
+
+    <header condition="strequal({recmenuorientation}, 'horizontal')">
+        <!-- horizontal menu -->
+        <area x="0" y="0" width="70%" height="10%" layer="2">
+            <drawtext condition="not{hasicon}" x="5" width="{areawidth}-10" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
+            <drawimage condition="{hasicon}" name="menuicon" imagetype="menuicon" path="{icon}" x="5" valign="center" width="{areaheight}*8/10" height="80%"/>
+            <drawtext condition="{hasicon}" x="{areaheight}" valign="center" width="{areawidth}-{areaheight}-10" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
+        </area>
+    </header>
+
+    <datetime condition="strequal({recmenuorientation}, 'horizontal')">
+        <!-- horizontal menu -->
+        <area x="70%" y="0" width="15%" height="10%" layer="2">
+            <drawtext align="right" y="5%" font="{light}" fontsize="50%" color="{clrWhite}" text="{dayname}" />
+            <drawtext align="right" y="45%" font="{light}" fontsize="50%" color="{clrWhite}" text="{day}. {monthnameshort}" />
+        </area>
+        <area x="85%" y="0" width="15%" height="10%" layer="2">
+            <drawtext align="center" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{time}" />
+        </area>
+    </datetime>
+
+    <sortmode condition="strequal({recmenuorientation}, 'horizontal')">
+        <!-- horizontal menu -->
+        <area x="60%" y="2%" width="6%" height="6%" layer="4">
+            <drawimage condition="{sortnumber}" imagetype="icon" path="ico_sort_number" x="0" y="0" width="100%" height="100%"/>
+            <drawimage condition="{sortname}" imagetype="icon" path="ico_sort_name" x="0" y="0" width="100%" height="100%"/>
+            <drawimage condition="{sorttime}" imagetype="icon" path="ico_sort_time" x="0" y="0" width="100%" height="100%"/>
+            <drawimage condition="{sortprovider}" imagetype="icon" path="ico_sort_provider" x="0" y="0" width="100%" height="100%"/>
+        </area>
+    </sortmode>
+
+    <menuitems condition="strequal({recmenuorientation}, 'vertical')" x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
         <listelement>
             <!-- Background -->
             <area x="1%" width="58%" layer="2">
@@ -55,33 +65,6 @@
                 <drawimage condition="not{new}++{cutted}" imagetype="icon" path="ico_cutted" x="{areawidth} - {areaheight}" width="0.9*{areaheight}" height="0.9*{areaheight}" valign="center" />
             </area>
         </listelement>
-        <!-- additional element which is drawn for current element -->
-        <!-- Available Variables channels menu currentelement:
-        {name}                  Real Name of recording (Name of Recording Folder)
-        {epgname}               Name of recording (Name from EPG)
-        {shorttext}             Short Text of recording
-        {description}           Descrption of recording        
-        {date}                  Date of recording
-        {time}                  Time of recording
-        {daynumeric}            day as number
-        {month}                 month as number
-        {year}                  year as number
-        {duration}              real duration of recording in minutes
-        {durationhours}         real duration, full hours
-        {durationminutes}       real duration, rest of minutes
-        {durationevent}         duration of corresponding event in minutes
-        {durationeventhours}    event duration, full hours
-        {durationeventminutes}  event duration, rest of minutes
-        {new}                   true if recording is new
-        {cutted}                true if recording is cutted
-        {folder}                true if item is a folder
-        {numrecordingsfolder}   if item is a folder, number of recordings in this folder
-        {newrecordingsfolder}   if item is a folder, number of new recordings in this folder
-        {hasposter}             true if a scraped poster is available for recording
-        {posterwidth}           width of scraped poster
-        {posterheight}          height of scraped poster
-        {posterpath}            absolute path of scraped poster
-        -->
         <currentelement delay="500" fadetime="0">
             <area x="63%" y="0" width="36%" height="100%" layer="2">
                 <!-- header -->
@@ -96,15 +79,104 @@
             </area>
         </currentelement>
     </menuitems>
-    <!-- Available Variables colorbuttons:
-    {height}                  height in one-tenth of a percent of total height
-    {offset}                  offset from top in one-tenth of a percent of total height
-    -->
-    <scrollbar>
+
+    <menuitems condition="strequal({recmenuorientation}, 'horizontal')" x="0" y="10%" orientation="horizontal" width="100%" height="82%" align="center" numlistelements="10">
+        <listelement>
+            <!-- Background -->
+            <area y="64%" height="36%" layer="2">
+                <fill condition="not{current}" color="{clrTransparent}" />
+                <fill condition="{current}" color="{clrTransBlueLight}" />
+                <fill condition="{separator}" color="{clrSemiTransBlack}" />
+            </area>
+            <!-- recording folder -->
+            <area condition="{folder}" y="64%" height="36%" layer="3">
+                <drawimage name="foldericon" imagetype="icon" path="ico_recfolder" align="center" y="0" width="0.6*{areaheight} * 92 / 136" height="0.6*{areaheight}" />
+                <drawtextbox align="center" valign="center" maxlines="3" x="1%" y="63%" width="98%" height="37%" font="{light}" fontsize="12%" color="{clrWhite}" text="{name} ({numrecordingsfolder}, {newrecordingsfolder} new)" />
+            </area>
+            <!-- recording item -->
+            <area condition="not{folder}" y="64%" height="36%" layer="3">
+                <drawimage condition="{hasposterthumbnail}" imagetype="image" path="{thumbnailpath}" align="center" y="8" width="{areaheight}*0.6 * {thumbnailbwidth} / {thumbnailheight}" height="{areaheight}*0.6"/>
+                <drawimage condition="not{hasposterthumbnail}" imagetype="icon" path="ico_recording" align="center" y="8" width="{areaheight}*0.5 * {thumbnailbwidth} / {thumbnailheight}" height="{areaheight}*0.6"/>
+                <drawtextbox align="center" valign="center" maxlines="3" x="1%" y="63%" width="98%" height="37%" font="{light}" fontsize="12%" color="{clrWhite}" text="{name}" />
+            </area>
+        </listelement>
+        <currentelement delay="500" fadetime="0">
+            <area x="5%" y="0" width="90%" height="61%" layer="2">
+                <!-- scraper poster -->
+                <drawimage condition="{hasposter}" name="poster" imagetype="image" path="{posterpath}" x="1%" y="2%" width="{areaheight}*0.96 * {posterwidth} / {posterheight}" height="96%"/>
+                <!-- header -->
+                <drawtext condition="{hasposter}" name="title" x="{width(poster)} + 0.04*{areawidth}" y="0" font="{semibold}" fontsize="10%" color="{clrWhite}" text="{epgname}" />
+                <drawtext condition="{hasposter}" name="shorttext" x="{width(poster)} + 0.04*{areawidth}" y="{height(title)}" width="0.96*{areawidth} - {width(poster)}" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{shorttext}" />
+                <drawtext condition="{hasposter}" name="datetime" x="{width(poster)} + 0.04*{areawidth}" y="{posy(shorttext)} + {height(shorttext)}" font="{light}" fontsize="7%" color="{clrWhite}" text="{date} {time}, {duration} min" />
+
+                <drawtext condition="not{hasposter}" name="title" x="2%" y="0" font="{semibold}" fontsize="10%" color="{clrWhite}" text="{epgname}" />
+                <drawtext condition="not{hasposter}" name="shorttext" x="2%" y="{height(title)}" width="98%" font="{semibold}" fontsize="8%" color="{clrWhite}" text="{shorttext}" />
+                <drawtext condition="not{hasposter}" name="datetime" x="2%" y="{posy(shorttext)} + {height(shorttext)}" font="{light}" fontsize="7%" color="{clrWhite}" text="{date} {time}, {duration} min" />
+                <!-- description -->
+                <drawtextbox condition="{hasposter}" x="{width(poster)} + 0.04*{areawidth}" y="{posy(datetime)} + {height(datetime)} + 10" width="{areawidth}*0.94 - {width(poster)}" height="{areaheight}*0.92 - {posy(datetime)}" font="{light}" fontsize="7%" color="{clrWhite}" text="{description}" />
+                <drawtextbox condition="not{hasposter}" x="2%" y="{posy(datetime)} + {height(datetime)} + 10" width="{areawidth}*0.98" height="{areaheight}*0.92 - {posy(datetime)}" font="{light}" fontsize="7%" color="{clrWhite}" text="{description}" />
+            </area>
+        </currentelement>
+    </menuitems>
+
+    <scrollbar condition="strequal({recmenuorientation}, 'vertical')">
         <area x="60%" y="10%" width="2%" height="82%" layer="3">
             <fill color="{clrWhite}" />
             <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
             <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
         </area>
     </scrollbar>
+
+    <scrollbar condition="strequal({recmenuorientation}, 'horizontal')">
+        <area x="0" y="{areaheight}*0.6" width="100%" height="{areaheight}*0.025" layer="3">
+            <fill color="{clrWhite}" />
+            <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
+            <drawrectangle x="4 + {areawidth} * {offset} / 1000" y="4" width="{areawidth} * {height} / 1000 - 8" height="{areaheight} - 8" color="{clrWhite}" />
+        </area>
+    </scrollbar>
+
+    <colorbuttons condition="strequal({recmenuorientation}, 'horizontal')">
+        <!-- horizontal menu -->
+        <area x="0" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red1}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green1}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow1}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue1}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="25%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red2}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green2}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow2}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue2}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue2}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="50%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red3}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green3}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow3}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue3}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue3}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+        <area x="75%" y="92%" width="25%" height="8%" layer="2">
+            <drawtext condition="{red4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
+            <drawrectangle condition="{red4}" x="0" y="0" width="10" height="100%" color="{clrRed}" />
+            <drawtext condition="{green4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{green}" />
+            <drawrectangle condition="{green4}" x="0" y="0" width="10" height="100%" color="{clrGreen}" />
+            <drawtext condition="{yellow4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{yellow}" />
+            <drawrectangle condition="{yellow4}" x="0" y="0" width="10" height="100%" color="{clrYellow}" />
+            <drawtext condition="{blue4}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{blue}" />
+            <drawrectangle condition="{blue4}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
+        </area>
+    </colorbuttons>
+
 </menurecordings>

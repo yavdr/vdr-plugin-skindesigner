@@ -199,12 +199,16 @@ void cXmlParser::ParseViewElement(cTemplateView *subView) {
     if (!view)
         return;
     
-    const char *viewElement = NodeName();
+    const char *viewElementName = NodeName();
     vector<stringpair> attributes = ParseAttributes();
     ValidateAttributes("viewelement", attributes);
 
     if (!LevelDown())
         return;
+
+    cTemplateViewElement *viewElement = new cTemplateViewElement();
+    viewElement->SetParameters(attributes);
+
     do {
         if (!CheckNodeName("areacontainer") && !CheckNodeName("area") && !CheckNodeName("areascroll")) {
             esyslog("skindesigner: invalid tag \"%s\" in viewelement", NodeName());
@@ -216,12 +220,15 @@ void cXmlParser::ParseViewElement(cTemplateView *subView) {
         } else {
             pix = ParseAreaContainer();
         }
-        if (subView)
-            subView->AddPixmap(viewElement, pix, attributes);
-        else
-            view->AddPixmap(viewElement, pix, attributes);
+        pix->SetGlobals(globals);
+        viewElement->AddPixmap(pix);
     } while (NextNode());
     LevelUp();
+
+    if (subView)
+        subView->AddViewElement(viewElementName, viewElement);
+    else
+        view->AddViewElement(viewElementName, viewElement);
 }
 
 void cXmlParser::ParseViewList(cTemplateView *subView) {
@@ -323,6 +330,10 @@ void cXmlParser::ParseGrid(void) {
 
     if (!LevelDown())
         return;
+
+    cTemplateViewGrid *viewGrid = new cTemplateViewGrid();
+    viewGrid->SetParameters(attributes);
+
     do {
 
         if (!CheckNodeName("areacontainer") && !CheckNodeName("area") && !CheckNodeName("areascroll")) {
@@ -335,9 +346,12 @@ void cXmlParser::ParseGrid(void) {
         } else {
             pix = ParseAreaContainer();
         }
-        view->AddPixmapGrid(pix, attributes);
+        pix->SetGlobals(globals);
+        viewGrid->AddPixmap(pix);
     } while (NextNode());
     LevelUp();
+    
+    view->AddGrid(viewGrid);
 }
 
 cTemplatePixmap *cXmlParser::ParseArea(void) {
@@ -579,15 +593,17 @@ void cXmlParser::ParseSetupParameter(void) {
     string attributeMax = "max";
     string paramMax = "";
     string paramValue = "";
+    string attributeOptions = "options";
+    string paramOptions="";
 
     GetAttribute(attributeType, paramType);
     GetAttribute(attributeName, paramName);
     GetAttribute(attributeDisplayText, paramDisplayText);
     GetAttribute(attributeMin, paramMin);
-    GetAttribute(attributeMax, paramMax);
+    GetAttribute(attributeOptions, paramOptions);
     GetNodeValue(paramValue);
 
-    skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramMin, paramMax, paramValue);
+    skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramMin, paramMax, paramValue, paramOptions);
 }
 
 void cXmlParser::ValidateAttributes(const char *nodeName, vector<stringpair> &attributes) {

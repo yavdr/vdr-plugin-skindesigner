@@ -34,8 +34,13 @@ Requirements
 
 - libcurl
 
-- for scaling the video picture to fit into the VDR menu window please use
-  softhddevice plugin revision 87c1c7be (2013-01-01) or newer.
+- softhddevice plugin revision ec58e456 (2015-06-13) or newer. With older
+  versions shifting does not work properly
+
+- For displaying horizontal menus with VDR <= 2.2.x a VDR patch is required 
+  (see /patches/vdr-2.2.0_horizontal_menu.patch in the plugin source directory)
+  Without this patch the keys left/right and up/down are not toggled in
+  horizontal menus. With VDR >= 2.3.1 this patch is not needed anymore.
 
 - epgsearch Git since commit ba7c6277 (2013-01-03) to correctly replace the
   schedules menu with epgsearch
