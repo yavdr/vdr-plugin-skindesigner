@@ -1,3 +1,11 @@
+vdr-plugin-skindesigner (0.7.0-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * ea758f9: implemented horizontal menus
+  * 8d5cc2b: Version 0.7.0
+
+ -- Frodo <frodo.vdr@gmx.net>  Sat, 08 Aug 2015 15:11:49 +0200
+
 vdr-plugin-skindesigner (0.6.3-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
