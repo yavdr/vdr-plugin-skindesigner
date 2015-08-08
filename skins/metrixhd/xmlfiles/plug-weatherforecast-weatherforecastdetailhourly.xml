@@ -34,32 +34,6 @@
         </area>
     </scrollbar>
     
-    <!-- Available Variables in detailheader and tab:
-    {summary}                           short summary of weather
-    {icon}                              path to use in <drawimage> to display appropriate weather icon
-    {city}                              configured city to display weather for
-    {latitude}                          latitude
-    {longitude}                         longitude
-
-    {hourly[]}                          array with up to 48 hourly forecasts
-    {hourly[num]}                       number of forecast, starting at 1
-    {hourly[timestamp]}                 timestamp in hh:mm
-    {hourly[temperature]}               temperature in °C
-    {hourly[apparenttemperature]}       apparent (felt) temperature in °C
-    {hourly[summary]}                   short summary
-    {hourly[icon]}                      path to use in <drawimage> to display appropriate weather icon
-    {hourly[precipitationintensity]}    precipitation intensity in l/qm    
-    {hourly[precipitationprobability]}  precipitation probability in %
-    {hourly[precipitationtype]}         precipitation type (snow, ...)
-    {hourly[humidity]}                  humidity in %
-    {hourly[windspeed]}                 wind speed in km/h
-    {hourly[windbearing]}               wind bearing in degrees
-    {hourly[windbearingstring]}         wind bearing as human readable string (e.g NE, NNE, ...)
-    {hourly[visibility]}                visibility in km
-    {hourly[cloudcover]}                cloud cover in %
-    {hourly[pressure]}                  pressure in HPa
-    {hourly[ozone]}                     Ozone in DU (Dobson Unit)
-    -->
     <detailheader>
         <area x="0" y="0" width="100%" height="20%" layer="2">
             <fill color="{clrTransBlueLight}" />

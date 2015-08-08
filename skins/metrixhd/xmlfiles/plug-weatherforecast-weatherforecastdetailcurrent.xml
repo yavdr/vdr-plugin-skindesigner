@@ -26,37 +26,14 @@
         </area>
     </colorbuttons>
 
-   <scrollbar>
+    <scrollbar>
         <area x="98%" y="20%" width="2%" height="65%" layer="3">
             <fill color="{clrWhite}" />
             <drawrectangle x="2" y="2" width="{areawidth} - 4" height="{areaheight} - 4" color="{clrTransparent}" />
             <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
         </area>
     </scrollbar>
-    <!-- Available Variables in detailheader and tab:
-    {menuheader}                        "Current Weather"
-    {city}                              configured city to display weather for
-    {latitude}                          latitude
-    {longitude}                         longitude
-    {timestamp}                         timestamp in hh:mm dd.mm of current forecast
-    {temperature}                       current temperature in °C
-    {apparenttemperature}               apparent (felt) temperature in °C
-    {temperaturemin}                    minimum temperature the day in °C
-    {temperaturemax}                    maximum temperature the day in °C
-    {summary}                           short summary of current weather
-    {icon}                              path to use in <drawimage> to display appropriate weather icon
-    {precipitationintensity}            precipitation intensity in l/qm    
-    {precipitationprobability}          precipitation probability in %
-    {precipitationtype}                 precipitation type (snow, ...)
-    {humidity}                          humidity in %
-    {windspeed}                         wind speed in km/h
-    {windbearing}                       wind bearing in degrees
-    {windbearingstring}                 wind bearing as human readable string (e.g NE, NNE, ...)
-    {visibility}                        visibility in km
-    {cloudcover}                        cloud cover in %
-    {pressure}                          pressure in HPa
-    {ozone}                             Ozone in DU (Dobson Unit)
-    -->
+    
     <detailheader>
         <area x="0" y="0" width="100%" height="20%" layer="2">
             <fill color="{clrTransBlueLight}" />

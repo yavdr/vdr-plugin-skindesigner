@@ -97,6 +97,15 @@ int cTemplateViewElement::GetNumPixmaps(void) {
     return numPixmaps;
 };
 
+bool cTemplateViewElement::GetName(string &name) {
+    if (!parameters)
+        return false;
+    name = parameters->GetParameter(ptName);
+    if (name.size() > 0)
+        return true;
+    return false;
+}
+
 void cTemplateViewElement::InitPixmapNodeIterator(void) {
     pixmapNodeIterator = viewPixmapNodes.begin();
 }

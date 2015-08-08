@@ -36,6 +36,7 @@ public:
     bool CalculateListParameters(map < string, int > *intTokens);
     cTemplateViewElement *GetListElement(void) { return listElement; };
     cTemplateViewElement *GetListElementCurrent(void) { return currentElement; };
+    eOrientation GetOrientation(void);
     int GetAverageFontWidth(void);
     cFont *GetTextAreaFont(void);
     int GetMenuItemWidth(void);

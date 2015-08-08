@@ -18,28 +18,7 @@
             <drawtext align="center" valign="center" font="{light}" fontsize="60%" color="{clrWhite}" text="{time}" />
         </area>
     </datetime>
-    <!-- Available Variables colorbuttons:
-    {red1}                    true if red button is button 1
-    {red2}                    true if red button is button 2
-    {red3}                    true if red button is button 3
-    {red4}                    true if red button is button 4
-    {green1}                  true if green button is button 1
-    {green2}                  true if green button is button 2
-    {green3}                  true if green button is button 3
-    {green4}                  true if green button is button 4
-    {yellow1}                 true if yellow button is button 1
-    {yellow2}                 true if yellow button is button 2
-    {yellow3}                 true if yellow button is button 3
-    {yellow4}                 true if yellow button is button 4
-    {blue1}                   true if blue button is button 1
-    {blue2}                   true if blue button is button 2
-    {blue3}                   true if blue button is button 3
-    {blue4}                   true if blue button is button 4
-    {red}                     label of red button
-    {green}                   label of green button
-    {yellow}                  label of yellow button
-    {blue}                    label of blue button
-    -->
+    
     <colorbuttons>
         <area x="0" y="92%" width="25%" height="8%" layer="2">
             <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
@@ -90,9 +69,6 @@
         </area>
     </scrollbar>
 
-    <!-- Available Variables in tab elements:
-    {text}                    detailed text
-    -->
     <tab name="text" x="2%" y="10%" width="94%" height="80%" layer="2" scrollheight="{areaheight}/4">
         <drawtextbox x="0" y="0" width="96%" font="{light}" fontsize="5%" color="{clrWhite}" text="{text}" />
     </tab>

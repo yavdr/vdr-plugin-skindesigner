@@ -471,6 +471,8 @@ void cSkindesignerSkinSetup::Set(void) {
             Add(new cMenuEditIntItem(param->displayText.c_str(), &param->value, param->min, param->max));
         } else if (param->type == sptBool) {
             Add(new cMenuEditBoolItem(param->displayText.c_str(), &param->value));
+        } else if (param->type == sptString) {
+            Add(new cMenuEditStraItem(param->displayText.c_str(), &param->value, param->numOptions, param->optionsTranslated));
         }
     }
 

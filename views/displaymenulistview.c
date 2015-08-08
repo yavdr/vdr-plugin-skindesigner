@@ -81,6 +81,15 @@ int cDisplayMenuListView::GetListWidth(void) {
     return 1920;
 }
 
+eMenuOrientation cDisplayMenuListView::MenuOrientation(void) {
+    if (!tmplList) {
+        return moVertical;
+    }
+    eOrientation orientation = tmplList->GetOrientation();
+    if (orientation == orHorizontal)
+        return moHorizontal;
+    return moVertical;
+}
 
 void cDisplayMenuListView::Clear(void) {
     for (int i=0; i<itemCount; i++) {

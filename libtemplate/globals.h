@@ -47,6 +47,7 @@ public:
     void ReplaceDoubleVars(string &value);
     void AddString(string &name, string &value);
     void ReplaceStringVars(string &value);
+    bool GetString(string &name, string &value);
     bool AddTranslation(string name,  map < string, string > transl);
     bool Translate(string text, string &translation);
     void AddCustomInt(string &name, int value);

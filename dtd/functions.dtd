@@ -95,6 +95,7 @@
   width CDATA #REQUIRED
   height CDATA #IMPLIED
   align (left|center|right) #IMPLIED
+  valign (top|center|bottom) #IMPLIED
   maxlines CDATA #IMPLIED
   floatwidth CDATA #IMPLIED
   floatheight CDATA #IMPLIED

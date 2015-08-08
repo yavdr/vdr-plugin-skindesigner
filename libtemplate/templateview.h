@@ -49,8 +49,8 @@ protected:
     int containerWidth;
     int containerHeight;
     //basic view data structures
-    map < eViewElement, cTemplateViewElement* > viewElements;
-    map < eViewList, cTemplateViewList* > viewLists;
+    multimap < eViewElement, cTemplateViewElement* > viewElements;
+    multimap < eViewList, cTemplateViewList* > viewLists;
     map < int, cTemplateViewGrid* > viewGrids;
     map < eSubView, cTemplateView* > subViews;
     vector< cTemplateViewTab* > viewTabs;
@@ -76,8 +76,8 @@ public:
     virtual string GetViewListName(eViewList vl) { return ""; };
     virtual void AddSubView(string sSubView, cTemplateView *subView) {};
     virtual void AddPluginView(string plugName, int templNo, cTemplateView *plugView) {};
-    virtual void AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<stringpair> &viewElementattributes) {};
-    virtual void AddPixmapGrid(cTemplatePixmapNode *pix, vector<pair<string, string> > &gridAttributes) {};
+    virtual void AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {};
+    virtual void AddGrid(cTemplateViewGrid *viewGrid) {};
     virtual void AddViewList(string sViewList, cTemplateViewList *viewList) {};
     virtual void AddViewTab(cTemplateViewTab *viewTab) {};
     //Setter Functions
@@ -151,7 +151,7 @@ public:
     cTemplateViewChannel(void);
     virtual ~cTemplateViewChannel(void);
     string GetViewElementName(eViewElement ve);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<stringpair> &viewElementattributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
 };
 
 // --- cTemplateViewMenu -------------------------------------------------------------
@@ -169,7 +169,7 @@ public:
     string GetViewListName(eViewList vl);
     void AddSubView(string sSubView, cTemplateView *subView);
     void AddPluginView(string plugName, int templNo, cTemplateView *plugView);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
     void AddViewList(string sViewList, cTemplateViewList *viewList);
     void AddViewTab(cTemplateViewTab *viewTab);
 };
@@ -183,7 +183,7 @@ public:
     cTemplateViewMessage(void);
     virtual ~cTemplateViewMessage(void);
     string GetViewElementName(eViewElement ve);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
 };
 
 // --- cTemplateViewReplay -------------------------------------------------------------
@@ -195,7 +195,7 @@ public:
     cTemplateViewReplay(void);
     virtual ~cTemplateViewReplay(void);
     string GetViewElementName(eViewElement ve);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
 };
 
 // --- cTemplateViewVolume -------------------------------------------------------------
@@ -207,7 +207,7 @@ public:
     cTemplateViewVolume(void);
     virtual ~cTemplateViewVolume(void);
     string GetViewElementName(eViewElement ve);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
 };
 
 // --- cTemplateViewAudioTracks -------------------------------------------------------------
@@ -221,7 +221,7 @@ public:
     virtual ~cTemplateViewAudioTracks(void);
     string GetViewElementName(eViewElement ve);
     string GetViewListName(eViewList vl);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
     void AddViewList(string sViewList, cTemplateViewList *viewList);
 };
 
@@ -235,8 +235,8 @@ public:
     cTemplateViewPlugin(string pluginName, int viewID);
     virtual ~cTemplateViewPlugin(void);
     void AddSubView(string sSubView, cTemplateView *subView);
-    void AddPixmap(string viewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes);
-    void AddPixmapGrid(cTemplatePixmapNode *pix, vector<pair<string, string> > &gridAttributes);
+    void AddViewElement(string sViewElement, cTemplateViewElement *viewElement);
+    void AddGrid(cTemplateViewGrid *viewGrid);
     void AddViewTab(cTemplateViewTab *viewTab);
 };
 

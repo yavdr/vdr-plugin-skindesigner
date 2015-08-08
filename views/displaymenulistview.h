@@ -26,6 +26,7 @@ public:
     void SetTabs(int tab1, int tab2, int tab3, int tab4, int tab5);
     int GetMaxItems(void) { return itemCount; };
     int GetListWidth(void);
+    eMenuOrientation MenuOrientation(void);
     void AddDefaultMenuItem(int index, string *tabTexts, bool current, bool selectable);
     string AddMainMenuItem(int index, const char *itemText, bool current, bool selectable);
     void AddSetupMenuItem(int index, const char *itemText, bool current, bool selectable);

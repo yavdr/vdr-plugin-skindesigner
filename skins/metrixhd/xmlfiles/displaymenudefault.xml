@@ -5,12 +5,7 @@
             <fill color="{clrTransBlack}" />
         </area>
     </background>
-    <!-- Available Variables header:
-    {title}                   title of current menu
-    {vdrversion}              running VDR Version
-    {hasicon}                 true if a menu icon is available
-    {icon}                    path of menu icon
-    -->
+    
     <header>
         <area x="0" y="0" width="75%" height="10%" layer="2">
             <drawtext condition="not{hasicon}" x="5" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
@@ -18,16 +13,7 @@
             <drawtext condition="{hasicon}" x="{areaheight}" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{title}" />
         </area>
     </header>
-    <!-- Available Variables datetime:
-    {time}                              time in hh:mm
-    {day}                               day in digits
-    {dayleadingzero}                    day in digits with leading 0
-    {dayname}                           Full name of the day
-    {daynameshort}                      Short 3 char name of the day
-    {month}                             month in digits with leading 0
-    {monthname}                         Full name of the month
-    {year}                              year in yyyy
-    -->
+    
     <datetime>
         <area x="80%" y="0" width="10%" height="10%" layer="2">
             <drawtext align="right" y="0%" font="{light}" fontsize="50%" color="{clrWhite}" text="{dayname}" />
@@ -38,28 +24,6 @@
         </area>
     </datetime>
 
-    <!-- Available Variables colorbuttons:
-    {red1}                    true if red button is button 1
-    {red2}                    true if red button is button 2
-    {red3}                    true if red button is button 3
-    {red4}                    true if red button is button 4
-    {green1}                  true if green button is button 1
-    {green2}                  true if green button is button 2
-    {green3}                  true if green button is button 3
-    {green4}                  true if green button is button 4
-    {yellow1}                 true if yellow button is button 1
-    {yellow2}                 true if yellow button is button 2
-    {yellow3}                 true if yellow button is button 3
-    {yellow4}                 true if yellow button is button 4
-    {blue1}                   true if blue button is button 1
-    {blue2}                   true if blue button is button 2
-    {blue3}                   true if blue button is button 3
-    {blue4}                   true if blue button is button 4
-    {red}                     label of red button
-    {green}                   label of green button
-    {yellow}                  label of yellow button
-    {blue}                    label of blue button
-    -->
     <colorbuttons>
         <area x="0" y="92%" width="25%" height="8%" layer="2">
             <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
@@ -110,47 +74,8 @@
             <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
         </area>
     </scrollbar>
-    <!-- IMPORTANT: menuitemwidth and determinatefont have to be defined here. menuitemwidth defines the total width of the 
-    default menu items, determinatefont the function which sets the actual font to use. With that it is possible to determinate
-    the correct column widths -->
+    
     <menuitems x="0" y="10%" orientation="vertical" width="94%" height="82%" align="center" menuitemwidth="94%" determinatefont="column1" numlistelements="16">
-        <!-- Available Variables default menu listelement:
-        {nummenuitem}               number of item in list, starts with 1
-        {column1}                   text of column1
-        {column2}                   text of column2
-        {column3}                   text of column3
-        {column4}                   text of column4
-        {column5}                   text of column5
-        {column6}                   text of column6
-        {column2set}                true if column2 is used
-        {column3set}                true if column3 is used
-        {column4set}                true if column4 is used
-        {column5set}                true if column5 is used
-        {column6set}                true if column6 is used
-        {column2x}                  proposed x value of column2
-        {column3x}                  proposed x value of column3
-        {column4x}                  proposed x value of column4
-        {column5x}                  proposed x value of column5
-        {column6x}                  proposed x value of column6
-        {column1width}              proposed width of column1
-        {column2width}              proposed width of column2
-        {column3width}              proposed width of column3
-        {column4width}              proposed width of column4
-        {column5width}              proposed width of column5
-        {column6width}              proposed width of column6
-        {columnscroll}              number of column which should have scrollable text
-        {current}                   true if column is currently selected 
-        {separator}                 true if column is a list separator
-
-        A dynamic token is set to indicate the current menu category or the plugin which is currently running.
-        With that it is possible to display different default menus with an individual style.
-        If a setup menu is diplayed, the token
-        {setup}                     is set to true
-        For the commands menu
-        {commands}                  is set to true
-        If a plugin is running, a token called as the name of the plugin is set to true
-        {pluginname}                is set to true
-        -->
         <listelement>
             <area x="0" condition="not{separator}" width="100%" layer="2">
                 <fill condition="not{current}" color="{clrTransparent}" />

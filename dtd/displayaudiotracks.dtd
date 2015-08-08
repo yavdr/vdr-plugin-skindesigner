@@ -42,7 +42,7 @@
   align (left|top|center|bottom|right) #IMPLIED
   menuitemwidth CDATA #IMPLIED
   numlistelements CDATA #REQUIRED
-  orientation (horizontal|vertical) #REQUIRED
+  orientation CDATA #REQUIRED
 >
 
 <!ELEMENT listelement (areacontainer|area|areascroll)*>

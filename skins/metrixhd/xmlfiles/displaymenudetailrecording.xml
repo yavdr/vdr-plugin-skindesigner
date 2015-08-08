@@ -21,28 +21,7 @@
             <fill color="{clrTransparent}" />
         </area>
     </datetime>
-    <!-- Available Variables colorbuttons:
-    {red1}                    true if red button is button 1
-    {red2}                    true if red button is button 2
-    {red3}                    true if red button is button 3
-    {red4}                    true if red button is button 4
-    {green1}                  true if green button is button 1
-    {green2}                  true if green button is button 2
-    {green3}                  true if green button is button 3
-    {green4}                  true if green button is button 4
-    {yellow1}                 true if yellow button is button 1
-    {yellow2}                 true if yellow button is button 2
-    {yellow3}                 true if yellow button is button 3
-    {yellow4}                 true if yellow button is button 4
-    {blue1}                   true if blue button is button 1
-    {blue2}                   true if blue button is button 2
-    {blue3}                   true if blue button is button 3
-    {blue4}                   true if blue button is button 4
-    {red}                     label of red button
-    {green}                   label of green button
-    {yellow}                  label of yellow button
-    {blue}                    label of blue button
-    -->
+    
     <colorbuttons>
         <area x="0" y="92%" width="25%" height="8%" layer="2">
             <drawtext condition="{red1}" x="20" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{red}" />
@@ -85,34 +64,7 @@
             <drawrectangle condition="{blue4}" x="0" y="0" width="10" height="100%" color="{clrBlue}" />
         </area>
     </colorbuttons>
-    <!-- Available Variables in detailheader elements:
-    {name}                    full name of recording (including folders)
-    {epgname}                 Name of recording (Name from EPG)
-    {shorttext}               shorttext of recording
-    {date}                    date of recording in dd.mm.yy
-    {time}                    time of current recording in hh:mm
-    {daynumeric}              day as number
-    {month}                   month as number
-    {year}                    year as number
-    {duration}                real duration of recording in minutes
-    {durationhours}           real duration, full hours
-    {durationminutes}         real duration, rest of minutes
-    {durationevent}           duration of corresponding event in minutes
-    {durationeventhours}      event duration, full hours
-    {durationeventminutes}    event duration, rest of minutes
-    {ismovie}                 true if event is scraped as a movie
-    {isseries}                true if event is scraped as a series
-    {posteravailable}         true if a poster is available
-    {posterwidth}             width of scraped poster
-    {posterheight}            height of scraped poster
-    {posterpath}              absolute path of scraped poster
-    {banneravailable}         true if a banner is available
-    {bannerwidth}             width of banner
-    {bannerheight}            height of banner
-    {bannerpath}              path of banner
-    {recimgavailable}         true if a recording image is available in the recording path
-    {recimgpath}              path of rec image
-    -->
+    
     <detailheader>
         <area x="1%" y="0" width="98%" height="20%" layer="3">
             <drawimage condition="{isseries}++{banneravailable}++not{recimgavailable}" imagetype="image" path="{bannerpath}" x="{areawidth} - {areawidth}/3 - 10" valign="center" width="{areawidth}/3" height="{areawidth}/3 * {bannerheight} / {bannerwidth}"/>
@@ -124,10 +76,7 @@
             <drawtext name="shorttext" x="20" y="{posy(title)} + {height(title)}" font="{light}" fontsize="25%" color="{clrWhite}" text="{shorttext}" />
         </area>
     </detailheader>
-    <!-- Available Variables scrollbar:
-    {height}                  height in one-tenth of a percent of total height
-    {offset}                  offset from top in one-tenth of a percent of total height
-    -->
+    
     <scrollbar>
         <area x="98%" y="20%" width="2%" height="65%" layer="3">
             <fill color="{clrWhite}" />
@@ -135,132 +84,7 @@
             <drawrectangle x="4" y="4 + {areaheight} * {offset} / 1000" width="{areawidth} - 8" height="{areaheight} * {height} / 1000 - 8" color="{clrWhite}" />
         </area>
     </scrollbar>
-    <!-- Available Variables in tab elements:
-    {name}                    full name of recording (including folders)
-    {epgname}                 Name of recording (Name from EPG)
-    {shorttext}               shorttext of recording
-    {description}             description of recording
-    {date}                    date of recording in dd.mm.yy
-    {time}                    time of recording in hh:mm
-    {daynumeric}              day as number
-    {month}                   month as number
-    {year}                    year as number
-    {duration}                real duration of recording in minutes
-    {durationhours}           real duration, full hours
-    {durationminutes}         real duration, rest of minutes
-    {durationevent}           duration of corresponding event in minutes
-    {durationeventhours}      event duration, full hours
-    {durationeventminutes}    event duration, rest of minutes
-
-    {recordingsize}           size of recording (automatically in GB / MB)
-    {recordingsizecutted}     size of cutted recording (automatically in GB / MB)
-    {recordinglength}         length of recording (in hh::mm:ss)
-    {recordinglengthcutted}   length of cutted recording (in hh::mm:ss)
-    {recordingbitrate}        bitrate of recording (in MBit/s)
-    {recordingformat}         format of recording (TS / PS)
-    {searchtimer}             name of accordign searchtimer (if available)
-
-    {recimg1avaialble}        true if first recording image is available
-    {recimg2avaialble}        true if first recording image is available
-    {recimg3avaialble}        true if first recording image is available
-    {recimg1path}             path of first recording image
-    {recimg2path}             path of second recording image
-    {recimg3path}             path of third recording image
     
-    {ismovie}                 true if event is scraped as a movie
-    Available variables for movies:
-    {movietitle}              movie title from themoviedb
-    {movieoriginalTitle}      movie original title from themoviedb
-    {movietagline}            movie tagline from themoviedb
-    {movieoverview}           movie overview from themoviedb
-    {movieadult}              true if movie is rated as adult
-    {moviebudget}             movie budget from themoviedb in $
-    {movierevenue}            movie revenue from themoviedb in $
-    {moviegenres}             movie genres from themoviedb
-    {moviehomepage}           movie homepage from themoviedb
-    {moviereleasedate}        movie release date from themoviedb
-    {movieruntime}            movie runtime from themoviedb
-    {moviepopularity}         movie popularity from themoviedb
-    {movievoteaverage}        movie vote average from themoviedb
-    {posterwidth}             width of scraped poster
-    {posterheight}            height of scraped poster
-    {posterpath}              absolute path of scraped poster
-    {fanartwidth}             width of scraped fanart
-    {fanartheight}            height of scraped fanart
-    {fanartpath}              absolute path of scraped fanart
-    {movieiscollection}       true if movie is part of a collection
-    {moviecollectionName}     name of movie collection
-    {collectionposterwidth}   width of scraped collection poster
-    {collectionposterheight}  height of scraped collection poster
-    {collectionposterpath}    absolute path of scraped collection poster
-    {collectionfanartwidth}   width of scraped collection fanart
-    {collectionfanartheight}  height of scraped collection fanart
-    {collectionfanartpath}    absolute path of scraped collection fanart
-    {actors[]}                array with movie actors
-    {actors[name]}            real name of actor
-    {actors[role]}            actor role
-    {actors[thumb]}           absolute path of scraped actor thumb
-    {actors[thumbwidth]}      width of scraped actor thumb
-    {actors[thumbheight]}     height of scraped actor thumb
-
-    {isseries}                true if event is scraped as a series
-    Available variables for series:
-    {seriesname}              name of series
-    {seriesoverview}          series overview
-    {seriesfirstaired}        first aired date 
-    {seriesnetwork}           network which produces series
-    {seriesgenre}             series genre
-    {seriesrating}            series thetvdb rating
-    {seriesstatus}            status of series (running / finished)
-    {episodetitle}            title of episode
-    {episodenumber}           number of episode
-    {episodeseason}           season of episode
-    {episodefirstaired}       first aired date of episode
-    {episodegueststars}       guest stars of episode
-    {episodeoverview}         episode overview
-    {episoderating}           user rating for episode
-    {episodeimagewidth}       episode image width
-    {episodeimageheight}      episode image height
-    {episodeimagepath}        episode image path
-    {seasonposterwidth}       episode season poster width
-    {seasonposterheight}      episode season poster height
-    {seasonposterpath}        episode season poster path
-    {seriesposter1width}      width of 1st poster
-    {seriesposter1height}     height of 1st poster
-    {seriesposter1path}       path of 1st poster
-    {seriesposter2width}      width of 2nd poster
-    {seriesposter2height}     height of 2nd poster
-    {seriesposter2path}       path of 2nd poster
-    {seriesposter3width}      width of 3rd poster
-    {seriesposter3height}     height of 3rd poster
-    {seriesposter3path}       path of 3rd poster
-    {seriesfanart1width}      width of 1st fanart
-    {seriesfanart1height}     height of 1st fanart
-    {seriesfanart1path}       path of 1st fanart
-    {seriesfanart2width}      width of 2nd fanart
-    {seriesfanart2height}     height of 2nd fanart
-    {seriesfanart2path}       path of 2nd fanart
-    {seriesfanart3width}      width of 3rd fanart
-    {seriesfanart3height}     height of 3rd fanart
-    {seriesfanart3path}       path of 3rd fanart
-    {seriesbanner1width}      width of 1st banner
-    {seriesbanner1height}     height of 1st banner
-    {seriesbanner1path}       path of 1st banner
-    {seriesbanner2width}      width of 2nd banner
-    {seriesbanner2height}     height of 2nd banner
-    {seriesbanner2path}       path of 2nd banner
-    {seriesbanner3width}      width of 3rd banner
-    {seriesbanner3height}     height of 3rd banner
-    {seriesbanner3path}       path of 3rd fanart
-    {actors[]}                array with movie actors
-    {actors[name]}            real name of actor
-    {actors[role]}            actor role
-    {actors[thumb]}           absolute path of scraped actor thumb
-    {actors[thumbwidth]}      width of scraped actor thumb
-    {actors[thumbheight]}     height of scraped actor thumb
-    -->
-
-    <!-- a tab is one scrolling area, just position and draw as inside a normal area -->
     <tab name="Info" x="2%" y="20%" width="94%" height="65%" layer="2" scrollheight="{areaheight}/4">
         <drawtextbox condition="not{isseries}++not{ismovie}" x="0" y="0" width="96%" font="{light}" fontsize="8%" color="{clrWhite}" text="{description}" />
         <drawimage condition="{isseries}" name="seriesposter" imagetype="image" path="{seriesposter1path}" x="{areawidth}*0.7" y="0" width="{areawidth}*0.3" height="{areawidth} * 0.3 * {seriesposter1height} / {seriesposter1width}"/>
@@ -308,11 +132,6 @@
         <drawimage condition="{movieiscollection}" name="collectionposter" imagetype="image" path="{collectionposterpath}" align="center" y="{posy(collectionfanart)} + {height(collectionfanart)} + 20" width="{areawidth}*0.6" height="{areawidth} * 0.6 * {collectionposterheight} / {collectionposterwidth}"/>
     </tab>
 
-    <!-- Available Variables tablabels:
-    {tabs[]}                array with available tab labels
-    {tabs[title]}           title of tab
-    {tabs[current]}         true if tab is displayed currently
-    -->
     <tablabels>
         <area x="0" y="85%" width="98%" height="5%" layer="3">
             <loop name="tabs" x="0" y="0" orientation="horizontal">

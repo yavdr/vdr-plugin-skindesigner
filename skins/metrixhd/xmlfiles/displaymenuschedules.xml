@@ -1,18 +1,4 @@
 <menuschedules x="0" y="0" width="100%" height="100%" fadetime="0">
-    <!-- Available Variables header:
-    {title}                         title of current menu
-    {vdrversion}                    running VDR Version
-    {hasicon}                       true if a menu icon is available
-    {icon}                          path of menu icon
-    {channelnumber}                 Number of Channel of current event
-    {channelname}                   Name of current Channel of current event
-    {channellogoexists}             true if a channel logo exists 
-    {channelid}                     ChannelID as path to display channel logo
-    {whatson}                       true if menu "What's on" is displayed
-    {whatsonnow}                    true if menu "What's on now" is displayed
-    {whatsonnext}                   true if menu "What's on next" is displayed
-    {whatsonfavorites}              true if EPGSearch Favorites menu is displayed
-    -->
     <header>
         <area x="0" y="0" width="38%" height="10%" layer="2">
             <drawimage condition="{whatsonnow}||{whatsonnext}||{whatsonfavorites}" name="menuicon" imagetype="menuicon" path="{icon}" x="5" valign="center" width="{areaheight}*8/10" height="80%"/>
@@ -23,36 +9,6 @@
     </header>
 
     <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
-        <!-- Available Variables schedules menu listelement:
-        {nummenuitem}             number of item in list, starts with 1
-        {title}                   title of event
-        {shorttext}               shorttext of event
-        {start}                   event start time in hh::mm
-        {stop}                    event stop time
-        {day}                     day of current event as three letter abrivation
-        {date}                    date of current event in dd.mm.yy
-        {daynumeric}              day as number
-        {month}                   month as number
-        {year}                    year as number
-        {running}                 true if event is currently running
-        {elapsed}                 elapsed time of event, if not running 0
-        {duration}                duration of event
-        {durationhours}           duration, full hours
-        {durationminutes}         duration, rest of minutes
-        {current}                 true if item is currently selected 
-        {separator}               true if item is a list separator 
-        {channelname}             Channel Name
-        {channelnumber}           Channel Number
-        {channelid}               ChannelID as path to display channel logo
-        {channellogoexists}       true if a channel logo exists 
-        {whatson}                 true if menu "What's on" is displayed
-        {whatsonnow}              true if menu "What's on now" is displayed
-        {whatsonnext}             true if menu "What's on next" is displayed
-        {whatsonfavorites}        true if EPGSearch Favorites menu is displayed
-        {timerpartitial}          true if partitial timer is set for the event
-        {timerfull}               true if full timer is set for the event
-        {hasVPS}                  true if event has VPS information
-        -->
         <listelement>
             <!-- Background -->
             <area x="1%" width="58%" layer="2">
@@ -132,42 +88,6 @@
                 <drawtext x="20" valign="center" font="{light}" fontsize="95%" color="{clrBlueLight}" text="{title}" />
             </area>
         </listelement>
-        <!-- additional element which is drawn for current element -->
-        <!-- Available Variables schedules menu currentelement:
-        {title}                   title of event
-        {shorttext}               shorttext of event
-        {description}             detailed description of event
-        {start}                   event start time in hh::mm
-        {stop}                    event stop time
-        {day}                     day of current event
-        {date}                    date of current event in dd.mm.yy
-        {daynumeric}              day as number
-        {month}                   month as number
-        {year}                    year as number
-        {running}                 true if event is currently running
-        {elapsed}                 elapsed time of event, if not running 0
-        {duration}                duration of event
-        {durationhours}           duration, full hours
-        {durationminutes}         duration, rest of minutes
-        {channelname}             Channel Name
-        {channelnumber}           Channel Number
-        {channelid}               ChannelID as path to display channel logo
-        {channellogoexists}       true if a channel logo exists 
-        {hasposter}               true if a scraped poster is available for this element
-        {posterwidth}             width of scraped poster
-        {posterheight}            height of scraped poster
-        {posterpath}              absolute path of scraped poster
-        {timerpartitial}          true if partitial timer is set for the event
-        {timerfull}               true if full timer is set for the event
-        {whatson}                 true if menu "What's on" is displayed
-        {whatsonnow}              true if menu "What's on now" is displayed
-        {whatsonnext}             true if menu "What's on next" is displayed
-        {schedule[]}              array with next 10 schedules, only for whatsonnow and whatsonnext
-        {schedule[title]}         title of event
-        {schedule[shorttext]}     shorttext of event
-        {schedule[start]}         start time of event in hh:mm
-        {schedule[stop]}          stop time of event in hh:mm
-        -->
         <currentelement delay="500" fadetime="0">
             <area condition="{whatson}" x="63%" y="0" width="36%" height="100%" layer="2">
                 <!-- title -->
@@ -211,10 +131,7 @@
             </areacontainer>
         </currentelement>
     </menuitems>
-    <!-- Available Variables scrollbar:
-    {height}                  height in one-tenth of a percent of total height
-    {offset}                  offset from top in one-tenth of a percent of total height
-    -->
+    
     <scrollbar>
         <area x="60%" y="10%" width="2%" height="82%" layer="3">
             <fill color="{clrWhite}" />

@@ -1,28 +1,5 @@
 <menutimers x="0" y="0" width="100%" height="100%" fadetime="0">
     <menuitems x="0" y="10%" orientation="vertical" width="100%" height="82%" align="center" numlistelements="16">
-        <!-- Available Variables channels menu listelement:
-        {nummenuitem}       number of item in list, starts with 1
-        {title}             Title of Timer
-        {timerstart}        Start Time of Timer in hh::mm
-        {timerstop}         End Time of Timer in hh::mm
-        {day}               Day (numerical)
-        {dayname}           Day, for repeating timers days where timer is active
-        {month}             Month (two digits)
-        {monthname}         Month, three letter abbrevation
-        {year}              Year (4 digits)
-        {channelname}       Name of channel which is set for the timer
-        {channelid}         ID of channel which is set for the timer (for dispalying channel logo)
-        {channelnumber}     Number of channel which is set for the timer
-        {eventtitle}        Title of corresponding event
-        {eventstart}        Start Time of corresponding event in hh::mm
-        {eventstop}         Stop Time of corresponding event in hh::mm
-        {current}           true if item is currently selected
-        {flagactive}        true if timer is active
-        {flaginstant}       true if timer is an instant timer
-        {flagvps}           true if timer uses VPS
-        {flagrecording}     true if is recording currently
-        {flagpending}       true if timer is pending
-        -->
         <listelement>
             <!-- Background -->
             <area x="1%" width="58%" layer="2">
@@ -38,34 +15,6 @@
                 <drawtext name="timertext" x="10" valign="center" font="{light}" fontsize="80%" color="{clrWhite}" text="{dayname} {day}. {timerstart} - {timerstop}: {title}" />
             </areascroll>
         </listelement>
-        <!-- additional element which is drawn for current element -->
-        <!-- Available Variables channels menu currentelement:
-        {title}             Title of Timer
-        {timerstart}        Start Time of Timer in hh::mm
-        {timerstop}         End Time of Timer in hh::mm
-        {day}               Day (numerical)
-        {dayname}           Day, for repeating timers days where timer is active
-        {month}             Month (two digits)
-        {monthname}         Month, three letter abbrevation
-        {year}              Year (4 digits)
-        {channelname}       Name of channel which is set for the timer
-        {channelid}         ID of channel which is set for the timer (for dispalying channel logo)
-        {channelnumber}     Number of channel which is set for the timer
-        {eventtitle}        Title of corresponding event
-        {eventstart}        Start Time of corresponding event in hh::mm
-        {eventstop}         Stop Time of corresponding event in hh::mm
-        {eventshorttext}    Short Text corresponding event
-        {eventdescription}  Description corresponding event
-        {hasposter}         true if a scraped poster is available for event
-        {posterwidth}       width of scraped poster
-        {posterheight}      height of scraped poster
-        {posterpath}        absolute path of scraped poster
-        {flagactive}        true if timer is active
-        {flaginstant}       true if timer is an instant timer
-        {flagvps}           true if timer uses VPS
-        {flagrecording}     true if is recording currently
-        {flagpending}       true if timer is pending
-        -->
         <currentelement delay="500" fadetime="0">
             <area x="63%" y="0" width="36%" height="15%" layer="2">
                 <drawimage name="logo" imagetype="channellogo" path="{channelid}" x="10" y="0" width="30%" height="100%" />
@@ -83,10 +32,7 @@
             </area>
         </currentelement>
     </menuitems>
-    <!-- Available Variables colorbuttons:
-    {height}                  height in one-tenth of a percent of total height
-    {offset}                  offset from top in one-tenth of a percent of total height
-    -->
+    
     <scrollbar>
         <area x="60%" y="10%" width="2%" height="82%" layer="3">
             <fill color="{clrWhite}" />

@@ -418,7 +418,8 @@
   menuitemwidth CDATA #IMPLIED
   determinatefont CDATA #IMPLIED
   numlistelements CDATA #REQUIRED
-  orientation (horizontal|vertical) #REQUIRED
+  orientation CDATA #REQUIRED
+  condition CDATA #IMPLIED
 >
 
 <!ELEMENT listelement (areacontainer|area|areascroll)*>

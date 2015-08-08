@@ -14,11 +14,11 @@ cTemplateView::cTemplateView(void) {
 }
 
 cTemplateView::~cTemplateView() {
-    for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
+    for (multimap < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         delete it->second;
     }
 
-    for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
+    for (multimap < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
         delete it->second;
     }
 
@@ -64,11 +64,15 @@ void cTemplateView::SetContainer(int x, int y, int width, int height) {
 }
 
 cTemplateViewElement *cTemplateView::GetViewElement(eViewElement ve) {
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        return NULL;
+    pair<multimap< eViewElement, cTemplateViewElement* >::iterator, multimap< eViewElement, cTemplateViewElement* >::iterator> rangeViewElements;
+    rangeViewElements = viewElements.equal_range(ve);
+    for (multimap<eViewElement, cTemplateViewElement*>::iterator it = rangeViewElements.first; it!=rangeViewElements.second; ++it) {
+        cTemplateViewElement *viewElement = it->second;
+        if (viewElement->Execute()) {
+            return viewElement;
+        }
     }
-    return hit->second;
+    return NULL;
 }
 
 void cTemplateView::InitViewElementIterator(void) {
@@ -104,10 +108,21 @@ cTemplateViewGrid *cTemplateView::GetNextViewGrid(void) {
 }
 
 cTemplateViewList *cTemplateView::GetViewList(eViewList vl) {
-    map < eViewList, cTemplateViewList* >::iterator hit = viewLists.find(vl);
-    if (hit == viewLists.end())
-        return NULL;
-    return hit->second;
+    if (viewLists.size() == 1) {
+        multimap < eViewList, cTemplateViewList* >::iterator hit = viewLists.find(vl);
+        if (hit == viewLists.end())
+            return NULL;
+        return hit->second;
+    }
+    pair<multimap< eViewList, cTemplateViewList* >::iterator, multimap< eViewList, cTemplateViewList* >::iterator> rangeViewLists;
+    rangeViewLists = viewLists.equal_range(vl);
+    for (multimap<eViewList, cTemplateViewList*>::iterator it = rangeViewLists.first; it!=rangeViewLists.second; ++it) {
+        cTemplateViewList *viewList = it->second;
+        if (viewList->Execute()) {
+            return viewList;
+        }
+    }
+    return NULL;
 }
 
 void cTemplateView::InitViewListIterator(void) {
@@ -190,7 +205,7 @@ cRect cTemplateView::GetOsdSize(void) {
 
 int cTemplateView::GetNumPixmaps(void) {
     int numPixmaps = 0;
-    for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
+    for (multimap < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         cTemplateViewElement *viewElement = it->second;
         numPixmaps += viewElement->GetNumPixmaps();
     }
@@ -198,10 +213,9 @@ int cTemplateView::GetNumPixmaps(void) {
 }
 
 int cTemplateView::GetNumPixmapsViewElement(eViewElement ve) {
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end())
+    cTemplateViewElement *viewElement = GetViewElement(ve);
+    if (!viewElement)
         return 0;
-    cTemplateViewElement *viewElement = hit->second; 
     return viewElement->GetNumPixmaps();
 }
 
@@ -248,15 +262,14 @@ tColor cTemplateView::DebugGridFontColor(void) {
 }
 
 bool cTemplateView::ExecuteView(eViewElement ve) {
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end())
+    cTemplateViewElement *viewElement = GetViewElement(ve);
+    if (!viewElement)
         return false;
-    cTemplateViewElement *viewElement = hit->second;
-    return viewElement->Execute();
+    return true;
 }
 
 bool cTemplateView::DetachViewElement(eViewElement ve) {
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
+    multimap < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
     if (hit == viewElements.end())
         return false;
     cTemplateViewElement *viewElement = hit->second;
@@ -264,10 +277,9 @@ bool cTemplateView::DetachViewElement(eViewElement ve) {
 }
 
 string cTemplateView::GetViewElementMode(eViewElement ve) {
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end())
+    cTemplateViewElement *viewElement = GetViewElement(ve);
+    if (!viewElement)
         return "";
-    cTemplateViewElement *viewElement = hit->second;
     return viewElement->GetMode();    
 }
 
@@ -563,9 +575,8 @@ void cTemplateView::PreCache(bool isSubview) {
     int osdWidth = parameters->GetNumericParameter(ptWidth);
     int osdHeight = parameters->GetNumericParameter(ptHeight);
     int pixOffset = 0;
-
     //Cache ViewElements
-    for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
+    for (multimap < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         cTemplateViewElement *viewElement = it->second;
         viewElement->SetGlobals(globals);
         if (!isSubview)
@@ -588,7 +599,7 @@ void cTemplateView::PreCache(bool isSubview) {
     }
 
     //Cache ViewLists
-    for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
+    for (multimap < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
         cTemplateViewList *viewList = it->second;
         viewList->SetGlobals(globals);
         //viewlists in subviews need complete container information
@@ -632,13 +643,13 @@ void cTemplateView::Debug(void) {
     
     parameters->Debug();
 
-    for (map < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
+    for (multimap < eViewElement, cTemplateViewElement* >::iterator it = viewElements.begin(); it != viewElements.end(); it++) {
         esyslog("skindesigner: ++++++++ ViewElement: %s", GetViewElementName(it->first).c_str());
         cTemplateViewElement *viewElement = it->second;
         viewElement->Debug();
     }
 
-    for (map < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
+    for (multimap < eViewList, cTemplateViewList* >::iterator it = viewLists.begin(); it != viewLists.end(); it++) {
         esyslog("skindesigner: ++++++++ ViewList: %s", GetViewListName(it->first).c_str());
         cTemplateViewList *viewList = it->second;
         viewList->Debug();
@@ -787,6 +798,7 @@ void cTemplateView::SetFunctionDefinitions(void) {
     attributes.insert("width");
     attributes.insert("height");
     attributes.insert("align");
+    attributes.insert("valign");
     attributes.insert("maxlines");  
     attributes.insert("font");
     attributes.insert("fontsize");
@@ -1008,7 +1020,7 @@ string cTemplateViewChannel::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<stringpair> &viewElementattributes) {
+void cTemplateViewChannel::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
 
     if (!sViewElement.compare("background")) {
@@ -1055,17 +1067,7 @@ void cTemplateViewChannel::AddPixmap(string sViewElement, cTemplatePixmapNode *p
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
 /************************************************************************************
@@ -1246,6 +1248,7 @@ cTemplateViewMenu::cTemplateViewMenu(void) {
     attributes.insert("menuitemwidth");
     attributes.insert("determinatefont");
     attributes.insert("numlistelements");
+    attributes.insert("condition");
     funcsAllowed.insert(pair< string, set<string> >("menuitems", attributes));
 
     //definition of allowed parameters for currentitems viewlist 
@@ -1516,7 +1519,7 @@ void cTemplateViewMenu::AddPluginView(string plugName, int templNo, cTemplateVie
     }
 }
 
-void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewMenu::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1568,20 +1571,7 @@ void cTemplateViewMenu::AddPixmap(string sViewElement, cTemplatePixmapNode *pix,
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        if (viewElement->DebugTokens()) {
-            dsyslog("skindesigner: activating token debugging for view element %s", sViewElement.c_str());
-        }
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
 void cTemplateViewMenu::AddViewList(string sViewList, cTemplateViewList *viewList) {
@@ -1657,7 +1647,7 @@ string cTemplateViewMessage::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewMessage::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewMessage::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1671,17 +1661,7 @@ void cTemplateViewMessage::AddPixmap(string sViewElement, cTemplatePixmapNode *p
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
 /************************************************************************************
@@ -1814,7 +1794,7 @@ string cTemplateViewReplay::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewReplay::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1864,17 +1844,7 @@ void cTemplateViewReplay::AddPixmap(string sViewElement, cTemplatePixmapNode *pi
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
 
@@ -1931,7 +1901,7 @@ string cTemplateViewVolume::GetViewElementName(eViewElement ve) {
     return name;
 }
 
-void cTemplateViewVolume::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewVolume::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -1945,17 +1915,7 @@ void cTemplateViewVolume::AddPixmap(string sViewElement, cTemplatePixmapNode *pi
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
 /************************************************************************************
@@ -2041,7 +2001,7 @@ string cTemplateViewAudioTracks::GetViewListName(eViewList vl) {
     return name;
 }
 
-void cTemplateViewAudioTracks::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewAudioTracks::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
     
     if (!sViewElement.compare("background")) {
@@ -2055,17 +2015,7 @@ void cTemplateViewAudioTracks::AddPixmap(string sViewElement, cTemplatePixmapNod
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
 void cTemplateViewAudioTracks::AddViewList(string sViewList, cTemplateViewList *viewList) {
@@ -2148,18 +2098,12 @@ void cTemplateViewPlugin::AddSubView(string sSubView, cTemplateView *subView) {
     subViews.insert(pair< eSubView, cTemplateView* >((eSubView)subViewId, subView));
 }
 
-void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmapNode *pix, vector<pair<string, string> > &viewElementattributes) {
+void cTemplateViewPlugin::AddViewElement(string sViewElement, cTemplateViewElement *viewElement) {
     eViewElement ve = veUndefined;
     string viewElementName = "";
     int viewElementID = -1;
-    bool found = false;
-    for (vector<pair<string, string> >::iterator it = viewElementattributes.begin(); it != viewElementattributes.end(); it++) {
-        if (!(it->first).compare("name")) {
-            viewElementName = it->second;
-            found = true;
-            break;
-        }
-    }
+
+    bool found = viewElement->GetName(viewElementName);
 
     if (found) {
         viewElementID = config.GetPluginViewElementID(pluginName, viewElementName, viewID);
@@ -2178,30 +2122,14 @@ void cTemplateViewPlugin::AddPixmap(string sViewElement, cTemplatePixmapNode *pi
         viewElementID = pve;
     }
 
-    pix->SetGlobals(globals);
-
     ve = (eViewElement)viewElementID;
-    map < eViewElement, cTemplateViewElement* >::iterator hit = viewElements.find(ve);
-    if (hit == viewElements.end()) {
-        cTemplateViewElement *viewElement = new cTemplateViewElement();
-        viewElement->SetParameters(viewElementattributes);
-        viewElement->AddPixmap(pix);
-        viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewElements.insert(pair< eViewElement, cTemplateViewElement*>(ve, viewElement));
 }
 
-void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmapNode *pix, vector<pair<string, string> > &gridAttributes) {
+void cTemplateViewPlugin::AddGrid(cTemplateViewGrid *viewGrid) {
     string gridName = "";
-    bool found = false;
-    for (vector<pair<string, string> >::iterator it = gridAttributes.begin(); it != gridAttributes.end(); it++) {
-        if (!(it->first).compare("name")) {
-            gridName = it->second;
-            found = true;
-            break;
-        }
-    }
+    bool found = viewGrid->GetName(gridName);
+
     if (!found) {
         esyslog("skindesigner: no name defined for plugin %s grid", pluginName.c_str());
     }
@@ -2212,17 +2140,7 @@ void cTemplateViewPlugin::AddPixmapGrid(cTemplatePixmapNode *pix, vector<pair<st
         return;
     }
 
-    pix->SetGlobals(globals);
-
-    map < int, cTemplateViewGrid* >::iterator hit = viewGrids.find(gridID);
-    if (hit == viewGrids.end()) {
-        cTemplateViewGrid *viewGrid = new cTemplateViewGrid();
-        viewGrid->SetParameters(gridAttributes);
-        viewGrid->AddPixmap(pix);
-        viewGrids.insert(pair< int, cTemplateViewGrid*>(gridID, viewGrid));
-    } else {
-        (hit->second)->AddPixmap(pix);
-    }
+    viewGrids.insert(pair< int, cTemplateViewGrid*>(gridID, viewGrid));
 }
 
 void cTemplateViewPlugin::AddViewTab(cTemplateViewTab *viewTab) {

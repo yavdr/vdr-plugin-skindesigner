@@ -291,6 +291,14 @@ void cConditionalParameter::Evaluate(map < string, int > *intTokens, map < strin
                         tokenTrue = true;
                 }
             }
+            if (!tokenTrue) {
+                string value = "";
+                if (globals->GetString(cond->tokenName, value)) {
+                    if (!value.compare(cond->strCompareValue)) {
+                        tokenTrue = true;   
+                    }
+                }               
+            }
         } else if (cond->type == ctStringNotEquals) {
             if (stringTokens) {
                 map < string, string >::iterator hit = stringTokens->find(cond->tokenName);
@@ -312,6 +320,14 @@ void cConditionalParameter::Evaluate(map < string, int > *intTokens, map < strin
                     if (value.find(cond->strCompareValue) != string::npos)
                         tokenTrue = true;
                 }
+            }
+            if (!tokenTrue) {
+                string value = "";
+                if (globals->GetString(cond->tokenName, value)) {
+                    if (value.find(cond->strCompareValue) != string::npos) {
+                        tokenTrue = true;   
+                    }
+                }               
             }
         } else if (cond->type == ctStringNotContains) {
             if (stringTokens) {
@@ -472,6 +488,6 @@ string cConditionalParameter::StripWhitespaces(string value) {
 void cConditionalParameter::Debug(void) {
     dsyslog("skindesigner: Condition %s, Type: %s, cond is %s", value.c_str(), (type == cpAnd)?"and combination":((type == cpOr)?"or combination":"single param") , isTrue?"true":"false");
     for (vector<sCondition>::iterator it = conditions.begin(); it != conditions.end(); it++) {
-        dsyslog("skindesigner: cond token %s, type: %d, compareValue %d, negated: %d", it->tokenName.c_str(), it->type, it->compareValue, it->isNegated);
+        dsyslog("skindesigner: cond token %s, type: %d, compareValue %d, negated: %d, strCompareValue %s", it->tokenName.c_str(), it->type, it->compareValue, it->isNegated, it->strCompareValue.c_str());
     }
 }
