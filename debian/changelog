@@ -1,3 +1,10 @@
+vdr-plugin-skindesigner (0.7.0-1-gc0ab674-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * c0ab674: fixed compiling fur unpatched VDR
+
+ -- Frodo <frodo.vdr@gmx.net>  Sun, 09 Aug 2015 11:11:47 +0200
+
 vdr-plugin-skindesigner (0.7.0-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
