@@ -1,8 +1,5 @@
 #ifndef __DISPLAYMENU_H
 #define __DISPLAYMENU_H
-#include "libskindesignerapi/skindesignerapi.h"
-#include "libtemplate/template.h"
-#include "views/displaymenurootview.h"
 
 #if defined(APIVERSNUM) && APIVERSNUM < 20301
 #ifndef MENU_ORIENTATION_DEFINED
@@ -12,6 +9,10 @@ enum eMenuOrientation {
 };
 #endif
 #endif
+
+#include "libskindesignerapi/skindesignerapi.h"
+#include "libtemplate/template.h"
+#include "views/displaymenurootview.h"
 
 enum eViewState {
     vsInit,

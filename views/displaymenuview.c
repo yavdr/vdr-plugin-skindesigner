@@ -1,6 +1,7 @@
 #define __STL_CONFIG_H
 #include <vdr/menu.h>
 #include <vdr/videodir.h>
+#include "../displaymenu.h"
 #include "displaymenuview.h"
 #include "displayviewelements.h"
 #include "../config.h"

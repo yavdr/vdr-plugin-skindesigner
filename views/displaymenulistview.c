@@ -1,4 +1,5 @@
 #include <vdr/menu.h>
+#include "../displaymenu.h"
 #include "displaymenulistview.h"
 
 

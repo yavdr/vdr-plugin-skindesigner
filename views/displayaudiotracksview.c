@@ -1,5 +1,6 @@
 #define __STL_CONFIG_H
 #include <vdr/menu.h>
+#include "../displaymenu.h"
 #include "displayaudiotracksview.h"
 
 cDisplayAudiotracksView::cDisplayAudiotracksView(int numTracks, cTemplateView *tmplView) : cView(tmplView) {
