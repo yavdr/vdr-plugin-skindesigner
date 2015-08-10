@@ -37,7 +37,7 @@ void cSkinSetupParameter::Debug(void) {
         dsyslog("skindesigner: min %d, max %d", min, max);
     if (type == sptString && options) {
         for (int i=0; i < numOptions; i++) {
-            dsyslog("skindesigner: option %d: %s, translated: %s", i+1, options[i], optionsTranslated[i]);
+            dsyslog("skindesigner: option %d: %s", i+1, options[i]);
         }
     }
 }

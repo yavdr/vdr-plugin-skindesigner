@@ -788,7 +788,6 @@ void cView::DoDrawTextBox(int num, cTemplateFunction *func, int x0, int y0) {
             DrawText(num, pos, "...", clr, clrBack, fontName, fontSize);
             break;
         }
-        esyslog("skindesigner: drawing regular line yLine %d", yLine);
         DrawText(num, pos, wrapper.GetLine(line), clr, clrBack, fontName, fontSize);
         yLine += fontHeight;
     }

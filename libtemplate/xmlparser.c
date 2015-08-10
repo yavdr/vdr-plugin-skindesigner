@@ -600,6 +600,7 @@ void cXmlParser::ParseSetupParameter(void) {
     GetAttribute(attributeName, paramName);
     GetAttribute(attributeDisplayText, paramDisplayText);
     GetAttribute(attributeMin, paramMin);
+    GetAttribute(attributeMax, paramMax);
     GetAttribute(attributeOptions, paramOptions);
     GetNodeValue(paramValue);
 

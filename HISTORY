@@ -426,3 +426,5 @@ Version 0.7.0
 - fixed compiling fur unpatched VDR
 
 Version 0.7.1
+
+- fixed bug that setup int parameters do not respect the max value
