@@ -1,3 +1,11 @@
+vdr-plugin-skindesigner (0.7.1-1-gf44aabb-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * f44aabb: fixed bug that setup int parameters do not respect max
+    value
+
+ -- Frodo <frodo.vdr@gmx.net>  Tue, 11 Aug 2015 11:40:50 +0200
+
 vdr-plugin-skindesigner (0.7.1-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
