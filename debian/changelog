@@ -1,3 +1,10 @@
+vdr-plugin-skindesigner (0.7.1-1-gf44aabb-1yavdr0~trusty) trusty; urgency=medium
+
+  * add postinst for plugin to set the correct ownership on plugin's
+    configuration directory so it's writeable by vdr
+
+ -- Lars Hanisch <dvb@flensrocker.de>  Wed, 12 Aug 2015 19:12:20 +0200
+
 vdr-plugin-skindesigner (0.7.1-1-gf44aabb-0yavdr0~trusty) trusty; urgency=medium
 
   * new upstream snapshot
