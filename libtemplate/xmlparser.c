@@ -588,6 +588,8 @@ void cXmlParser::ParseSetupParameter(void) {
     string paramName = "";
     string attributeDisplayText = "displaytext";
     string paramDisplayText = "";
+    string attributeHelpText = "helptext";
+    string paramHelpText = "";
     string attributeMin = "min";
     string paramMin = "";
     string attributeMax = "max";
@@ -599,12 +601,13 @@ void cXmlParser::ParseSetupParameter(void) {
     GetAttribute(attributeType, paramType);
     GetAttribute(attributeName, paramName);
     GetAttribute(attributeDisplayText, paramDisplayText);
+    GetAttribute(attributeHelpText, paramHelpText);
     GetAttribute(attributeMin, paramMin);
     GetAttribute(attributeMax, paramMax);
     GetAttribute(attributeOptions, paramOptions);
     GetNodeValue(paramValue);
 
-    skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramMin, paramMax, paramValue, paramOptions);
+    skinSetup->SetParameter(paramType, paramName, paramDisplayText, paramHelpText, paramMin, paramMax, paramValue, paramOptions);
 }
 
 void cXmlParser::ValidateAttributes(const char *nodeName, vector<stringpair> &attributes) {

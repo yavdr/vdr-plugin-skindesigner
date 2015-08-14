@@ -93,6 +93,14 @@ class cSkindesignerSkinSetup : public cOsdMenu, cInstallManager {
 private:
     string skin;
     string menu;
+    vector<string> helpTexts;
+    string buttonRed;
+    string buttonGreen;
+    string buttonYellow;
+    bool showRed;
+    bool showYellow;
+    bool hadHelp;
+    void ShowButtons(int current, bool force = false);
 protected:
     virtual eOSState ProcessKey(eKeys Key);
     void Set(void);

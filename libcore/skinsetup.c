@@ -9,6 +9,7 @@ cSkinSetupParameter::cSkinSetupParameter(void) {
     type = sptUnknown;
     name = "";
     displayText = "";
+    helpText = "";
     min = 0;
     max = 1000;
     value = 0;
@@ -106,11 +107,12 @@ void cSkinSetupMenu::InitIterators(void) {
     subMenuIt = subMenus.begin();
 }
 
-void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value, string options) {
+void cSkinSetupMenu::SetParameter(eSetupParameterType paramType, string name, string displayText, string helpText, string min, string max, string value, string options) {
     cSkinSetupParameter *param = new cSkinSetupParameter();
     param->type = paramType;
     param->name = name;
     param->displayText = displayText;
+    param->helpText = helpText;
 
     if (min.size() && paramType == sptInt) {
         param->min = atoi(min.c_str());
@@ -221,7 +223,7 @@ void cSkinSetup::SubMenuDone(void) {
     }
 }
 
-void cSkinSetup::SetParameter(string type, string name, string displayText, string min, string max, string value, string options) {
+void cSkinSetup::SetParameter(string type, string name, string displayText, string helpText, string min, string max, string value, string options) {
     if (!type.size() || !name.size() || !displayText.size() || !value.size()) {
         esyslog("skindesigner: invalid setup parameter for skin %s", skin.c_str());
         return;
@@ -238,7 +240,7 @@ void cSkinSetup::SetParameter(string type, string name, string displayText, stri
         esyslog("skindesigner: invalid setup parameter for skin %s", skin.c_str());
         return;
     }
-    currentMenu->SetParameter(paramType, name, displayText, min, max, value, options);
+    currentMenu->SetParameter(paramType, name, displayText, helpText, min, max, value, options);
 }
 
 cSkinSetupParameter *cSkinSetup::GetNextParameter(void) {
@@ -277,6 +279,10 @@ void cSkinSetup::TranslateSetup(void) {
         string transl = "";
         if (Translate(param->displayText, transl)) {
             param->displayText = transl;
+        }
+        string translHelp = "";
+        if (Translate(param->helpText, translHelp)) {
+            param->helpText = translHelp;
         }
         if (param->type == sptString && param->numOptions > 0) {
             param->optionsTranslated = new const char*[param->numOptions];

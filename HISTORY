@@ -428,3 +428,6 @@ Version 0.7.0
 Version 0.7.1
 
 - fixed bug that setup int parameters do not respect the max value
+- added possibility to define help texts for skin setup parameters
+
+Version 0.7.2

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.2.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-07-17 17:02+0200\n"
+"POT-Creation-Date: 2015-08-14 17:20+0200\n"
 "PO-Revision-Date: 2015-01-25 01:25+0200\n"
 "Last-Translator: Rolf Ahrenberg\n"
 "Language-Team: Finnish\n"
@@ -154,6 +154,9 @@ msgid "Install new skins"
 msgstr ""
 
 msgid "Preview Skin"
+msgstr ""
+
+msgid "Help"
 msgstr ""
 
 msgid "Author"
