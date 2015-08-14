@@ -1,3 +1,12 @@
+vdr-plugin-skindesigner (0.7.2-0yavdr0~trusty) trusty; urgency=medium
+
+  * new upstream snapshot
+  * a5d7d64: added possibility to define help texts for skin setup
+    parameters
+  * 196dd7e: Version 0.7.2
+
+ -- Frodo <frodo.vdr@gmx.net>  Fri, 14 Aug 2015 21:35:47 +0200
+
 vdr-plugin-skindesigner (0.7.1-1-gf44aabb-1yavdr0~trusty) trusty; urgency=medium
 
   * add postinst for plugin to set the correct ownership on plugin's
