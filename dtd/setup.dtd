@@ -17,6 +17,7 @@
   min NMTOKEN #IMPLIED
   max NMTOKEN #IMPLIED
   displaytext CDATA #REQUIRED
+  helptext CDATA #IMPLIED
   options CDATA #IMPLIED
   >
 

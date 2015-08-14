@@ -29,6 +29,7 @@ public:
     eSetupParameterType type;
     string name;
     string displayText;
+    string helpText;
     int min;
     int max;
     int value;
@@ -59,7 +60,7 @@ public:
     void SetParent(cSkinSetupMenu *p) { parent = p; };
     cSkinSetupMenu *GetParent(void) { return parent; };
     void AddSubMenu(cSkinSetupMenu *sub) { subMenus.push_back(sub); };
-    void SetParameter(eSetupParameterType paramType, string name, string displayText, string min, string max, string value, string options);
+    void SetParameter(eSetupParameterType paramType, string name, string displayText, string helpText, string min, string max, string value, string options);
     void InitIterators(void);
     void InitParameterIterator(void) { paramIt = parameters.begin(); };
     cSkinSetupParameter *GetNextParameter(bool deep = true);
@@ -86,7 +87,7 @@ public:
     bool ReadFromXML(void);
     void SetSubMenu(string name, string displayText);
     void SubMenuDone(void);
-    void SetParameter(string type, string name, string displayText, string min, string max, string value, string options);
+    void SetParameter(string type, string name, string displayText, string helpText, string min, string max, string value, string options);
     void InitParameterIterator(void) { rootMenu->InitIterators(); };
     cSkinSetupParameter *GetNextParameter(void);
     cSkinSetupParameter *GetParameter(string name);

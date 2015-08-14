@@ -1,5 +1,6 @@
 #include <vdr/interface.h>
 #include "libcore/curlfuncs.h"
+#include <vdr/menu.h>
 #include "setup.h"
 
 // --- cInstallManager -----------------------------------------------------------
@@ -386,6 +387,12 @@ cOsdMenu(*cString::sprintf("%s: %s \"%s\" %s", trVDR("Setup"), tr("Skin"), skin.
     SetMenuCategory(mcPluginSetup);
     this->skin = skin;
     this->menu = menu;
+    buttonRed = tr("Update");
+    buttonGreen = tr("Help");
+    buttonYellow = tr("Delete Skin");
+    showRed = false;
+    showYellow = false;
+    hadHelp = false;
     Set();
 }
 
@@ -397,6 +404,9 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
     if (state == osEnd)
         return osEnd;
     state = cOsdMenu::ProcessKey(Key);
+    if (Key == kUp || Key == kDown) {
+        ShowButtons(Current());
+    }
     if (state == osUnknown) {
         switch (Key) {
             case kOk: {
@@ -443,6 +453,17 @@ eOSState cSkindesignerSkinSetup::ProcessKey(eKeys Key) {
                 state = osContinue;
                 break;
             }
+            case kGreen: {
+                string helpText = helpTexts[Current()];
+                if (helpText.size() == 0) {
+                    state = osContinue;
+                    break;
+                }
+                const char* ItemText = Get(Current())->Text();
+                string title = *cString::sprintf("%s - %s", buttonGreen.c_str(), ItemText);
+                state = AddSubMenu(new cMenuText(title.c_str(), helpText.c_str()));
+                break;
+            }
             default:
                 break;
         }
@@ -457,13 +478,11 @@ void cSkindesignerSkinSetup::Set(void) {
     }
     
     cSkinRepo *repo = config.GetSkinRepo(skin);
-    if (repo) {
-        if (repo->Type() == rtGit)
-            SetHelp(tr("Update"), NULL, tr("Delete Skin"), NULL);
-        else
-            SetHelp(NULL, NULL, tr("Delete Skin"), NULL);
-    }
-
+    if (repo && repo->Type() == rtGit)
+        showRed = true;
+    if (repo)
+        showYellow = true;
+ 
     setupMenu->InitParameterIterator();
     cSkinSetupParameter *param = NULL;
     while (param = setupMenu->GetNextParameter(false)) {
@@ -474,13 +493,27 @@ void cSkindesignerSkinSetup::Set(void) {
         } else if (param->type == sptString) {
             Add(new cMenuEditStraItem(param->displayText.c_str(), &param->value, param->numOptions, param->optionsTranslated));
         }
+        helpTexts.push_back(param->helpText);
     }
 
     setupMenu->InitSubmenuIterator();
     cSkinSetupMenu *subMenu = NULL;
     while (subMenu = setupMenu->GetNextSubMenu(false)) {
         Add(new cSkinSetupSubMenu(subMenu->GetName(), subMenu->GetDisplayText()));
+        helpTexts.push_back("");
     }
+
+    ShowButtons(0, true);
+}
+
+void cSkindesignerSkinSetup::ShowButtons(int current, bool force) {
+    bool showGreen = helpTexts[current].size() > 0 ? true : false;
+    bool changed = false;
+    if ((hadHelp && !showGreen) || (!hadHelp && showGreen))
+        changed = true;
+    hadHelp = showGreen;
+    if (changed || force)
+        SetHelp(showRed ? buttonRed.c_str() : "", showGreen ? buttonGreen.c_str() : "", showYellow ? buttonYellow.c_str() : "", NULL);
 }
 
 // --- cSkindesignerSkinPreview -----------------------------------------------------------

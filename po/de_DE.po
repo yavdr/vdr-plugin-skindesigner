@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vdr-skindesigner 0.0.1\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2015-07-17 17:02+0200\n"
+"POT-Creation-Date: 2015-08-14 17:20+0200\n"
 "PO-Revision-Date: 2014-09-27 11:02+0200\n"
 "Last-Translator: Louis Braun <louis.braun@gmx.de>\n"
 "Language-Team: \n"
@@ -156,6 +156,9 @@ msgstr "Weitere verfügbare Skins"
 msgid "Preview Skin"
 msgstr "Skin Vorschau"
 
+msgid "Help"
+msgstr "Hilfe"
+
 msgid "Author"
 msgstr "Autor"
 
@@ -164,3 +167,4 @@ msgstr "Benutze Schriften"
 
 msgid "Supported Plugins"
 msgstr "Unterstützte Plugins"
+

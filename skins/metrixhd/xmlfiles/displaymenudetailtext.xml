@@ -4,11 +4,6 @@
             <fill color="{clrTransBlack}" />
         </area>
     </background>
-    <header>
-        <area x="0" y="0" width="75%" height="10%" layer="2">
-            <drawtext x="5" valign="center" font="{light}" fontsize="50%" color="{clrWhite}" text="{title}" />
-        </area>
-    </header>
     <datetime>
         <area x="75%" y="0" width="12%" height="10%" layer="2">
             <drawtext align="right" y="15%" font="{light}" fontsize="30%" color="{clrWhite}" text="{dayname}" />
@@ -70,6 +65,6 @@
     </scrollbar>
 
     <tab name="text" x="2%" y="10%" width="94%" height="80%" layer="2" scrollheight="{areaheight}/4">
-        <drawtextbox x="0" y="0" width="96%" font="{light}" fontsize="5%" color="{clrWhite}" text="{text}" />
+        <drawtextbox x="0" y="0" width="96%" font="{light}" fontsize="7%" color="{clrWhite}" text="{text}" />
     </tab>
 </menudetailedtext>

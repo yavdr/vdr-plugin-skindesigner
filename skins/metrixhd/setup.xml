@@ -3,12 +3,12 @@
 
 <setup>
     <menu>
-        <parameter type="int" name="fadetime" min="0" max="1000" displaytext="{tr(fadetext)}">0</parameter>
-        <parameter type="int" name="shifttimechannel" min="0" max="1000" displaytext="{tr(shifttimechanneltext)}">0</parameter>
-        <parameter type="int" name="shifttimedatetime" min="0" max="1000" displaytext="{tr(shifttimedatetimetext)}">0</parameter>
-        <parameter type="int" name="shifttimetimers" min="0" max="1000" displaytext="{tr(shifttimetimerstext)}">0</parameter>
-        <parameter type="bool" name="showdevices" displaytext="{tr(showdevices)}">0</parameter>
-        <parameter type="string" name="mainmenuorientation" displaytext="{tr(mainmenuorientation)}" options="horizontal,vertical">1</parameter>
+        <parameter type="int" name="fadetime" min="0" max="1000" displaytext="{tr(fadetext)}" helptext="{tr(helpfade)}">0</parameter>
+        <parameter type="int" name="shifttimechannel" min="0" max="1000" displaytext="{tr(shifttimechanneltext)}" helptext="{tr(helpshifttimechannel)}">0</parameter>
+        <parameter type="int" name="shifttimedatetime" min="0" max="1000" displaytext="{tr(shifttimedatetimetext)}" helptext="{tr(helpshifttimedatetime)}">0</parameter>
+        <parameter type="int" name="shifttimetimers" min="0" max="1000" displaytext="{tr(shifttimetimerstext)}" helptext="{tr(helpshifttimetimers)}">0</parameter>
+        <parameter type="bool" name="showdevices" displaytext="{tr(showdevices)}" helptext="{tr(helpshowdevices)}">0</parameter>
+        <parameter type="string" name="mainmenuorientation" displaytext="{tr(mainmenuorientation)}" helptext="{tr(helpmainmenuorientation)}" options="horizontal,vertical">1</parameter>
         <parameter type="string" name="recmenuorientation" displaytext="{tr(recmenuorientation)}" options="horizontal,vertical">1</parameter>
         <parameter type="string" name="weathermenuorientation" displaytext="{tr(weathermenuorientation)}" options="horizontal,vertical">1</parameter>
     </menu>
@@ -19,26 +19,50 @@
             <trans lang="de_DE">Einblendzeit [ms]</trans>
             <trans lang="fi_FI">Häivytyksen kesto [ms]</trans>
         </token>
+        <token name="tr(helpfade)">
+            <trans lang="en_EN">Fade time in ms. If this is set to a value larger 0 all OSD elements beside the VDR menu fade in and out.</trans>
+            <trans lang="de_DE">Einblendzeit in ms. Ist dieser Wert auf einen Wert > 0 gesetzt, werden alle OSD Elemente ausser dem VDR Menu ein- und ausgeblendet</trans>
+        </token>
         <token name="tr(shifttimechanneltext)">
             <trans lang="en_EN">Shift time Channel Display [ms]</trans>
             <trans lang="de_DE">Einfahrzeit Channel Display [ms]</trans>
+        </token>
+        <token name="tr(helpshifttimechannel)">
+            <trans lang="en_EN">Shifting time in ms. If this is set to a value larger 0 all OSD elements beside the VDR menu are shifted in and out from the bottom of the screen. If fadetime is also set to a value larger 0, still shifting is performed</trans>
+            <trans lang="de_DE">Einfahrzeit in ms. Ist dieser Wert auf einen Wert > 0 gesetzt, werden alle OSD Elemente ausser dem VDR Menu vom unteren Rand des Bildschirms herein- und herausgefahren. Falls fadetime ebenfalls auf einen Wert größer 0 gesetzt ist, wird das OSD trotzdem herein- und herausgefahren.</trans>
         </token>
         <token name="tr(shifttimedatetimetext)">
             <trans lang="en_EN">Shift time Channel Date, Time, Weather [ms]</trans>
             <trans lang="de_DE">Einfahrzeit Channel Date, Time, Wetter [ms]</trans>
         </token>
+        <token name="tr(helpshifttimedatetime)">
+            <trans lang="en_EN">Shifting time of OSD Elements date, time and weather when switching in ms. If set to 0, the elements are shown immediately.</trans>
+            <trans lang="de_DE">Einfahrzeit der OSD Elemente Datum, Zeit und Wetter während des Umschaltens in ms. Steht dieser Wert auf 0, werden die Elemente sofort angezeigt.</trans>
+        </token>
         <token name="tr(shifttimetimerstext)">
             <trans lang="en_EN">Shift time Timers Main Menu [ms]</trans>
             <trans lang="de_DE">Einfahrzeit Timer Hauptmenü [ms]</trans>
         </token>
+        <token name="tr(helpshifttimetimers)">
+            <trans lang="en_EN">Shifting time of timers display in main menu in ms. If set to 0, the timers are shown immediately.</trans>
+            <trans lang="de_DE">Einfahrzeit der Timer im Hauptmenü in ms. Steht dieser Wert auf 0, werden die Timer sofort angezeigt.</trans>
+        </token>
         <token name="tr(showdevices)">
-            <trans lang="en_EN">Show DVB device info when switching channel</trans>
-            <trans lang="de_DE">DVB Karten Info beim Umschalten anzeigen</trans>
+            <trans lang="en_EN">Show DVB device info</trans>
+            <trans lang="de_DE">DVB Karten Info anzeigen</trans>
             <trans lang="fi_FI">Näytä DVB-tiedot kanavanvaihdossa</trans>
+        </token>
+        <token name="tr(helpshowdevices)">
+            <trans lang="en_EN">If set to true, information about usage of each available DVB device is displayed during channel switching and in the main menu</trans>
+            <trans lang="de_DE">Falls diese Option aktiviert ist, werden beim Umschalten und im Hauptmenü Informationen über alle verfügbaren DVB Devices ausgegeben.</trans>
         </token>
         <token name="tr(mainmenuorientation)">
             <trans lang="en_EN">Orientation of main menu</trans>
             <trans lang="de_DE">Ausrichtung des Hauptmenüs</trans>
+        </token>
+        <token name="tr(helpmainmenuorientation)">
+            <trans lang="en_EN">Orientation of main menu. If orientation is set to horizontal, only the current list element is displayed. If set to vertical, 8 elements are shown in the list.</trans>
+            <trans lang="de_DE">Ausrichtung des Hauptmenüs. Falls die Ausrichtung auf horizontal gesetzt ist, wird nur das aktuelle Listenelement ausgegeben. Ist die Ausrichtung vertikal, werden 8 Listenelemente angezeigt.</trans>
         </token>
         <token name="tr(recmenuorientation)">
             <trans lang="en_EN">Orientation of recordings menu</trans>
